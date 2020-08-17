@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PSAsigraDSClient\AddDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\DSClientCmdlet.cs" />
     <Compile Include="PSAsigraDSClient\DSClientCommon.cs" />

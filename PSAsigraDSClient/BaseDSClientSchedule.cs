@@ -19,6 +19,131 @@ namespace PSAsigraDSClient
             ProcessScheduleDetail();
         }
 
+        protected time_in_day StringTotime_in_day(string timeInDay)
+        {
+            string[] splitTime = timeInDay.Split(':');
+
+            if (splitTime == null || splitTime.Count() == 0)
+                throw new Exception("time_in_day cannot be null or empty");
+
+            int Hour = Convert.ToInt32(splitTime[0]);
+            int Minute = 0;
+            int Second = 0;
+
+            if (splitTime.Count() > 1)
+                Minute = Convert.ToInt32(splitTime[1]);
+
+            if (splitTime.Count() > 2)
+                Second = Convert.ToInt32(splitTime[2]);
+
+            time_in_day TimeInDay = new time_in_day();
+            TimeInDay.hour = Hour;
+            TimeInDay.minute = Minute;
+            TimeInDay.second = Second;
+
+            if (TimeInDay.minute > 59)
+                TimeInDay.minute = 0;
+
+            if (TimeInDay.second > 59)
+                TimeInDay.second = 0;
+
+            return TimeInDay;
+        }
+
+        protected EActivePackageClosing StringToEActivePackageClosing(string packageClose)
+        {
+            if (packageClose == "DoNotClose")
+                return EActivePackageClosing.EActivePackageClosing__DoNotClose;
+
+            if (packageClose == "CloseAtStart")
+                return EActivePackageClosing.EActivePackageClosing__CloseAtStart;
+
+            if (packageClose == "CloseAtEnd")
+                return EActivePackageClosing.EActivePackageClosing__CloseAtEnd;
+
+            // Default return
+            return EActivePackageClosing.EActivePackageClosing__UNDEFINED;
+        }
+
+        protected int ScheduleWeekDaysToInt(string[] weekDays)
+        {
+            int WeekDays = 0;
+
+            foreach (string weekday in weekDays)
+            {
+                switch(weekday)
+                {
+                    case "Mon":
+                        WeekDays += 1;
+                        break;
+                    case "Tue":
+                        WeekDays += 2;
+                        break;
+                    case "Wed":
+                        WeekDays += 4;
+                        break;
+                    case "Thu":
+                        WeekDays += 8;
+                        break;
+                    case "Fri":
+                        WeekDays += 16;
+                        break;
+                    case "Sat":
+                        WeekDays += 32;
+                        break;
+                    case "Sun":
+                        WeekDays += 64;
+                        break;
+                }
+            }
+
+            return WeekDays;
+        }
+
+        protected EScheduleMonthlyStartDay StringToEScheduleMonthlyStartDay(string startWeekDay)
+        {
+            EScheduleMonthlyStartDay StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__UNDEFINED;
+
+            switch(startWeekDay)
+            {
+                case "DayOfMonth":
+                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__DayOfMonth;
+                    break;
+                case "Mon":
+                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Monday;
+                    break;
+                case "Tue":
+                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Tuesday;
+                    break;
+                case "Wed":
+                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Wednesday;
+                    break;
+                case "Thu":
+                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Thrusday;
+                    break;
+                case "Fri":
+                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Friday;
+                    break;
+                case "Sat":
+                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Saturday;
+                    break;
+                case "Sun":
+                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Sunday;
+                    break;
+                case "Day":
+                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Day;
+                    break;
+                case "WeekDay":
+                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__WeekDay;
+                    break;
+                case "WeekEndDay":
+                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__WeekEndDay;
+                    break;
+            }
+
+            return StartWeekDay;
+        }
+
         protected class DSClientScheduleInfo
         {
             public bool Active { get; set; }

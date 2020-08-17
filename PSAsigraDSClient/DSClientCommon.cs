@@ -33,9 +33,18 @@ namespace PSAsigraDSClient
         {
             DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(epoch);
 
-            DateTime dateTime = dateTimeOffset.UtcDateTime;
+            DateTime dateTime = dateTimeOffset.LocalDateTime;
 
             return dateTime;
+        }
+
+        public static int DateTimeToUnixEpoch(DateTime dateTime)
+        {
+            DateTimeOffset offset = new DateTimeOffset(dateTime);
+            long lepoch = offset.ToUnixTimeSeconds();
+            int epoch = (int)offset.ToUnixTimeSeconds();
+
+            return epoch;
         }
     }
 }

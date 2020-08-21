@@ -16,10 +16,10 @@ namespace PSAsigraDSClient
         public UInt16 Port { get; set; } = 4411;
 
         [Parameter(Position = 3, HelpMessage = "Specify to NOT establish an SSL Connection")]
-        SwitchParameter NoSSL { get; set; }
+        public SwitchParameter NoSSL { get; set; }
 
         [Parameter(Position = 4, HelpMessage = "Specify the Asigra DSClient API Version to use")]
-        string APIVersion { get; set; } = "13.0.0.0";
+        public string APIVersion { get; set; } = "13.0.0.0";
 
         [Parameter(Position = 5, HelpMessage = "Specify Credentials to use to connect to DSClient")]
         [ValidateNotNullOrEmpty]

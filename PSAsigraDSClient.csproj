@@ -51,7 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PSAsigraDSClient\AddDSClientScheduleDetail.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientSchedule.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientSNMPConfig.cs" />
     <Compile Include="PSAsigraDSClient\DSClientCmdlet.cs" />
     <Compile Include="PSAsigraDSClient\DSClientCommon.cs" />
     <Compile Include="PSAsigraDSClient\EnterDSClientSession.cs" />
@@ -63,11 +65,32 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientScheduleDetail.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientSNMPCommunity.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientSNMPInfo.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientScheduleDetail.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientSNMPCommunity.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientSNMPHeartbeat.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientSystemActivity.cs" />
     <Compile Include="PSAsigraDSClient\StopDSClientActivity.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="docs\Add-DSClientScheduleDetail.md" />
+    <None Include="docs\Add-DSClientSNMPCommunity.md" />
+    <None Include="docs\Enter-DSClientSession.md" />
+    <None Include="docs\Exit-DSClientSession.md" />
+    <None Include="docs\Get-DSClientBackupSet.md" />
+    <None Include="docs\Get-DSClientInfo.md" />
+    <None Include="docs\Get-DSClientRegistrationInfo.md" />
+    <None Include="docs\Get-DSClientRunningActivity.md" />
+    <None Include="docs\Get-DSClientSchedule.md" />
+    <None Include="docs\Get-DSClientScheduleDetail.md" />
+    <None Include="docs\Get-DSClientSNMPCommunity.md" />
+    <None Include="docs\Get-DSClientSNMPInfo.md" />
+    <None Include="docs\Remove-DSClientScheduleDetail.md" />
+    <None Include="docs\Remove-DSClientSNMPCommunity.md" />
+    <None Include="docs\Set-DSClientSNMPHeartbeat.md" />
+    <None Include="docs\Start-DSClientSystemActivity.md" />
+    <None Include="docs\Stop-DSClientActivity.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +105,11 @@
     <None Include="PSAsigraDSClient.Format.ps1xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PSAsigraDSClient.dll-Help.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

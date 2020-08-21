@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PSAsigraDSClient\AddDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientSchedule.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSNMPInfo.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSNMPHeartbeat.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="PSAsigraDSClient\StopDSClientActivity.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="docs\Add-DSClientSchedule.md" />
     <None Include="docs\Add-DSClientScheduleDetail.md" />
     <None Include="docs\Add-DSClientSNMPCommunity.md" />
     <None Include="docs\Enter-DSClientSession.md" />
@@ -86,6 +89,7 @@
     <None Include="docs\Get-DSClientScheduleDetail.md" />
     <None Include="docs\Get-DSClientSNMPCommunity.md" />
     <None Include="docs\Get-DSClientSNMPInfo.md" />
+    <None Include="docs\Remove-DSClientSchedule.md" />
     <None Include="docs\Remove-DSClientScheduleDetail.md" />
     <None Include="docs\Remove-DSClientSNMPCommunity.md" />
     <None Include="docs\Set-DSClientSNMPHeartbeat.md" />

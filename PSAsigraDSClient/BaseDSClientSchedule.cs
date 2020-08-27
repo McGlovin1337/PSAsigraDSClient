@@ -139,16 +139,47 @@ namespace PSAsigraDSClient
             return StartWeekDay;
         }
 
-        protected class DSClientScheduleInfo
+        public class DSClientScheduleInfo
         {
+            public int ScheduleId { get; set; }
+            public string Name { get; set; }
+            public int[] BackupSetId { get; set; }
             public bool Active { get; set; }
             public bool AdminOnly { get; set; }
             public int CPUThrottle { get; set; }
-            public int ConcurrentBackupSets { get; set; }
-            public int ScheduleId { get; set; }
-            public string Name { get; set; }
-            public string ShortName { get; set; }
+            public int ConcurrentBackupSets { get; set; }           
             public bool NetworkDetection { get; set; }
+            public string ShortName { get; set; }
+
+            public DSClientScheduleInfo(schedule_info scheduleInfo)
+            {
+                ScheduleId = scheduleInfo.id;
+                Name = scheduleInfo.name;
+                Active = scheduleInfo.active;
+                AdminOnly = scheduleInfo.administratorsOnly;
+                CPUThrottle = scheduleInfo.backupCPUThrottle;
+                ConcurrentBackupSets = scheduleInfo.concurrentBackupSets;
+                NetworkDetection = scheduleInfo.usingNetworkDetection;
+                ShortName = scheduleInfo.shortName;
+            }
+
+            public DSClientScheduleInfo(Schedule schedule)
+            {
+                ScheduleId = schedule.getID();
+                Name = schedule.getName();
+                BackupSetId = schedule.getAssignedBackupSets();
+                Active = schedule.isActive();
+                AdminOnly = schedule.isAdministratorsOnly();
+                CPUThrottle = schedule.getBackupCPUThrottle();
+                ConcurrentBackupSets = schedule.getConcurrentBackupSets();
+                NetworkDetection = schedule.isUsingNetworkDetection();
+                ShortName = schedule.getShortName();
+            }
+
+            public override string ToString()
+            {
+                return Name;
+            }
         }
 
         protected class DSClientScheduleDetail

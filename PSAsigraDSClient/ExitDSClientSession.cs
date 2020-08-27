@@ -24,6 +24,7 @@ namespace PSAsigraDSClient
                     WriteVerbose("Previous session failed to dispose, removing session...");
                 }
                 SessionState.PSVariable.Remove("DSClientSession");
+                SessionState.PSVariable.Remove("DSClientOSType");
                 WriteObject("DSClient Session removed.");
             }
             else

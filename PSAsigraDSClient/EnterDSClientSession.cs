@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -46,6 +47,7 @@ namespace PSAsigraDSClient
                     WriteVerbose("Previous session failed to dispose, removing session...");                    
                 }
                 SessionState.PSVariable.Remove("DSClientSession");
+                SessionState.PSVariable.Remove("DSClientOSType");
                 WriteObject("DSClient Session removed.");
             }
 
@@ -53,6 +55,14 @@ namespace PSAsigraDSClient
             ClientConnection DSClientSession = ConnectSession(Host, Port, NoSSL, APIVersion, user, pwd);
 
             SessionState.PSVariable.Set("DSClientSession", DSClientSession);
+
+            // Get and store the DSClient Operating System Type into SessionState
+            ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
+            EOSFlavour DSClientOSFlavour = DSClientConfigMgr.getClientOSType();
+            DSClientOSType DSClientOSType = new DSClientOSType(DSClientOSFlavour);
+            SessionState.PSVariable.Set("DSClientOSType", DSClientOSType);
+
+            DSClientConfigMgr.Dispose();
 
             WriteObject("DSClient Session Established.");
         }

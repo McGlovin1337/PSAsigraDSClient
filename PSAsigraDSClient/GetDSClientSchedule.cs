@@ -18,17 +18,8 @@ namespace PSAsigraDSClient
 
             foreach (var schedule in Schedules)
             {
-                ScheduleInfo.Add(new DSClientScheduleInfo
-                {
-                    Active = schedule.active,
-                    AdminOnly = schedule.administratorsOnly,
-                    CPUThrottle = schedule.backupCPUThrottle,
-                    ConcurrentBackupSets = schedule.concurrentBackupSets,
-                    ScheduleId = schedule.id,
-                    Name = schedule.name,
-                    ShortName = schedule.shortName,
-                    NetworkDetection = schedule.usingNetworkDetection
-                });
+                DSClientScheduleInfo scheduleInfo = new DSClientScheduleInfo(schedule);
+                ScheduleInfo.Add(scheduleInfo);
             }
 
             ScheduleInfo.ForEach(WriteObject);

@@ -9,10 +9,8 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientDefaultConfiguration")]
 
-    public class SetDSClientDefaultConfiguration: BaseDSClientDefaultConfiguration, IDynamicParameters
+    public class SetDSClientDefaultConfiguration: BaseDSClientDefaultConfiguration
     {
-        private EmailParams emailParams = null;
-
         [Parameter(Position = 0, ValueFromPipelineByPropertyName = true, HelpMessage = "Default Compression Level")]
         [ValidateSet("None", "ZLIB", "LZOP", "ZLIB_LO", "ZLIB_MED", "ZLIB_HI")]
         public string CompressionType { get; set; }
@@ -33,6 +31,18 @@ namespace PSAsigraDSClient
         [Parameter(Position = 5, ValueFromPipelineByPropertyName = true, HelpMessage = "Completion Status to Notify on")]
         [ValidateSet("Incomplete", "CompletedWithErrors", "Successful", "CompletedWithWarnings")]
         public string[] NotificationCompletion { get; set; }
+
+        [Parameter(Position = 6, HelpMessage = "Send Detailed Notification (Email Method Only)")]
+        public SwitchParameter DetailedInfo { get; set; }
+
+        [Parameter(Position = 7, HelpMessage = "Attach Detailed Log (Email Method Only)")]
+        public SwitchParameter AttachDetailedLog { get; set; }
+
+        [Parameter(Position = 8, HelpMessage = "Compress Attached Log (Email Method Only")]
+        public SwitchParameter CompressAttachment { get; set; }
+
+        [Parameter(Position = 9, HelpMessage = "Send Email in HTML Format")]
+        public SwitchParameter HtmlFormat { get; set; }
 
         [Parameter(Position = 10, ValueFromPipelineByPropertyName = true, HelpMessage = "Number of Online Generations")]
         public int OnlineGenerations { get; set; }
@@ -63,18 +73,6 @@ namespace PSAsigraDSClient
 
         [Parameter(Position = 18, HelpMessage = "Value for backing up File Permissions (Windows Only)")]
         public SwitchParameter BackupFilePermissions { get; set; }
-
-        public object GetDynamicParameters()
-        {
-            switch(NotificationMethod)
-            {
-                case "Email":
-                    emailParams = new EmailParams();
-                    return emailParams;
-                default:
-                    return null;
-            }
-        }
 
         protected override void ProcessDefaultConfiguration(DSClientDefaultConfiguration dSClientDefaultConfiguration)
         {
@@ -143,7 +141,11 @@ namespace PSAsigraDSClient
 
             // Set the Email options
             IEnumerable<KeyValuePair<string, object>> EmailParams;
-            if (emailParams != null && notifyInfo[0].method == ENotificationMethod.ENotificationMethod__Email)
+            if (notifyInfo[0].method == ENotificationMethod.ENotificationMethod__Email && (
+                MyInvocation.BoundParameters.ContainsKey("DetailedInfo") || 
+                MyInvocation.BoundParameters.ContainsKey("AttachDetailedLog") || 
+                MyInvocation.BoundParameters.ContainsKey("CompressAttachment") || 
+                MyInvocation.BoundParameters.ContainsKey("HtmlFormat")))
             {
                 WriteVerbose("Setting Email Notification options...");
                 EmailParams = MyInvocation.BoundParameters;
@@ -301,12 +303,12 @@ namespace PSAsigraDSClient
             {
                 eParams.TryGetValue("DetailedInfo", out object value);
 
-                bool eDetailed = Convert.ToBoolean(value);
+                SwitchParameter switchParameter = (SwitchParameter)value;
 
-                if (eDetailed == true && !currentEmailOpts.Contains("DetailedInfo"))
+                if (switchParameter == true && !currentEmailOpts.Contains("DetailedInfo"))
                     emailOptions += 1;
 
-                if (eDetailed == false && currentEmailOpts.Contains("DetailedInfo"))
+                if (switchParameter == false && currentEmailOpts.Contains("DetailedInfo"))
                     emailOptions -= 1;
             }
 
@@ -314,12 +316,12 @@ namespace PSAsigraDSClient
             {
                 eParams.TryGetValue("AttachDetailedLog", out object value);
 
-                bool eDetailed = Convert.ToBoolean(value);
+                SwitchParameter switchParameter = (SwitchParameter)value;
 
-                if (eDetailed == true && !currentEmailOpts.Contains("AttachDetailedLog"))
+                if (switchParameter == true && !currentEmailOpts.Contains("AttachDetailedLog"))
                     emailOptions += 16;
 
-                if (eDetailed == false && currentEmailOpts.Contains("AttachDetailedLog"))
+                if (switchParameter == false && currentEmailOpts.Contains("AttachDetailedLog"))
                     emailOptions -= 16;
             }
 
@@ -327,12 +329,12 @@ namespace PSAsigraDSClient
             {
                 eParams.TryGetValue("CompressAttachment", out object value);
 
-                bool eDetailed = Convert.ToBoolean(value);
+                SwitchParameter switchParameter = (SwitchParameter)value;
 
-                if (eDetailed == true && !currentEmailOpts.Contains("CompressAttachment"))
+                if (switchParameter == true && !currentEmailOpts.Contains("CompressAttachment"))
                     emailOptions += 32;
 
-                if (eDetailed == false && currentEmailOpts.Contains("CompressAttachment"))
+                if (switchParameter == false && currentEmailOpts.Contains("CompressAttachment"))
                     emailOptions -= 32;
             }
 
@@ -340,12 +342,12 @@ namespace PSAsigraDSClient
             {
                 eParams.TryGetValue("HtmlFormat", out object value);
 
-                bool eDetailed = Convert.ToBoolean(value);
+                SwitchParameter switchParameter = (SwitchParameter)value;
 
-                if (eDetailed == true && !currentEmailOpts.Contains("HtmlFormat"))
+                if (switchParameter == true && !currentEmailOpts.Contains("HtmlFormat"))
                     emailOptions += 128;
 
-                if (eDetailed == false && currentEmailOpts.Contains("HtmlFormat"))
+                if (switchParameter == false && currentEmailOpts.Contains("HtmlFormat"))
                     emailOptions -= 128;
             }
 
@@ -354,17 +356,7 @@ namespace PSAsigraDSClient
 
         private class EmailParams
         {
-            [Parameter(Position = 6, HelpMessage = "Send Detailed Notification (Email Method Only)")]
-            public SwitchParameter DetailedInfo { get; set; }
 
-            [Parameter(Position = 7, HelpMessage = "Attach Detailed Log (Email Method Only)")]
-            public SwitchParameter AttachDetailedLog { get; set; }
-
-            [Parameter(Position = 8, HelpMessage = "Compress Attached Log (Email Method Only")]
-            public SwitchParameter CompressAttachment { get; set; }
-
-            [Parameter(Position = 9, HelpMessage = "Send Email in HTML Format")]
-            public SwitchParameter HtmlFormat { get; set; }
         }
     }
 }

@@ -88,8 +88,8 @@ namespace PSAsigraDSClient
                     completion.Add("Successful");
                 if ((notifyInfo.completion & (int)EBackupCompletion.EBackupCompletion__CompletedWithWarnings) > 0)
                     completion.Add("CompletedWithWarnings");
-                if ((notifyInfo.completion & (int)EBackupCompletion.EBackupCompletion__UNDEFINED) > 0)
-                    completion.Add("Undefined");
+                /*if ((notifyInfo.completion & (int)EBackupCompletion.EBackupCompletion__UNDEFINED) > 0)
+                    completion.Add("Undefined");*/
 
                 Completion = completion.ToArray();
 
@@ -103,8 +103,8 @@ namespace PSAsigraDSClient
                     emailOpt.Add("CompressAttachment");
                 if ((notifyInfo.email_option & (int)ENotificationEmailOptions.ENotificationEmailOptions__HtmlFormat) > 0)
                     emailOpt.Add("HtmlFormat");
-                if ((notifyInfo.email_option & (int)ENotificationEmailOptions.ENotificationEmailOptions__UNDEFINED) > 0)
-                    emailOpt.Add("Undefined");
+                /*if ((notifyInfo.email_option & (int)ENotificationEmailOptions.ENotificationEmailOptions__UNDEFINED) > 0)
+                    emailOpt.Add("Undefined");*/
 
                 EmailOption = emailOpt.ToArray();
 

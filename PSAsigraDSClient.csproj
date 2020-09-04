@@ -53,9 +53,11 @@
     <Compile Include="PSAsigraDSClient\AddDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientSNMPCommunity.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientNotification.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientRetentionRule.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientRunningActivity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientSMTPNotification.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientSNMPConfig.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientSMTPNotification.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSNMPInfo.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSNMPCommunity.cs" />

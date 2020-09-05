@@ -11,13 +11,12 @@ namespace PSAsigraDSClient
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Id of Backup Set to remove")]
         [ValidateNotNullOrEmpty]
-        [Alias("Id")]
-        public int BackupSetId { get; set; }
+        public int Id { get; set; }
 
         protected override void DSClientProcessRecord()
         {
             WriteVerbose("Retrieving Backup Set...");
-            BackupSet DSClientBackupSet = DSClientSession.backup_set(BackupSetId);
+            BackupSet DSClientBackupSet = DSClientSession.backup_set(Id);
 
             WriteVerbose("Initiating Backup Set Removal...");
             GenericActivity removeActivity = DSClientSession.removeBackupSet(DSClientBackupSet);

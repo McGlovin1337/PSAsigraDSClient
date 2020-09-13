@@ -1,4 +1,14 @@
-﻿using System;
+﻿/* To-do:
+ * Add Notification creation
+ * Add CDP Configuration options
+ * Add MS SQL Set Creation
+ * Add VSS SQL Set Creation
+ * Add VSS Exchange Set Creation
+ * Add VMWare VADP Set Creation
+ * Add DB2 Set Creation
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
@@ -13,6 +23,7 @@ namespace PSAsigraDSClient
     public class AddDSClientBackupSet: DSClientCmdlet, IDynamicParameters
     {
         private Win32FSBackupSetParams win32FSBackupSetParams;
+        private UnixFSBackupSetParams unixFSBackupSetParams;
 
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Backup Set")]
         [ValidateNotNullOrEmpty]
@@ -23,7 +34,7 @@ namespace PSAsigraDSClient
         public string Computer { get; set; }
 
         [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The type of Data this Backup Set will protect")]
-        [ValidateSet("WindowsFileSystem")]
+        [ValidateSet("WindowsFileSystem", "UnixFileSystem")]
         public string DataType { get; set; }
 
         [Parameter(Position = 3, ValueFromPipelineByPropertyName = true, HelpMessage = "Credentials to use")]
@@ -87,7 +98,72 @@ namespace PSAsigraDSClient
                 return win32FSBackupSetParams;
             }
 
+            if (DataType == "UnixFileSystem")
+            {
+                unixFSBackupSetParams = new UnixFSBackupSetParams();
+                return unixFSBackupSetParams;
+            }
+
             return null;
+        }
+
+        private class UnixFSBackupSetParams
+        {
+            [Parameter(HelpMessage = "Specify the SSH Iterpreter to access the data")]
+            [ValidateSet("Perl", "Python", "Direct")]
+            public string SSHInterpreter { get; set; }
+
+            [Parameter(HelpMessage = "Specify SSH Interpreter path")]
+            public string SSHInterpreterPath { get; set; }
+
+            [Parameter(HelpMessage = "Specify path to SSH Key File")]
+            public string SSHKeyFile { get; set; }
+
+            [Parameter(HelpMessage = "Specify SUDO User Credentials")]
+            public PSCredential SudoCredential { get; set; }
+
+            [Parameter(HelpMessage = "Specify Common File Elimination")]
+            public SwitchParameter CheckCommonFiles { get; set; }
+
+            [Parameter(HelpMessage = "Enable Continuous Data Protection (CDP)")]
+            public SwitchParameter UseCDP { get; set; }
+
+            [Parameter(HelpMessage = "Specify to Follow Mount Points")]
+            public SwitchParameter FollowMountPoints { get; set; }
+
+            [Parameter(HelpMessage = "Backup Hard Links")]
+            public SwitchParameter BackupHardLinks { get; set; }
+
+            [Parameter(HelpMessage = "Ignore Snapshot Failures")]
+            public SwitchParameter IgnoreSnapshotFailure { get; set; }
+
+            [Parameter(HelpMessage = "For NAS Use Snap Diff feature")]
+            public SwitchParameter UseSnapDiff { get; set; }
+
+            [Parameter(HelpMessage = "Old File Exclusions by Date")]
+            public SwitchParameter ExcludeOldFilesByDate { get; set; }
+
+            [Parameter(HelpMessage = "Date for Old File Exclusions")]
+            public DateTime ExcludeOldFilesDate { get; set; }
+
+            [Parameter(HelpMessage = "Old File Exclusions by TimeSpan")]
+            public SwitchParameter ExcludeOldFilesByTimeSpan { get; set; }
+
+            [Parameter(HelpMessage = "TimeSpan Unit to use for Old File Exclusions")]
+            [ValidateSet("Seconds", "Minutes", "Hours", "Days", "Weeks", "Months", "Years")]
+            public string ExcludeOldFilesTimeSpan { get; set; }
+
+            [Parameter(HelpMessage = "TimeSpan Value to use for Old File Exclusions")]
+            public int ExcludeOldFilesTimeSpanValue { get; set; }
+
+            [Parameter(HelpMessage = "Use DS-Client Buffer")]
+            public SwitchParameter UseBuffer { get; set; }
+
+            [Parameter(HelpMessage = "Exclude ACLs")]
+            public SwitchParameter ExcludeACLs { get; set; }
+
+            [Parameter(HelpMessage = "Exclude POSIX ACLs")]
+            public SwitchParameter ExcludePosixACLs { get; set; }
         }
 
         private class Win32FSBackupSetParams
@@ -165,13 +241,16 @@ namespace PSAsigraDSClient
             if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByTimeSpan") && (win32FSBackupSetParams.ExcludeOldFilesTimeSpan == null || win32FSBackupSetParams.ExcludeOldFilesTimeSpanValue < 1))
                 throw new ParameterBindingException("A Time Span and Time Span Value must be specified when ExcludeOldFilesByTimeSpan is enabled");
 
+            if (unixFSBackupSetParams.SSHInterpreter == "Direct" && unixFSBackupSetParams.SSHInterpreterPath == null)
+                throw new ParameterBindingException("Direct SSH Interpretor requires an SSH Interpretor Path");
+
             WriteVerbose("Building the Backup Set Object...");
 
             DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(StringToEBackupDataType(DataType));
+            BackupSetCredentials backupSetCredentials = dataSourceBrowser.neededCredentials(Computer);
 
             if (DSClientOSType.OsType == "Windows")
-            {
-                BackupSetCredentials backupSetCredentials = dataSourceBrowser.neededCredentials(Computer);
+            {                
                 Win32FS_Generic_BackupSetCredentials win32FSBSCredentials = Win32FS_Generic_BackupSetCredentials.from(backupSetCredentials);
 
                 if (Credential != null)
@@ -186,6 +265,47 @@ namespace PSAsigraDSClient
                 }
 
                 dataSourceBrowser.setCurrentCredentials(win32FSBSCredentials);
+            }
+
+            if (DSClientOSType.OsType == "Linux")
+            {
+                UnixFS_Generic_BackupSetCredentials unixFSBackupSetCredentials = UnixFS_Generic_BackupSetCredentials.from(backupSetCredentials);
+
+                if (Credential != null)
+                {
+                    string user = Credential.UserName;
+                    string pass = Credential.GetNetworkCredential().Password;
+
+                    if (unixFSBackupSetParams.SSHKeyFile != null)
+                    {
+                        UnixFS_SSH_BackupSetCredentials unixFSSSHBackupSetCredentials = UnixFS_SSH_BackupSetCredentials.from(unixFSBackupSetCredentials);
+
+                        if (unixFSBackupSetParams.SSHInterpreter != null)
+                        {
+                            SSHAccesorType sshAccessType = StringToSSHAccesorType(unixFSBackupSetParams.SSHInterpreter);
+
+                            unixFSSSHBackupSetCredentials.setSSHAccessType(sshAccessType, unixFSBackupSetParams.SSHInterpreterPath);
+                        }
+
+                        if (unixFSBackupSetParams.SudoCredential != null)
+                        {
+                            string sudoUser = unixFSBackupSetParams.SudoCredential.UserName;
+                            string sudoPass = unixFSBackupSetParams.SudoCredential.GetNetworkCredential().Password;
+
+                            unixFSSSHBackupSetCredentials.setSudoAs(sudoUser, sudoPass);
+                        }
+
+                        unixFSSSHBackupSetCredentials.setCredentialsViaKeyFile(user, unixFSBackupSetParams.SSHKeyFile, pass);
+                    }
+                    else
+                    {
+                        unixFSBackupSetCredentials.setCredentials(user, pass);
+                    }
+                }
+                else
+                {
+                    unixFSBackupSetCredentials.setUsingClientCredentials(true);
+                }
             }
 
             DataBrowserWithSetCreation setCreation = DataBrowserWithSetCreation.from(dataSourceBrowser);
@@ -235,21 +355,39 @@ namespace PSAsigraDSClient
                     {
                         BackupSetInclusionItem inclusionItem = dataSourceBrowser.createInclusionItem(Computer, item, MaxGenerations);
 
-                        if (DataType == "FileSystem")
+                        if (DataType == "WindowsFileSystem")
                         {
-                            if (DSClientOSType.OsType == "Windows")
+                            Win32FS_BackupSetInclusionItem win32InclusionItem = Win32FS_BackupSetInclusionItem.from(inclusionItem);
+
+                            if (MyInvocation.BoundParameters.ContainsKey("ExcludeAltDataStreams"))
+                                win32InclusionItem.setIncludingAlternateDataStreams(false);
+                            else
+                                win32InclusionItem.setIncludingAlternateDataStreams(true);
+
+                            if (MyInvocation.BoundParameters.ContainsKey("ExcludePermissions"))
+                                win32InclusionItem.setIncludingPermissions(false);
+                            else
+                                win32InclusionItem.setIncludingPermissions(true);
+                        }
+
+                        if (DataType == "UnixFileSystem")
+                        {
+                            UnixFS_BackupSetInclusionItem unixInclusionItem = UnixFS_BackupSetInclusionItem.from(inclusionItem);
+
+                            if (MyInvocation.BoundParameters.ContainsKey("ExcludeACLs"))
+                                unixInclusionItem.setIncludingACL(false);
+                            else
+                                unixInclusionItem.setIncludingACL(true);
+
+                            if (MyInvocation.BoundParameters.ContainsKey("ExcludePosixACLs"))
                             {
-                                Win32FS_BackupSetInclusionItem win32InclusionItem = Win32FS_BackupSetInclusionItem.from(inclusionItem);
-
-                                if (MyInvocation.BoundParameters.ContainsKey("ExcludeAltDataStreams"))
-                                    win32InclusionItem.setIncludingAlternateDataStreams(false);
-                                else
-                                    win32InclusionItem.setIncludingAlternateDataStreams(true);
-
-                                if (MyInvocation.BoundParameters.ContainsKey("ExcludePermissions"))
-                                    win32InclusionItem.setIncludingPermissions(false);
-                                else
-                                    win32InclusionItem.setIncludingPermissions(true);
+                                UnixFS_LinuxLFS_BackupSetInclusionItem linuxInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(unixInclusionItem);
+                                linuxInclusionItem.setIncludingPosixACL(false);
+                            }
+                            else
+                            {
+                                UnixFS_LinuxLFS_BackupSetInclusionItem linuxInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(unixInclusionItem);
+                                linuxInclusionItem.setIncludingPosixACL(true);
                             }
                         }
 
@@ -310,20 +448,76 @@ namespace PSAsigraDSClient
                         type = EOldFileExclusionType.EOldFileExclusionType__Date,
                         value = DateTimeToUnixEpoch(win32FSBackupSetParams.ExcludeOldFilesDate)
                     };
+
+                    NewWin32FSBS.setOldFileExclusionOption(exclusionConfig);
                 }
 
                 if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByTimeSpan"))
                 {
-                    old_file_exclusion_config exclusion_Config = new old_file_exclusion_config
+                    old_file_exclusion_config exclusionConfig = new old_file_exclusion_config
                     {
                         type = EOldFileExclusionType.EOldFileExclusionType__TimeSpan,
                         unit = StringToETimeUnit(win32FSBackupSetParams.ExcludeOldFilesTimeSpan),
                         value = win32FSBackupSetParams.ExcludeOldFilesTimeSpanValue
                     };
+
+                    NewWin32FSBS.setOldFileExclusionOption(exclusionConfig);
                 }
 
                 if (MyInvocation.BoundParameters.ContainsKey("UseBuffer"))
                     NewWin32FSBS.setUsingBuffer(win32FSBackupSetParams.UseBuffer);
+            }
+
+            if (DataType == "UnixFileSystem")
+            {
+                UnixFS_Generic_BackupSet NewUnixFSBS = UnixFS_Generic_BackupSet.from(NewBackupSet);
+
+                if (MyInvocation.BoundParameters.ContainsKey("CheckCommonFiles"))
+                    NewUnixFSBS.setCheckingCommonFiles(unixFSBackupSetParams.CheckCommonFiles);
+
+                if (MyInvocation.BoundParameters.ContainsKey("UseCDP"))
+                    NewUnixFSBS.setContinuousDataProtection(unixFSBackupSetParams.UseCDP);
+
+                if (MyInvocation.BoundParameters.ContainsKey("ForceBackup"))
+                    NewUnixFSBS.setOption(EBackupSetOption.EBackupSetOption__ForceBackup, ForceBackup);
+
+                if (MyInvocation.BoundParameters.ContainsKey("FollowMountPoints"))
+                    NewUnixFSBS.setOption(EBackupSetOption.EBackupSetOption__SSHFollowLink, unixFSBackupSetParams.FollowMountPoints);
+
+                if (MyInvocation.BoundParameters.ContainsKey("BackupHardLinks"))
+                    NewUnixFSBS.setOption(EBackupSetOption.EBackupSetOption__HardLink, unixFSBackupSetParams.BackupHardLinks);
+
+                if (MyInvocation.BoundParameters.ContainsKey("IgnoreSnapshotFailure"))
+                    NewUnixFSBS.setOption(EBackupSetOption.EBackupSetOption__SnapshotFailure, unixFSBackupSetParams.IgnoreSnapshotFailure);
+
+                if (MyInvocation.BoundParameters.ContainsKey("UseSnapDiff"))
+                    NewUnixFSBS.setOption(EBackupSetOption.EBackupSetOption__UseSnapDiff, unixFSBackupSetParams.UseSnapDiff);
+
+                if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByDate"))
+                {
+                    old_file_exclusion_config exclusionConfig = new old_file_exclusion_config
+                    {
+                        type = EOldFileExclusionType.EOldFileExclusionType__Date,
+                        value = DateTimeToUnixEpoch(unixFSBackupSetParams.ExcludeOldFilesDate)
+                    };
+
+                    NewUnixFSBS.setOldFileExclusionOption(exclusionConfig);
+                }
+
+                if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByTimeSpan"))
+                {
+                    old_file_exclusion_config exclusionConfig = new old_file_exclusion_config
+                    {
+                        type = EOldFileExclusionType.EOldFileExclusionType__TimeSpan,
+                        unit = StringToETimeUnit(unixFSBackupSetParams.ExcludeOldFilesTimeSpan),
+                        value = win32FSBackupSetParams.ExcludeOldFilesTimeSpanValue
+                    };
+
+                    NewUnixFSBS.setOldFileExclusionOption(exclusionConfig);
+                }
+
+                if (MyInvocation.BoundParameters.ContainsKey("UseBuffer"))
+                    NewUnixFSBS.setUsingBuffer(unixFSBackupSetParams.UseBuffer);
             }
 
             WriteVerbose("Adding the new Backup Set Object to DS-Client...");

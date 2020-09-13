@@ -1526,5 +1526,25 @@ namespace PSAsigraDSClient
 
             return BackupPolicy;
         }
+
+        public static SSHAccesorType StringToSSHAccesorType(string accessType)
+        {
+            SSHAccesorType AccessType = SSHAccesorType.SSHAccesorType__UNDEFINED;
+
+            switch(accessType)
+            {
+                case "Perl":
+                    AccessType = SSHAccesorType.SSHAccesorType__Perl;
+                    break;
+                case "Python":
+                    AccessType = SSHAccesorType.SSHAccesorType__Python;
+                    break;
+                case "Direct":
+                    AccessType = SSHAccesorType.SSHAccesorType__Direct;
+                    break;
+            }
+
+            return AccessType;
+        }
     }
 }

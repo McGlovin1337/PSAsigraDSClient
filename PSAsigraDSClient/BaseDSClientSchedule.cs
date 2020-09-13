@@ -237,24 +237,7 @@ namespace PSAsigraDSClient
             public WeeklyScheduleType(int repeat, int days)
             {
                 RepeatWeeks = repeat;
-
-                List<string> schedDays = new List<string>();
-                if ((days & (int)EScheduleWeekDays.EScheduleWeekDays__Monday) > 0)
-                    schedDays.Add("Mon");
-                if ((days & (int)EScheduleWeekDays.EScheduleWeekDays__Tuesday) > 0)
-                    schedDays.Add("Tue");
-                if ((days & (int)EScheduleWeekDays.EScheduleWeekDays__Wednesday) > 0)
-                    schedDays.Add("Wed");
-                if ((days & (int)EScheduleWeekDays.EScheduleWeekDays__Thrusday) > 0)
-                    schedDays.Add("Thu");
-                if ((days & (int)EScheduleWeekDays.EScheduleWeekDays__Friday) > 0)
-                    schedDays.Add("Fri");
-                if ((days & (int)EScheduleWeekDays.EScheduleWeekDays__Saturday) > 0)
-                    schedDays.Add("Sat");
-                if ((days & (int)EScheduleWeekDays.EScheduleWeekDays__Sunday) > 0)
-                    schedDays.Add("Sun");
-
-                ScheduleDays = schedDays.ToArray();
+                ScheduleDays = EScheduleWeekDaysIntToArray(days);
             }
 
             public override string ToString()
@@ -468,6 +451,27 @@ namespace PSAsigraDSClient
             {
                 return _optionsSet.ToString();
             }
+        }
+
+        public static string[] EScheduleWeekDaysIntToArray(int weekDays)
+        {
+            List<string> schedDays = new List<string>();
+            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Monday) > 0)
+                schedDays.Add("Monday");
+            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Tuesday) > 0)
+                schedDays.Add("Tuesday");
+            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Wednesday) > 0)
+                schedDays.Add("Wednesday");
+            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Thrusday) > 0)
+                schedDays.Add("Thursday");
+            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Friday) > 0)
+                schedDays.Add("Friday");
+            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Saturday) > 0)
+                schedDays.Add("Saturday");
+            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Sunday) > 0)
+                schedDays.Add("Sunday");
+
+            return schedDays.ToArray();
         }
     }
 }

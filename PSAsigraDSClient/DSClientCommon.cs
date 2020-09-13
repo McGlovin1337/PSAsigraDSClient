@@ -31,6 +31,8 @@ namespace PSAsigraDSClient
             }
         }
 
+
+
         public class TimeInDay
         {
             public int Hour { get; set; }
@@ -48,6 +50,38 @@ namespace PSAsigraDSClient
             {
                 return Hour + ":" + Minute + ":" + Second;
             }
+        }
+
+        public static string EWeekDayToString(EWeekDay weekDay)
+        {
+            string WeekDay = null;
+
+            switch(weekDay)
+            {
+                case EWeekDay.EWeekDay__Monday:
+                    WeekDay = "Monday";
+                    break;
+                case EWeekDay.EWeekDay__Tuesday:
+                    WeekDay = "Tuesday";
+                    break;
+                case EWeekDay.EWeekDay__Wednesday:
+                    WeekDay = "Wednesday";
+                    break;
+                case EWeekDay.EWeekDay__Thursday:
+                    WeekDay = "Thursday";
+                    break;
+                case EWeekDay.EWeekDay__Friday:
+                    WeekDay = "Friday";
+                    break;
+                case EWeekDay.EWeekDay__Saturday:
+                    WeekDay = "Saturday";
+                    break;
+                case EWeekDay.EWeekDay__Sunday:
+                    WeekDay = "Sunday";
+                    break;
+            }
+
+            return WeekDay;
         }
 
         public static DateTime UnixEpochToDateTime(int epoch)
@@ -97,6 +131,38 @@ namespace PSAsigraDSClient
             }
         }
 
+        public static string ECompressionTypeToString(ECompressionType compressionType)
+        {
+            string compressType = null;
+
+            switch (compressionType)
+            {
+                case ECompressionType.ECompressionType__NONE:
+                    compressType = "None";
+                    break;
+                case ECompressionType.ECompressionType__ZLIB:
+                    compressType = "ZLIB";
+                    break;
+                case ECompressionType.ECompressionType__LZOP:
+                    compressType = "LZOP";
+                    break;
+                case ECompressionType.ECompressionType__ZLIB_LO:
+                    compressType = "ZLIB_LO";
+                    break;
+                case ECompressionType.ECompressionType__ZLIB_MED:
+                    compressType = "ZLIB_MED";
+                    break;
+                case ECompressionType.ECompressionType__ZLIB_HI:
+                    compressType = "ZLIB_HI";
+                    break;
+                case ECompressionType.ECompressionType__UNDEFINED:
+                    compressType = "Undefined";
+                    break;
+            }
+
+            return compressType;
+        }
+
         public static ECompressionType StringToECompressionType(string compressionType)
         {
             ECompressionType eCompressionType = ECompressionType.ECompressionType__UNDEFINED;
@@ -127,6 +193,70 @@ namespace PSAsigraDSClient
             }
 
             return eCompressionType;
+        }
+
+        public static string ETimeUnitToString(ETimeUnit timeUnit)
+        {
+            string TimeUnit = null;
+
+            switch(timeUnit)
+            {
+                case ETimeUnit.ETimeUnit__Seconds:
+                    TimeUnit = "Seconds";
+                    break;
+                case ETimeUnit.ETimeUnit__Minutes:
+                    TimeUnit = "Minutes";
+                    break;
+                case ETimeUnit.ETimeUnit__Hours:
+                    TimeUnit = "Hours";
+                    break;
+                case ETimeUnit.ETimeUnit__Days:
+                    TimeUnit = "Days";
+                    break;
+                case ETimeUnit.ETimeUnit__Weeks:
+                    TimeUnit = "Weeks";
+                    break;
+                case ETimeUnit.ETimeUnit__Months:
+                    TimeUnit = "Months";
+                    break;
+                case ETimeUnit.ETimeUnit__Years:
+                    TimeUnit = "Years";
+                    break;
+            }
+
+            return TimeUnit;
+        }
+
+        public static ETimeUnit StringToETimeUnit(string timeUnit)
+        {
+            ETimeUnit TimeUnit = ETimeUnit.ETimeUnit__UNDEFINED;
+
+            switch(timeUnit)
+            {
+                case "Seconds":
+                    TimeUnit = ETimeUnit.ETimeUnit__Seconds;
+                    break;
+                case "Minutes":
+                    TimeUnit = ETimeUnit.ETimeUnit__Minutes;
+                    break;
+                case "Hours":
+                    TimeUnit = ETimeUnit.ETimeUnit__Hours;
+                    break;
+                case "Days":
+                    TimeUnit = ETimeUnit.ETimeUnit__Days;
+                    break;
+                case "Weeks":
+                    TimeUnit = ETimeUnit.ETimeUnit__Weeks;
+                    break;
+                case "Months":
+                    TimeUnit = ETimeUnit.ETimeUnit__Months;
+                    break;
+                case "Years":
+                    TimeUnit = ETimeUnit.ETimeUnit__Years;
+                    break;
+            }
+
+            return TimeUnit;
         }
     }
 }

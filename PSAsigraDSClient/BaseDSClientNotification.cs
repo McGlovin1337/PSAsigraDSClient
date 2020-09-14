@@ -143,7 +143,7 @@ namespace PSAsigraDSClient
             return eNotificationMethod;
         }
 
-        public static int NotificationCompletionToInt(string[] notifyCompletion)
+        public static int ArrayToNotificationCompletionToInt(string[] notifyCompletion)
         {
             int notifyValue = 0;
 
@@ -167,6 +167,32 @@ namespace PSAsigraDSClient
             }
 
             return notifyValue;
+        }
+
+        public static int ArrayToEmailOptionsInt(string[] emailOptions)
+        {
+            int EmailOptions = 0;
+
+            foreach (string option in emailOptions)
+            {
+                switch(option)
+                {
+                    case "DetailedInfo":
+                        EmailOptions += 1;
+                        break;
+                    case "AttachDetailedLog":
+                        EmailOptions += 16;
+                        break;
+                    case "CompressAttachment":
+                        EmailOptions += 32;
+                        break;
+                    case "HtmlFormat":
+                        EmailOptions += 128;
+                        break;
+                }
+            }
+
+            return EmailOptions;
         }
     }
 }

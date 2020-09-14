@@ -88,6 +88,8 @@
     <Compile Include="PSAsigraDSClient\SetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSMTPNotification.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSNMPHeartbeat.cs" />
+    <Compile Include="PSAsigraDSClient\StartDSClientBackupSetRetention.cs" />
+    <Compile Include="PSAsigraDSClient\StartDSClientBackupSetSync.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientSystemActivity.cs" />
     <Compile Include="PSAsigraDSClient\StopDSClientActivity.cs" />
   </ItemGroup>

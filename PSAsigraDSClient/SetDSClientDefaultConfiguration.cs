@@ -4,6 +4,7 @@ using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
+using static PSAsigraDSClient.BaseDSClientNotification;
 
 namespace PSAsigraDSClient
 {
@@ -32,46 +33,38 @@ namespace PSAsigraDSClient
         [ValidateSet("Incomplete", "CompletedWithErrors", "Successful", "CompletedWithWarnings")]
         public string[] NotificationCompletion { get; set; }
 
-        [Parameter(Position = 6, HelpMessage = "Send Detailed Notification (Email Method Only)")]
-        public SwitchParameter DetailedInfo { get; set; }
+        [Parameter(Position = 6, ValueFromPipelineByPropertyName = true, HelpMessage = "Email Notification Options")]
+        [ValidateSet("DetailedInfo", "AttachDetailedLog", "CompressAttachment", "HtmlFormat")]
+        public string[] NotificationEmailOptions { get; set; }
 
-        [Parameter(Position = 7, HelpMessage = "Attach Detailed Log (Email Method Only)")]
-        public SwitchParameter AttachDetailedLog { get; set; }
-
-        [Parameter(Position = 8, HelpMessage = "Compress Attached Log (Email Method Only")]
-        public SwitchParameter CompressAttachment { get; set; }
-
-        [Parameter(Position = 9, HelpMessage = "Send Email in HTML Format")]
-        public SwitchParameter HtmlFormat { get; set; }
-
-        [Parameter(Position = 10, ValueFromPipelineByPropertyName = true, HelpMessage = "Number of Online Generations")]
+        [Parameter(Position = 7, ValueFromPipelineByPropertyName = true, HelpMessage = "Number of Online Generations")]
         public int OnlineGenerations { get; set; }
 
-        [Parameter(Position = 11, ValueFromPipelineByPropertyName = true, HelpMessage = "Default Retention Rule by RetentionRuleId")]
+        [Parameter(Position = 8, ValueFromPipelineByPropertyName = true, HelpMessage = "Default Retention Rule by RetentionRuleId")]
         [ValidateNotNullOrEmpty]
         public int RetentionRuleId { get; set; }
 
-        [Parameter(Position = 12, ValueFromPipelineByPropertyName = true, HelpMessage = "Default Retention Rule by Name")]
+        [Parameter(Position = 9, ValueFromPipelineByPropertyName = true, HelpMessage = "Default Retention Rule by Name")]
         public string RetentionRule { get; set; }
 
-        [Parameter(Position = 13, ValueFromPipelineByPropertyName = true, HelpMessage = "Default Schedule by ScheduleId")]
+        [Parameter(Position = 10, ValueFromPipelineByPropertyName = true, HelpMessage = "Default Schedule by ScheduleId")]
         [ValidateNotNullOrEmpty]
         public int ScheduleId { get; set; }
 
-        [Parameter(Position = 14, ValueFromPipelineByPropertyName = true, HelpMessage = "Default Schedule by Name")]
+        [Parameter(Position = 11, ValueFromPipelineByPropertyName = true, HelpMessage = "Default Schedule by Name")]
         public string Schedule { get; set; }
 
-        [Parameter(Position = 15, ValueFromPipelineByPropertyName = true, HelpMessage = "Open File Operation/Method (Windows Only)")]
+        [Parameter(Position = 12, ValueFromPipelineByPropertyName = true, HelpMessage = "Open File Operation/Method (Windows Only)")]
         [ValidateSet("TryDenyWrite", "DenyWrite", "PreventWrite", "AllowWrite")]
         public string OpenFileOperation { get; set; }
 
-        [Parameter(Position = 16, ValueFromPipelineByPropertyName = true, HelpMessage = "Open File retry interval in seconds (Windows Only)")]
+        [Parameter(Position = 13, ValueFromPipelineByPropertyName = true, HelpMessage = "Open File retry interval in seconds (Windows Only)")]
         public int OpenFileRetryInterval { get; set; }
 
-        [Parameter(Position = 17, ValueFromPipelineByPropertyName = true, HelpMessage = "Number of times to retry Open File Operation (Windows Only)")]
+        [Parameter(Position = 14, ValueFromPipelineByPropertyName = true, HelpMessage = "Number of times to retry Open File Operation (Windows Only)")]
         public int OpenFileRetryTimes { get; set; }
 
-        [Parameter(Position = 18, HelpMessage = "Value for backing up File Permissions (Windows Only)")]
+        [Parameter(Position = 15, HelpMessage = "Value for backing up File Permissions (Windows Only)")]
         public SwitchParameter BackupFilePermissions { get; set; }
 
         protected override void ProcessDefaultConfiguration(DSClientDefaultConfiguration dSClientDefaultConfiguration)
@@ -117,7 +110,7 @@ namespace PSAsigraDSClient
             if (NotificationMethod != null)
             {
                 WriteVerbose("Setting Default Notification Method...");
-                ENotificationMethod eNotificationMethod = BaseDSClientNotification.StringToENotificationMethod(NotificationMethod);
+                ENotificationMethod eNotificationMethod = StringToENotificationMethod(NotificationMethod);
                 notifyInfo[0].method = eNotificationMethod;
                 notifyInfoUpdated = true;
             }
@@ -134,25 +127,16 @@ namespace PSAsigraDSClient
             if (NotificationCompletion != null)
             {
                 WriteVerbose("Setting Notification Completion Status...");
-                int notifyCompletion = BaseDSClientNotification.NotificationCompletionToInt(NotificationCompletion);
+                int notifyCompletion = ArrayToNotificationCompletionToInt(NotificationCompletion);
                 notifyInfo[0].completion = notifyCompletion;
                 notifyInfoUpdated = true;
             }
 
             // Set the Email options
-            IEnumerable<KeyValuePair<string, object>> EmailParams;
-            if (notifyInfo[0].method == ENotificationMethod.ENotificationMethod__Email && (
-                MyInvocation.BoundParameters.ContainsKey("DetailedInfo") || 
-                MyInvocation.BoundParameters.ContainsKey("AttachDetailedLog") || 
-                MyInvocation.BoundParameters.ContainsKey("CompressAttachment") || 
-                MyInvocation.BoundParameters.ContainsKey("HtmlFormat")))
+            if (notifyInfo[0].method == ENotificationMethod.ENotificationMethod__Email && NotificationEmailOptions != null )
             {
                 WriteVerbose("Setting Email Notification options...");
-                EmailParams = MyInvocation.BoundParameters;
-
-                int emailOptions = EmailOptionsToInt(dSClientDefaultConfiguration, EmailParams);
-
-                notifyInfo[0].email_option = notifyInfo[0].email_option + emailOptions;
+                notifyInfo[0].email_option = ArrayToEmailOptionsInt(NotificationEmailOptions);
 
                 notifyInfoUpdated = true;
             }
@@ -289,74 +273,6 @@ namespace PSAsigraDSClient
             }
 
             return strategy;
-        }
-
-        private static int EmailOptionsToInt(DSClientDefaultConfiguration  dSClientDefaultConfiguration, IEnumerable<KeyValuePair<string, object>> emailParams)
-        {
-            int emailOptions = 0;
-
-            Dictionary<string, object> eParams = (Dictionary<string, object>)emailParams;
-
-            string[] currentEmailOpts = dSClientDefaultConfiguration.BackupSetNotification.EmailOption;
-
-            if (eParams.ContainsKey("DetailedInfo"))
-            {
-                eParams.TryGetValue("DetailedInfo", out object value);
-
-                SwitchParameter switchParameter = (SwitchParameter)value;
-
-                if (switchParameter == true && !currentEmailOpts.Contains("DetailedInfo"))
-                    emailOptions += 1;
-
-                if (switchParameter == false && currentEmailOpts.Contains("DetailedInfo"))
-                    emailOptions -= 1;
-            }
-
-            if (eParams.ContainsKey("AttachDetailedLog"))
-            {
-                eParams.TryGetValue("AttachDetailedLog", out object value);
-
-                SwitchParameter switchParameter = (SwitchParameter)value;
-
-                if (switchParameter == true && !currentEmailOpts.Contains("AttachDetailedLog"))
-                    emailOptions += 16;
-
-                if (switchParameter == false && currentEmailOpts.Contains("AttachDetailedLog"))
-                    emailOptions -= 16;
-            }
-
-            if (eParams.ContainsKey("CompressAttachment"))
-            {
-                eParams.TryGetValue("CompressAttachment", out object value);
-
-                SwitchParameter switchParameter = (SwitchParameter)value;
-
-                if (switchParameter == true && !currentEmailOpts.Contains("CompressAttachment"))
-                    emailOptions += 32;
-
-                if (switchParameter == false && currentEmailOpts.Contains("CompressAttachment"))
-                    emailOptions -= 32;
-            }
-
-            if (eParams.ContainsKey("HtmlFormat"))
-            {
-                eParams.TryGetValue("HtmlFormat", out object value);
-
-                SwitchParameter switchParameter = (SwitchParameter)value;
-
-                if (switchParameter == true && !currentEmailOpts.Contains("HtmlFormat"))
-                    emailOptions += 128;
-
-                if (switchParameter == false && currentEmailOpts.Contains("HtmlFormat"))
-                    emailOptions -= 128;
-            }
-
-            return emailOptions;
-        }
-
-        private class EmailParams
-        {
-
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
@@ -15,12 +10,12 @@ namespace PSAsigraDSClient
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Backup Set Id")]
         [ValidateNotNullOrEmpty]
-        public int Id { get; set; }
+        public int BackupSetId { get; set; }
 
         protected override void DSClientProcessRecord()
         {
             WriteVerbose("Retrieving Backup Set Configuration...");
-            BackupSet backupSet = DSClientSession.backup_set(Id);
+            BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
             DSClientBackupSet dSClientBackupSet = new DSClientBackupSet(backupSet, DSClientOSType);
 

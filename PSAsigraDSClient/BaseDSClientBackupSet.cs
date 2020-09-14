@@ -10,7 +10,7 @@ namespace PSAsigraDSClient
     {
         protected class DSClientBackupSet
         {
-            public int Id { get; set; }
+            public int BackupSetId { get; set; }
             public string Computer { get; set; }
             public string Name { get; set; }
             public bool Active { get; set; }
@@ -136,7 +136,7 @@ namespace PSAsigraDSClient
                     DataType = EBackupDataTypeToString(backupSetOverviewInfo.data_type);
                 }
 
-                Id = backupSet.getID();
+                BackupSetId = backupSet.getID();
                 Computer = backupSet.getComputerName();
                 Name = backupSet.getName();
                 Active = backupSet.isActive();

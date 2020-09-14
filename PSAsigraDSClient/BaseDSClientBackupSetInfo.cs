@@ -28,7 +28,7 @@ namespace PSAsigraDSClient
 
         public class DSClientBackupSetInfo
         {
-            public int Id { get; set; }
+            public int BackupSetId { get; set; }
             public string Computer { get; set; }
             public string Name { get; set; }
             public bool Active { get; set; }
@@ -56,7 +56,7 @@ namespace PSAsigraDSClient
 
             public DSClientBackupSetInfo(backup_set_info backupSetInfo)
             {
-                Id = backupSetInfo.id;
+                BackupSetId = backupSetInfo.id;
                 Computer = backupSetInfo.computer;
                 Name = backupSetInfo.name;
                 Active = backupSetInfo.is_active;

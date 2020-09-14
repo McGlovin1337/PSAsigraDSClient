@@ -10,7 +10,7 @@ namespace PSAsigraDSClient
     {
         [Parameter(Position = 0, ParameterSetName = "Id", Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Id of the Backup Set")]
         [ValidateNotNullOrEmpty]
-        public int Id { get; set; }
+        public int BackupSetId { get; set; }
 
         [Parameter(Position = 0, ParameterSetName = "General", ValueFromPipelineByPropertyName = true, HelpMessage = "Backup Sets configured for specified Computer")]
         public string Computer { get; set; }
@@ -82,7 +82,7 @@ namespace PSAsigraDSClient
                                         WildcardOptions.Compiled;
 
             if (MyInvocation.BoundParameters.ContainsKey("Id"))
-                dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.Id == Id);
+                dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.BackupSetId == BackupSetId);
 
             if (Computer != null)
             {

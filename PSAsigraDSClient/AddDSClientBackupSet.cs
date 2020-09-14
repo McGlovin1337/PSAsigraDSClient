@@ -1,5 +1,4 @@
 ﻿/* To-do:
- * Add Notification creation
  * Add CDP Configuration options
  * Add MS SQL Set Creation
  * Add VSS SQL Set Creation
@@ -15,6 +14,7 @@ using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 using static PSAsigraDSClient.BaseDSClientBackupSet;
+using static PSAsigraDSClient.BaseDSClientNotification;
 
 namespace PSAsigraDSClient
 {
@@ -22,8 +22,8 @@ namespace PSAsigraDSClient
 
     public class AddDSClientBackupSet: DSClientCmdlet, IDynamicParameters
     {
-        private Win32FSBackupSetParams win32FSBackupSetParams;
-        private UnixFSBackupSetParams unixFSBackupSetParams;
+        private Win32FSBackupSetParams win32FSBackupSetParams = null;
+        private UnixFSBackupSetParams unixFSBackupSetParams = null;
 
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Backup Set")]
         [ValidateNotNullOrEmpty]
@@ -53,7 +53,7 @@ namespace PSAsigraDSClient
         [Parameter(Position = 7, ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Exclude from Backup Set")]
         public string[] ExcludeItem { get; set; }
 
-        [Parameter(Position = 8, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Compression Method to use")]
+        [Parameter(Position = 8, ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Set the Compression Method to use")]
         [ValidateSet("None", "ZLIB", "LZOP", "ZLIB_LO", "ZLIB_MED", "ZLIB_HI")]
         public string Compression { get; set; }
 
@@ -87,21 +87,37 @@ namespace PSAsigraDSClient
         [Parameter(Position = 18, HelpMessage = "Set to use Local Storage")]
         public SwitchParameter UseLocalStorage { get; set; }
 
-        [Parameter(Position = 19, HelpMessage = "Set to use Local Transmission Cache for Offsite Backup Sets")]
+        [Parameter(Position = 19, ValueFromPipelineByPropertyName = true, HelpMessage = "Local Storage Path For Local Backups and Cache")]
+        public string LocalStoragePath { get; set; }
+
+        [Parameter(Position = 20, HelpMessage = "Set to use Local Transmission Cache for Offsite Backup Sets")]
         public SwitchParameter UseTransmissionCache { get; set; }
+
+        [Parameter(Position = 21, ParameterSetName = "Notification", Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
+        [ValidateSet("Email", "Pager", "Broadcast", "Event")]
+        public string NotificationMethod { get; set; }
+
+        [Parameter(Position = 22, ParameterSetName = "Notification", Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Recipient")]
+        public string NotificationRecipient { get; set; }
+
+        [Parameter(Position = 23, ParameterSetName = "Notification", Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Completion Status to Notify on")]
+        [ValidateSet("Incomplete", "CompletedWithErrors", "Successful", "CompletedWithWarnings")]
+        public string[] NotificationCompletion { get; set; }
+
+        [Parameter(Position = 24, ParameterSetName = "Notification", ValueFromPipelineByPropertyName = true, HelpMessage = "Email Notification Options")]
+        [ValidateSet("DetailedInfo", "AttachDetailedLog", "CompressAttachment", "HtmlFormat")]
+        public string[] NotificationEmailOptions { get; set; }
 
         public object GetDynamicParameters()
         {
-            if (DataType == "WindowsFileSystem")
+            switch(DataType)
             {
-                win32FSBackupSetParams = new Win32FSBackupSetParams();
-                return win32FSBackupSetParams;
-            }
-
-            if (DataType == "UnixFileSystem")
-            {
-                unixFSBackupSetParams = new UnixFSBackupSetParams();
-                return unixFSBackupSetParams;
+                case "WindowsFileSystem":
+                    win32FSBackupSetParams = new Win32FSBackupSetParams();
+                    return win32FSBackupSetParams;
+                case "UnixFileSystem":
+                    unixFSBackupSetParams = new UnixFSBackupSetParams();
+                    return unixFSBackupSetParams;
             }
 
             return null;
@@ -226,6 +242,7 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
+            // Validate Parameters before creating a new BackupSet object
             if (DataType == "WindowsFileSystem" && DSClientOSType.OsType != "Windows")
                 throw new ParameterBindingException("Windows File System Backup Sets can only be created on a Windows DS-Client");
 
@@ -241,14 +258,24 @@ namespace PSAsigraDSClient
             if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByTimeSpan") && (win32FSBackupSetParams.ExcludeOldFilesTimeSpan == null || win32FSBackupSetParams.ExcludeOldFilesTimeSpanValue < 1))
                 throw new ParameterBindingException("A Time Span and Time Span Value must be specified when ExcludeOldFilesByTimeSpan is enabled");
 
-            if (unixFSBackupSetParams.SSHInterpreter == "Direct" && unixFSBackupSetParams.SSHInterpreterPath == null)
-                throw new ParameterBindingException("Direct SSH Interpretor requires an SSH Interpretor Path");
+            if ((SetType == "SelfContained" || SetType == "LocalOnly" || UseTransmissionCache == true) && LocalStoragePath == null)
+                throw new ParameterBindingException("Local Backups and Transmission Cache require a Local Storage Path");
+
+            if (unixFSBackupSetParams != null)
+                if (unixFSBackupSetParams.SSHInterpreter == "Direct" && unixFSBackupSetParams.SSHInterpreterPath == null)
+                    throw new ParameterBindingException("Direct SSH Interpretor requires an SSH Interpretor Path");
 
             WriteVerbose("Building the Backup Set Object...");
 
-            DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(StringToEBackupDataType(DataType));
+            string dataType = DataType;
+
+            if (DataType == "WindowsFileSystem" || DataType == "UnixFileSystem")
+                dataType = "FileSystem";
+
+            DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(StringToEBackupDataType(dataType));
             BackupSetCredentials backupSetCredentials = dataSourceBrowser.neededCredentials(Computer);
 
+            // Set Credentials
             if (DSClientOSType.OsType == "Windows")
             {                
                 Win32FS_Generic_BackupSetCredentials win32FSBSCredentials = Win32FS_Generic_BackupSetCredentials.from(backupSetCredentials);
@@ -308,6 +335,7 @@ namespace PSAsigraDSClient
                 }
             }
 
+            // Create the BackupSet object
             DataBrowserWithSetCreation setCreation = DataBrowserWithSetCreation.from(dataSourceBrowser);
             BackupSet NewBackupSet = setCreation.createBackupSet(Computer);
 
@@ -335,6 +363,9 @@ namespace PSAsigraDSClient
                 NewBackupSet.setRetentionRule(retentionRule);
             }
 
+            if (LocalStoragePath != null)
+                NewBackupSet.setLocalStoragePath(LocalStoragePath);
+
             NewBackupSet.setSchedulePriority(SchedulePriority);
             NewBackupSet.setReadBufferSize(ReadBufferSize);
             NewBackupSet.setBackupErrorLimit(BackupErrorLimit);
@@ -345,6 +376,7 @@ namespace PSAsigraDSClient
             NewBackupSet.setUsingLocalStorage(UseLocalStorage);
             NewBackupSet.setUsingLocalTransmissionCache(UseTransmissionCache);
 
+            // Backup Set Inclusion Items
             if (IncludeItem != null || ExcludeItem != null)
             {
                 List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
@@ -395,6 +427,7 @@ namespace PSAsigraDSClient
                     }
                 }
 
+                // Backup Set Exclusion Items
                 if (ExcludeItem != null)
                 {
                     foreach (var item in ExcludeItem)
@@ -407,6 +440,21 @@ namespace PSAsigraDSClient
                 NewBackupSet.setItems(backupSetItems.ToArray());
             }
 
+            // Backup Set Notification Configuration
+            notification_info notificationInfo = new notification_info
+            {
+                completion = ArrayToNotificationCompletionToInt(NotificationCompletion),
+                email_option = (NotificationEmailOptions != null) ? ArrayToEmailOptionsInt(NotificationEmailOptions) : 0,
+                id = 0,
+                method = StringToENotificationMethod(NotificationMethod),
+                recipient = NotificationRecipient
+            };
+
+            BackupSetNotification backupSetNotification = NewBackupSet.getNotification();
+            backupSetNotification.addOrUpdateNotification(notificationInfo);
+            backupSetNotification.Dispose();
+
+            // Windows File System specific configuration
             if (DataType == "WindowsFileSystem")
             {
                 Win32FS_BackupSet NewWin32FSBS = Win32FS_BackupSet.from(NewBackupSet);
@@ -468,6 +516,7 @@ namespace PSAsigraDSClient
                     NewWin32FSBS.setUsingBuffer(win32FSBackupSetParams.UseBuffer);
             }
 
+            // Unix/Linux File System specific configuration
             if (DataType == "UnixFileSystem")
             {
                 UnixFS_Generic_BackupSet NewUnixFSBS = UnixFS_Generic_BackupSet.from(NewBackupSet);
@@ -520,6 +569,7 @@ namespace PSAsigraDSClient
                     NewUnixFSBS.setUsingBuffer(unixFSBackupSetParams.UseBuffer);
             }
 
+            // Add the Backup Set to the DS-Client
             WriteVerbose("Adding the new Backup Set Object to DS-Client...");
             DSClientSession.addBackupSet(NewBackupSet);
             WriteObject("Backup Set Created");

@@ -1,5 +1,6 @@
 ﻿/* To-do:
  * Add CDP Configuration options
+ * Add SNMP Trap Notification Config
  * Add MS SQL Set Creation
  * Add VSS SQL Set Creation
  * Add VSS Exchange Set Creation

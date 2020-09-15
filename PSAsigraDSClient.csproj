@@ -54,6 +54,7 @@
     <Compile Include="PSAsigraDSClient\AddDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientSNMPCommunity.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientActivityLog.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetInfo.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientDefaultConfiguration.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="PSAsigraDSClient\DSClientCommon.cs" />
     <Compile Include="PSAsigraDSClient\EnterDSClientSession.cs" />
     <Compile Include="PSAsigraDSClient\ExitDSClientSession.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientActivityLog.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientBackupSetInfo.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientDefaultConfiguration.cs" />

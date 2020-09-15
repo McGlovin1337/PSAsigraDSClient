@@ -58,7 +58,7 @@ namespace PSAsigraDSClient
             }
         }
 
-        protected static string EActivityTypeToString(EActivityType activityType)
+        public static string EActivityTypeToString(EActivityType activityType)
         {
             string ActivityType = null;
 

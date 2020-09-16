@@ -31,7 +31,7 @@ namespace PSAsigraDSClient
 
         public class DSClientRetentionRule
         {
-            public int RetentionId { get; set; }
+            public int RetentionRuleId { get; set; }
             public string Name { get; set; }
             public int[] BackupSets { get; set; }
             public DSClientTimeRetention[] TimeRetention { get; set; }
@@ -79,7 +79,7 @@ namespace PSAsigraDSClient
                 }
 
                 // Assign Property Values
-                RetentionId = retentionRule.getID();
+                RetentionRuleId = retentionRule.getID();
                 Name = retentionRule.getName();
                 BackupSets = retentionRule.getAssignedBackupSets();
                 TimeRetention = dSClientTimeRetentions.ToArray();

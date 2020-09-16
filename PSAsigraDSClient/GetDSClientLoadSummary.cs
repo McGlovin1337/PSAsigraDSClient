@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
+
+namespace PSAsigraDSClient
+{
+    [Cmdlet(VerbsCommon.Get, "DSClientLoadSummary")]
+    [OutputType(typeof(DSClientLoadSummary))]
+
+    public class GetDSClientLoadSummary: DSClientCmdlet
+    {
+        [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "DS-Client Node Id")]
+        public int NodeId { get; set; } = 0;
+
+        protected override void DSClientProcessRecord()
+        {
+            WriteVerbose("Retrieving DS-Client Current Load Summary...");
+            dsclient_load[] dsclientLoad = DSClientSession.getLoadSummaryCurrent(NodeId);
+
+            List<DSClientLoadSummary> DSClientLoad = new List<DSClientLoadSummary>();
+
+            foreach (var loadSummary in dsclientLoad)
+            {
+                DSClientLoadSummary summary = new DSClientLoadSummary(loadSummary);
+                DSClientLoad.Add(summary);
+            }
+
+            DSClientLoad.ForEach(WriteObject);
+        }
+
+        private class DSClientLoadSummary
+        {
+            public int NodeId { get; set; }
+            public int Activities { get; set; }
+            public int CpuLoad { get; set; }
+            public int MemoryLoad { get; set; }
+            public int MemoryCommit { get; set; }
+            public int NetworkReceive { get; set; }
+            public int NetworkSend { get; set; }
+            public DateTime TimeStamp { get; set; }
+
+            public DSClientLoadSummary(dsclient_load dsclientLoad)
+            {
+                NodeId = dsclientLoad.node_id;
+                Activities = dsclientLoad.activities;
+                CpuLoad = dsclientLoad.cpu_usage;
+                MemoryLoad = dsclientLoad.memory_load;
+                MemoryCommit = dsclientLoad.memory_commit;
+                NetworkReceive = dsclientLoad.receive;
+                NetworkSend = dsclientLoad.send;
+                TimeStamp = UnixEpochToDateTime(dsclientLoad.timestamp);
+            }
+        }
+    }
+}

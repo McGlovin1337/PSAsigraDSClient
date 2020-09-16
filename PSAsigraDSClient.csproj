@@ -73,6 +73,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientBackupSetInfo.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientInfo.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientLoadSummary.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientNotification.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientRegistrationInfo.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientRetentionRule.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSNMPInfo.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSet.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSNMPCommunity.cs" />

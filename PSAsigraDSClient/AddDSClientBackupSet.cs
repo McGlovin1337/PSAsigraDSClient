@@ -1,6 +1,7 @@
 ﻿/* To-do:
  * Add CDP Configuration options
  * Add SNMP Trap Notification Config
+ * Add Regex Exclusion Config
  * Add MS SQL Set Creation
  * Add VSS SQL Set Creation
  * Add VSS Exchange Set Creation
@@ -62,7 +63,7 @@ namespace PSAsigraDSClient
         public int ScheduleId { get; set; }
 
         [Parameter(Position = 10, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Retention Rule this Backup Set will use")]
-        public int RetentionId { get; set; }
+        public int RetentionRuleId { get; set; }
 
         [Parameter(Position = 11, ValueFromPipelineByPropertyName = true, HelpMessage = "Schedule Priority of Backup Set when assigned to Schedule")]
         public int SchedulePriority { get; set; } = 1;
@@ -356,11 +357,11 @@ namespace PSAsigraDSClient
                 NewBackupSet.setSchedule(schedule);
             }
 
-            if (MyInvocation.BoundParameters.ContainsKey("RetentionId"))
+            if (MyInvocation.BoundParameters.ContainsKey("RetentionRuleId"))
             {
                 RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
                 RetentionRule[] retentionRules = DSClientRetentionRuleMgr.definedRules();
-                RetentionRule retentionRule = retentionRules.Single(rule => rule.getID() == RetentionId);
+                RetentionRule retentionRule = retentionRules.Single(rule => rule.getID() == RetentionRuleId);
                 NewBackupSet.setRetentionRule(retentionRule);
             }
 

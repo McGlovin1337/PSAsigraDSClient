@@ -22,7 +22,7 @@ namespace PSAsigraDSClient
             public int ScheduleId { get; set; }
             public string ScheduleName { get; set; }
             public int SchedulePriority { get; set; }
-            public int RetentionId { get; set; }
+            public int RetentionRuleId { get; set; }
             public string RetentionRuleName { get; set; }
             public long OnlineDataSize { get; set; }
             public int OnlineFileCount { get; set; }
@@ -147,7 +147,7 @@ namespace PSAsigraDSClient
                 ScheduleId = backupSetOverviewInfo.schedule_id;
                 ScheduleName = backupSetOverviewInfo.schedule_name;
                 SchedulePriority = backupSet.getSchedulePriority();
-                RetentionId = backupSetOverviewInfo.retention_rule_id;
+                RetentionRuleId = backupSetOverviewInfo.retention_rule_id;
                 RetentionRuleName = backupSetOverviewInfo.retention_rule_name;
                 OnlineDataSize = backupSetOverviewInfo.status.on_line_data_size;
                 OnlineFileCount = backupSetOverviewInfo.status.on_line_file_count;

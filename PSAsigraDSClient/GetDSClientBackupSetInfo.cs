@@ -61,7 +61,7 @@ namespace PSAsigraDSClient
         public int ScheduleId { get; set; }
 
         [Parameter(Position = 5, ParameterSetName = "General", ValueFromPipelineByPropertyName = true, HelpMessage = "List Backup Sets using the specified RetentionId")]
-        public int RetentionId { get; set; }
+        public int RetentionRuleId { get; set; }
 
         [Parameter(Position = 6, ParameterSetName = "General", ValueFromPipelineByPropertyName = true, HelpMessage = "List Backup Sets of a specific type")]
         [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
@@ -108,8 +108,8 @@ namespace PSAsigraDSClient
             if (MyInvocation.BoundParameters.ContainsKey("ScheduleId"))
                 dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.ScheduleId == ScheduleId);
 
-            if (MyInvocation.BoundParameters.ContainsKey("RetentionId"))
-                dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.RetentionId == RetentionId);
+            if (MyInvocation.BoundParameters.ContainsKey("RetentionRuleId"))
+                dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.RetentionRuleId == RetentionRuleId);
 
             if (SetType != null)
                 dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.SetType == SetType);

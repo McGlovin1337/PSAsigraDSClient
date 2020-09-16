@@ -11,7 +11,7 @@ namespace PSAsigraDSClient
     public class GetDSClientRetentionRule: BaseDSClientRetentionRule
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Retention Rule Id")]
-        public int RetentionId { get; set; } = 0;
+        public int RetentionRuleId { get; set; } = 0;
 
         [Parameter(Position = 1, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Name of the Retention Rule")]
         [ValidateNotNullOrEmpty]
@@ -19,13 +19,13 @@ namespace PSAsigraDSClient
 
         protected override void ProcessRetentionRule(IEnumerable<DSClientRetentionRule> dSClientRetentionRules)
         {
-            if (RetentionId > 0 || MyInvocation.BoundParameters.ContainsKey("Name"))
+            if (RetentionRuleId > 0 || MyInvocation.BoundParameters.ContainsKey("Name"))
             {
                 List<DSClientRetentionRule> filteredRetentionRules = new List<DSClientRetentionRule>();
 
-                if (RetentionId > 0)
+                if (RetentionRuleId > 0)
                 {
-                    filteredRetentionRules.Add(dSClientRetentionRules.SingleOrDefault(rule => rule.RetentionId == RetentionId));
+                    filteredRetentionRules.Add(dSClientRetentionRules.SingleOrDefault(rule => rule.RetentionRuleId == RetentionRuleId));
                 }
 
                 if (MyInvocation.BoundParameters.ContainsKey("Name"))

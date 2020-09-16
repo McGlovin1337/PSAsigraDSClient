@@ -39,7 +39,7 @@ namespace PSAsigraDSClient
             public DateTime LastSynchronized { get; set; }
             public int ScheduleId { get; set; }
             public string ScheduleName { get; set; }
-            public int RetentionId { get; set; }
+            public int RetentionRuleId { get; set; }
             public string RetentionRuleName { get; set; }
             public long OnlineDataSize { get; set; }
             public int OnlineFileCount { get; set; }
@@ -67,7 +67,7 @@ namespace PSAsigraDSClient
                 LastSynchronized = UnixEpochToDateTime(backupSetInfo.last_sync_time);
                 ScheduleId = backupSetInfo.schedule_id;
                 ScheduleName = backupSetInfo.schedule_name;
-                RetentionId = backupSetInfo.retention_rule_id;
+                RetentionRuleId = backupSetInfo.retention_rule_id;
                 RetentionRuleName = backupSetInfo.retention_rule_name;
                 OnlineDataSize = backupSetInfo.online_data_size;
                 OnlineFileCount = backupSetInfo.online_file_count;

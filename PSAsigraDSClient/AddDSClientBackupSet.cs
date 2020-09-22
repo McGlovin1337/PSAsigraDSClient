@@ -95,18 +95,18 @@ namespace PSAsigraDSClient
         [Parameter(Position = 20, HelpMessage = "Set to use Local Transmission Cache for Offsite Backup Sets")]
         public SwitchParameter UseTransmissionCache { get; set; }
 
-        [Parameter(Position = 21, ParameterSetName = "Notification", Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
+        [Parameter(Position = 21, ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
         [ValidateSet("Email", "Pager", "Broadcast", "Event")]
         public string NotificationMethod { get; set; }
 
-        [Parameter(Position = 22, ParameterSetName = "Notification", Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Recipient")]
+        [Parameter(Position = 22, ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Recipient")]
         public string NotificationRecipient { get; set; }
 
-        [Parameter(Position = 23, ParameterSetName = "Notification", Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Completion Status to Notify on")]
+        [Parameter(Position = 23, ValueFromPipelineByPropertyName = true, HelpMessage = "Completion Status to Notify on")]
         [ValidateSet("Incomplete", "CompletedWithErrors", "Successful", "CompletedWithWarnings")]
         public string[] NotificationCompletion { get; set; }
 
-        [Parameter(Position = 24, ParameterSetName = "Notification", ValueFromPipelineByPropertyName = true, HelpMessage = "Email Notification Options")]
+        [Parameter(Position = 24, ValueFromPipelineByPropertyName = true, HelpMessage = "Email Notification Options")]
         [ValidateSet("DetailedInfo", "AttachDetailedLog", "CompressAttachment", "HtmlFormat")]
         public string[] NotificationEmailOptions { get; set; }
 
@@ -290,6 +290,7 @@ namespace PSAsigraDSClient
                 }
                 else
                 {
+                    WriteVerbose("Credentials not specified, using DS-Client Credentials...");
                     win32FSBSCredentials.setUsingClientCredentials(true);
                 }
 
@@ -333,6 +334,7 @@ namespace PSAsigraDSClient
                 }
                 else
                 {
+                    WriteVerbose("Credentials not specified, using DS-Client Credentials...");
                     unixFSBackupSetCredentials.setUsingClientCredentials(true);
                 }
             }
@@ -443,18 +445,21 @@ namespace PSAsigraDSClient
             }
 
             // Backup Set Notification Configuration
-            notification_info notificationInfo = new notification_info
+            if (NotificationMethod != null)
             {
-                completion = ArrayToNotificationCompletionToInt(NotificationCompletion),
-                email_option = (NotificationEmailOptions != null) ? ArrayToEmailOptionsInt(NotificationEmailOptions) : 0,
-                id = 0,
-                method = StringToENotificationMethod(NotificationMethod),
-                recipient = NotificationRecipient
-            };
+                notification_info notificationInfo = new notification_info
+                {
+                    completion = ArrayToNotificationCompletionToInt(NotificationCompletion),
+                    email_option = (NotificationEmailOptions != null) ? ArrayToEmailOptionsInt(NotificationEmailOptions) : 0,
+                    id = 0,
+                    method = StringToENotificationMethod(NotificationMethod),
+                    recipient = NotificationRecipient
+                };
 
-            BackupSetNotification backupSetNotification = NewBackupSet.getNotification();
-            backupSetNotification.addOrUpdateNotification(notificationInfo);
-            backupSetNotification.Dispose();
+                BackupSetNotification backupSetNotification = NewBackupSet.getNotification();
+                backupSetNotification.addOrUpdateNotification(notificationInfo);
+                backupSetNotification.Dispose();
+            }
 
             // Windows File System specific configuration
             if (DataType == "WindowsFileSystem")

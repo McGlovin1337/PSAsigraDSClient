@@ -1,5 +1,5 @@
 ﻿/* To-Do:
- * Add further Time Based Retention period Parameters (Weekly, Monthly, Yearly)
+ * Add further Time Based Retention period Parameters (Monthly, Yearly)
  * Add support for Archive Rules
  */
 
@@ -16,84 +16,103 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
-        [Parameter(Position = 0, HelpMessage = "Specify to Cleanup Files Deleted from Source")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Cleanup Files Deleted from Source")]
         public SwitchParameter CleanupDeletedFiles { get; set; }
 
-        [Parameter(Position = 1, HelpMessage = "Cleanup Files Deleted from Source after Time period")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Cleanup Files Deleted from Source after Time period")]
         [ValidateNotNullOrEmpty]
         public int CleanupDeletedAfterValue { get; set; }
 
-        [Parameter(Position = 2, HelpMessage = "Cleanup Files Deleted from Source after Time period")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Cleanup Files Deleted from Source after Time period")]
         [ValidateNotNullOrEmpty]
         [ValidateSet("Minutes", "Hours", "Days", "Weeks", "Months", "Years")]
         public string CleanupDeletedAfterUnit { get; set; }
 
-        [Parameter(Position = 3, HelpMessage = "Specify Generations to keep of Files Deleted from Source")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Generations to keep of Files Deleted from Source")]
         public int CleanupDeletedKeepGens { get; set; } = 0;
 
-        [Parameter(Position = 4, HelpMessage = "Specify to Delete All Generations prior to Stub")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete All Generations prior to Stub")]
         public SwitchParameter DeleteGensPriorToStub { get; set; }
 
-        [Parameter(Position = 5, HelpMessage = "Specify to Delete Non-stub Generations prior to Stub")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Non-stub Generations prior to Stub")]
         public SwitchParameter DeleteNonStubGens { get; set; }
 
-        [Parameter(Position = 6, HelpMessage = "Specify the number of most recent Generations to keep")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the number of most recent Generations to keep")]
         public int KeepLastGens { get; set; }
 
-        [Parameter(Position = 7, HelpMessage = "Specify Time Period to keep ALL Generations")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Period to keep ALL Generations")]
         public int KeepAllGensTimeValue { get; set; }
 
-        [Parameter(Position = 8, HelpMessage = "Specify Time Period Unit for keeping ALL Generations")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Period Unit for keeping ALL Generations")]
         [ValidateSet("Minutes", "Hours", "Days")]
         public string KeepAllGensTimeUnit { get; set; }
 
-        [Parameter(Position = 9, HelpMessage = "Specify Interval Retention Time Value")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Interval Retention Time Value")]
         public int IntervalTimeValue { get; set; }
 
-        [Parameter(Position = 10, HelpMessage = "Specify Interval Retention Time Unit")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Interval Retention Time Unit")]
         [ValidateSet("Minutes", "Hours", "Days", "Weeks", "Months", "Years")]
         public string IntervalTimeUnit { get; set; }
 
-        [Parameter(Position = 11, HelpMessage = "Specify Time Value Interval is Valid For")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Value Interval is Valid For")]
         public int IntervalValidForValue { get; set; }
 
-        [Parameter(Position = 12, HelpMessage = "Specify Time Unit Interval is Valid For")]
-        [ValidateSet("Minutes", "Hours", "Days", "Weeks", "Months", "Years")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Unit Interval is Valid For")]
+        [ValidateSet("Hours", "Days", "Weeks", "Months", "Years")]
         public string IntervalValidForUnit { get; set; }
 
-        [Parameter(Position = 13, HelpMessage = "Specify to Delete Obsolete Data")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Weekday for Weekly Time Retention")]
+        [ValidateSet("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")]
+        public string WeeklyRetentionDay { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Weekly Retention Time Hour")]
+        [ValidateRange(0, 23)]
+        public int WeeklyRetentionHour { get; set; } = 23;
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Weekly Retention Time Minute")]
+        [ValidateRange(0, 59)]
+        public int WeeklyRetentionMinute { get; set; } = 59;
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Value Weekly Time Retention is Valid for")]
+        public int WeeklyValidForValue { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Unit Weekly Time Retention is Valid for")]
+        [ValidateSet("Hours", "Days", "Weeks", "Months", "Years")]
+        public string WeeklyValidForUnit { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Obsolete Data")]
         public SwitchParameter DeleteObsoleteData { get; set; }
 
-        [Parameter(Position = 14, HelpMessage = "Specify to Move Obsolete Data to BLM")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Move Obsolete Data to BLM")]
         public SwitchParameter MoveObsoleteData { get; set; }
 
-        [Parameter(Position = 15, HelpMessage = "Specify to create new BLM Packages when moving to BLM")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to create new BLM Packages when moving to BLM")]
         public SwitchParameter CreateNewBLMPackage { get; set; }
 
-        [Parameter(Position = 16, HelpMessage = "Specify Local Storage Retention Time Value")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Local Storage Retention Time Value")]
         public int LSRetentionTimeValue { get; set; }
 
-        [Parameter(Position = 17, HelpMessage = "Specify Local Storage Retention Time Unit")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Local Storage Retention Time Unit")]
         [ValidateSet("Minutes", "Hours", "Days", "Weeks", "Months", "Years")]
         public string LSRetentionTimeUnit { get; set; }
 
-        [Parameter(Position = 18, HelpMessage = "Specify to Cleanup Files Deleted from Source on Local Storage")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Cleanup Files Deleted from Source on Local Storage")]
         public SwitchParameter LSCleanupDeletedFiles { get; set; }
 
-        [Parameter(Position = 19, HelpMessage = "Cleanup Files Deleted from Source after Time period on Local Storage")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Cleanup Files Deleted from Source after Time period on Local Storage")]
         public int LSCleanupDeletedAfterValue {get; set;}
 
-        [Parameter(Position = 20, HelpMessage = "Cleanup Files Deleted from Source after Time period on Local Storage")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Cleanup Files Deleted from Source after Time period on Local Storage")]
         [ValidateSet("Minutes", "Hours", "Days", "Weeks", "Months", "Years")]
         public string LSCleanupDeletedAfterUnit { get; set; }
 
-        [Parameter(Position = 21, HelpMessage = "Specify Generations to keep of Files Deleted from Source")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Generations to keep of Files Deleted from Source")]
         public int LSCleanupDeletedKeepGens { get; set; } = 0;
 
-        [Parameter(Position = 22, HelpMessage = "Specify to Delete Unreferenced Files")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Unreferenced Files")]
         public SwitchParameter DeleteUnreferencedFiles { get; set; }
 
-        [Parameter(Position = 23, HelpMessage = "Specify to Delete Incomplete Components")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Incomplete Components")]
         public SwitchParameter DeleteIncompleteComponents { get; set; }
 
         protected override void DSClientProcessRecord()
@@ -116,7 +135,10 @@ namespace PSAsigraDSClient
                 throw new ParameterBindingException("IntervalValidForValue and IntervalValidForUnit must be specified together");
 
             if ((MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && !MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue")) || (!MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue")))
-                throw new ParameterBindingException("IntervalTimeValue && IntervalTimeUnit must be specified with IntervalValidForValue and IntervalValidForUnit");
+                throw new ParameterBindingException("IntervalTimeValue and IntervalTimeUnit must be specified with IntervalValidForValue and IntervalValidForUnit");
+
+            if ((WeeklyRetentionDay != null && (!MyInvocation.BoundParameters.ContainsKey("WeeklyValidForValue") || WeeklyValidForUnit == null)))
+                throw new ParameterBindingException("WeeklyValidForValue and WeeklyValidForUnit must be specified with WeeklyRetentionDay");
 
             if (MyInvocation.BoundParameters.ContainsKey("MoveObsoleteData") && MyInvocation.BoundParameters.ContainsKey("DeleteObsoleteData"))
                 throw new ParameterBindingException("MoveObsoleteData cannot be specified with DeleteObsoleteData");
@@ -187,6 +209,7 @@ namespace PSAsigraDSClient
                 NewRetentionRule.setKeepPeriodTimeSpan(timeSpan);
             }
 
+            // Interval based Time Retention
             if (MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue"))
             {
                 IntervalTimeRetentionOption intervalTimeRetention = DSClientRetentionRuleMgr.createIntervalTimeRetention();
@@ -206,6 +229,31 @@ namespace PSAsigraDSClient
                 intervalTimeRetention.setValidFor(validTimeSpan);
 
                 NewRetentionRule.addTimeRetentionOption(intervalTimeRetention);
+            }
+
+            // Weekly based Time Retention
+            if (WeeklyRetentionDay != null)
+            {
+                WeeklyTimeRetentionOption weeklyTimeRetention = DSClientRetentionRuleMgr.createWeeklyTimeRetention();
+
+                weeklyTimeRetention.setTriggerDay(StringToEWeekDay(WeeklyRetentionDay));
+
+                time_in_day weeklyTime = new time_in_day
+                {
+                    hour = WeeklyRetentionHour,
+                    minute = WeeklyRetentionMinute,
+                    second = 0
+                };
+                weeklyTimeRetention.setSnapshotTime(weeklyTime);
+
+                retention_time_span validTimeSpan = new retention_time_span
+                {
+                    period = WeeklyValidForValue,
+                    unit = StringToRetentionTimeUnit(WeeklyValidForUnit)
+                };
+                weeklyTimeRetention.setValidFor(validTimeSpan);
+
+                NewRetentionRule.addTimeRetentionOption(weeklyTimeRetention);
             }
 
             // Move or Delete Obsolete Data
@@ -259,6 +307,38 @@ namespace PSAsigraDSClient
 
             NewRetentionRule.Dispose();
             DSClientRetentionRuleMgr.Dispose();
+        }
+
+        private static EWeekDay StringToEWeekDay(string weekDay)
+        {
+            EWeekDay WeekDay = EWeekDay.EWeekDay__UNDEFINED;
+
+            switch(weekDay)
+            {
+                case "Monday":
+                    WeekDay = EWeekDay.EWeekDay__Monday;
+                    break;
+                case "Tuesday":
+                    WeekDay = EWeekDay.EWeekDay__Tuesday;
+                    break;
+                case "Wednesday":
+                    WeekDay = EWeekDay.EWeekDay__Wednesday;
+                    break;
+                case "Thursday":
+                    WeekDay = EWeekDay.EWeekDay__Thursday;
+                    break;
+                case "Friday":
+                    WeekDay = EWeekDay.EWeekDay__Friday;
+                    break;
+                case "Saturday":
+                    WeekDay = EWeekDay.EWeekDay__Saturday;
+                    break;
+                case "Sunday":
+                    WeekDay = EWeekDay.EWeekDay__Sunday;
+                    break;
+            }
+
+            return WeekDay;
         }
 
         private static RetentionTimeUnit StringToRetentionTimeUnit(string timeUnit)

@@ -475,7 +475,7 @@ namespace PSAsigraDSClient
             public string Filter { get; set; }
             public bool SubDirDescend { get; set; }
             public string ItemType { get; set; }
-            public int Generations { get; set; }
+            public int MaxGenerations { get; set; }
             public dynamic InclusionOptions { get; set; }
             public RegexItemExclusionOptions RegexExclusionOptions { get; set; } 
 
@@ -505,7 +505,7 @@ namespace PSAsigraDSClient
                     {
                         BackupSetInclusionItem backupSetInclusionItem = BackupSetInclusionItem.from(backupSetFileItem);
                         ItemType = EBrowseItemTypeToString(backupSetInclusionItem.getDataType());
-                        Generations = backupSetInclusionItem.getGenerationCount();
+                        MaxGenerations = backupSetInclusionItem.getGenerationCount();
 
                         if (backupDataType == EBackupDataType.EBackupDataType__FileSystem)
                         {

@@ -584,7 +584,7 @@ namespace PSAsigraDSClient
             // Add the Backup Set to the DS-Client
             WriteVerbose("Adding the new Backup Set Object to DS-Client...");
             DSClientSession.addBackupSet(NewBackupSet);
-            WriteObject("Backup Set Created");
+            WriteObject("Backup Set Created with BackupSetId: " + NewBackupSet.getID());
 
             NewBackupSet.Dispose();
             dataSourceBrowser.Dispose();

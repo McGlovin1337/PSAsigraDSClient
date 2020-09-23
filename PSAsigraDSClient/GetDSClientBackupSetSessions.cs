@@ -24,7 +24,7 @@ namespace PSAsigraDSClient
             WriteVerbose("Retrieving Backup Set Sessions...");
             backup_sessions[] backupSessions = backupSet.backup_times();
 
-            foreach(var session in backupSessions)
+            foreach (backup_sessions session in backupSessions)
             {
                 DSClientBackupSessions backupSession = new DSClientBackupSessions(BackupSetId, session);
                 BackupSessions.Add(backupSession);

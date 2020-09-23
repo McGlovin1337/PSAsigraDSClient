@@ -38,6 +38,7 @@ namespace PSAsigraDSClient
             public bool PreScan { get; set; }
             public bool CreatedByPolicy { get; set; }
             public DSClientBackupSetNotification[] Notification { get; set; }
+            public string[] SnmpTrapNotification { get; set; }
             public DSClientPrePost[] PrePost { get; set; }
             public int ReadBufferSize { get; set; }
             public bool UseTransmissionCache { get; set; }
@@ -163,6 +164,7 @@ namespace PSAsigraDSClient
                 PreScan = backupSet.getPreScanByDefault();
                 CreatedByPolicy = backupSet.isCreatedByBackupPolicy();
                 Notification = dSClientBackupSetNotifications.ToArray();
+                SnmpTrapNotification = IntEBackupCompletionToArray(backupSet.getSNMPTrapsConditions());
                 PrePost = dSClientPrePosts.ToArray();
                 ReadBufferSize = backupSet.getReadBufferSize();
                 UseTransmissionCache = backupSet.isUsingLocalTransmissionCache();

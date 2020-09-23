@@ -78,20 +78,7 @@ namespace PSAsigraDSClient
                         break;
                 }
 
-                List<string> completion = new List<string>();
-
-                if ((notifyInfo.completion & (int)EBackupCompletion.EBackupCompletion__Incomplete) > 0)
-                    completion.Add("Incomplete");
-                if ((notifyInfo.completion & (int)EBackupCompletion.EBackupCompletion__CompletedWithErrors) > 0)
-                    completion.Add("CompletedWithErrors");
-                if ((notifyInfo.completion & (int)EBackupCompletion.EBackupCompletion__Successful) > 0)
-                    completion.Add("Successful");
-                if ((notifyInfo.completion & (int)EBackupCompletion.EBackupCompletion__CompletedWithWarnings) > 0)
-                    completion.Add("CompletedWithWarnings");
-                /*if ((notifyInfo.completion & (int)EBackupCompletion.EBackupCompletion__UNDEFINED) > 0)
-                    completion.Add("Undefined");*/
-
-                Completion = completion.ToArray();
+                Completion = IntEBackupCompletionToArray(notifyInfo.completion);
 
                 List<string> emailOpt = new List<string>();
 
@@ -115,6 +102,22 @@ namespace PSAsigraDSClient
             {
                 return Method;
             }
+        }
+
+        public static string[] IntEBackupCompletionToArray(int backupCompletion)
+        {
+            List<string> BackupCompletion = new List<string>();
+
+            if ((backupCompletion & (int)EBackupCompletion.EBackupCompletion__Incomplete) > 0)
+                BackupCompletion.Add("Incomplete");
+            if ((backupCompletion & (int)EBackupCompletion.EBackupCompletion__CompletedWithErrors) > 0)
+                BackupCompletion.Add("CompletedWithErrors");
+            if ((backupCompletion & (int)EBackupCompletion.EBackupCompletion__Successful) > 0)
+                BackupCompletion.Add("Successful");
+            if ((backupCompletion & (int)EBackupCompletion.EBackupCompletion__CompletedWithWarnings) > 0)
+                BackupCompletion.Add("CompletedWithWarnings");
+
+            return BackupCompletion.ToArray();
         }
 
         public static ENotificationMethod StringToENotificationMethod(string notifyMethod)
@@ -145,28 +148,28 @@ namespace PSAsigraDSClient
 
         public static int ArrayToNotificationCompletionToInt(string[] notifyCompletion)
         {
-            int notifyValue = 0;
+            int NotifyValue = 0;
 
             foreach (string notifyC in notifyCompletion)
             {
                 switch(notifyC)
                 {
                     case "Incomplete":
-                        notifyValue += 1;
+                        NotifyValue += 1;
                         break;
                     case "CompletedWithErrors":
-                        notifyValue += 2;
+                        NotifyValue += 2;
                         break;
                     case "Successful":
-                        notifyValue += 4;
+                        NotifyValue += 4;
                         break;
                     case "CompletedWithWarnings":
-                        notifyValue += 1024;
+                        NotifyValue += 1024;
                         break;
                 }
             }
 
-            return notifyValue;
+            return NotifyValue;
         }
 
         public static int ArrayToEmailOptionsInt(string[] emailOptions)

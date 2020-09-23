@@ -1,6 +1,5 @@
 ﻿/* To-do:
  * Add CDP Configuration options
- * Add SNMP Trap Notification Config
  * Add Regex Exclusion Config
  * Add MS SQL Set Creation
  * Add VSS SQL Set Creation
@@ -15,14 +14,13 @@ using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
-using static PSAsigraDSClient.BaseDSClientBackupSet;
 using static PSAsigraDSClient.BaseDSClientNotification;
 
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientBackupSet")]
 
-    public class AddDSClientBackupSet: DSClientCmdlet, IDynamicParameters
+    public class AddDSClientBackupSet: BaseDSClientBackupSet, IDynamicParameters
     {
         private Win32FSBackupSetParams win32FSBackupSetParams = null;
         private UnixFSBackupSetParams unixFSBackupSetParams = null;
@@ -109,6 +107,10 @@ namespace PSAsigraDSClient
         [Parameter(Position = 24, ValueFromPipelineByPropertyName = true, HelpMessage = "Email Notification Options")]
         [ValidateSet("DetailedInfo", "AttachDetailedLog", "CompressAttachment", "HtmlFormat")]
         public string[] NotificationEmailOptions { get; set; }
+
+        [Parameter(Position = 25, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Completion Status to send SNMP Traps")]
+        [ValidateSet("Incomplete", "CompletedWithErrors", "Successful", "CompletedWithWarnings")]
+        public string[] SnmpTrapNotifications { get; set; }
 
         public object GetDynamicParameters()
         {
@@ -460,6 +462,9 @@ namespace PSAsigraDSClient
                 backupSetNotification.addOrUpdateNotification(notificationInfo);
                 backupSetNotification.Dispose();
             }
+
+            if (SnmpTrapNotifications != null)
+                NewBackupSet.setSNMPTrapsConditions(ArrayToNotificationCompletionToInt(SnmpTrapNotifications));
 
             // Windows File System specific configuration
             if (DataType == "WindowsFileSystem")

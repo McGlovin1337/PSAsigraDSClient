@@ -28,7 +28,7 @@ namespace PSAsigraDSClient
                 WriteVerbose("Performing search for: " + filter + " ...");
                 find_file_info[] findFileInfos = DSClientBackupSetRestoreView.FindFilesByFileName(filter);
 
-                foreach (var file in findFileInfos)
+                foreach (find_file_info file in findFileInfos)
                 {
                     DSClientBSFileInfo fileInfo = new DSClientBSFileInfo(file);
                     FoundBSFiles.Add(fileInfo);

@@ -18,9 +18,9 @@ using static PSAsigraDSClient.BaseDSClientNotification;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Add, "DSClientBackupSet")]
+    [Cmdlet(VerbsCommon.New, "DSClientBackupSet")]
 
-    public class AddDSClientBackupSet: BaseDSClientBackupSet, IDynamicParameters
+    public class NewDSClientBackupSet: BaseDSClientBackupSet, IDynamicParameters
     {
         private Win32FSBackupSetParams win32FSBackupSetParams = null;
         private UnixFSBackupSetParams unixFSBackupSetParams = null;

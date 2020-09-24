@@ -3,9 +3,9 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Add, "DSClientSchedule")]
+    [Cmdlet(VerbsCommon.New, "DSClientSchedule")]
 
-    public class AddDSClientSchedule: DSClientCmdlet
+    public class NewDSClientSchedule: DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, HelpMessage = "The name of the Schedule")]
         [ValidateNotNullOrEmpty]
@@ -43,10 +43,10 @@ namespace PSAsigraDSClient
             if (ShortName != null)
                 newSchedule.setShortName(ShortName);
 
-            if (CPUThrottle != null)
+            if (MyInvocation.BoundParameters.ContainsKey("CPUThrottle"))
                 newSchedule.setBackupCPUThrottle(CPUThrottle);
 
-            if (ConcurrentBackups != null)
+            if (MyInvocation.BoundParameters.ContainsKey("ConcurrentBackups"))
                 newSchedule.setConcurrentBackupSets(ConcurrentBackups);
 
             if (MyInvocation.BoundParameters.ContainsKey("AdminOnly"))

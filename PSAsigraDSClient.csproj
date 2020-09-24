@@ -50,9 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PSAsigraDSClient\AddDSClientRetentionRule.cs" />
-    <Compile Include="PSAsigraDSClient\AddDSClientBackupSet.cs" />
-    <Compile Include="PSAsigraDSClient\AddDSClientSchedule.cs" />
+    <Compile Include="PSAsigraDSClient\NewDSClientRetentionRule.cs" />
+    <Compile Include="PSAsigraDSClient\NewDSClientBackupSet.cs" />
+    <Compile Include="PSAsigraDSClient\NewDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientActivityLog.cs" />

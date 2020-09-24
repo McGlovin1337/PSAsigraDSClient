@@ -7,9 +7,9 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Add, "DSClientRetentionRule")]
+    [Cmdlet(VerbsCommon.New, "DSClientRetentionRule")]
 
-    public class AddDSClientRetentionRule: DSClientCmdlet
+    public class NewDSClientRetentionRule: DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Retention Rule Name")]
         [ValidateNotNullOrEmpty]

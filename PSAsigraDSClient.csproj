@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PSAsigraDSClient\AddDSClientTimeRetentionRule.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientSchedule.cs" />

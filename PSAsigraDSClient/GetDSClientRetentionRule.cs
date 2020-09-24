@@ -14,7 +14,7 @@ namespace PSAsigraDSClient
         public int RetentionRuleId { get; set; } = 0;
 
         [Parameter(Position = 1, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Name of the Retention Rule")]
-        [ValidateNotNullOrEmpty]
+        [ValidateNotNullOrEmpty, SupportsWildcards]
         public string Name { get; set; }
 
         protected override void ProcessRetentionRule(IEnumerable<DSClientRetentionRule> dSClientRetentionRules)

@@ -1,5 +1,4 @@
 ﻿/* To-Do:
- * Add further Time Based Retention period Parameters (Monthly, Yearly)
  * Add support for Archive Rules
  */
 
@@ -80,6 +79,48 @@ namespace PSAsigraDSClient
         [ValidateSet("Hours", "Days", "Weeks", "Months", "Years")]
         public string WeeklyValidForUnit { get; set; }
 
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Day of Month for Monthly Time Retention")]
+        [ValidateRange(1, 28)]
+        public int MonthlyRetentionDay { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Monthly Retention Time Hour")]
+        [ValidateRange(0, 23)]
+        public int MonthlyRetentionHour { get; set; } = 23;
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Monthly Retention Time Minute")]
+        [ValidateRange(0, 59)]
+        public int MonthlyRetentionMinute { get; set; } = 59;
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Value Monthly Time Retention is Valid for")]
+        public int MonthlyValidForValue { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Unit Monthly Time Retention is Valid for")]
+        [ValidateSet("Hours", "Days", "Weeks", "Months", "Years")]
+        public string MonthlyValidForUnit { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Day of Month for Yearly Time Retention")]
+        [ValidateRange(1, 28)]
+        public int YearlyRetentionMonthDay { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Month for Yearly Time Retention")]
+        [ValidateSet("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")]
+        public string YearlyRetentionMonth { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Yearly Retention Time Hour")]
+        [ValidateRange(0, 23)]
+        public int YearlyRetentionHour { get; set; } = 23;
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Yearly Retention Time Minute")]
+        [ValidateRange(0, 59)]
+        public int YearlyRetentionMinute { get; set; } = 59;
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Value Yearly Time Retention is Valid for")]
+        public int YearlyValidForValue { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Unit Yearly Time Retention is Valid for")]
+        [ValidateSet("Hours", "Days", "Weeks", "Months", "Years")]
+        public string YearlyValidForUnit { get; set; }
+
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Obsolete Data")]
         public SwitchParameter DeleteObsoleteData { get; set; }
 
@@ -137,8 +178,17 @@ namespace PSAsigraDSClient
             if ((MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && !MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue")) || (!MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue")))
                 throw new ParameterBindingException("IntervalTimeValue and IntervalTimeUnit must be specified with IntervalValidForValue and IntervalValidForUnit");
 
-            if ((WeeklyRetentionDay != null && (!MyInvocation.BoundParameters.ContainsKey("WeeklyValidForValue") || WeeklyValidForUnit == null)))
+            if (WeeklyRetentionDay != null && (!MyInvocation.BoundParameters.ContainsKey("WeeklyValidForValue") || WeeklyValidForUnit == null))
                 throw new ParameterBindingException("WeeklyValidForValue and WeeklyValidForUnit must be specified with WeeklyRetentionDay");
+
+            if (MyInvocation.BoundParameters.ContainsKey("MonthlyRetentionDay") && (!MyInvocation.BoundParameters.ContainsKey("MonthlyValidForValue") || MonthlyValidForUnit == null))
+                throw new ParameterBindingException("MonthlyValidForValue and MonthlyValidForUnit must be specified with MonthlyRetentionDay");
+
+            if ((MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay") && YearlyRetentionMonth == null) || (!MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay") && YearlyRetentionMonth != null))
+                throw new ParameterBindingException("YearlyRetentionMonthDay and YearlyRetentionMonth must both be specified together");
+
+            if (MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay") && (!MyInvocation.BoundParameters.ContainsKey("YearlyValidForValue") || YearlyValidForUnit == null))
+                throw new ParameterBindingException("YearlyValidForValue and YearlyValidForUnit must be specified with YearlyRetentionMonthDay and YearlyRetentionMonth");
 
             if (MyInvocation.BoundParameters.ContainsKey("MoveObsoleteData") && MyInvocation.BoundParameters.ContainsKey("DeleteObsoleteData"))
                 throw new ParameterBindingException("MoveObsoleteData cannot be specified with DeleteObsoleteData");
@@ -256,6 +306,58 @@ namespace PSAsigraDSClient
                 NewRetentionRule.addTimeRetentionOption(weeklyTimeRetention);
             }
 
+            // Monthly based Time Retention
+            if (MyInvocation.BoundParameters.ContainsKey("MonthlyRetentionDay"))
+            {
+                MonthlyTimeRetentionOption monthlyTimeRetention = DSClientRetentionRuleMgr.createMonthlyTimeRetention();
+
+                monthlyTimeRetention.setDayOfMonth(MonthlyRetentionDay);
+
+                time_in_day monthlyTime = new time_in_day
+                {
+                    hour = MonthlyRetentionHour,
+                    minute = MonthlyRetentionMinute,
+                    second = 0
+                };
+                monthlyTimeRetention.setSnapshotTime(monthlyTime);
+
+                retention_time_span validTimeSpan = new retention_time_span
+                {
+                    period = MonthlyValidForValue,
+                    unit = StringToRetentionTimeUnit(MonthlyValidForUnit)
+                };
+                monthlyTimeRetention.setValidFor(validTimeSpan);
+
+                NewRetentionRule.addTimeRetentionOption(monthlyTimeRetention);
+            }
+
+            // Yearly based Time Retention
+            if (MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay"))
+            {
+                YearlyTimeRetentionOption yearlyTimeRetention = DSClientRetentionRuleMgr.createYearlyTimeRetention();
+
+                yearlyTimeRetention.setDayOfMonth(YearlyRetentionMonthDay);
+
+                yearlyTimeRetention.setTriggerMonth(StringToEMonth(YearlyRetentionMonth));
+
+                time_in_day yearlyTime = new time_in_day
+                {
+                    hour = YearlyRetentionHour,
+                    minute = YearlyRetentionMinute,
+                    second = 0
+                };
+                yearlyTimeRetention.setSnapshotTime(yearlyTime);
+
+                retention_time_span validTimeSpan = new retention_time_span
+                {
+                    period = YearlyValidForValue,
+                    unit = StringToRetentionTimeUnit(YearlyValidForUnit)
+                };
+                yearlyTimeRetention.setValidFor(validTimeSpan);
+
+                NewRetentionRule.addTimeRetentionOption(yearlyTimeRetention);
+            }
+
             // Move or Delete Obsolete Data
             if (DeleteObsoleteData == true)
                 NewRetentionRule.setMoveObsoleteDataToBLM(false);
@@ -307,6 +409,53 @@ namespace PSAsigraDSClient
 
             NewRetentionRule.Dispose();
             DSClientRetentionRuleMgr.Dispose();
+        }
+
+        private static EMonth StringToEMonth(string month)
+        {
+            EMonth Month = EMonth.EMonth__UNDEFINED;
+
+            switch(month)
+            {
+                case "January":
+                    Month = EMonth.EMonth__January;
+                    break;
+                case "February":
+                    Month = EMonth.EMonth__February;
+                    break;
+                case "March":
+                    Month = EMonth.EMonth__March;
+                    break;
+                case "April":
+                    Month = EMonth.EMonth__April;
+                    break;
+                case "May":
+                    Month = EMonth.EMonth__May;
+                    break;
+                case "June":
+                    Month = EMonth.EMonth__June;
+                    break;
+                case "July":
+                    Month = EMonth.EMonth__July;
+                    break;
+                case "August":
+                    Month = EMonth.EMonth__August;
+                    break;
+                case "September":
+                    Month = EMonth.EMonth__September;
+                    break;
+                case "October":
+                    Month = EMonth.EMonth__October;
+                    break;
+                case "November":
+                    Month = EMonth.EMonth__November;
+                    break;
+                case "December":
+                    Month = EMonth.EMonth__December;
+                    break;
+            }
+
+            return Month;
         }
 
         private static EWeekDay StringToEWeekDay(string weekDay)

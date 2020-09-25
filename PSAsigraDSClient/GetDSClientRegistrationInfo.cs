@@ -23,24 +23,24 @@ namespace PSAsigraDSClient
             public string AccountNumber { get; set; }
             public string CustomerName { get; set; }
             public string ClientNumber { get; set; }
-            public string DSSystemAddress { get; set; }
+            public string DsSystemAddress { get; set; }
             public string AccountKey { get; set; }
             public string AccountKeyEncryption { get; set; }
             public string PrivateKey { get; set; }
             public string PrivateKeyEncryption { get; set; }
-            public bool EscrowKey { get; set; }
+            public bool EscrowKeys { get; set; }
 
             public DSClientRegistrationInfo(dsc_reg_info regInfo)
             {
                 AccountNumber = regInfo.account_num;
                 CustomerName = regInfo.customer_name;
                 ClientNumber = regInfo.client_num;
-                DSSystemAddress = regInfo.dssys_ip_addr;
+                DsSystemAddress = regInfo.dssys_ip_addr;
                 AccountKey = regInfo.account_key;
                 AccountKeyEncryption = EEncryptionTypeToString(regInfo.account_key_enc);
                 PrivateKey = regInfo.private_key;
                 PrivateKeyEncryption = EEncryptionTypeToString(regInfo.private_key_enc);
-                EscrowKey = regInfo.escrow_enc_key;
+                EscrowKeys = regInfo.escrow_enc_key;
             }
 
             private static string EEncryptionTypeToString(EEncryptionType encryptionType)

@@ -107,6 +107,7 @@
     <Compile Include="PSAsigraDSClient\SearchDSClientBackupSetFiles.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMultiFactorAuthUser.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientRegistrationInfo.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSMTPNotification.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSNMPHeartbeat.cs" />

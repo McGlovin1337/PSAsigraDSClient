@@ -6,6 +6,7 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Get, "DSClientTools")]
+    [OutputType(typeof(DSClientTools))]
 
     public class GetDSClientTools: DSClientCmdlet
     {

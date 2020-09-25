@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="PSAsigraDSClient\AddDSClientTimeRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionRule.cs" />
+    <Compile Include="PSAsigraDSClient\CompareDSClientEncryptionKeys.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientNocSettings.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientTools.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientRetentionRule.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientSMTPNotification.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSNMPInfo.cs" />
+    <Compile Include="PSAsigraDSClient\PublishDSClientEncryptionKeys.cs" />
     <Compile Include="PSAsigraDSClient\RegisterDSClient.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientRetentionRule.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetSync.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientSystemActivity.cs" />
     <Compile Include="PSAsigraDSClient\StopDSClientActivity.cs" />
+    <Compile Include="PSAsigraDSClient\UnpublishDSClientEncryptionKeys.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\Add-DSClientSchedule.md" />

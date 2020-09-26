@@ -1,8 +1,4 @@
-﻿/* To-do:
- * Add Name Parameter with Wildcard support
- */
-
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using AsigraDSClientApi;
 
 namespace PSAsigraDSClient

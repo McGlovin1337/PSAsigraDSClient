@@ -1,14 +1,4 @@
-﻿/* To-do:
- * Add CDP Configuration options
- * Add Regex Exclusion Config
- * Add MS SQL Set Creation
- * Add VSS SQL Set Creation
- * Add VSS Exchange Set Creation
- * Add VMWare VADP Set Creation
- * Add DB2 Set Creation
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;

@@ -1,13 +1,4 @@
-﻿/* To-do:
- * Add ActivityId Parameter
- * Add ActivityType Parameter
- * Add Status Parameter
- * Add BackupSetId Parameter
- * Add ScheduleId Parameter
- * Add User Parameter
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;

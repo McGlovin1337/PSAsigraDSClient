@@ -1,8 +1,4 @@
-﻿/* To-Do:
- * Add Directory filtering
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Management.Automation;
 using AsigraDSClientApi;

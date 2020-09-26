@@ -1,8 +1,4 @@
-﻿/* To-Do:
- * Add support for Archive Rules
- */
-
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using AsigraDSClientApi;
 
 namespace PSAsigraDSClient

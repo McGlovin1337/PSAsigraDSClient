@@ -1,30 +1,60 @@
-﻿using System.Management.Automation;
+﻿using System.Collections.Generic;
+using System.Management.Automation;
 using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Start, "DSClientBackupSetRetention")]
+    [OutputType(typeof(DSClientStartBackupSetActivity))]
 
-    public class StartDSClientBackupSetRetention: DSClientCmdlet
+    public class StartDSClientBackupSetRetention: BaseDSClientStartBackupSetActivity
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set Id")]
-        [ValidateNotNullOrEmpty]
-        public int Id { get; set; }
-
-        protected override void DSClientProcessRecord()
+        protected override void ProcessBackupSet(BackupSet backupSet)
         {
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
-            BackupSet backupSet = DSClientSession.backup_set(Id);
-
             WriteVerbose("Starting Backup Set Retention Activity...");
             GenericActivity retentionActivity = backupSet.enforceRetention();
 
-            int retentionActivityId = retentionActivity.getID();
+            DSClientStartBackupSetActivity startActivity = new DSClientStartBackupSetActivity
+            {
+                ActivityId = retentionActivity.getID(),
+                BackupSetId = backupSet.getID(),
+                Name = backupSet.getName()
+            };
 
-            WriteObject("Backup Set Retention Activity started with Id " + retentionActivityId);
+            WriteObject(startActivity);
 
             retentionActivity.Dispose();
-            backupSet.Dispose();
+        }
+
+        protected override void ProcessBackupSets(BackupSet[] backupSets)
+        {
+            List<DSClientStartBackupSetActivity> startActivity = new List<DSClientStartBackupSetActivity>();
+
+            foreach (BackupSet set in backupSets)
+            {
+                try
+                {
+                    WriteVerbose("Starting a Backup Set Retention Activity...");
+                    GenericActivity retentionActivity = set.enforceRetention();
+                    
+                    startActivity.Add( new DSClientStartBackupSetActivity
+                    {
+                        ActivityId = retentionActivity.getID(),
+                        BackupSetId = set.getID(),
+                        Name = set.getName()
+                    });
+
+                    retentionActivity.Dispose();
+                }
+                catch (APIException e)
+                {
+                    WriteWarning(e.Message);
+
+                    continue;
+                }
+            }
+
+            startActivity.ForEach(WriteObject);
         }
     }
 }

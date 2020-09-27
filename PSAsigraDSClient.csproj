@@ -61,7 +61,6 @@
     <Compile Include="PSAsigraDSClient\NewDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientSNMPCommunity.cs" />
-    <Compile Include="PSAsigraDSClient\BaseDSClientActivityLog.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetDataBrowser.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetInfo.cs" />

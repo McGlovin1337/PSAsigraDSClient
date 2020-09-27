@@ -11,6 +11,7 @@ namespace PSAsigraDSClient
     public class RestoreDSClientOrphanedBackupSet: BaseDSClientOrphanedBackupSet
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Select Orphaned Backup Set by Name to recover")]
+        [SupportsWildcards]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
@@ -26,8 +27,15 @@ namespace PSAsigraDSClient
         {
             IEnumerable<OrphanedBackupSet> filteredSets = null;
 
+            WildcardOptions wcOptions = WildcardOptions.IgnoreCase
+                                            | WildcardOptions.Compiled;
+
             if (Name != null)
-                filteredSets = orphanedBackupSets.Where(set => set.getInfo().name == Name);
+            {
+                WildcardPattern wcPattern = new WildcardPattern(Name, wcOptions);
+
+                filteredSets = orphanedBackupSets.Where(set => wcPattern.IsMatch(set.getInfo().name));
+            }
 
             if (Computer != null)
                 filteredSets = (filteredSets == null) ? orphanedBackupSets.Where(set => set.getInfo().computer == Computer) : filteredSets.Where(set => set.getInfo().computer == Computer);

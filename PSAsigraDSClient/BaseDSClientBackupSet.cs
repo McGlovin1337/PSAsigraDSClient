@@ -658,7 +658,7 @@ namespace PSAsigraDSClient
                         Type = "Exclusion";
                         break;
                     case EBackupSetItemType.EBackupSetItemType__RegExExclusion:
-                        Type = "RegExExclusion";
+                        Type = "RegexExclusion";
                         break;
                 }
 

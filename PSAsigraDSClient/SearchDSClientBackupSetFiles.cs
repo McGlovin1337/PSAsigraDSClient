@@ -12,6 +12,7 @@ namespace PSAsigraDSClient
     public class SearchDSClientBackupSetFiles: BaseDSClientBackupSetDataBrowser
     {
         [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the File Search Filters")]
+        [SupportsWildcards]
         [ValidateNotNullOrEmpty]
         public string[] Filter { get; set; }
 

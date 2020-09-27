@@ -34,71 +34,85 @@ namespace PSAsigraDSClient
         [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
         public string SetType { get; set; }
 
-        [Parameter(Position = 5, ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Include in Backup Set")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Include in Backup Set")]
         public string[] IncludeItem { get; set; }
 
-        [Parameter(Position = 6, ValueFromPipelineByPropertyName = true, HelpMessage = "Max Number of Generations for Included Items")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Max Number of Generations for Included Items")]
         public int MaxGenerations { get; set; }
 
-        [Parameter(Position = 7, ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Exclude from Backup Set")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Exclude from Backup Set")]
         public string[] ExcludeItem { get; set; }
 
-        [Parameter(Position = 8, ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Set the Compression Method to use")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Regex Item Exclusion Patterns")]
+        [ValidateNotNullOrEmpty]
+        public string[] RegexExcludeItem { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Path for Regex Exclusion Item")]
+        [ValidateNotNullOrEmpty]
+        public string RegexExclusionPath { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to also Exclude Directories with Regex pattern")]
+        public SwitchParameter RegexExcludeDirectory { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify if Regex Exclusions Items are case insensitive")]
+        public SwitchParameter RegexCaseInsensitive { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Set the Compression Method to use")]
         [ValidateSet("None", "ZLIB", "LZOP", "ZLIB_LO", "ZLIB_MED", "ZLIB_HI")]
         public string Compression { get; set; }
 
-        [Parameter(Position = 9, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Schedule this Backup Set will use")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Schedule this Backup Set will use")]
         public int ScheduleId { get; set; }
 
-        [Parameter(Position = 10, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Retention Rule this Backup Set will use")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Retention Rule this Backup Set will use")]
         public int RetentionRuleId { get; set; }
 
-        [Parameter(Position = 11, ValueFromPipelineByPropertyName = true, HelpMessage = "Schedule Priority of Backup Set when assigned to Schedule")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Schedule Priority of Backup Set when assigned to Schedule")]
         public int SchedulePriority { get; set; } = 1;
 
-        [Parameter(Position = 12, HelpMessage = "Force Re-Backup of File even if it hasn't been modified")]
+        [Parameter(HelpMessage = "Force Re-Backup of File even if it hasn't been modified")]
         public SwitchParameter ForceBackup { get; set; }
 
-        [Parameter(Position = 13, HelpMessage = "Set to PreScan before Backup")]
+        [Parameter(HelpMessage = "Set to PreScan before Backup")]
         public SwitchParameter PreScan { get; set; }
 
-        [Parameter(Position = 14, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Read Buffer Size")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Read Buffer Size")]
         public int ReadBufferSize { get; set; } = 0;
 
-        [Parameter(Position = 15, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Error limit")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Error limit")]
         public int BackupErrorLimit { get; set; } = 0;
 
-        [Parameter(Position = 16, HelpMessage = "Set to use Detailed Log")]
+        [Parameter(HelpMessage = "Set to use Detailed Log")]
         public SwitchParameter UseDetailedLog { get; set; }
 
-        [Parameter(Position = 17, HelpMessage = "Set to use Infinate BLM Generations")]
+        [Parameter(HelpMessage = "Set to use Infinate BLM Generations")]
         public SwitchParameter InfinateBLMGenerations { get; set; }
 
-        [Parameter(Position = 18, HelpMessage = "Set to use Local Storage")]
+        [Parameter(HelpMessage = "Set to use Local Storage")]
         public SwitchParameter UseLocalStorage { get; set; }
 
-        [Parameter(Position = 19, ValueFromPipelineByPropertyName = true, HelpMessage = "Local Storage Path For Local Backups and Cache")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Local Storage Path For Local Backups and Cache")]
         public string LocalStoragePath { get; set; }
 
-        [Parameter(Position = 20, HelpMessage = "Set to use Local Transmission Cache for Offsite Backup Sets")]
+        [Parameter(HelpMessage = "Set to use Local Transmission Cache for Offsite Backup Sets")]
         public SwitchParameter UseTransmissionCache { get; set; }
 
-        [Parameter(Position = 21, ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
         [ValidateSet("Email", "Pager", "Broadcast", "Event")]
         public string NotificationMethod { get; set; }
 
-        [Parameter(Position = 22, ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Recipient")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Recipient")]
         public string NotificationRecipient { get; set; }
 
-        [Parameter(Position = 23, ValueFromPipelineByPropertyName = true, HelpMessage = "Completion Status to Notify on")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Completion Status to Notify on")]
         [ValidateSet("Incomplete", "CompletedWithErrors", "Successful", "CompletedWithWarnings")]
         public string[] NotificationCompletion { get; set; }
 
-        [Parameter(Position = 24, ValueFromPipelineByPropertyName = true, HelpMessage = "Email Notification Options")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Email Notification Options")]
         [ValidateSet("DetailedInfo", "AttachDetailedLog", "CompressAttachment", "HtmlFormat")]
         public string[] NotificationEmailOptions { get; set; }
 
-        [Parameter(Position = 25, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Completion Status to send SNMP Traps")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Completion Status to send SNMP Traps")]
         [ValidateSet("Incomplete", "CompletedWithErrors", "Successful", "CompletedWithWarnings")]
         public string[] SnmpTrapNotifications { get; set; }
 
@@ -243,6 +257,9 @@ namespace PSAsigraDSClient
             if (DataType == "UnixFileSystem" && DSClientOSType.OsType != "Linux")
                 throw new ParameterBindingException("Unix File System Backup Sets can only be created on a Linux DS-Client");
 
+            if ((MyInvocation.BoundParameters.ContainsKey("RegexExcludeDirectory") || MyInvocation.BoundParameters.ContainsKey("RegexCaseInsensitive")) && RegexExcludeItem == null)
+                throw new ParameterBindingException("RegexExcludeDirectory and RegexCaseInsensitive Parameters require RegexExcludeItem Parameter");
+
             if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByDate") && MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByTimeSpan"))
                 throw new ParameterBindingException("ExcludeOldFilesByDate and ExcludeOldFilesByTimeSpan cannot both be specified");
 
@@ -379,7 +396,7 @@ namespace PSAsigraDSClient
 
                 if (IncludeItem != null)
                 {
-                    foreach (var item in IncludeItem)
+                    foreach (string item in IncludeItem)
                     {
                         BackupSetInclusionItem inclusionItem = dataSourceBrowser.createInclusionItem(Computer, item, MaxGenerations);
 
@@ -426,10 +443,31 @@ namespace PSAsigraDSClient
                 // Backup Set Exclusion Items
                 if (ExcludeItem != null)
                 {
-                    foreach (var item in ExcludeItem)
+                    foreach (string item in ExcludeItem)
                     {
                         BackupSetFileItem exclusionItem = dataSourceBrowser.createExclusionItem(Computer, item);
                         backupSetItems.Add(exclusionItem);
+                    }
+                }
+
+                // Backup Set Regex Exclusion Items
+                if (RegexExcludeItem != null)
+                {
+                    foreach (string item in RegexExcludeItem)
+                    {
+                        BackupSetRegexExclusion regexExclusion = dataSourceBrowser.createRegexExclusion(Computer, RegexExclusionPath, item);
+
+                        if (RegexExcludeDirectory == true)
+                            regexExclusion.setMatchDirectories(true);
+                        else
+                            regexExclusion.setMatchDirectories(false);
+
+                        if (RegexCaseInsensitive == true)
+                            regexExclusion.setCaseSensitive(false);
+                        else
+                            regexExclusion.setCaseSensitive(true);
+
+                        backupSetItems.Add(regexExclusion);
                     }
                 }
 

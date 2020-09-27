@@ -11,9 +11,14 @@ namespace PSAsigraDSClient
 
     public class SearchDSClientBackupSetFiles: BaseDSClientBackupSetDataBrowser
     {
-        [Parameter(Position = 1, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the File Search Filters")]
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the File Search Filters")]
         [ValidateNotNullOrEmpty]
         public string[] Filter { get; set; }
+
+        [Parameter(Position = 2, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Directory Search Filters")]
+        [SupportsWildcards]
+        [ValidateNotNullOrEmpty]
+        public string[] DirectoryFilter { get; set; }
 
         protected override void ProcessBackupSetData(BackupSetRestoreView DSClientBackupSetRestoreView)
         {
@@ -29,6 +34,27 @@ namespace PSAsigraDSClient
                     DSClientBSFileInfo fileInfo = new DSClientBSFileInfo(file);
                     FoundBSFiles.Add(fileInfo);
                 }
+            }
+
+            if (MyInvocation.BoundParameters.ContainsKey("DirectoryFilter"))
+            {
+                List<DSClientBSFileInfo> dirFilterFileInfo = new List<DSClientBSFileInfo>();
+
+                WildcardOptions wcOptions = WildcardOptions.IgnoreCase |
+                                        WildcardOptions.Compiled;
+
+                foreach (string dir in DirectoryFilter)
+                {
+                    WildcardPattern wcPattern = new WildcardPattern(dir, wcOptions);
+
+                    foreach (DSClientBSFileInfo file in FoundBSFiles)
+                    {
+                        if (wcPattern.IsMatch(file.Directory))
+                            dirFilterFileInfo.Add(file);
+                    }
+                }
+
+                FoundBSFiles = dirFilterFileInfo;
             }
 
             FoundBSFiles.ForEach(WriteObject);

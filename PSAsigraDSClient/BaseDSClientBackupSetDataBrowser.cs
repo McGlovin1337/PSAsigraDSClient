@@ -10,19 +10,21 @@ namespace PSAsigraDSClient
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Backup Set to Search")]
         public int BackupSetId { get; set; }
 
-        [Parameter(Position = 2, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Date to Search From")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Date to Search From")]
+        [Alias("DateStart")]
         public DateTime DateFrom { get; set; } = DateTime.Parse("1/1/1970");
 
-        [Parameter(Position = 3, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Date to Search To")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Date to Search To")]
+        [Alias("DateEnd")]
         public DateTime DateTo { get; set; } = DateTime.Now;
 
-        [Parameter(Position = 4, HelpMessage = "Specify to Hide Files Deleted from Source")]
+        [Parameter(HelpMessage = "Specify to Hide Files Deleted from Source")]
         public SwitchParameter HideDeleted { get; set; }
 
-        [Parameter(Position = 5, HelpMessage = "Specify to Only Show Deleted files from Source")]
+        [Parameter(HelpMessage = "Specify to Only Show Deleted files from Source")]
         public SwitchParameter ShowOnlyDeleted { get; set; }
 
-        [Parameter(Position = 1, HelpMessage = "Specify Date for Deleted Files from Source")]
+        [Parameter(HelpMessage = "Specify Date for Deleted Files from Source")]
         public DateTime DeletedDate { get; set; } = DateTime.Now.AddDays(-30);
 
         protected abstract void ProcessBackupSetData(BackupSetRestoreView DSClientBackupSetRestoreView);

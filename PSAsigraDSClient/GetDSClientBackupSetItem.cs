@@ -17,7 +17,7 @@ namespace PSAsigraDSClient
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Include Path Sub-Items")]
         public SwitchParameter IncludeSubItems { get; set; }
 
-        protected override void ProcessBackupSetData(BackupSetRestoreView DSClientBackupSetRestoreView)
+        protected override void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView)
         {
             SelectableItem item = null;
             long itemId = 0;
@@ -26,39 +26,26 @@ namespace PSAsigraDSClient
             WriteVerbose("Retrieving Item Info...");
             if (Path != null)
             {
-                item = DSClientBackupSetRestoreView.getItem(Path);
+                item = DSClientBackedUpDataView.getItem(Path);
                 itemId = item.id;
-            }
 
-            file_generations[] itemGens = null;
+                selectable_size itemSize = DSClientBackedUpDataView.getItemSize(itemId);
 
-            if (itemId > 0)
-            {
-                itemGens = DSClientBackupSetRestoreView.getItemGenerations(itemId);
-
-
-
-                foreach (var generation in itemGens)
-                {
-                    DSClientBackupSetItemInfo itemInfo = new DSClientBackupSetItemInfo(item, generation);
-                    ItemInfo.Add(itemInfo);
-                }
+                DSClientBackupSetItemInfo itemInfo = new DSClientBackupSetItemInfo(item, itemSize);
+                ItemInfo.Add(itemInfo);
             }
 
             if (IncludeSubItems == true)
             {
                 WriteVerbose("Retrieving Sub-Item Info...");
-                SelectableItem[] subItems = DSClientBackupSetRestoreView.getSubItemsByCategory(itemId, ESelectableItemCategory.ESelectableItemCategory__FilesAndDirectories);
+                SelectableItem[] subItems = DSClientBackedUpDataView.getSubItemsByCategory(itemId, ESelectableItemCategory.ESelectableItemCategory__FilesAndDirectories);
 
                 foreach (var subItem in subItems)
                 {
-                    file_generations[] subItemGens = DSClientBackupSetRestoreView.getItemGenerations(subItem.id);
+                    selectable_size itemSize = DSClientBackedUpDataView.getItemSize(subItem.id);
 
-                    foreach (var generation in subItemGens)
-                    {
-                        DSClientBackupSetItemInfo itemInfo = new DSClientBackupSetItemInfo(item, generation);
-                        ItemInfo.Add(itemInfo);
-                    }
+                    DSClientBackupSetItemInfo itemInfo = new DSClientBackupSetItemInfo(item, itemSize);
+                    ItemInfo.Add(itemInfo);
                 }
             }
 
@@ -67,23 +54,23 @@ namespace PSAsigraDSClient
 
         private class DSClientBackupSetItemInfo
         {
+            public long ItemId { get; set; }
             public string Name { get; set; }
             public string DataType { get; set; }
             public long DataSize { get; set; }
-            public DateTime BackupTime { get; set; }
-            public DateTime ModifiedTime { get; set; }
+            public int FileCount { get; set; }
             public bool IsFile { get; set; }
-            public long StreamSize { get; set; }
+            public bool Selectable { get; set; }
 
-            public DSClientBackupSetItemInfo(SelectableItem item, file_generations itemGens)
+            public DSClientBackupSetItemInfo(SelectableItem item, selectable_size itemSize)
             {
+                ItemId = item.id;
                 Name = item.name;
                 DataType = EBrowseItemTypeToString(item.data_type);
-                DataSize = itemGens.data_size;
-                BackupTime = UnixEpochToDateTime(itemGens.backup_time);
-                ModifiedTime = UnixEpochToDateTime(itemGens.modification_time);
+                DataSize = itemSize.data_size;
+                FileCount = itemSize.file_count;
                 IsFile = item.is_file;
-                StreamSize = itemGens.stream_size;
+                Selectable = item.is_selectable;
             }
 
             private string EBrowseItemTypeToString(EBrowseItemType itemType)

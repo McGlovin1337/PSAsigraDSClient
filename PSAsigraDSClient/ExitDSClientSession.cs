@@ -8,6 +8,25 @@ namespace PSAsigraDSClient
     {
         protected override void ProcessRecord()
         {
+            // Check for a previous Backup Set Validation View stored in Session State
+            WriteVerbose("Checking for previous DS-Client Validation View Sessions...");
+            BackupSetValidationView previousValidationSession = SessionState.PSVariable.GetValue("ValidateView", null) as BackupSetValidationView;
+
+            // If a previous session is found, remove it
+            if (previousValidationSession != null)
+            {
+                WriteVerbose("Previous Validation View found, attempting to Dispose...");
+                try
+                {
+                    previousValidationSession.Dispose();
+                }
+                catch
+                {
+                    WriteVerbose("Previous Session failed to Dispose, deleting session...");
+                }
+                SessionState.PSVariable.Remove("ValidateView");
+            }
+
             WriteVerbose("Checking for existing DSClient Sessions...");
             ClientConnection previousSession = SessionState.PSVariable.GetValue("DSClientSession", null) as ClientConnection;
 

@@ -21,14 +21,14 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty]
         public string[] DirectoryFilter { get; set; }
 
-        protected override void ProcessBackupSetData(BackupSetRestoreView DSClientBackupSetRestoreView)
+        protected override void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView)
         {
             List<DSClientBSFileInfo> FoundBSFiles = new List<DSClientBSFileInfo>();
 
             foreach (string filter in Filter)
             {
                 WriteVerbose("Performing search for: " + filter + " ...");
-                find_file_info[] findFileInfos = DSClientBackupSetRestoreView.FindFilesByFileName(filter);
+                find_file_info[] findFileInfos = DSClientBackedUpDataView.FindFilesByFileName(filter);
 
                 foreach (find_file_info file in findFileInfos)
                 {

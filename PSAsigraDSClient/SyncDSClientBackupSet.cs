@@ -4,7 +4,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsLifecycle.Start, "DSClientBackupSetSync")]
+    [Cmdlet(VerbsData.Sync, "DSClientBackupSet")]
     [OutputType(typeof(DSClientStartBackupSetActivity))]
 
     public class StartDSClientBackupSetSync: BaseDSClientStartBackupSetActivity

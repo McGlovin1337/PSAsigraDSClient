@@ -55,6 +55,7 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientStartBackupSetActivity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\CompareDSClientEncryptionKeys.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientAdvancedConfig.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientNocSettings.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientTools.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetValidation.cs" />

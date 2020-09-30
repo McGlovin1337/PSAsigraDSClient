@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -35,6 +36,10 @@ namespace PSAsigraDSClient
             public string Name { get; set; }
             public int[] BackupSets { get; set; }
             public DSClientTimeRetention[] TimeRetention { get; set; }
+            public string IntervalTimeRetention { get; set; }
+            public string WeeklyTimeRetention { get; set; }
+            public string MonthlyTimeRetention { get; set; }
+            public string YearlyTimeRetention { get; set; }
             public DSClientArchiveRule[] ArchiveRule { get; set; }
             public bool ArchiveSpecialFiles { get; set; }
             public bool ArchiveLatestSpecialFiles { get; set; }
@@ -114,12 +119,67 @@ namespace PSAsigraDSClient
         public class DSClientTimeRetention
         {
             public string Type { get; set; }
-            public DSClientRetentionTimeSpan TimePeriod { get; set; }
+            public DSClientRetentionTimeSpan ValidFor { get; set; }
+            public DSClientRetentionTimeSpan IntervalRepeat { get; set; }
+            public TimeInDay SnapshotTime { get; set; }
+            public string WeeklyDay { get; set; }            
+            public string MonthlyDay { get; set; }
+            public string YearlyMonth { get; set; }
 
             public DSClientTimeRetention(TimeRetentionOption timeRetention)
             {
                 ETimeRetentionType type = timeRetention.getType();
-                retention_time_span period = timeRetention.getValidFor();
+                retention_time_span validFor = timeRetention.getValidFor();
+
+                Type = ETimeRetentionTypeToString(type);
+                ValidFor = new DSClientRetentionTimeSpan(validFor);
+
+                if (type == ETimeRetentionType.ETimeRetentionType__Interval)
+                {
+                    IntervalTimeRetentionOption intervalTimeRetention = IntervalTimeRetentionOption.from(timeRetention);
+                    IntervalRepeat = new DSClientRetentionTimeSpan(intervalTimeRetention.getRepeatTime());
+                }
+                else if (type == ETimeRetentionType.ETimeRetentionType__Weekly)
+                {
+                    WeeklyTimeRetentionOption weeklyTimeRetention = WeeklyTimeRetentionOption.from(timeRetention);
+                    SnapshotTime = new TimeInDay(weeklyTimeRetention.getSnapshotTime());
+                    WeeklyDay = EWeekDayToString(weeklyTimeRetention.getTriggerDay());
+                }
+                else if (type == ETimeRetentionType.ETimeRetentionType__Monthly)
+                {
+                    MonthlyTimeRetentionOption monthlyTimeRetention = MonthlyTimeRetentionOption.from(timeRetention);
+                    SnapshotTime = new TimeInDay(monthlyTimeRetention.getSnapshotTime());
+                    MonthlyDay = MonthlyDayToString(monthlyTimeRetention.getDayOfMonth());
+                }
+                else if (type == ETimeRetentionType.ETimeRetentionType__Yearly)
+                {
+                    YearlyTimeRetentionOption yearlyTimeRetention = YearlyTimeRetentionOption.from(timeRetention);
+                    SnapshotTime = new TimeInDay(yearlyTimeRetention.getSnapshotTime());
+                    MonthlyDay = MonthlyDayToString(yearlyTimeRetention.getDayOfMonth());
+                    YearlyMonth = EMonthToString(yearlyTimeRetention.getTriggerMonth());
+                }
+            }
+
+            private string MonthlyDayToString(int day)
+            {
+                string Day = null;
+
+                if (day >= 28)
+                    return "Last";
+                else if (day > 0)
+                    return day.ToString();
+
+                return Day;
+            }
+
+            public override string ToString()
+            {
+                return Type;
+            }
+
+            private string ETimeRetentionTypeToString(ETimeRetentionType type)
+            {
+                string Type = null;
 
                 switch (type)
                 {
@@ -140,11 +200,6 @@ namespace PSAsigraDSClient
                         break;
                 }
 
-                TimePeriod = new DSClientRetentionTimeSpan(period);
-            }
-
-            public override string ToString()
-            {
                 return Type;
             }
         }

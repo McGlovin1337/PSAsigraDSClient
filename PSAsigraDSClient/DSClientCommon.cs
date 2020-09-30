@@ -84,6 +84,53 @@ namespace PSAsigraDSClient
             return WeekDay;
         }
 
+        public static string EMonthToString(EMonth month)
+        {
+            string Month = null;
+
+            switch(month)
+            {
+                case EMonth.EMonth__January:
+                    Month = "January";
+                    break;
+                case EMonth.EMonth__February:
+                    Month = "February";
+                    break;
+                case EMonth.EMonth__March:
+                    Month = "March";
+                    break;
+                case EMonth.EMonth__April:
+                    Month = "April";
+                    break;
+                case EMonth.EMonth__May:
+                    Month = "May";
+                    break;
+                case EMonth.EMonth__June:
+                    Month = "June";
+                    break;
+                case EMonth.EMonth__July:
+                    Month = "July";
+                    break;
+                case EMonth.EMonth__August:
+                    Month = "August";
+                    break;
+                case EMonth.EMonth__September:
+                    Month = "September";
+                    break;
+                case EMonth.EMonth__October:
+                    Month = "October";
+                    break;
+                case EMonth.EMonth__November:
+                    Month = "November";
+                    break;
+                case EMonth.EMonth__December:
+                    Month = "December";
+                    break;
+            }
+
+            return Month;
+        }
+
         public static DateTime UnixEpochToDateTime(int epoch)
         {
             DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(epoch);

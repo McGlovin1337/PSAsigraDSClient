@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
@@ -20,6 +21,9 @@ namespace PSAsigraDSClient
         [SupportsWildcards]
         [ValidateNotNullOrEmpty]
         public string[] DirectoryFilter { get; set; }
+
+        [Parameter(HelpMessage = "Specify to display the most recent Generation only")]
+        public SwitchParameter LatestGenerationOnly { get; set; }
 
         protected override void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView)
         {
@@ -58,6 +62,15 @@ namespace PSAsigraDSClient
                 FoundBSFiles = dirFilterFileInfo;
             }
 
+            // If only displaying the latest generation only, then sort the list, first by Path then GenerationId descending and finally remove duplicates
+            if (LatestGenerationOnly)
+            {
+                FoundBSFiles = FoundBSFiles.OrderBy(found => found.Path)
+                        .ThenByDescending(found => found.GenerationId)
+                        .Distinct(new FileInfoComparer())
+                        .ToList();
+            }
+
             FoundBSFiles.ForEach(WriteObject);
         }
 
@@ -82,6 +95,19 @@ namespace PSAsigraDSClient
                 FileSize = fileInfo.file_size;
                 GenerationId = fileInfo.generation;
                 LastModified = UnixEpochToDateTime(fileInfo.last_modified_time);
+            }
+        }
+
+        private class FileInfoComparer: IEqualityComparer<DSClientBSFileInfo>
+        {
+            public bool Equals(DSClientBSFileInfo fileInfoA, DSClientBSFileInfo fileInfoB)
+            {
+                return fileInfoA.Path == fileInfoB.Path;
+            }
+
+            public int GetHashCode(DSClientBSFileInfo obj)
+            {
+                return obj.Path.GetHashCode();
             }
         }
     }

@@ -62,6 +62,9 @@ namespace PSAsigraDSClient
                 FoundBSFiles = dirFilterFileInfo;
             }
 
+            // Filter the results to only display files where the LastModified Date is within range of the DateFrom and DateTo Parameters
+            FoundBSFiles = FoundBSFiles.Where(found => found.LastModified > DateFrom && found.LastModified < DateTo).ToList();
+
             // If only displaying the latest generation only, then sort the list, first by Path then GenerationId descending and finally remove duplicates
             if (LatestGenerationOnly)
             {

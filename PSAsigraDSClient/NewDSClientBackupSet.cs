@@ -149,9 +149,6 @@ namespace PSAsigraDSClient
             [Parameter(HelpMessage = "Specify Common File Elimination")]
             public SwitchParameter CheckCommonFiles { get; set; }
 
-            [Parameter(HelpMessage = "Enable Continuous Data Protection (CDP)")]
-            public SwitchParameter UseCDP { get; set; }
-
             [Parameter(HelpMessage = "Specify to Follow Mount Points")]
             public SwitchParameter FollowMountPoints { get; set; }
 
@@ -188,6 +185,24 @@ namespace PSAsigraDSClient
 
             [Parameter(HelpMessage = "Exclude POSIX ACLs")]
             public SwitchParameter ExcludePosixACLs { get; set; }
+
+            [Parameter(HelpMessage = "Specify the CDP Backup Interval in Seconds")]
+            public int CDPInterval { get; set; }
+
+            [Parameter(HelpMessage = "CDP Backup File When File Stopped Changing for interval duration")]
+            public SwitchParameter CDPStoppedChangingForInterval { get; set; }
+
+            [Parameter(HelpMessage = "Specify CDP Backup can be Suspended for Scheduled Retention")]
+            public SwitchParameter CDPStopForRetention { get; set; }
+
+            [Parameter(HelpMessage = "Specify CDP Backup can be Suspended for Scheduled BLM")]
+            public SwitchParameter CDPStopForBLM { get; set; }
+
+            [Parameter(HelpMessage = "Specify CDP Backup can be Suspended for Scheduled Validation")]
+            public SwitchParameter CDPStopForValidation { get; set; }
+
+            [Parameter(HelpMessage = "Specify CDP Linux to use File Alteration Monitor")]
+            public SwitchParameter CDPUseFileAlterationMonitor { get; set; }
         }
 
         private class Win32FSBackupSetParams
@@ -200,9 +215,6 @@ namespace PSAsigraDSClient
 
             [Parameter(HelpMessage = "Specify Common File Elimination")]
             public SwitchParameter CheckCommonFiles { get; set; }
-
-            [Parameter(HelpMessage = "Enable Continuous Data Protection (CDP)")]
-            public SwitchParameter UseCDP { get; set; }
 
             [Parameter(HelpMessage = "Use Volume Shadow Copies (VSS)")]
             public SwitchParameter UseVSS { get; set; }
@@ -246,6 +258,21 @@ namespace PSAsigraDSClient
 
             [Parameter(HelpMessage = "Include Permissions for IncludedItems")]
             public SwitchParameter ExcludePermissions { get; set; }
+
+            [Parameter(HelpMessage = "Specify the CDP Backup Interval in Seconds")]
+            public int CDPInterval { get; set; }
+
+            [Parameter(HelpMessage = "CDP Backup File When File Stopped Changing for interval duration")]
+            public SwitchParameter CDPStoppedChangingForInterval { get; set; }
+
+            [Parameter(HelpMessage = "Specify CDP Backup can be Suspended for Scheduled Retention")]
+            public SwitchParameter CDPStopForRetention { get; set; }
+
+            [Parameter(HelpMessage = "Specify CDP Backup can be Suspended for Scheduled BLM")]
+            public SwitchParameter CDPStopForBLM { get; set; }
+
+            [Parameter(HelpMessage = "Specify CDP Backup can be Suspended for Scheduled Validation")]
+            public SwitchParameter CDPStopForValidation { get; set; }
         }
 
         protected override void DSClientProcessRecord()
@@ -508,9 +535,6 @@ namespace PSAsigraDSClient
                 if (MyInvocation.BoundParameters.ContainsKey("CheckCommonFiles"))
                     NewWin32FSBS.setCheckingCommonFiles(win32FSBackupSetParams.CheckCommonFiles);
 
-                if (MyInvocation.BoundParameters.ContainsKey("UseCDP"))
-                    NewWin32FSBS.setContinuousDataProtection(win32FSBackupSetParams.UseCDP);
-
                 if (MyInvocation.BoundParameters.ContainsKey("UseVSS"))
                     NewWin32FSBS.setUseVSS(win32FSBackupSetParams.UseVSS);
 
@@ -554,6 +578,21 @@ namespace PSAsigraDSClient
 
                 if (MyInvocation.BoundParameters.ContainsKey("UseBuffer"))
                     NewWin32FSBS.setUsingBuffer(win32FSBackupSetParams.UseBuffer);
+
+                // CDP Configuration
+                if (MyInvocation.BoundParameters.ContainsKey("CDPInterval"))
+                {
+                    CDP_settings cdpSettings = new CDP_settings
+                    {
+                        backup_check_interval = win32FSBackupSetParams.CDPInterval,
+                        backup_strategy = (win32FSBackupSetParams.CDPStoppedChangingForInterval) ? ECDPBackupStrategy.ECDPBackupStrategy__BackupStopChangingFor : ECDPBackupStrategy.ECDPBackupStrategy__BackupNotOftenThan,
+                        file_change_detection_type = ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__WinBuiltInMonitor,
+                        suspendable_activities = SwitchParamsToECDPSuspendableScheduledActivityInt(win32FSBackupSetParams.CDPStopForRetention, win32FSBackupSetParams.CDPStopForBLM, win32FSBackupSetParams.CDPStopForValidation)
+                    };
+                    NewWin32FSBS.setCDPSettings(cdpSettings);
+
+                    NewWin32FSBS.setContinuousDataProtection(true);
+                }
             }
 
             // Unix/Linux File System specific configuration
@@ -563,9 +602,6 @@ namespace PSAsigraDSClient
 
                 if (MyInvocation.BoundParameters.ContainsKey("CheckCommonFiles"))
                     NewUnixFSBS.setCheckingCommonFiles(unixFSBackupSetParams.CheckCommonFiles);
-
-                if (MyInvocation.BoundParameters.ContainsKey("UseCDP"))
-                    NewUnixFSBS.setContinuousDataProtection(unixFSBackupSetParams.UseCDP);
 
                 if (MyInvocation.BoundParameters.ContainsKey("ForceBackup"))
                     NewUnixFSBS.setOption(EBackupSetOption.EBackupSetOption__ForceBackup, ForceBackup);
@@ -607,6 +643,21 @@ namespace PSAsigraDSClient
 
                 if (MyInvocation.BoundParameters.ContainsKey("UseBuffer"))
                     NewUnixFSBS.setUsingBuffer(unixFSBackupSetParams.UseBuffer);
+
+                // CDP Configuration
+                if (MyInvocation.BoundParameters.ContainsKey("CDPInterval"))
+                {
+                    CDP_settings cdpSettings = new CDP_settings
+                    {
+                        backup_check_interval = unixFSBackupSetParams.CDPInterval,
+                        backup_strategy = (unixFSBackupSetParams.CDPStoppedChangingForInterval) ? ECDPBackupStrategy.ECDPBackupStrategy__BackupStopChangingFor : ECDPBackupStrategy.ECDPBackupStrategy__BackupNotOftenThan,
+                        file_change_detection_type = (unixFSBackupSetParams.CDPUseFileAlterationMonitor) ? ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__FileAlterationMonitor : ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__GenericScanner,
+                        suspendable_activities = SwitchParamsToECDPSuspendableScheduledActivityInt(unixFSBackupSetParams.CDPStopForRetention, unixFSBackupSetParams.CDPStopForBLM, unixFSBackupSetParams.CDPStopForValidation)
+                    };
+                    NewUnixFSBS.setCDPSettings(cdpSettings);
+
+                    NewUnixFSBS.setContinuousDataProtection(true);
+                }
             }
 
             // Add the Backup Set to the DS-Client
@@ -616,6 +667,22 @@ namespace PSAsigraDSClient
 
             NewBackupSet.Dispose();
             dataSourceBrowser.Dispose();
+        }
+
+        private int SwitchParamsToECDPSuspendableScheduledActivityInt(bool retention, bool blm, bool validation)
+        {
+            int Suspendable = 0;
+
+            if (retention)
+                Suspendable += 1;
+
+            if (blm)
+                Suspendable += 2;
+
+            if (validation)
+                Suspendable += 4;
+
+            return Suspendable;
         }
     }
 }

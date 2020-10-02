@@ -58,6 +58,13 @@ namespace PSAsigraDSClient
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Incomplete Components")]
         public SwitchParameter DeleteIncompleteComponents { get; set; }
 
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Archive Rule Time Value")]
+        public int ArchiveTimeValue { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Archive Rule Time Unit")]
+        [ValidateSet("Minutes", "Hours", "Days", "Weeks", "Months", "Years")]
+        public string ArchiveTimeUnit { get; set; }
+
         protected override void ProcessRetentionRule()
         {
             // Perform Parameter Validation
@@ -67,6 +74,9 @@ namespace PSAsigraDSClient
 
             if (MyInvocation.BoundParameters.ContainsKey("DeleteGensPriorToStub") && MyInvocation.BoundParameters.ContainsKey("DeleteNonStubGens"))
                 throw new ParameterBindingException("DeleteGensPriorToStub cannot be specified with DeleteNonStubGens");
+
+            if ((MyInvocation.BoundParameters.ContainsKey("ArchiveTimeValue") && ArchiveTimeUnit == null) || (!MyInvocation.BoundParameters.ContainsKey("ArchiveTimeValue") && ArchiveTimeUnit != null))
+                throw new ParameterBindingException("ArchiveTimeValue and ArchiveTimeUnit must both be specified together");
 
             /* API appears to error when creating or editing most Retention Rule settings unless a 2FA Verification code has been set
              * So we send a Dummy validation code, after which we can successfully add and change Retention Rule configuration */
@@ -201,6 +211,22 @@ namespace PSAsigraDSClient
             // Add the New Retention Rule to DS-Client
             WriteVerbose("Adding new Retention Rule to DS-Client...");
             DSClientRetentionRuleMgr.addRule(NewRetentionRule);
+
+            // Archive Rule Configuration (requires retention rule to be added to DS-Client Database first)
+            if (MyInvocation.BoundParameters.ContainsKey("ArchiveTimeValue"))
+            {
+                WriteVerbose("Setting Archive Rule...");
+                ArchiveRule NewArchiveRule = DSClientRetentionRuleMgr.createArchiveRule();
+
+                retention_time_span timeSpan = new retention_time_span
+                {
+                    period = ArchiveTimeValue,
+                    unit = StringToRetentionTimeUnit(ArchiveTimeUnit)
+                };
+                NewArchiveRule.setTimeSpan(timeSpan);
+
+                NewRetentionRule.addArchiveRule(NewArchiveRule);
+            }
 
             int NewRuleId = NewRetentionRule.getID();
             WriteObject("Created new Retention Rule with RetentionRuleId " + NewRuleId);

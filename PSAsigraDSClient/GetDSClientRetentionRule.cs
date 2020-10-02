@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Management.Automation;
 using System.Data;
+using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
@@ -17,33 +18,47 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty, SupportsWildcards]
         public string Name { get; set; }
 
-        protected override void ProcessRetentionRule(IEnumerable<DSClientRetentionRule> dSClientRetentionRules)
+        protected override void ProcessRetentionRule(RetentionRule[] dSClientRetentionRules)
         {
-            if (RetentionRuleId > 0 || MyInvocation.BoundParameters.ContainsKey("Name"))
-            {
-                List<DSClientRetentionRule> filteredRetentionRules = new List<DSClientRetentionRule>();
+            List<DSClientRetentionRule> DSClientRetentionRules = new List<DSClientRetentionRule>();
 
+            if (RetentionRuleId > 0 || Name != null)
+            {
                 if (RetentionRuleId > 0)
                 {
-                    filteredRetentionRules.Add(dSClientRetentionRules.SingleOrDefault(rule => rule.RetentionRuleId == RetentionRuleId));
+                    RetentionRule retentionRule = dSClientRetentionRules.Single(rule => rule.getID() == RetentionRuleId);
+                    DSClientRetentionRule dSClientRetentionRule = new DSClientRetentionRule(retentionRule);
+                    DSClientRetentionRules.Add(dSClientRetentionRule);
                 }
 
-                if (MyInvocation.BoundParameters.ContainsKey("Name"))
+                if (Name != null)
                 {
                     WildcardOptions wcOptions = WildcardOptions.IgnoreCase |
                                                 WildcardOptions.Compiled;
 
                     WildcardPattern wcPattern = new WildcardPattern(Name, wcOptions);
 
-                    filteredRetentionRules = dSClientRetentionRules.Where(rule => wcPattern.IsMatch(rule.Name)).ToList();
-                }
+                    IEnumerable<RetentionRule> retentionRules = dSClientRetentionRules.Where(rule => wcPattern.IsMatch(rule.getName()));
 
-                filteredRetentionRules.ForEach(WriteObject);
+                    foreach (RetentionRule rule in retentionRules)
+                    {
+                        DSClientRetentionRule dSClientRetentionRule = new DSClientRetentionRule(rule);
+                        DSClientRetentionRules.Add(dSClientRetentionRule);
+                    }
+                }
             }
             else
             {
-                dSClientRetentionRules.ToList().ForEach(WriteObject);
+                foreach (RetentionRule rule in dSClientRetentionRules)
+                {
+                    DSClientRetentionRule dSClientRetentionRule = new DSClientRetentionRule(rule);
+                    DSClientRetentionRules.Add(dSClientRetentionRule);
+                }
             }
+
+            WriteVerbose("Yielded " + DSClientRetentionRules.Count() + " Retention Rules");
+
+            DSClientRetentionRules.ForEach(WriteObject);
         }
     }
 }

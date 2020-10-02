@@ -7,25 +7,15 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientRetentionRule: DSClientCmdlet
     {
-        protected abstract void ProcessRetentionRule(IEnumerable<DSClientRetentionRule> retentionRules);
+        protected abstract void ProcessRetentionRule(RetentionRule[] retentionRules);
         protected override void DSClientProcessRecord()
         {
             RetentionRuleManager DSClientRetentionMgr = DSClientSession.getRetentionRuleManager();
 
             WriteVerbose("Getting defined Retention Rules from DS-Client...");
-            RetentionRule[] RetentionRules = DSClientRetentionMgr.definedRules();
-            WriteVerbose("Yielded " + RetentionRules.Count() + " Retention Rules");
+            RetentionRule[] RetentionRules = DSClientRetentionMgr.definedRules();      
 
-            List<DSClientRetentionRule> DSClientRetentionRules = new List<DSClientRetentionRule>();
-
-            foreach (var rule in RetentionRules)
-            {
-                DSClientRetentionRule dSClientRetentionRule = new DSClientRetentionRule(rule);
-                DSClientRetentionRules.Add(dSClientRetentionRule);
-                rule.Dispose();
-            }           
-
-            ProcessRetentionRule(DSClientRetentionRules);
+            ProcessRetentionRule(RetentionRules);
 
             DSClientRetentionMgr.Dispose();
         }
@@ -77,10 +67,13 @@ namespace PSAsigraDSClient
                 ArchiveRule[] archiveRules = retentionRule.getArchiveRules();
                 List<DSClientArchiveRule> dSClientArchiveRules = new List<DSClientArchiveRule>();
 
-                foreach (var archiveRule in archiveRules)
+                if (archiveRules != null)
                 {
-                    DSClientArchiveRule dSClientArchiveRule = new DSClientArchiveRule(archiveRule);
-                    dSClientArchiveRules.Add(dSClientArchiveRule);
+                    foreach (var archiveRule in archiveRules)
+                    {
+                        DSClientArchiveRule dSClientArchiveRule = new DSClientArchiveRule(archiveRule);
+                        dSClientArchiveRules.Add(dSClientArchiveRule);
+                    }
                 }
 
                 // Assign Property Values
@@ -215,14 +208,24 @@ namespace PSAsigraDSClient
                 ArchiveFilterRule archiveFilterRule = archiveRule.getFilterRule();
 
                 TimeSpan = new DSClientRetentionTimeSpan(timeSpan);
+                FilterRule = (archiveFilterRule == null) ? new DSClientArchiveFilterRule() : new DSClientArchiveFilterRule(archiveFilterRule);
             }
 
+            public override string ToString()
+            {
+                return FilterRule.Name;
+            }
         }
 
         public class DSClientArchiveFilterRule
         {
             public string Name { get; set; }
             public DSClientArchiveFilter[] ArchiveFilter { get; set; }
+
+            public DSClientArchiveFilterRule()
+            {
+                Name = "AllFiles";
+            }
 
             public DSClientArchiveFilterRule(ArchiveFilterRule filterRule)
             {
@@ -237,6 +240,11 @@ namespace PSAsigraDSClient
 
                 Name = filterRule.getName();
                 ArchiveFilter = dSClientArchiveFilters.ToArray();
+            }
+
+            public override string ToString()
+            {
+                return Name;
             }
         }
 

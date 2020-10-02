@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
+using static PSAsigraDSClient.BaseDSClientArchiveFilterRule;
 
 namespace PSAsigraDSClient
 {
@@ -214,78 +214,6 @@ namespace PSAsigraDSClient
             public override string ToString()
             {
                 return FilterRule.Name;
-            }
-        }
-
-        public class DSClientArchiveFilterRule
-        {
-            public string Name { get; set; }
-            public DSClientArchiveFilter[] ArchiveFilter { get; set; }
-
-            public DSClientArchiveFilterRule()
-            {
-                Name = "AllFiles";
-            }
-
-            public DSClientArchiveFilterRule(ArchiveFilterRule filterRule)
-            {
-                ArchiveFilter[] filterList = filterRule.getFilterList();
-                List<DSClientArchiveFilter> dSClientArchiveFilters = new List<DSClientArchiveFilter>();
-
-                foreach (var filter in filterList)
-                {
-                    DSClientArchiveFilter dSClientArchiveFilter = new DSClientArchiveFilter(filter);
-                    dSClientArchiveFilters.Add(dSClientArchiveFilter);
-                }
-
-                Name = filterRule.getName();
-                ArchiveFilter = dSClientArchiveFilters.ToArray();
-            }
-
-            public override string ToString()
-            {
-                return Name;
-            }
-        }
-
-        public class DSClientArchiveFilter
-        {
-            public string Type { get; set; }
-            public string Pattern { get; set; }
-            public bool Inclusion { get; set; }
-
-            public DSClientArchiveFilter(ArchiveFilter archiveFilter)
-            {
-                EArchiveFilterRuleType type = archiveFilter.getType();
-
-                Type = ArchiveFilterTypeToString(type);
-                Pattern = archiveFilter.getPattern();
-                Inclusion = archiveFilter.isInclusion();
-            }
-
-            private string ArchiveFilterTypeToString(EArchiveFilterRuleType filterRuleType)
-            {
-                string filterType = null;
-
-                switch(filterRuleType)
-                {
-                    case EArchiveFilterRuleType.EArchiveFilterRuleType__FileFilter:
-                        filterType = "FileFilter";
-                        break;
-                    case EArchiveFilterRuleType.EArchiveFilterRuleType__Regex:
-                        filterType = "Regex";
-                        break;
-                    case EArchiveFilterRuleType.EArchiveFilterRuleType__UNDEFINED:
-                        filterType = "Undefined";
-                        break;
-                }
-
-                return filterType;
-            }
-
-            public override string ToString()
-            {
-                return Type;
             }
         }
 

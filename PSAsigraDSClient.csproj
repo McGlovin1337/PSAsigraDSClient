@@ -62,6 +62,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientNocSettings.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientTools.cs" />
+    <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetValidation.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientRetentionRule.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="PSAsigraDSClient\RestoreDSClientDatabase.cs" />
     <Compile Include="PSAsigraDSClient\RestoreDSClientOrphanedBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\SearchDSClientBackupSetFiles.cs" />
+    <Compile Include="PSAsigraDSClient\SelectDSClientBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMultiFactorAuthUser.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRegistrationInfo.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="PSAsigraDSClient\SetDSClientSMTPNotification.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSNMPHeartbeat.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackup.cs" />
+    <Compile Include="PSAsigraDSClient\StartDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetRetention.cs" />
     <Compile Include="PSAsigraDSClient\SyncDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetValidation.cs" />

@@ -8,6 +8,44 @@ namespace PSAsigraDSClient
     {
         protected override void ProcessRecord()
         {
+            // Check for previous Selected Items stored in Session State
+            WriteVerbose("Checking for previous Selected Items Session...");
+            BackedUpDataView selectedItemSession = SessionState.PSVariable.GetValue("SelectedItems", null) as BackedUpDataView;
+
+            // If a previous session is found, remove it
+            if (selectedItemSession != null)
+            {
+                WriteVerbose("Previous Selected Items Session found, attempting to Dispose...");
+                try
+                {
+                    selectedItemSession.Dispose();
+                }
+                catch
+                {
+                    WriteVerbose("Previous Session failed to Dispose, deleting session...");
+                }
+                SessionState.PSVariable.Remove("SelectedItems");
+            }
+
+            // Check for a previous Backup Set Validation View stored in Session State
+            WriteVerbose("Checking for previous DS-Client Delete View Sessions...");
+            BackupSetDeleteView previousDeleteSession = SessionState.PSVariable.GetValue("DeleteView", null) as BackupSetDeleteView;
+
+            // If a previous session is found, remove it
+            if (previousDeleteSession != null)
+            {
+                WriteVerbose("Previous Delete View found, attempting to Dispose...");
+                try
+                {
+                    previousDeleteSession.Dispose();
+                }
+                catch
+                {
+                    WriteVerbose("Previous Session failed to Dispose, deleting session...");
+                }
+                SessionState.PSVariable.Remove("DeleteView");
+            }
+
             // Check for a previous Backup Set Validation View stored in Session State
             WriteVerbose("Checking for previous DS-Client Validation View Sessions...");
             BackupSetValidationView previousValidationSession = SessionState.PSVariable.GetValue("ValidateView", null) as BackupSetValidationView;

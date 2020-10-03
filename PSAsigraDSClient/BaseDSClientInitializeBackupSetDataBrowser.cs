@@ -16,13 +16,7 @@ namespace PSAsigraDSClient
         [Alias("EndTime")]
         public DateTime DateTo { get; set; } = DateTime.Now;
 
-        [Parameter(HelpMessage = "Specify to Hide Files Deleted from Source")]
-        public SwitchParameter HideDeleted { get; set; }
-
-        [Parameter(HelpMessage = "Specify to Only Show Deleted files from Source")]
-        public SwitchParameter ShowOnlyDeleted { get; set; }
-
         [Parameter(HelpMessage = "Specify Date for Deleted Files from Source")]
-        public DateTime DeletedDate { get; set; } = DateTime.Now.AddDays(-30);
+        public DateTime DeletedDate { get; set; } = DateTime.Parse("1/1/1970");
     }
 }

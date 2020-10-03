@@ -8,6 +8,12 @@ namespace PSAsigraDSClient
 
     public class InitializeDSClientBackupSetValidation: BaseDSClientInitializeBackupSetDataBrowser
     {
+        [Parameter(HelpMessage = "Specify to Hide Files Deleted from Source")]
+        public SwitchParameter HideDeleted { get; set; }
+
+        [Parameter(HelpMessage = "Specify to Only Show Deleted files from Source")]
+        public SwitchParameter ShowOnlyDeleted { get; set; }
+
         protected override void DSClientProcessRecord()
         {
             WriteVerbose("Retrieving Backup Set from DS-Client...");

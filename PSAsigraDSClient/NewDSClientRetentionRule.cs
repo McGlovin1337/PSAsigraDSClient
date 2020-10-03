@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using System.Linq;
+using System.Management.Automation;
 using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
@@ -64,6 +65,9 @@ namespace PSAsigraDSClient
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Archive Rule Time Unit")]
         [ValidateSet("Minutes", "Hours", "Days", "Weeks", "Months", "Years")]
         public string ArchiveTimeUnit { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify an existing Archive Filter Rule")]
+        public string ArchiveFilterRule { get; set; }
 
         protected override void ProcessRetentionRule()
         {
@@ -224,6 +228,16 @@ namespace PSAsigraDSClient
                     unit = StringToRetentionTimeUnit(ArchiveTimeUnit)
                 };
                 NewArchiveRule.setTimeSpan(timeSpan);
+
+                if (ArchiveFilterRule != null)
+                {
+                    ArchiveFilterRule filterRule = DSClientRetentionRuleMgr.definedArchiveFilterRules()
+                                            .Single(rule => rule.getName() == ArchiveFilterRule);
+
+                    NewArchiveRule.setFilterRule(filterRule);
+
+                    filterRule.Dispose();
+                }
 
                 NewRetentionRule.addArchiveRule(NewArchiveRule);
             }

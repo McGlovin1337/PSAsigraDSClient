@@ -9,18 +9,8 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsLifecycle.Start, "DSClientBackupSetValidation")]
     [CmdletBinding(DefaultParameterSetName = "Selective")]
 
-    public class StartDSClientBackupSetValidation: DSClientCmdlet
+    public class StartDSClientBackupSetValidation: BaseDSClientBackupSetDelResVal
     {
-        [Parameter(Position = 0, ParameterSetName = "Selective", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the items to validate")]
-        [ValidateNotNullOrEmpty]
-        public string[] Path { get; set; }
-
-        [Parameter(Position = 1, ParameterSetName = "Selective", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the items to validate by ItemId")]
-        public long[] ItemId { get; set; }
-
-        [Parameter(ParameterSetName = "SessionItems", HelpMessage = "Specify to use Items stored in SelectedItems SessionState")]
-        public SwitchParameter UseSessionItems { get; set; }
-
         [Parameter(ParameterSetName = "Full", HelpMessage = "Specify to Validate All Backup Set Data")]
         public SwitchParameter FullValidation { get; set; }
 
@@ -33,24 +23,18 @@ namespace PSAsigraDSClient
             if (validationSession == null)
                 throw new Exception("There is no Backup Set Validation View Session, use Initialize-DSClientBackupSetValidation Cmdlet to create a Validation Session");
 
-            List<long> selectedItems;
+            List<long> selectedItems = new List<long>();
 
-            if (UseSessionItems)
-                selectedItems = SessionState.PSVariable.GetValue("SelectedItems") as List<long>;
-            else
-                selectedItems = new List<long>();
-
-            if (!FullValidation && selectedItems.Count() == 0)
+            if (!FullValidation)
             {
                 // Get the ItemId for specified Path items
-                if (Path != null)
+                if (Items != null)
                 {
-                    foreach (string item in Path)
+                    foreach (string item in Items)
                     {
                         try
                         {
-                            SelectableItem itemInfo = validationSession.getItem(item);
-                            selectedItems.Add(itemInfo.id);
+                            selectedItems.Add(validationSession.getItem(item).id);
                         }
                         catch
                         {
@@ -79,7 +63,6 @@ namespace PSAsigraDSClient
             validationSession.Dispose();
 
             SessionState.PSVariable.Remove("ValidateView");
-            SessionState.PSVariable.Remove("SelectedItems");
         }
     }
 }

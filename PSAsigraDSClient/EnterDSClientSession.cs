@@ -31,25 +31,6 @@ namespace PSAsigraDSClient
             string user = Credential.UserName;
             string pwd = Credential.GetNetworkCredential().Password;
 
-            // Check for previous Selected Items stored in Session State
-            WriteVerbose("Checking for previous Selected Items Session...");
-            BackedUpDataView selectedItemSession = SessionState.PSVariable.GetValue("SelectedItems", null) as BackedUpDataView;
-
-            // If a previous session is found, remove it
-            if (selectedItemSession != null)
-            {
-                WriteVerbose("Previous Selected Items Session found, attempting to Dispose...");
-                try
-                {
-                    selectedItemSession.Dispose();
-                }
-                catch
-                {
-                    WriteVerbose("Previous Session failed to Dispose, deleting session...");
-                }
-                SessionState.PSVariable.Remove("SelectedItems");
-            }
-
             // Check for a previous Backup Set Validation View stored in Session State
             WriteVerbose("Checking for previous DS-Client Delete View Sessions...");
             BackupSetDeleteView previousDeleteSession = SessionState.PSVariable.GetValue("DeleteView", null) as BackupSetDeleteView;

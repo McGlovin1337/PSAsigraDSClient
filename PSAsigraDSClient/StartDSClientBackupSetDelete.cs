@@ -8,16 +8,19 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Start, "DSClientBackupSetDelete")]
 
-    public class StartDSClientBackupSetDelete: DSClientCmdlet
+    public class StartDSClientBackupSetDelete: BaseDSClientBackupSetDelResVal
     {
-        [Parameter(HelpMessage = "Specify to Move Data to BLM rather than Delete")]
+        [Parameter(Mandatory = true, ParameterSetName = "BLM", HelpMessage = "Specify to Move Data to BLM rather than Delete")]
+        [Parameter(ParameterSetName = "Selective")]
         public SwitchParameter MoveToBLM { get; set; }
 
-        [Parameter(HelpMessage = "Specify BLM Label")]
+        [Parameter(Mandatory = true, ParameterSetName = "BLM", HelpMessage = "Specify BLM Label")]
+        [Parameter(ParameterSetName = "Selective")]
         [ValidateNotNullOrEmpty]
         public string BLMLabel { get; set; }
 
         [Parameter(HelpMessage = "Specify to Create a new BLM Archive Package")]
+        [Parameter(ParameterSetName = "Selective")]
         public SwitchParameter NewPackage { get; set; }
 
         protected override void DSClientProcessRecord()
@@ -26,19 +29,34 @@ namespace PSAsigraDSClient
             if (MoveToBLM && BLMLabel == null)
                 throw new Exception("BLMLabel must be specified when Moving to BLM selected");
 
-            // Get the Delete View for SessionState
+            // Get the Delete View from SessionState
             BackupSetDeleteView backupSetDeleteView = SessionState.PSVariable.GetValue("DeleteView", null) as BackupSetDeleteView;
 
             if (backupSetDeleteView == null)
                 throw new Exception("There is no Delete View stored in SessionState, use Initialize-DSClientBackupSetDelete Cmdlet");
 
-            // Get the Selected Items from SessionState
-            IEnumerable<long> ItemIds = SessionState.PSVariable.GetValue("SelectedItems", null) as IEnumerable<long>;
+            List<long> selectedItems = new List<long>();
 
-            if (ItemIds == null)
-                throw new Exception("There are no Selected Items stored in SessionState, use Select-DSClientBackupSetItem Cmdlet");
+            if (Items != null)
+            {
+                foreach (string item in Items)
+                {
+                    try
+                    {
+                        selectedItems.Add(backupSetDeleteView.getItem(item).id);
+                    }
+                    catch
+                    {
+                        WriteWarning("Unable to select item: " + item);
+                        continue;
+                    }
+                }
+            }
 
-            DeleteActivityInitiator deleteActivityInitiator = backupSetDeleteView.prepareDelete(ItemIds.ToArray());
+            if (ItemId.Count() > 0)
+                selectedItems.AddRange(ItemId);
+
+            DeleteActivityInitiator deleteActivityInitiator = backupSetDeleteView.prepareDelete(selectedItems.ToArray());
 
             if (MoveToBLM)
                 deleteActivityInitiator.enableBLMMove(BLMLabel, NewPackage);
@@ -53,7 +71,6 @@ namespace PSAsigraDSClient
             deleteActivityInitiator.Dispose();
             backupSetDeleteView.Dispose();
 
-            SessionState.PSVariable.Remove("SelectedItems");
             SessionState.PSVariable.Remove("DeleteView");
         }
     }

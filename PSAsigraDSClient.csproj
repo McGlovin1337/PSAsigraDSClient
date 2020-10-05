@@ -62,6 +62,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientAdvancedConfig.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientNocSettings.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientSupportedDataType.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientTools.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetRestore.cs" />

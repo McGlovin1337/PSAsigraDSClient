@@ -31,8 +31,6 @@ namespace PSAsigraDSClient
             }
         }
 
-
-
         public class TimeInDay
         {
             public int Hour { get; set; }

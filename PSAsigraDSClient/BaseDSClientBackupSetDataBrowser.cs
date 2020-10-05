@@ -13,6 +13,9 @@ namespace PSAsigraDSClient
         [Parameter(Mandatory = true, ParameterSetName = "DeleteSession", HelpMessage = "Specify to use Delete View stored in SessionState")]
         public SwitchParameter UseDeleteSession { get; set; }
 
+        [Parameter(Mandatory = true, ParameterSetName = "RestoreSession", HelpMessage = "Specify to use Restore View stored in SessionState")]
+        public SwitchParameter UseRestoreSession { get; set; }
+
         protected virtual void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView)
         {
             throw new NotImplementedException("Method ProcessBackupSetData should be overridden");
@@ -33,6 +36,13 @@ namespace PSAsigraDSClient
 
                 if (deleteView != null)
                     ProcessBackupSetData(deleteView);
+            }
+            else if (UseRestoreSession)
+            {
+                BackupSetRestoreView restoreView = SessionState.PSVariable.GetValue("RestoreView", null) as BackupSetRestoreView;
+
+                if (restoreView != null)
+                    ProcessBackupSetData(restoreView);
             }
             else
             {

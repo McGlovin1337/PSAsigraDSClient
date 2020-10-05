@@ -24,6 +24,7 @@ namespace PSAsigraDSClient
             WriteVerbose("View End Date: " + DateTo);
             BackupSetValidationView backupSetValidationView = backupSet.prepare_validation(DateTimeToUnixEpoch(DateFrom), DateTimeToUnixEpoch(DateTo), 0);
 
+            // Set the Deleted Items View
             if (HideDeleted == true)
                 backupSetValidationView.setDeletedFileFilterType(EDeleteFilterType.EDeleteFilterType__HideDeleted, DateTimeToUnixEpoch(DeletedDate));
             else if (ShowOnlyDeleted == true)
@@ -50,6 +51,7 @@ namespace PSAsigraDSClient
                 SessionState.PSVariable.Remove("ValidateView");
             }
 
+            // Add new Validation View to SessionState
             WriteVerbose("Storing new Backup Set Validation View into SessionState...");
             SessionState.PSVariable.Set("ValidateView", backupSetValidationView);
 

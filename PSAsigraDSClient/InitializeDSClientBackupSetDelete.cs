@@ -55,6 +55,7 @@ namespace PSAsigraDSClient
                 SessionState.PSVariable.Remove("DeleteView");
             }
 
+            // Add new Delete View to SessionState
             WriteVerbose("Storing new Backup Set Delete View into SessionState...");
             SessionState.PSVariable.Set("DeleteView", backupSetDeleteView);
 

@@ -8,6 +8,28 @@ namespace PSAsigraDSClient
     {
         protected override void ProcessRecord()
         {
+            // Remove any previous DataType from SessionState and store the current Backup Set DataType
+            SessionState.PSVariable.Remove("RestoreType");
+
+            // Check for a previous Backup Set Restore View stored in Session State
+            WriteVerbose("Checking for previous DS-Client Validation View Sessions...");
+            BackupSetRestoreView previousRestoreSession = SessionState.PSVariable.GetValue("RestoreView", null) as BackupSetRestoreView;
+
+            // If a previous session is found, remove it
+            if (previousRestoreSession != null)
+            {
+                WriteVerbose("Previous Restore View found, attempting to Dispose...");
+                try
+                {
+                    previousRestoreSession.Dispose();
+                }
+                catch
+                {
+                    WriteVerbose("Previous Session failed to Dispose, deleting session...");
+                }
+                SessionState.PSVariable.Remove("RestoreView");
+            }
+
             // Check for a previous Backup Set Validation View stored in Session State
             WriteVerbose("Checking for previous DS-Client Delete View Sessions...");
             BackupSetDeleteView previousDeleteSession = SessionState.PSVariable.GetValue("DeleteView", null) as BackupSetDeleteView;

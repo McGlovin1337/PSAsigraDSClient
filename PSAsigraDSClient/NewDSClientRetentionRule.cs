@@ -12,53 +12,6 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Cleanup Files Deleted from Source")]
-        public SwitchParameter CleanupDeletedFiles { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Cleanup Files Deleted from Source after Time period")]
-        [ValidateNotNullOrEmpty]
-        public int CleanupDeletedAfterValue { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Cleanup Files Deleted from Source after Time period")]
-        [ValidateNotNullOrEmpty]
-        [ValidateSet("Minutes", "Hours", "Days", "Weeks", "Months", "Years")]
-        public string CleanupDeletedAfterUnit { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Generations to keep of Files Deleted from Source")]
-        public int CleanupDeletedKeepGens { get; set; } = 0;
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete All Generations prior to Stub")]
-        public SwitchParameter DeleteGensPriorToStub { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Non-stub Generations prior to Stub")]
-        public SwitchParameter DeleteNonStubGens { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Local Storage Retention Time Value")]
-        public int LSRetentionTimeValue { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Local Storage Retention Time Unit")]
-        [ValidateSet("Minutes", "Hours", "Days", "Weeks", "Months", "Years")]
-        public string LSRetentionTimeUnit { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Cleanup Files Deleted from Source on Local Storage")]
-        public SwitchParameter LSCleanupDeletedFiles { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Cleanup Files Deleted from Source after Time period on Local Storage")]
-        public int LSCleanupDeletedAfterValue {get; set;}
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Cleanup Files Deleted from Source after Time period on Local Storage")]
-        [ValidateSet("Minutes", "Hours", "Days", "Weeks", "Months", "Years")]
-        public string LSCleanupDeletedAfterUnit { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Generations to keep of Files Deleted from Source")]
-        public int LSCleanupDeletedKeepGens { get; set; } = 0;
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Unreferenced Files")]
-        public SwitchParameter DeleteUnreferencedFiles { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Incomplete Components")]
-        public SwitchParameter DeleteIncompleteComponents { get; set; }
-
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Archive Rule Time Value")]
         public int ArchiveTimeValue { get; set; }
 
@@ -72,7 +25,7 @@ namespace PSAsigraDSClient
         protected override void ProcessRetentionRule()
         {
             // Perform Parameter Validation
-            if (CleanupDeletedFiles == true)
+            if (CleanupDeletedFiles)
                 if ((MyInvocation.BoundParameters.ContainsKey("CleanupDeletedAfterValue") && CleanupDeletedAfterUnit == null) || (!MyInvocation.BoundParameters.ContainsKey("CleanupDeletedAfterValue") && CleanupDeletedAfterUnit != null))
                     throw new ParameterBindingException("CleanupDeletedAfterValue and CleanupDeletedAfterUnit must be specified when CleanupDeletedFiles specified");
 
@@ -103,7 +56,7 @@ namespace PSAsigraDSClient
             NewRetentionRule.setName(Name);
 
             // Set Cleanup of Deleted Files from Source
-            if (CleanupDeletedFiles == true)
+            if (CleanupDeletedFiles)
             {
                 WriteVerbose("Setting Cleanup of Deleted Files...");
                 NewRetentionRule.setCleanupRemovedFiles(CleanupDeletedFiles);
@@ -120,13 +73,12 @@ namespace PSAsigraDSClient
             }
 
             // Set Stub Cleanup
-            if (DeleteGensPriorToStub == true)
+            if (DeleteGensPriorToStub)
             {
                 NewRetentionRule.setDeleteStub(true);
                 NewRetentionRule.setDeleteStubAllGens(true);
             }
-
-            if (DeleteNonStubGens == true)
+            else if (DeleteNonStubGens)
             {
                 NewRetentionRule.setDeleteStub(true);
                 NewRetentionRule.setDeleteStubAllGens(false);
@@ -171,10 +123,10 @@ namespace PSAsigraDSClient
             }
 
             // Move or Delete Obsolete Data
-            if (DeleteObsoleteData == true)
+            if (DeleteObsoleteData)
                 NewRetentionRule.setMoveObsoleteDataToBLM(false);
 
-            if (MoveObsoleteData == true)
+            if (MoveObsoleteData)
                 NewRetentionRule.setMoveObsoleteDataToBLM(true);
 
             if (MyInvocation.BoundParameters.ContainsKey("CreateNewBLMPackage"))
@@ -192,7 +144,7 @@ namespace PSAsigraDSClient
             }
 
             // Set Local Storage Cleanup of Deleted Files from Source
-            if (LSCleanupDeletedFiles == true)
+            if (LSCleanupDeletedFiles)
             {
                 NewRetentionRule.setLSCleanupRemovedFiles(true);
                 NewRetentionRule.setLSCleanupRemovedKeep(LSCleanupDeletedKeepGens);

@@ -2,12 +2,17 @@
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 using static PSAsigraDSClient.BaseDSClientArchiveFilterRule;
+using System;
 
 namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientRetentionRule: DSClientCmdlet
     {
-        protected abstract void ProcessRetentionRule(RetentionRule[] retentionRules);
+        protected virtual void ProcessRetentionRule(RetentionRule[] retentionRules)
+        {
+            throw new NotImplementedException("ProcessRetentionRule method should be overridden");
+        }
+
         protected override void DSClientProcessRecord()
         {
             RetentionRuleManager DSClientRetentionMgr = DSClientSession.getRetentionRuleManager();

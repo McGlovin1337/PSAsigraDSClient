@@ -3,7 +3,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    public abstract class BaseDSClientTimeRetentionRule: DSClientCmdlet
+    public abstract class BaseDSClientTimeRetentionRule: BaseDSClientRetentionRuleParams
     {
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the number of most recent Generations to keep")]
         public int KeepLastGens { get; set; } = 1;
@@ -325,7 +325,7 @@ namespace PSAsigraDSClient
             return WeekDay;
         }
 
-        protected static RetentionTimeUnit StringToRetentionTimeUnit(string timeUnit)
+        public static RetentionTimeUnit StringToRetentionTimeUnit(string timeUnit)
         {
             RetentionTimeUnit TimeUnit = RetentionTimeUnit.RetentionTimeUnit__UNDEFINED;
 

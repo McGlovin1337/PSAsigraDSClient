@@ -56,6 +56,7 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetDelResVal.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientInitializeBackupSetDataBrowser.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientRetentionRuleParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientStartBackupSetActivity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\CompareDSClientEncryptionKeys.cs" />

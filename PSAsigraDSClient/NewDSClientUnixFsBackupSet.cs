@@ -188,6 +188,8 @@ namespace PSAsigraDSClient
                         backupSetItems.Add(inclusionItem);
                     }
                 }
+
+                newBackupSet.setItems(backupSetItems.ToArray());
             }
 
             // Set the Schedule and Retention Rules

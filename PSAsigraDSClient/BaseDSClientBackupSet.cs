@@ -135,6 +135,30 @@ namespace PSAsigraDSClient
             return regexItems;
         }
 
+        protected static IEnumerable<Win32FS_BackupSetInclusionItem> ProcessWin32FSInclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool excludeStreams, bool excludePerms)
+        {
+            List<Win32FS_BackupSetInclusionItem> inclusionItems = new List<Win32FS_BackupSetInclusionItem>();
+
+            foreach (string item in items)
+            {
+                Win32FS_BackupSetInclusionItem inclusionItem = Win32FS_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, item, maxGens));
+
+                if (excludeStreams)
+                    inclusionItem.setIncludingAlternateDataStreams(false);
+                else
+                    inclusionItem.setIncludingAlternateDataStreams(true);
+
+                if (excludePerms)
+                    inclusionItem.setIncludingPermissions(false);
+                else
+                    inclusionItem.setIncludingPermissions(true);
+
+                inclusionItems.Add(inclusionItem);
+            }
+
+            return inclusionItems;
+        }
+
         protected class DSClientBackupSet
         {
             public int BackupSetId { get; set; }

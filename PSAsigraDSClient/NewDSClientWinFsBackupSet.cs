@@ -132,24 +132,9 @@ namespace PSAsigraDSClient
                     backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, Computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));
 
                 if (IncludeItem != null)
-                {
-                    foreach (string item in IncludeItem)
-                    {
-                        Win32FS_BackupSetInclusionItem inclusionItem = Win32FS_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(Computer, item, MaxGenerations));
+                    backupSetItems.AddRange(ProcessWin32FSInclusionItems(dataSourceBrowser, Computer, IncludeItem, MaxGenerations, ExcludeAltDataStreams, ExcludePermissions));
 
-                        if (MyInvocation.BoundParameters.ContainsKey("ExcludeAltDataStreams"))
-                            inclusionItem.setIncludingAlternateDataStreams(false);
-                        else
-                            inclusionItem.setIncludingAlternateDataStreams(true);
-
-                        if (MyInvocation.BoundParameters.ContainsKey("ExcludePermissions"))
-                            inclusionItem.setIncludingPermissions(false);
-                        else
-                            inclusionItem.setIncludingPermissions(true);
-
-                        backupSetItems.Add(inclusionItem);
-                    }
-                }
+                newBackupSet.setItems(backupSetItems.ToArray());
             }
 
             // Set the Schedule and Retention Rules

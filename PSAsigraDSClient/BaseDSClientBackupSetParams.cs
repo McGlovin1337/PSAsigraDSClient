@@ -2,7 +2,7 @@
 
 namespace PSAsigraDSClient
 {
-    public abstract class BaseDSClientBackupSetParams: BaseDSClientBackupSet
+    public abstract class BaseDSClientBackupSetParams: BaseDSClientBackupSetItemParams
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Backup Set")]
         [ValidateNotNullOrEmpty]
@@ -17,30 +17,7 @@ namespace PSAsigraDSClient
 
         [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
         [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
-        public string SetType { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Include in Backup Set")]
-        public string[] IncludeItem { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Max Number of Generations for Included Items")]
-        public int MaxGenerations { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Exclude from Backup Set")]
-        public string[] ExcludeItem { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Regex Item Exclusion Patterns")]
-        [ValidateNotNullOrEmpty]
-        public string[] RegexExcludeItem { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Path for Regex Exclusion Item")]
-        [ValidateNotNullOrEmpty]
-        public string RegexExclusionPath { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to also Exclude Directories with Regex pattern")]
-        public SwitchParameter RegexExcludeDirectory { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify if Regex Exclusions Items are case insensitive")]
-        public SwitchParameter RegexCaseInsensitive { get; set; }
+        public string SetType { get; set; }        
 
         [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Set the Compression Method to use")]
         [ValidateSet("None", "ZLIB", "LZOP", "ZLIB_LO", "ZLIB_MED", "ZLIB_HI")]

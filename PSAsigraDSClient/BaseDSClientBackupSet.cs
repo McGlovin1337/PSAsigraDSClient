@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 using static PSAsigraDSClient.BaseDSClientNotification;
@@ -8,6 +9,132 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientBackupSet: DSClientCmdlet
     {
+        protected static void BaseBackupSetParamValidation(Dictionary<string, object> baseParams)
+        {            
+            // Method performs Parameter Validation for Base/Common Parameters
+            baseParams.TryGetValue("RegexExcludeItem", out object value);
+            if ((baseParams.ContainsKey("RegexExcludeDirectory") || baseParams.ContainsKey("RegexCaseInsensitive")) && value as string[] == null)
+                throw new ParameterBindingException("RegexExcludeDirectory and RegexCaseInsensitive Parameters require RegexExcludeItem Parameter");
+
+            if (baseParams.ContainsKey("ExcludeOldFilesByDate") && baseParams.ContainsKey("ExcludeOldFilesByTimeSpan"))
+                throw new ParameterBindingException("ExcludeOldFilesByDate and ExcludeOldFilesByTimeSpan cannot both be specified");
+
+            baseParams.TryGetValue("SetType", out object SetType);
+            baseParams.TryGetValue("UseTransmissionCache", out object UseTransmissionCache);
+            baseParams.TryGetValue("LocalStoragePath", out object LocalStoragePath);
+            if ((SetType as string == "SelfContained" || SetType as string == "LocalOnly" || UseTransmissionCache as bool? == true) && LocalStoragePath as string == null)
+                throw new ParameterBindingException("Local Backups and Transmission Cache require a Local Storage Path");
+        }
+
+        protected static BackupSet ProcessBaseBackupSetParams(Dictionary<string, object> baseParams, BackupSet backupSet)
+        {
+            baseParams.TryGetValue("Name", out object Name);
+            backupSet.setName(Name as string);
+
+            baseParams.TryGetValue("Computer", out object Computer);
+            backupSet.setComputerName(Computer as string);
+
+            baseParams.TryGetValue("SetType", out object SetType);
+            backupSet.setSetType(StringToEBackupSetType(SetType as string));
+
+            baseParams.TryGetValue("Compression", out object Compression);
+            backupSet.setCompressionType(StringToECompressionType(Compression as string));
+
+            baseParams.TryGetValue("LocalStoragePath", out object LocalStoragePath);
+            if (LocalStoragePath as string != null)
+                backupSet.setLocalStoragePath(LocalStoragePath as string);
+
+            baseParams.TryGetValue("SchedulePriority", out object SchedulePriority);
+            backupSet.setSchedulePriority((SchedulePriority as int?).GetValueOrDefault(1));
+
+            baseParams.TryGetValue("ReadBufferSize", out object ReadBufferSize);
+            backupSet.setReadBufferSize((ReadBufferSize as int?).GetValueOrDefault(0));
+
+            baseParams.TryGetValue("BackupErrorLimit", out object BackupErrorLimit);
+            backupSet.setBackupErrorLimit((BackupErrorLimit as int?).GetValueOrDefault(0));
+
+            baseParams.TryGetValue("ForceBackup", out object ForceBackup);
+            backupSet.setForceBackup((ForceBackup as bool?).GetValueOrDefault(false));
+
+            baseParams.TryGetValue("PreScan", out object PreScan);
+            backupSet.setPreScanByDefault((PreScan as bool?).GetValueOrDefault(false));
+
+            baseParams.TryGetValue("UseDetailedLog", out object UseDetailedLog);
+            backupSet.setUsingDetailedLog((UseDetailedLog as bool?).GetValueOrDefault(false));
+
+            baseParams.TryGetValue("InfinateBLMGenerations", out object InfinateBLMGenerations);
+            backupSet.setUsingInfBLMGen((InfinateBLMGenerations as bool?).GetValueOrDefault(false));
+
+            baseParams.TryGetValue("UseLocalStorage", out object UseLocalStorage);
+            backupSet.setUsingLocalStorage((UseLocalStorage as bool?).GetValueOrDefault(false));
+
+            baseParams.TryGetValue("UseTransmissionCache", out object UseTransmissionCache);
+            backupSet.setUsingLocalTransmissionCache((UseTransmissionCache as bool?).GetValueOrDefault(false));
+
+            baseParams.TryGetValue("NotificationMethod", out object NotificationMethod);
+            if (NotificationMethod as string != null)
+            {
+                baseParams.TryGetValue("NotificationCompletion", out object NotificationCompletion);
+                baseParams.TryGetValue("NotificationEmailOptions", out object NotificationEmailOptions);
+                baseParams.TryGetValue("NotificationRecipient", out object NotificationRecipient);
+
+                notification_info notificationInfo = new notification_info
+                {
+                    completion = ArrayToNotificationCompletionToInt(NotificationCompletion as string[]),
+                    email_option = (NotificationEmailOptions as string[] != null) ? ArrayToEmailOptionsInt(NotificationEmailOptions as string[]) : 0,
+                    id = 0,
+                    method = StringToENotificationMethod(NotificationMethod as string),
+                    recipient = NotificationRecipient as string
+                };
+                BackupSetNotification backupSetNotification = backupSet.getNotification();
+                backupSetNotification.addOrUpdateNotification(notificationInfo);
+                backupSetNotification.Dispose();
+            }
+
+            baseParams.TryGetValue("SnmpTrapNotifications", out object SnmpTrapNotifications);
+            if (SnmpTrapNotifications as string[] != null)
+                backupSet.setSNMPTrapsConditions(ArrayToNotificationCompletionToInt(SnmpTrapNotifications as string[]));
+
+            return backupSet;
+        }
+
+        protected static IEnumerable<BackupSetFileItem> ProcessExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items)
+        {
+            List<BackupSetFileItem> fileItems = new List<BackupSetFileItem>();
+
+            foreach(string item in items)
+            {
+                BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, item);
+                fileItems.Add(exclusion);
+            }
+
+            return fileItems;
+        }
+
+        protected static IEnumerable<BackupSetRegexExclusion> ProcessRegexExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, string exclusionPath, bool excludeDir, bool caseInsensitive, IEnumerable<string> items)
+        {
+            List<BackupSetRegexExclusion> regexItems = new List<BackupSetRegexExclusion>();
+
+            foreach(string item in items)
+            {
+                BackupSetRegexExclusion regexExclusion = dataSourceBrowser.createRegexExclusion(computer, exclusionPath, item);
+
+                if (excludeDir == true)
+                    regexExclusion.setMatchDirectories(false);
+                else
+                    regexExclusion.setMatchDirectories(true);
+
+                if (caseInsensitive == true)
+                    regexExclusion.setCaseSensitive(false);
+                else
+                    regexExclusion.setCaseSensitive(true);
+
+                regexItems.Add(regexExclusion);
+            }
+
+            return regexItems;
+        }
+
         protected class DSClientBackupSet
         {
             public int BackupSetId { get; set; }
@@ -1547,6 +1674,22 @@ namespace PSAsigraDSClient
             }
 
             return AccessType;
+        }
+
+        protected int SwitchParamsToECDPSuspendableScheduledActivityInt(bool retention, bool blm, bool validation)
+        {
+            int Suspendable = 0;
+
+            if (retention)
+                Suspendable += 1;
+
+            if (blm)
+                Suspendable += 2;
+
+            if (validation)
+                Suspendable += 4;
+
+            return Suspendable;
         }
     }
 }

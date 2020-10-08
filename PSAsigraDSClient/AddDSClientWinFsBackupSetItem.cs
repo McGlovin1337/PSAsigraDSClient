@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
 
@@ -30,9 +31,12 @@ namespace PSAsigraDSClient
             // Create a List of Items
             List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
+            // Get the existing specified items and store in the list
+            backupSetItems.AddRange(backupSet.items());
+
             // Process any Exclusion Items
             if (ExcludeItem != null)
-                backupSetItems.AddRange(ProcessExclusionItems(dataSourceBrowser, computer, ExcludeItem));
+                backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem));
 
             if (RegexExcludeItem != null)
                 backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));

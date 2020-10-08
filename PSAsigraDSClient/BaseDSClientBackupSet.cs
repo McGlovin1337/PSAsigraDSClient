@@ -4,6 +4,7 @@ using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 using static PSAsigraDSClient.BaseDSClientNotification;
+using System.Linq;
 
 namespace PSAsigraDSClient
 {
@@ -98,13 +99,30 @@ namespace PSAsigraDSClient
             return backupSet;
         }
 
-        protected static IEnumerable<BackupSetFileItem> ProcessExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items)
+        protected static IEnumerable<BackupSetFileItem> ProcessExclusionItems(DSClientOSType dSClientOSType, DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items)
         {
             List<BackupSetFileItem> fileItems = new List<BackupSetFileItem>();
 
             foreach(string item in items)
             {
+                // Set the item filter by extracting the chars after the last "\" (windows) or "/" (linux/unix)
+                string filter = "*";
+
+                if (dSClientOSType.OsType == "Windows")
+                {
+                    filter = item.Split('\\').Last();
+                    if (string.IsNullOrEmpty(filter))
+                        filter = "*";
+                }
+                else if (dSClientOSType.OsType == "Linux")
+                {
+                    filter = item.Split('/').Last();
+                    if (string.IsNullOrEmpty(filter))
+                        filter = "*";
+                }
+
                 BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, item);
+                exclusion.setFilter(filter);
                 fileItems.Add(exclusion);
             }
 
@@ -141,7 +159,20 @@ namespace PSAsigraDSClient
 
             foreach (string item in items)
             {
-                Win32FS_BackupSetInclusionItem inclusionItem = Win32FS_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, item, maxGens));
+                // Trim any whitespace from the end of the item
+                string trimmedItem = item.Trim();
+
+                // Set the item filter by extracting the chars after the last "\"
+                string filter = trimmedItem.Split('\\').Last();
+                int itemLength = filter.Length;
+                if (string.IsNullOrEmpty(filter))
+                    filter = "*";
+
+                string path = trimmedItem.Remove((trimmedItem.Length - itemLength), itemLength);
+
+                Win32FS_BackupSetInclusionItem inclusionItem = Win32FS_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, path, maxGens));
+
+                inclusionItem.setFilter(filter);
 
                 if (excludeStreams)
                     inclusionItem.setIncludingAlternateDataStreams(false);

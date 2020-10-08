@@ -7,10 +7,10 @@ using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Search, "DSClientBackupSetFiles")]
+    [Cmdlet(VerbsCommon.Search, "DSClientBackupSetData")]
     [OutputType(typeof(DSClientBSFileInfo))]
 
-    public class SearchDSClientBackupSetFiles: BaseDSClientBackupSetDataBrowser
+    public class SearchDSClientBackupSetData: BaseDSClientBackupSetDataBrowser
     {
         [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the File Search Filters")]
         [SupportsWildcards]

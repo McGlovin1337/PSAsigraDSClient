@@ -94,7 +94,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientActivityLog.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientBackupSetInfo.cs" />
-    <Compile Include="PSAsigraDSClient\GetDSClientBackupSetItem.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientStoredItem.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientBackupSetSessions.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientEventLog.cs" />
@@ -124,7 +124,7 @@
     <Compile Include="PSAsigraDSClient\RemoveDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\RestoreDSClientDatabase.cs" />
     <Compile Include="PSAsigraDSClient\RestoreDSClientOrphanedBackupSet.cs" />
-    <Compile Include="PSAsigraDSClient\SearchDSClientBackupSetFiles.cs" />
+    <Compile Include="PSAsigraDSClient\SearchDSClientBackupSetData.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMultiFactorAuthUser.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRegistrationInfo.cs" />

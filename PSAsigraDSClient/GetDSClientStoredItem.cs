@@ -4,10 +4,10 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Get, "DSClientBackupSetItem")]
+    [Cmdlet(VerbsCommon.Get, "DSClientStoredItem")]
     [OutputType(typeof(DSClientBackupSetItemInfo))]
 
-    public class GetDSClientBackupSetItem: BaseDSClientBackupSetDataBrowser
+    public class GetDSClientStoredItem : BaseDSClientBackupSetDataBrowser
     {
         [Parameter(Position = 1, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Full Path to the Item")]
         public string Path { get; set; }

@@ -31,9 +31,6 @@ namespace PSAsigraDSClient
             // Create a List of Items
             List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
-            // Get the existing specified items and store in the list
-            backupSetItems.AddRange(backupSet.items());
-
             // Process any Exclusion Items
             if (ExcludeItem != null)
                 backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem));
@@ -44,6 +41,12 @@ namespace PSAsigraDSClient
             // Process any Inclusion Items
             if (IncludeItem != null)
                 backupSetItems.AddRange(ProcessWin32FSInclusionItems(dataSourceBrowser, computer, IncludeItem, MaxGenerations, ExcludeAltDataStreams, ExcludePermissions));
+
+            // Get the existing specified items and store in the list
+            backupSetItems.AddRange(backupSet.items());
+
+            // Strip any duplicates from the list, duplicates cause an error and wipes all the items from the Backup Set
+            backupSetItems = backupSetItems.Distinct(new BackupSetItemComparer()).ToList();
 
             // Add all the items to the Backup Set
             WriteVerbose("Adding Items to Backup Set...");

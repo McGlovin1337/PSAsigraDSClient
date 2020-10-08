@@ -105,23 +105,32 @@ namespace PSAsigraDSClient
 
             foreach(string item in items)
             {
+                // Trim any whitespace from the end of the item
+                string trimmedItem = item.Trim();
+
                 // Set the item filter by extracting the chars after the last "\" (windows) or "/" (linux/unix)
                 string filter = "*";
+                int itemLength = 0;
 
                 if (dSClientOSType.OsType == "Windows")
                 {
-                    filter = item.Split('\\').Last();
+                    filter = trimmedItem.Split('\\').Last();
+                    itemLength = filter.Length;
                     if (string.IsNullOrEmpty(filter))
                         filter = "*";
                 }
                 else if (dSClientOSType.OsType == "Linux")
                 {
-                    filter = item.Split('/').Last();
+                    filter = trimmedItem.Split('/').Last();
+                    itemLength = filter.Length;
                     if (string.IsNullOrEmpty(filter))
                         filter = "*";
                 }
 
-                BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, item);
+                // Set the path by removing the specified filter from the end of the item
+                string path = trimmedItem.Remove((trimmedItem.Length - itemLength), itemLength);
+
+                BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, path);
                 exclusion.setFilter(filter);
                 fileItems.Add(exclusion);
             }
@@ -168,6 +177,7 @@ namespace PSAsigraDSClient
                 if (string.IsNullOrEmpty(filter))
                     filter = "*";
 
+                // Set the path by removing the specified filter from the end of the item
                 string path = trimmedItem.Remove((trimmedItem.Length - itemLength), itemLength);
 
                 Win32FS_BackupSetInclusionItem inclusionItem = Win32FS_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, path, maxGens));
@@ -188,6 +198,47 @@ namespace PSAsigraDSClient
             }
 
             return inclusionItems;
+        }
+
+        protected class BackupSetItemComparer : IEqualityComparer<BackupSetItem>
+        {
+            public bool Equals(BackupSetItem itemA, BackupSetItem itemB)
+            {
+                EBackupSetItemType itemTypeA = itemA.getType();
+                EBackupSetItemType itemTypeB = itemB.getType();
+
+                string itemFolderA = itemA.getFolder();
+                string itemFolderB = itemB.getFolder();
+
+                if (itemTypeA != itemTypeB || itemFolderA != itemFolderB)
+                    return false;
+                else if (itemTypeA == EBackupSetItemType.EBackupSetItemType__RegExExclusion && itemTypeB == EBackupSetItemType.EBackupSetItemType__RegExExclusion)
+                {
+                    BackupSetRegexExclusion regexItemA = BackupSetRegexExclusion.from(itemA);
+                    BackupSetRegexExclusion regexItemB = BackupSetRegexExclusion.from(itemB);
+
+                    return regexItemA.getExpression() == regexItemB.getExpression();
+                }
+                else
+                {
+                    BackupSetFileItem fileItemA = BackupSetFileItem.from(itemA);
+                    BackupSetFileItem fileItemB = BackupSetFileItem.from(itemB);
+
+                    return fileItemA.getFilter() == fileItemB.getFilter();
+                }
+            }
+
+            public int GetHashCode(BackupSetItem backupSetItem)
+            {
+                if (backupSetItem.getType() == EBackupSetItemType.EBackupSetItemType__RegExExclusion)
+                {
+                    BackupSetRegexExclusion regexItem = BackupSetRegexExclusion.from(backupSetItem);
+                    return regexItem.getExpression().GetHashCode();
+                }
+
+                BackupSetFileItem fileItem = BackupSetFileItem.from(backupSetItem);
+                return fileItem.getFilter().GetHashCode();
+            }
         }
 
         protected class DSClientBackupSet

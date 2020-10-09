@@ -119,6 +119,7 @@
     <Compile Include="PSAsigraDSClient\PublishDSClientEncryptionKeys.cs" />
     <Compile Include="PSAsigraDSClient\RegisterDSClient.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSet.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientScheduleDetail.cs" />

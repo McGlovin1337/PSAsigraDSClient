@@ -58,26 +58,32 @@ namespace PSAsigraDSClient
         public string LocalStorageMethod { get; set; } = "ConnectDsSysNeeded";
 
         [Parameter(Mandatory = true, ParameterSetName = "FileSystem", HelpMessage = "Specify the File Overwrite Option")]
+        [Parameter(ParameterSetName = "Selective")]
         [ValidateSet("RestoreAll", "RestoreNewer", "RestoreOlder", "RestoreDifferent", "SkipExisting")]
         public string OverwriteOption { get; set; }
 
         [Parameter(ParameterSetName = "FileSystem", HelpMessage = "Specify the File Restore Method")]
+        [Parameter(ParameterSetName = "Selective")]
         [ValidateSet("Save", "Fast", "UseBuffer")]
         public string RestoreMethod { get; set; } = "Save";
 
         [Parameter(ParameterSetName = "FileSystem", HelpMessage = "Specify Restoration of Permissions")]
+        [Parameter(ParameterSetName = "Selective")]
         [ValidateSet("Yes", "Skip", "Only")]
         public string RestorePermissions { get; set; } = "Yes";
 
         [Parameter(ParameterSetName = "WinFileSystem", HelpMessage = "Specify AD (System State) Authoritative Restore")]
+        [Parameter(ParameterSetName = "Selective")]
         [Parameter(ParameterSetName = "FileSystem")]
         public SwitchParameter AuthoritativeRestore { get; set; }
 
         [Parameter(ParameterSetName = "WinFileSystem", HelpMessage = "Specify if to Overwrite Junction Points")]
+        [Parameter(ParameterSetName = "Selective")]
         [Parameter(ParameterSetName = "FileSystem")]
         public SwitchParameter OverwriteJunctionPoint { get; set; }
 
         [Parameter(ParameterSetName = "WinFileSystem", HelpMessage = "Specify if to Skip Offline Files (stubs)")]
+        [Parameter(ParameterSetName = "Selective")]
         [Parameter(ParameterSetName = "FileSystem")]
         public SwitchParameter SkipOfflineFiles { get; set; }
 

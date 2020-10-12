@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
 
@@ -9,50 +10,108 @@ namespace PSAsigraDSClient
 
     public class GetDSClientStoredItem : BaseDSClientBackupSetDataBrowser
     {
-        [Parameter(Position = 1, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Full Path to the Item")]
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Full Path to the Item")]
+        [ValidateNotNullOrEmpty]
         public string Path { get; set; }
 
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Include Path Sub-Items")]
-        public SwitchParameter IncludeSubItems { get; set; }
+        [Parameter(Position = 2, HelpMessage = "Filter returned items")]
+        [SupportsWildcards]
+        public string Filter { get; set; }
+
+        [Parameter(HelpMessage = "Specify to return items recursively")]
+        public SwitchParameter Recursive { get; set; }
+
+        [Parameter(HelpMessage = "Specify the rescursion depth")]
+        public int RecursiveDepth { get; set; } = 0;
 
         protected override void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView)
         {
-            SelectableItem item = null;
-            long itemId = 0;
             List<DSClientBackupSetItemInfo> ItemInfo = new List<DSClientBackupSetItemInfo>();
 
+            // We always return info of the root/first item the user has specified, irrespective of other parameters
             WriteVerbose("Retrieving Item Info...");
-            if (Path != null)
+            SelectableItem item = DSClientBackedUpDataView.getItem(Path);
+            long itemId = item.id;
+
+            selectable_size itemSize = DSClientBackedUpDataView.getItemSize(itemId);
+
+            DSClientBackupSetItemInfo itemInfo = new DSClientBackupSetItemInfo(Path, item, itemSize);
+            ItemInfo.Add(itemInfo);
+
+            if (Recursive)
             {
-                item = DSClientBackedUpDataView.getItem(Path);
-                itemId = item.id;
+                // Set the Wildcard Options
+                WildcardOptions wcOptions = WildcardOptions.IgnoreCase |
+                                WildcardOptions.Compiled;
+                WildcardPattern wcPattern = null;
 
-                selectable_size itemSize = DSClientBackedUpDataView.getItemSize(itemId);
+                if (Filter != null)
+                    wcPattern = new WildcardPattern(Filter, wcOptions);
 
-                DSClientBackupSetItemInfo itemInfo = new DSClientBackupSetItemInfo(item, itemSize);
-                ItemInfo.Add(itemInfo);
-            }
+                List<ItemPath> newPaths = new List<ItemPath>();
 
-            if (IncludeSubItems == true)
-            {
-                WriteVerbose("Retrieving Sub-Item Info...");
-                SelectableItem[] subItems = DSClientBackedUpDataView.getSubItemsByCategory(itemId, ESelectableItemCategory.ESelectableItemCategory__FilesAndDirectories);
+                newPaths.Add(new ItemPath(Path, 0));
 
-                foreach (var subItem in subItems)
+                while (newPaths.Count() > 0)
                 {
-                    selectable_size itemSize = DSClientBackedUpDataView.getItemSize(subItem.id);
+                    // Select the first item in the list
+                    ItemPath currentPath = newPaths.ElementAt(0);
 
-                    DSClientBackupSetItemInfo itemInfo = new DSClientBackupSetItemInfo(subItem, itemSize);
-                    ItemInfo.Add(itemInfo);
+                    // Break out of the loop if the recursion depth exceeds the value specified
+                    if (currentPath.Depth > RecursiveDepth)
+                        break;
+
+                    WriteVerbose("Enumerating Path: " + currentPath.Path + " (Depth: " + currentPath.Depth + ")");
+
+                    item = DSClientBackedUpDataView.getItem(currentPath.Path);
+                    itemId = item.id;
+
+                    // Fetch all the subitems of the current path
+                    SelectableItem[] subItems = DSClientBackedUpDataView.getSubItemsByCategory(itemId, ESelectableItemCategory.ESelectableItemCategory__FilesAndDirectories);
+
+                    int subItemDepth = currentPath.Depth + 1;
+                    foreach (SelectableItem subItem in subItems)
+                    {
+                        selectable_size subItemSize = DSClientBackedUpDataView.getItemSize(subItem.id);
+
+                        if (Filter != null)
+                        {
+                            if (wcPattern.IsMatch(subItem.name))
+                                ItemInfo.Add(new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize));
+                        }
+                        else
+                        {
+                            ItemInfo.Add(new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize));
+                        }
+
+                        if (!subItem.is_file)
+                            newPaths.Add(new ItemPath(currentPath.Path + "\\" + subItem.name, subItemDepth));
+                    }
+
+                    // Remove the Path we've just completed enumerating from the list
+                    newPaths.Remove(currentPath);
                 }
             }
 
             ItemInfo.ForEach(WriteObject);
         }
 
+        private class ItemPath
+        {
+            public string Path { get; set; }
+            public int Depth { get; set; }
+
+            public ItemPath(string path, int depth)
+            {
+                Path = path;
+                Depth = depth;
+            }
+        }
+
         private class DSClientBackupSetItemInfo
         {
             public long ItemId { get; set; }
+            public string Path { get; set; }
             public string Name { get; set; }
             public string DataType { get; set; }
             public long DataSize { get; set; }
@@ -60,9 +119,10 @@ namespace PSAsigraDSClient
             public bool IsFile { get; set; }
             public bool Selectable { get; set; }
 
-            public DSClientBackupSetItemInfo(SelectableItem item, selectable_size itemSize)
+            public DSClientBackupSetItemInfo(string path, SelectableItem item, selectable_size itemSize)
             {
                 ItemId = item.id;
+                Path = path;
                 Name = item.name;
                 DataType = EBrowseItemTypeToString(item.data_type);
                 DataSize = itemSize.data_size;

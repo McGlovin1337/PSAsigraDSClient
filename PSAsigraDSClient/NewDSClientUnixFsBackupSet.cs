@@ -9,78 +9,41 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.New, "DSClientUnixFsBackupSet")]
 
-    public class NewDSClientUnixFsBackupSet: BaseDSClientBackupSetParams
+    public class NewDSClientUnixFsBackupSet: BaseDSClientUnixFsBackupSetParams
     {
-        [Parameter(HelpMessage = "Specify the SSH Iterpreter to access the data")]
-        [ValidateSet("Perl", "Python", "Direct")]
-        public string SSHInterpreter { get; set; }
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Backup Set")]
+        [ValidateNotNullOrEmpty]
+        public string Name { get; set; }
 
-        [Parameter(HelpMessage = "Specify SSH Interpreter path")]
-        public string SSHInterpreterPath { get; set; }
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Computer the Backup Set will be assigned to")]
+        [ValidateNotNullOrEmpty]
+        public string Computer { get; set; }
 
-        [Parameter(HelpMessage = "Specify path to SSH Key File")]
-        public string SSHKeyFile { get; set; }
+        [Parameter(Position = 2, HelpMessage = "Credentials to use")]
+        public PSCredential Credential { get; set; }
 
-        [Parameter(HelpMessage = "Specify SUDO User Credentials")]
-        public PSCredential SudoCredential { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Include in Backup Set")]
+        public string[] IncludeItem { get; set; }
 
-        [Parameter(HelpMessage = "Specify Common File Elimination")]
-        public SwitchParameter CheckCommonFiles { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Max Number of Generations for Included Items")]
+        public int MaxGenerations { get; set; }
 
-        [Parameter(HelpMessage = "Specify to Follow Mount Points")]
-        public SwitchParameter FollowMountPoints { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Exclude from Backup Set")]
+        public string[] ExcludeItem { get; set; }
 
-        [Parameter(HelpMessage = "Backup Hard Links")]
-        public SwitchParameter BackupHardLinks { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Regex Item Exclusion Patterns")]
+        [ValidateNotNullOrEmpty]
+        public string[] RegexExcludeItem { get; set; }
 
-        [Parameter(HelpMessage = "Ignore Snapshot Failures")]
-        public SwitchParameter IgnoreSnapshotFailure { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Path for Regex Exclusion Item")]
+        [ValidateNotNullOrEmpty]
+        public string RegexExclusionPath { get; set; }
 
-        [Parameter(HelpMessage = "For NAS Use Snap Diff feature")]
-        public SwitchParameter UseSnapDiff { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to also Exclude Directories with Regex pattern")]
+        public SwitchParameter RegexExcludeDirectory { get; set; }
 
-        [Parameter(HelpMessage = "Old File Exclusions by Date")]
-        public SwitchParameter ExcludeOldFilesByDate { get; set; }
-
-        [Parameter(HelpMessage = "Date for Old File Exclusions")]
-        public DateTime ExcludeOldFilesDate { get; set; }
-
-        [Parameter(HelpMessage = "Old File Exclusions by TimeSpan")]
-        public SwitchParameter ExcludeOldFilesByTimeSpan { get; set; }
-
-        [Parameter(HelpMessage = "TimeSpan Unit to use for Old File Exclusions")]
-        [ValidateSet("Seconds", "Minutes", "Hours", "Days", "Weeks", "Months", "Years")]
-        public string ExcludeOldFilesTimeSpan { get; set; }
-
-        [Parameter(HelpMessage = "TimeSpan Value to use for Old File Exclusions")]
-        public int ExcludeOldFilesTimeSpanValue { get; set; }
-
-        [Parameter(HelpMessage = "Use DS-Client Buffer")]
-        public SwitchParameter UseBuffer { get; set; }
-
-        [Parameter(HelpMessage = "Exclude ACLs")]
-        public SwitchParameter ExcludeACLs { get; set; }
-
-        [Parameter(HelpMessage = "Exclude POSIX ACLs")]
-        public SwitchParameter ExcludePosixACLs { get; set; }
-
-        [Parameter(HelpMessage = "Specify the CDP Backup Interval in Seconds")]
-        public int CDPInterval { get; set; }
-
-        [Parameter(HelpMessage = "CDP Backup File When File Stopped Changing for interval duration")]
-        public SwitchParameter CDPStoppedChangingForInterval { get; set; }
-
-        [Parameter(HelpMessage = "Specify CDP Backup can be Suspended for Scheduled Retention")]
-        public SwitchParameter CDPStopForRetention { get; set; }
-
-        [Parameter(HelpMessage = "Specify CDP Backup can be Suspended for Scheduled BLM")]
-        public SwitchParameter CDPStopForBLM { get; set; }
-
-        [Parameter(HelpMessage = "Specify CDP Backup can be Suspended for Scheduled Validation")]
-        public SwitchParameter CDPStopForValidation { get; set; }
-
-        [Parameter(HelpMessage = "Specify CDP Linux to use File Alteration Monitor")]
-        public SwitchParameter CDPUseFileAlterationMonitor { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify if Regex Exclusions Items are case insensitive")]
+        public SwitchParameter RegexCaseInsensitive { get; set; }
 
         protected override void DSClientProcessRecord()
         {

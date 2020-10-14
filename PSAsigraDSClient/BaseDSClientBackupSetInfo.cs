@@ -31,7 +31,7 @@ namespace PSAsigraDSClient
             public int BackupSetId { get; set; }
             public string Computer { get; set; }
             public string Name { get; set; }
-            public bool Active { get; set; }
+            public bool Enabled { get; set; }
             public DateTime LastBackup { get; set; }
             public DateTime LastSuccess { get; set; }
             public string DataType { get; set; }
@@ -59,7 +59,7 @@ namespace PSAsigraDSClient
                 BackupSetId = backupSetInfo.id;
                 Computer = backupSetInfo.computer;
                 Name = backupSetInfo.name;
-                Active = backupSetInfo.is_active;
+                Enabled = backupSetInfo.is_active;
                 LastBackup = UnixEpochToDateTime(backupSetInfo.last_backup);
                 LastSuccess = UnixEpochToDateTime(backupSetInfo.last_successful_backup);
                 DataType = EBackupDataTypeToString(backupSetInfo.data_type);

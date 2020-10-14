@@ -2,19 +2,8 @@
 
 namespace PSAsigraDSClient
 {
-    public abstract class BaseDSClientBackupSetParams: BaseDSClientBackupSetItemParams
+    public abstract class BaseDSClientBackupSetParams: BaseDSClientBackupSet
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Backup Set")]
-        [ValidateNotNullOrEmpty]
-        public string Name { get; set; }
-
-        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Computer the Backup Set will be assigned to")]
-        [ValidateNotNullOrEmpty]
-        public string Computer { get; set; }
-
-        [Parameter(Position = 2, HelpMessage = "Credentials to use")]
-        public PSCredential Credential { get; set; }
-
         [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
         [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
         public string SetType { get; set; }        
@@ -22,6 +11,9 @@ namespace PSAsigraDSClient
         [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Set the Compression Method to use")]
         [ValidateSet("None", "ZLIB", "LZOP", "ZLIB_LO", "ZLIB_MED", "ZLIB_HI")]
         public string Compression { get; set; }
+
+        [Parameter(HelpMessage = "Specify this Backup Set should be set to Disabled")]
+        public SwitchParameter Disabled { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Schedule this Backup Set will use")]
         public int ScheduleId { get; set; }

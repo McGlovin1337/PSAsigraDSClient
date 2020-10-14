@@ -62,6 +62,8 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientRetentionRuleParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientStartBackupSetActivity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionRule.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientUnixFsBackupSetParams.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientWinFsBackupSetParams.cs" />
     <Compile Include="PSAsigraDSClient\CompareDSClientEncryptionKeys.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientAdvancedConfig.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientArchiveFilterRule.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="PSAsigraDSClient\SetDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSMTPNotification.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSNMPHeartbeat.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackup.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetRestore.cs" />

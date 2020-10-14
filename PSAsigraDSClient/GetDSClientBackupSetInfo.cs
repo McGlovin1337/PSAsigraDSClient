@@ -52,7 +52,7 @@ namespace PSAsigraDSClient
         public string DataType { get; set; }
 
         [Parameter(Position = 2, ParameterSetName = "General", HelpMessage = "List Active/Inactive Backup Sets")]
-        public SwitchParameter Active { get; set; }
+        public SwitchParameter Enabled { get; set; }
 
         [Parameter(Position = 3, ParameterSetName = "General", HelpMessage = "List Synchronized/Unsynchronized Backup Sets")]
         public SwitchParameter Synchronized { get; set; }
@@ -100,7 +100,7 @@ namespace PSAsigraDSClient
                 dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.DataType == DataType);
 
             if (MyInvocation.BoundParameters.ContainsKey("Active"))
-                dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.Active == Active);
+                dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.Enabled == Enabled);
 
             if (MyInvocation.BoundParameters.ContainsKey("Synchronized"))
                 dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.Synchronized == Synchronized);

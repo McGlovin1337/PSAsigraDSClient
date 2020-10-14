@@ -30,50 +30,70 @@ namespace PSAsigraDSClient
         protected static BackupSet ProcessBaseBackupSetParams(Dictionary<string, object> baseParams, BackupSet backupSet)
         {
             baseParams.TryGetValue("Name", out object Name);
-            backupSet.setName(Name as string);
+            if (Name != null)
+                backupSet.setName(Name as string);
 
             baseParams.TryGetValue("Computer", out object Computer);
-            backupSet.setComputerName(Computer as string);
+            if (Computer != null)
+                backupSet.setComputerName(Computer as string);
 
             baseParams.TryGetValue("SetType", out object SetType);
-            backupSet.setSetType(StringToEBackupSetType(SetType as string));
+            if (SetType != null)
+                backupSet.setSetType(StringToEBackupSetType(SetType as string));
 
             baseParams.TryGetValue("Compression", out object Compression);
-            backupSet.setCompressionType(StringToECompressionType(Compression as string));
+            if (Compression != null)
+                backupSet.setCompressionType(StringToECompressionType(Compression as string));
+
+            baseParams.TryGetValue("Disabled", out object Disabled);
+            if (Disabled != null)
+            {
+                bool disabled = Convert.ToBoolean(Disabled.ToString());
+                backupSet.setActive(!disabled);
+            }
 
             baseParams.TryGetValue("LocalStoragePath", out object LocalStoragePath);
-            if (LocalStoragePath as string != null)
+            if (LocalStoragePath != null)
                 backupSet.setLocalStoragePath(LocalStoragePath as string);
 
             baseParams.TryGetValue("SchedulePriority", out object SchedulePriority);
-            backupSet.setSchedulePriority((SchedulePriority as int?).GetValueOrDefault(1));
+            if (SchedulePriority != null)
+                backupSet.setSchedulePriority((SchedulePriority as int?).GetValueOrDefault(1));
 
             baseParams.TryGetValue("ReadBufferSize", out object ReadBufferSize);
-            backupSet.setReadBufferSize((ReadBufferSize as int?).GetValueOrDefault(0));
+            if (ReadBufferSize != null)
+                backupSet.setReadBufferSize((ReadBufferSize as int?).GetValueOrDefault(0));
 
             baseParams.TryGetValue("BackupErrorLimit", out object BackupErrorLimit);
-            backupSet.setBackupErrorLimit((BackupErrorLimit as int?).GetValueOrDefault(0));
+            if (BackupErrorLimit != null)
+                backupSet.setBackupErrorLimit((BackupErrorLimit as int?).GetValueOrDefault(0));
 
             baseParams.TryGetValue("ForceBackup", out object ForceBackup);
-            backupSet.setForceBackup((ForceBackup as bool?).GetValueOrDefault(false));
+            if (ForceBackup != null)
+                backupSet.setForceBackup(Convert.ToBoolean(ForceBackup.ToString()));
 
             baseParams.TryGetValue("PreScan", out object PreScan);
-            backupSet.setPreScanByDefault((PreScan as bool?).GetValueOrDefault(false));
+            if (PreScan != null)
+                backupSet.setPreScanByDefault(Convert.ToBoolean(PreScan.ToString()));
 
             baseParams.TryGetValue("UseDetailedLog", out object UseDetailedLog);
-            backupSet.setUsingDetailedLog((UseDetailedLog as bool?).GetValueOrDefault(false));
+            if (UseDetailedLog != null)
+                backupSet.setUsingDetailedLog(Convert.ToBoolean(UseDetailedLog.ToString()));
 
             baseParams.TryGetValue("InfinateBLMGenerations", out object InfinateBLMGenerations);
-            backupSet.setUsingInfBLMGen((InfinateBLMGenerations as bool?).GetValueOrDefault(false));
+            if (InfinateBLMGenerations != null)
+                backupSet.setUsingInfBLMGen(Convert.ToBoolean(InfinateBLMGenerations.ToString()));
 
             baseParams.TryGetValue("UseLocalStorage", out object UseLocalStorage);
-            backupSet.setUsingLocalStorage((UseLocalStorage as bool?).GetValueOrDefault(false));
+            if (UseLocalStorage != null)
+                backupSet.setUsingLocalStorage(Convert.ToBoolean(UseLocalStorage.ToString()));
 
             baseParams.TryGetValue("UseTransmissionCache", out object UseTransmissionCache);
-            backupSet.setUsingLocalTransmissionCache((UseTransmissionCache as bool?).GetValueOrDefault(false));
+            if (UseTransmissionCache != null)
+                backupSet.setUsingLocalTransmissionCache(Convert.ToBoolean(UseTransmissionCache.ToString()));
 
             baseParams.TryGetValue("NotificationMethod", out object NotificationMethod);
-            if (NotificationMethod as string != null)
+            if (NotificationMethod != null)
             {
                 baseParams.TryGetValue("NotificationCompletion", out object NotificationCompletion);
                 baseParams.TryGetValue("NotificationEmailOptions", out object NotificationEmailOptions);
@@ -82,7 +102,7 @@ namespace PSAsigraDSClient
                 notification_info notificationInfo = new notification_info
                 {
                     completion = ArrayToNotificationCompletionToInt(NotificationCompletion as string[]),
-                    email_option = (NotificationEmailOptions as string[] != null) ? ArrayToEmailOptionsInt(NotificationEmailOptions as string[]) : 0,
+                    email_option = (NotificationEmailOptions != null) ? ArrayToEmailOptionsInt(NotificationEmailOptions as string[]) : 0,
                     id = 0,
                     method = StringToENotificationMethod(NotificationMethod as string),
                     recipient = NotificationRecipient as string
@@ -93,7 +113,7 @@ namespace PSAsigraDSClient
             }
 
             baseParams.TryGetValue("SnmpTrapNotifications", out object SnmpTrapNotifications);
-            if (SnmpTrapNotifications as string[] != null)
+            if (SnmpTrapNotifications != null)
                 backupSet.setSNMPTrapsConditions(ArrayToNotificationCompletionToInt(SnmpTrapNotifications as string[]));
 
             return backupSet;
@@ -246,7 +266,7 @@ namespace PSAsigraDSClient
             public int BackupSetId { get; set; }
             public string Computer { get; set; }
             public string Name { get; set; }
-            public bool Active { get; set; }
+            public bool Enabled { get; set; }
             public DateTime LastSuccess { get; set; }
             public dynamic DataType { get; set; }
             public DSClientBackupSetItem[] BackupItems { get; set; }
@@ -373,7 +393,7 @@ namespace PSAsigraDSClient
                 BackupSetId = backupSet.getID();
                 Computer = backupSet.getComputerName();
                 Name = backupSet.getName();
-                Active = backupSet.isActive();
+                Enabled = backupSet.isActive();
                 LastSuccess = UnixEpochToDateTime(backupSetOverviewInfo.status.last_successful_backup);
                 BackupItems = setItems.ToArray();
                 Synchronized = backupSet.isInSync();
@@ -1782,7 +1802,7 @@ namespace PSAsigraDSClient
             return AccessType;
         }
 
-        protected int SwitchParamsToECDPSuspendableScheduledActivityInt(bool retention, bool blm, bool validation)
+        protected static int SwitchParamsToECDPSuspendableScheduledActivityInt(bool retention, bool blm, bool validation)
         {
             int Suspendable = 0;
 

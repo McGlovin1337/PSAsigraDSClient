@@ -65,6 +65,8 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientUnixFsBackupSetParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientWinFsBackupSetParams.cs" />
     <Compile Include="PSAsigraDSClient\CompareDSClientEncryptionKeys.cs" />
+    <Compile Include="PSAsigraDSClient\DisableDSClientBackupSet.cs" />
+    <Compile Include="PSAsigraDSClient\EnableDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientAdvancedConfig.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientBackupSetItem.cs" />

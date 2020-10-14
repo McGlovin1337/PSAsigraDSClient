@@ -22,6 +22,8 @@ namespace PSAsigraDSClient
 
                 DSClientRunningActivities.Add(RunningActivity);
             }
+
+            ProcessRunningActivity(DSClientRunningActivities);
         }
 
         public class DSClientRunningActivity

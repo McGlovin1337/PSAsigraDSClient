@@ -182,9 +182,9 @@ namespace PSAsigraDSClient
 
         protected class DSClientScheduleDetail
         {
-            public int ScheduleId { get; set; }
             public int DetailId { get; set; }
-            public string Name { get; set; }
+            public int ScheduleId { get; set; }            
+            public string ScheduleName { get; set; }
             public dynamic Type { get; set; }
             public DSClientCommon.TimeInDay StartTime { get; set; }
             public DSClientCommon.TimeInDay EndTime { get; set; }

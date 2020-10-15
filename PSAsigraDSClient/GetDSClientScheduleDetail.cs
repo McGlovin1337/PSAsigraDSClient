@@ -59,23 +59,20 @@ namespace PSAsigraDSClient
                     int oneTimeStartDate = oneTimeScheduleDetail.get_start_date();
                     ScheduleTypeDetail = new OneTimeScheduleType(oneTimeStartDate);
                 }
-
-                if (scheduleType == EScheduleDetailType.EScheduleDetailType__Daily)
+                else if (scheduleType == EScheduleDetailType.EScheduleDetailType__Daily)
                 {
                     DailyScheduleDetail dailyScheduleDetail = DailyScheduleDetail.from(schedule);
                     int repeatDays = dailyScheduleDetail.getRepeatDays();
                     ScheduleTypeDetail = new DailyScheduleType(repeatDays);
                 }
-
-                if (scheduleType == EScheduleDetailType.EScheduleDetailType__Weekly)
+                else if (scheduleType == EScheduleDetailType.EScheduleDetailType__Weekly)
                 {
                     WeeklyScheduleDetail weeklyScheduleDetail = WeeklyScheduleDetail.from(schedule);
                     int repeatWeeks = weeklyScheduleDetail.getRepeatWeeks();
                     int scheduleDays = weeklyScheduleDetail.getScheduleDays();
                     ScheduleTypeDetail = new WeeklyScheduleType(repeatWeeks, scheduleDays);
                 }
-
-                if (scheduleType == EScheduleDetailType.EScheduleDetailType__Monthly)
+                else if (scheduleType == EScheduleDetailType.EScheduleDetailType__Monthly)
                 {
                     MonthlyScheduleDetail monthlyScheduleDetail = MonthlyScheduleDetail.from(schedule);
                     int repeatMonths = monthlyScheduleDetail.getRepeatMonths();
@@ -121,9 +118,9 @@ namespace PSAsigraDSClient
                 scheduleDetail.Dispose();
                 DSClientScheduleDetail.Add(new DSClientScheduleDetail
                 {
-                    ScheduleId = scheduleInfo.id,
                     DetailId = DetailID,
-                    Name = scheduleInfo.name,
+                    ScheduleId = scheduleInfo.id,
+                    ScheduleName = scheduleInfo.name,
                     Type = ScheduleTypeDetail,
                     StartTime = StartTime,
                     EndTime = EndTime,

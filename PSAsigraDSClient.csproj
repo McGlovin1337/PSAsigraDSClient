@@ -51,7 +51,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PSAsigraDSClient\AddDSClientArchiveFilter.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientDailySchedule.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientMonthlySchedule.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientOneTimeSchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientTimeRetentionRule.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientWeeklySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientWinFsBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientArchiveFilter.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientArchiveFilterRule.cs" />
@@ -60,6 +64,7 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientInitializeBackupSetDataBrowser.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientRetentionRuleParams.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientStartBackupSetActivity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientUnixFsBackupSetParams.cs" />
@@ -81,7 +86,6 @@
     <Compile Include="PSAsigraDSClient\NewDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientSchedule.cs" />
-    <Compile Include="PSAsigraDSClient\AddDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetDataBrowser.cs" />

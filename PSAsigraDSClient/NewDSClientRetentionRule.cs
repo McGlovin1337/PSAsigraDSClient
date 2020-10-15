@@ -5,6 +5,7 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.New, "DSClientRetentionRule")]
+    [OutputType(typeof(DSClientNewRetentionRule))]
 
     public class NewDSClientRetentionRule: BaseDSClientTimeRetentionRule
     {
@@ -21,6 +22,9 @@ namespace PSAsigraDSClient
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify an existing Archive Filter Rule")]
         public string ArchiveFilterRule { get; set; }
+
+        [Parameter(HelpMessage = "Specify to Output Retention Rule Overview")]
+        public SwitchParameter PassThru { get; set; }
 
         protected override void ProcessRetentionRule()
         {
@@ -194,11 +198,26 @@ namespace PSAsigraDSClient
                 NewRetentionRule.addArchiveRule(NewArchiveRule);
             }
 
-            int NewRuleId = NewRetentionRule.getID();
-            WriteObject("Created new Retention Rule with RetentionRuleId " + NewRuleId);
+            if (PassThru)
+            {
+                DSClientNewRetentionRule retentionRule = new DSClientNewRetentionRule(NewRetentionRule);
+                WriteObject(retentionRule);
+            }
 
             NewRetentionRule.Dispose();
             DSClientRetentionRuleMgr.Dispose();
+        }
+
+        private class DSClientNewRetentionRule
+        {
+            public int RetentionRuleId { get; set; }
+            public string Name { get; set; }
+
+            public DSClientNewRetentionRule(RetentionRule retentionRule)
+            {
+                RetentionRuleId = retentionRule.getID();
+                Name = retentionRule.getName();
+            }
         }
     }
 }

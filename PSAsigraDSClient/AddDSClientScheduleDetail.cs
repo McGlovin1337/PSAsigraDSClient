@@ -95,7 +95,7 @@ namespace PSAsigraDSClient
             }
         }
 
-        protected override void ProcessScheduleDetail()
+        protected override void DSClientProcessRecord()
         {
             ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
 

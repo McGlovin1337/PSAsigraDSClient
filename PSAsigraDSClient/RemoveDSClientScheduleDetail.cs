@@ -15,7 +15,7 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty]
         public int[] DetailId { get; set; }
 
-        protected override void ProcessScheduleDetail()
+        protected override void DSClientProcessRecord()
         {
             ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
 

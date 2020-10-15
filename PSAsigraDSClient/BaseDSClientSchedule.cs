@@ -7,11 +7,9 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientSchedule: DSClientCmdlet
     {
-        protected abstract void ProcessScheduleDetail();
-
         protected override void DSClientProcessRecord()
         {
-            ProcessScheduleDetail();
+            throw new NotImplementedException("DSClientProcessRecord Method should be overriden");
         }
 
         protected time_in_day StringTotime_in_day(string timeInDay)

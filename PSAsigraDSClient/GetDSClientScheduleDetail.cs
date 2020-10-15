@@ -18,7 +18,7 @@ namespace PSAsigraDSClient
         [ValidateSet("OneTime", "Daily", "Weekly", "Monthly", "Undefined")]
         public string Type { get; set; }
 
-        protected override void ProcessScheduleDetail()
+        protected override void DSClientProcessRecord()
         {
             ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
 

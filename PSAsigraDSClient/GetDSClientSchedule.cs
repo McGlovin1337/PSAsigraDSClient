@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [OutputType(typeof(DSClientScheduleInfo))]
     public class GetDSClientSchedule: BaseDSClientSchedule
     {
-        protected override void ProcessScheduleDetail()
+        protected override void DSClientProcessRecord()
         {
             ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
 

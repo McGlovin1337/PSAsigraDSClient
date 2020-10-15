@@ -4,8 +4,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.New, "DSClientSchedule")]
+    [OutputType(typeof(DSClientScheduleInfo))]
 
-    public class NewDSClientSchedule: DSClientCmdlet
+    public class NewDSClientSchedule: BaseDSClientSchedule
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, HelpMessage = "The name of the Schedule")]
         [ValidateNotNullOrEmpty]
@@ -21,14 +22,17 @@ namespace PSAsigraDSClient
         [Parameter(Position = 3, HelpMessage = "Concurrent backup sets allowed")]
         public int ConcurrentBackups { get; set; }
 
-        [Parameter(Position = 4, HelpMessage = "Specifies only Administrators can use this schedule")]
+        [Parameter(HelpMessage = "Specifies only Administrators can use this schedule")]
         public SwitchParameter AdminOnly { get; set; }
 
-        [Parameter(Position = 5, HelpMessage = "Set the Schedule to Inactive")]
+        [Parameter(HelpMessage = "Set the Schedule to Inactive")]
         public SwitchParameter Inactive { get; set; }
 
-        [Parameter(Position = 6, HelpMessage = "Start only if DS-System Connection available")]
+        [Parameter(HelpMessage = "Start only if DS-System Connection available")]
         public SwitchParameter UseNetworkDetection { get; set; }
+
+        [Parameter(HelpMessage = "Specify to return Schedule Info")]
+        public SwitchParameter PassThru { get; set; }
 
         protected override void DSClientProcessRecord()
         {
@@ -61,7 +65,12 @@ namespace PSAsigraDSClient
             // Apply the new Schedule
             WriteVerbose("Adding the new Schedule...");
             DSClientScheduleMgr.addSchedule(newSchedule);
-            WriteObject("Added new schedule");
+
+            if (PassThru)
+            {
+                DSClientScheduleInfo scheduleInfo = new DSClientScheduleInfo(DSClientScheduleMgr.definedScheduleInfo(newSchedule.getID()));
+                WriteObject(scheduleInfo);
+            }
 
             DSClientScheduleMgr.Dispose();
         }

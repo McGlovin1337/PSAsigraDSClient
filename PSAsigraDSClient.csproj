@@ -57,6 +57,7 @@
     <Compile Include="PSAsigraDSClient\AddDSClientTimeRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientWeeklySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientWinFsBackupSetItem.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientAdvancedConfig.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientArchiveFilter.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetDelResVal.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="PSAsigraDSClient\RestoreDSClientDatabase.cs" />
     <Compile Include="PSAsigraDSClient\RestoreDSClientOrphanedBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\SearchDSClientBackupSetData.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientAdvancedConfig.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMultiFactorAuthUser.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRegistrationInfo.cs" />

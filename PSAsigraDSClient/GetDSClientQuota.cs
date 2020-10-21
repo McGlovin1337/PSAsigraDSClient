@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Management.Automation;
 using AsigraDSClientApi;
 
@@ -34,7 +35,7 @@ namespace PSAsigraDSClient
             public string QuotaMeasure { get; set; }
             public long Used { get; set; }
             public long Limit { get; set; }
-            public int PercentUsed { get; set; }
+            public decimal PercentUsed { get; set; }
             public int GracePercentage { get; set; }
 
             public DSClientQuota(EQuotaOn assigned, quota_information quotaInfo)
@@ -43,7 +44,7 @@ namespace PSAsigraDSClient
                 QuotaMeasure = EQuotaTypeToString(quotaInfo.type);
                 Used = quotaInfo.current_use;
                 Limit = quotaInfo.use_limit;
-                PercentUsed = (int)(quotaInfo.current_use * quotaInfo.use_limit) / 100;
+                PercentUsed = (quotaInfo.use_limit > 0) ? decimal.Round(((decimal)quotaInfo.current_use / (decimal)quotaInfo.use_limit) * 100, 2) : 0;
                 GracePercentage = quotaInfo.grace_percentage;
             }
 

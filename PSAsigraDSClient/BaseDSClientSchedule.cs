@@ -12,37 +12,6 @@ namespace PSAsigraDSClient
             throw new NotImplementedException("DSClientProcessRecord Method should be overriden");
         }
 
-        protected time_in_day StringTotime_in_day(string timeInDay)
-        {
-            string[] splitTime = timeInDay.Split(':');
-
-            if (splitTime == null || splitTime.Count() == 0)
-                throw new Exception("time_in_day cannot be null or empty");
-
-            int Hour = Convert.ToInt32(splitTime[0]);
-            int Minute = 0;
-            int Second = 0;
-
-            if (splitTime.Count() > 1)
-                Minute = Convert.ToInt32(splitTime[1]);
-
-            if (splitTime.Count() > 2)
-                Second = Convert.ToInt32(splitTime[2]);
-
-            time_in_day TimeInDay = new time_in_day();
-            TimeInDay.hour = Hour;
-            TimeInDay.minute = Minute;
-            TimeInDay.second = Second;
-
-            if (TimeInDay.minute > 59)
-                TimeInDay.minute = 0;
-
-            if (TimeInDay.second > 59)
-                TimeInDay.second = 0;
-
-            return TimeInDay;
-        }
-
         protected EActivePackageClosing StringToEActivePackageClosing(string packageClose)
         {
             if (packageClose == "DoNotClose")

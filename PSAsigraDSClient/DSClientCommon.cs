@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using AsigraDSClientApi;
@@ -48,6 +49,69 @@ namespace PSAsigraDSClient
             {
                 return Hour + ":" + Minute + ":" + Second;
             }
+        }
+
+        public static time_in_day StringTotime_in_day(string timeInDay)
+        {
+            string[] splitTime = timeInDay.Split(':');
+
+            if (splitTime == null || splitTime.Count() == 0)
+                throw new Exception("time_in_day cannot be null or empty");
+
+            int Hour = Convert.ToInt32(splitTime[0]);
+            int Minute = 0;
+            int Second = 0;
+
+            if (splitTime.Count() > 1)
+                Minute = Convert.ToInt32(splitTime[1]);
+
+            if (splitTime.Count() > 2)
+                Second = Convert.ToInt32(splitTime[2]);
+
+            time_in_day TimeInDay = new time_in_day();
+            TimeInDay.hour = Hour;
+            TimeInDay.minute = Minute;
+            TimeInDay.second = Second;
+
+            if (TimeInDay.minute > 59)
+                TimeInDay.minute = 0;
+
+            if (TimeInDay.second > 59)
+                TimeInDay.second = 0;
+
+            return TimeInDay;
+        }
+
+        public static EWeekDay StringToEWeekDay(string weekDay)
+        {
+            EWeekDay WeekDay = EWeekDay.EWeekDay__UNDEFINED;
+
+            switch (weekDay)
+            {
+                case "Monday":
+                    WeekDay = EWeekDay.EWeekDay__Monday;
+                    break;
+                case "Tuesday":
+                    WeekDay = EWeekDay.EWeekDay__Tuesday;
+                    break;
+                case "Wednesday":
+                    WeekDay = EWeekDay.EWeekDay__Wednesday;
+                    break;
+                case "Thursday":
+                    WeekDay = EWeekDay.EWeekDay__Thursday;
+                    break;
+                case "Friday":
+                    WeekDay = EWeekDay.EWeekDay__Friday;
+                    break;
+                case "Saturday":
+                    WeekDay = EWeekDay.EWeekDay__Saturday;
+                    break;
+                case "Sunday":
+                    WeekDay = EWeekDay.EWeekDay__Sunday;
+                    break;
+            }
+
+            return WeekDay;
         }
 
         public static string EWeekDayToString(EWeekDay weekDay)

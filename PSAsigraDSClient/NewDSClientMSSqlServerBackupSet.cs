@@ -1,24 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Management.Automation;
 using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.New, "DSClientWinFsBackupSet")]
+    [Cmdlet(VerbsCommon.New, "DSClientMSSqlServerBackupSet")]
 
-    public class NewDSClientWinFsBackupSet: BaseDSClientWinFsBackupSet
+    public class NewDSClientMSSqlServerBackupSet: BaseDSClientMSSqlServerBackupSet
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Backup Set")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Backup Set")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
-        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Computer the Backup Set will be assigned to")]
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Computer the Backup Set will be Assigned To")]
         [ValidateNotNullOrEmpty]
         public string Computer { get; set; }
-
-        [Parameter(Position = 2, HelpMessage = "Credentials to use")]
-        public PSCredential Credential { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Include in Backup Set")]
         public string[] IncludeItem { get; set; }
@@ -43,13 +43,22 @@ namespace PSAsigraDSClient
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify if Regex Exclusions Items are case insensitive")]
         public SwitchParameter RegexCaseInsensitive { get; set; }
 
-        protected override void ProcessWinFsBackupSet()
-        {
-            // Create a Data Source Browser
-            DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__FileSystem);
+        [Parameter(HelpMessage = "Specify to run Database Consistency Check DBCC")]
+        public SwitchParameter RunDBCC { get; set; }
 
-            // Set the Credentials
-            Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(Computer));            
+        [Parameter(HelpMessage = "Specify to Stop on DBCC Errors")]
+        public SwitchParameter DBCCErrorStop { get; set; }
+
+        [Parameter(HelpMessage = "Specify to Backup Transaction Log")]
+        public SwitchParameter BackupLog { get; set; }
+
+        protected override void ProcessMsSqlBackupSet()
+        {
+            // Create Data Source Browser
+            DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__SQLServer);
+
+            // Set Computer Credentials
+            Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(Computer));
 
             if (Credential != null)
             {
@@ -64,12 +73,27 @@ namespace PSAsigraDSClient
             }
             dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
 
-            // Create the Backup Set Object
-            DataBrowserWithSetCreation setCreation = DataBrowserWithSetCreation.from(dataSourceBrowser);
+            // Create Backup Set Object
+            WriteVerbose("Creating a new Backup Set object...");
+            SQLDataBrowserWithSetCreation setCreation = SQLDataBrowserWithSetCreation.from(dataSourceBrowser);
             BackupSet newBackupSet = setCreation.createBackupSet(Computer);
 
-            // Process the Common Backup Set Parameters
+            // Set Database Credentials
+            if (DbCredential != null)
+            {
+                Win32FS_Generic_BackupSetCredentials databaseCredentials = new Win32FS_Generic_BackupSetCredentials();
+                string dbUser = DbCredential.UserName;
+                string dbPass = DbCredential.GetNetworkCredential().Password;
+                databaseCredentials.setCredentials(dbUser, dbPass);
+                setCreation.setDBCredentials(databaseCredentials);
+            }
+            else
+                setCreation.setDBCredentials(backupSetCredentials);
+
+            // Process Common Backup Set Parameters
             newBackupSet = ProcessBaseBackupSetParams(MyInvocation.BoundParameters, newBackupSet);
+
+            MSSQL_BackupSet newSqlBackupSet = MSSQL_BackupSet.from(newBackupSet);
 
             // Process Inclusion & Exclusion Items
             if (IncludeItem != null || ExcludeItem != null)
@@ -83,9 +107,9 @@ namespace PSAsigraDSClient
                     backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, Computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));
 
                 if (IncludeItem != null)
-                    backupSetItems.AddRange(ProcessWin32FSInclusionItems(dataSourceBrowser, Computer, IncludeItem, MaxGenerations, ExcludeAltDataStreams, ExcludePermissions));
+                    backupSetItems.AddRange(ProcessMsSqlInclusionItems(dataSourceBrowser, Computer, IncludeItem, MaxGenerations, BackupLog, RunDBCC, DBCCErrorStop));
 
-                newBackupSet.setItems(backupSetItems.ToArray());
+                newSqlBackupSet.setItems(backupSetItems.ToArray());
             }
 
             // Set the Schedule and Retention Rules
@@ -93,7 +117,7 @@ namespace PSAsigraDSClient
             {
                 ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
                 Schedule schedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
-                newBackupSet.setSchedule(schedule);
+                newSqlBackupSet.setSchedule(schedule);
             }
 
             if (MyInvocation.BoundParameters.ContainsKey("RetentionRuleId"))
@@ -101,18 +125,19 @@ namespace PSAsigraDSClient
                 RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
                 RetentionRule[] retentionRules = DSClientRetentionRuleMgr.definedRules();
                 RetentionRule retentionRule = retentionRules.Single(rule => rule.getID() == RetentionRuleId);
-                newBackupSet.setRetentionRule(retentionRule);
+                newSqlBackupSet.setRetentionRule(retentionRule);
             }
 
-            // Process this Cmdlets specific configuration
-            Win32FS_BackupSet newWin32BackupSet = ProcessWinFsBackupSetParams(MyInvocation.BoundParameters, Win32FS_BackupSet.from(newBackupSet));
+            // Process this Cmdlets specific Parameters
+            newSqlBackupSet = ProcessMsSqlServerBackupSetParams(MyInvocation.BoundParameters, newSqlBackupSet);
 
             // Add the Backup Set to the DS-Client
             WriteVerbose("Adding the new Backup Set Object to DS-Client...");
-            DSClientSession.addBackupSet(newWin32BackupSet);
-            WriteObject("Backup Set Created with BackupSetId: " + newWin32BackupSet.getID());
+            DSClientSession.addBackupSet(newSqlBackupSet);
+            WriteObject("Backup Set Created with BackupSetId: " + newSqlBackupSet.getID());
 
-            newWin32BackupSet.Dispose();
+            newSqlBackupSet.Dispose();
+            setCreation.Dispose();
             dataSourceBrowser.Dispose();
         }
     }

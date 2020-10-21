@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 using static PSAsigraDSClient.BaseDSClientNotification;
-using System.Linq;
 
 namespace PSAsigraDSClient
 {
@@ -218,6 +218,46 @@ namespace PSAsigraDSClient
             }
 
             return inclusionItems;
+        }
+
+        protected static IEnumerable<MSSQL_BackupSetInclusionItem> ProcessMsSqlInclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool logBackup, bool runDBCC, bool stopDBCC)
+        {
+            List<MSSQL_BackupSetInclusionItem> sqlInclusionItems = new List<MSSQL_BackupSetInclusionItem>();
+
+            foreach (string item in items)
+            {
+                // Trim any whitespace from the end of the item
+                string trimmedItem = item.Trim();
+
+                // Set the item filter by extracting the chars after the last "\"
+                string filter = trimmedItem.Split('\\').Last();
+                int itemLength = filter.Length;
+                if (string.IsNullOrEmpty(filter))
+                    filter = "*";
+
+                MSSQL_BackupSetInclusionItem inclusionItem = MSSQL_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, item, maxGens));
+
+                inclusionItem.setFilter(filter);
+
+                if (logBackup)
+                    inclusionItem.setBackUpTransactionLog(true);
+                else
+                    inclusionItem.setBackUpTransactionLog(false);
+
+                if (runDBCC)
+                    inclusionItem.setRunDBCC(true);
+                else
+                    inclusionItem.setRunDBCC(false);
+
+                if (stopDBCC)
+                    inclusionItem.setStopOnDBCCErrors(true);
+                else
+                    inclusionItem.setStopOnDBCCErrors(false);
+
+                sqlInclusionItems.Add(inclusionItem);
+            }
+
+            return sqlInclusionItems;
         }
 
         protected class BackupSetItemComparer : IEqualityComparer<BackupSetItem>

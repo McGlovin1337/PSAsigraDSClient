@@ -6,7 +6,7 @@ using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
-    public abstract class BaseDSClientWinFsBackupSetParams: BaseDSClientBackupSetParams
+    public abstract class BaseDSClientWinFsBackupSet: BaseDSClientBackupSetParams
     {
         [Parameter(HelpMessage = "Specify to Backup Remote Storage")]
         public SwitchParameter BackupRemoteStorage { get; set; }

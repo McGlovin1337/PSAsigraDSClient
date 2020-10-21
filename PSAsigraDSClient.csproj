@@ -64,12 +64,13 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetItemParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientInitializeBackupSetDataBrowser.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientMSSqlServerBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientRetentionRuleParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientStartBackupSetActivity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientUnixFsBackupSetParams.cs" />
-    <Compile Include="PSAsigraDSClient\BaseDSClientWinFsBackupSetParams.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\CompareDSClientEncryptionKeys.cs" />
     <Compile Include="PSAsigraDSClient\DisableDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\DisableDSClientSchedule.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetRestore.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetValidation.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientArchiveFilterRule.cs" />
+    <Compile Include="PSAsigraDSClient\NewDSClientMSSqlServerBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientSNMPCommunity.cs" />

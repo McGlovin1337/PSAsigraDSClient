@@ -1,5 +1,6 @@
 ﻿using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -291,38 +292,6 @@ namespace PSAsigraDSClient
             }
 
             return Month;
-        }
-
-        private static EWeekDay StringToEWeekDay(string weekDay)
-        {
-            EWeekDay WeekDay = EWeekDay.EWeekDay__UNDEFINED;
-
-            switch (weekDay)
-            {
-                case "Monday":
-                    WeekDay = EWeekDay.EWeekDay__Monday;
-                    break;
-                case "Tuesday":
-                    WeekDay = EWeekDay.EWeekDay__Tuesday;
-                    break;
-                case "Wednesday":
-                    WeekDay = EWeekDay.EWeekDay__Wednesday;
-                    break;
-                case "Thursday":
-                    WeekDay = EWeekDay.EWeekDay__Thursday;
-                    break;
-                case "Friday":
-                    WeekDay = EWeekDay.EWeekDay__Friday;
-                    break;
-                case "Saturday":
-                    WeekDay = EWeekDay.EWeekDay__Saturday;
-                    break;
-                case "Sunday":
-                    WeekDay = EWeekDay.EWeekDay__Sunday;
-                    break;
-            }
-
-            return WeekDay;
         }
 
         public static RetentionTimeUnit StringToRetentionTimeUnit(string timeUnit)

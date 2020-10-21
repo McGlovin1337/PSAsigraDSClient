@@ -6,7 +6,7 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientWinFsBackupSet")]
 
-    public class SetDSClientWinFsBackupSet: BaseDSClientWinFsBackupSetParams
+    public class SetDSClientWinFsBackupSet: BaseDSClientWinFsBackupSet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to Modify")]
         public int BackupSetId { get; set; }

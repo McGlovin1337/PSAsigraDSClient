@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.BaseDSClientBackupSource;
 
 namespace PSAsigraDSClient
 {
@@ -57,10 +58,6 @@ namespace PSAsigraDSClient
                     // Select the first item in the list
                     ItemPath currentPath = newPaths.ElementAt(0);
 
-                    // Break out of the loop if the recursion depth exceeds the value specified
-                    if (currentPath.Depth > RecursiveDepth)
-                        break;
-
                     WriteVerbose("Enumerating Path: " + currentPath.Path + " (Depth: " + currentPath.Depth + ")");
 
                     item = DSClientBackedUpDataView.getItem(currentPath.Path);
@@ -70,6 +67,7 @@ namespace PSAsigraDSClient
                     SelectableItem[] subItems = DSClientBackedUpDataView.getSubItemsByCategory(itemId, ESelectableItemCategory.ESelectableItemCategory__FilesAndDirectories);
 
                     int subItemDepth = currentPath.Depth + 1;
+                    int index = 1;
                     foreach (SelectableItem subItem in subItems)
                     {
                         selectable_size subItemSize = DSClientBackedUpDataView.getItemSize(subItem.id);
@@ -84,8 +82,11 @@ namespace PSAsigraDSClient
                             ItemInfo.Add(new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize));
                         }
 
-                        if (!subItem.is_file)
-                            newPaths.Add(new ItemPath(currentPath.Path + "\\" + subItem.name, subItemDepth));
+                        
+                        if (!subItem.is_file && subItemDepth <= RecursiveDepth)
+                            newPaths.Insert(index, new ItemPath(currentPath.Path + "\\" + subItem.name, subItemDepth));
+
+                        index++;
                     }
 
                     // Remove the Path we've just completed enumerating from the list
@@ -94,18 +95,6 @@ namespace PSAsigraDSClient
             }
 
             ItemInfo.ForEach(WriteObject);
-        }
-
-        private class ItemPath
-        {
-            public string Path { get; set; }
-            public int Depth { get; set; }
-
-            public ItemPath(string path, int depth)
-            {
-                Path = path;
-                Depth = depth;
-            }
         }
 
         private class DSClientBackupSetItemInfo
@@ -129,59 +118,6 @@ namespace PSAsigraDSClient
                 FileCount = itemSize.file_count;
                 IsFile = item.is_file;
                 Selectable = item.is_selectable;
-            }
-
-            private string EBrowseItemTypeToString(EBrowseItemType itemType)
-            {
-                string ItemType = null;
-
-                switch(itemType)
-                {
-                    case EBrowseItemType.EBrowseItemType__Drive:
-                        ItemType = "Drive";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__Share:
-                        ItemType = "Share";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__Directory:
-                        ItemType = "Directory";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__File:
-                        ItemType = "File";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__SystemState:
-                        ItemType = "SystemState";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__ServicesDB:
-                        ItemType = "ServicesDatabase";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__DatabaseInstance:
-                        ItemType = "DatabaseInstance";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__Database:
-                        ItemType = "Database";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__Tablespace:
-                        ItemType = "OracleTablespace";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__ControlFile:
-                        ItemType = "OracleControlFile";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__ArchiveLog:
-                        ItemType = "OracleArchiveLog";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__VirtualMachine:
-                        ItemType = "VirtualMachine";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__VssExchange:
-                        ItemType = "VssExchange";
-                        break;
-                    case EBrowseItemType.EBrowseItemType__VmDisk:
-                        ItemType = "VirtualMachineDisk";
-                        break;
-                }
-
-                return ItemType;
             }
         }
     }

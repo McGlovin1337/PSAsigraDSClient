@@ -63,6 +63,7 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetDelResVal.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetItemParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetParams.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientBackupSource.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientInitializeBackupSetDataBrowser.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientMSSqlServerBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientRetentionRuleParams.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="PSAsigraDSClient\NewDSClientUnixFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\PublishDSClientEncryptionKeys.cs" />
+    <Compile Include="PSAsigraDSClient\ReadDSClientWinFsSource.cs" />
     <Compile Include="PSAsigraDSClient\RegisterDSClient.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetItem.cs" />

@@ -6,18 +6,12 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Add, "DSClientWinFsBackupSetItem")]
+    [Cmdlet(VerbsCommon.Add, "DSClientMSSqlServerBackupSetItem")]
 
-    public class AddDSClientWinFsBackupSetItem: BaseDSClientBackupSet
+    public class AddDSClientMSSqlServerBackupSetItem: BaseDSClientBackupSet
     {
-        [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to modify")]
+        [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to Add items to")]
         public int BackupSetId { get; set; }
-
-        [Parameter(HelpMessage = "Include Alternate Data Streams for IncludedItems")]
-        public SwitchParameter ExcludeAltDataStreams { get; set; }
-
-        [Parameter(HelpMessage = "Include Permissions for IncludedItems")]
-        public SwitchParameter ExcludePermissions { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Include in Backup Set")]
         public string[] IncludeItem { get; set; }
@@ -42,11 +36,20 @@ namespace PSAsigraDSClient
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify if Regex Exclusions Items are case insensitive")]
         public SwitchParameter RegexCaseInsensitive { get; set; }
 
+        [Parameter(HelpMessage = "Specify to run Database Consistency Check DBCC")]
+        public SwitchParameter RunDBCC { get; set; }
+
+        [Parameter(HelpMessage = "Specify to Stop on DBCC Errors")]
+        public SwitchParameter DBCCErrorStop { get; set; }
+
+        [Parameter(HelpMessage = "Specify to Backup Transaction Log")]
+        public SwitchParameter BackupLog { get; set; }
+
         protected override void DSClientProcessRecord()
         {
             // Check DS-Client is Windows
             if (DSClientOSType.OsType != "Windows")
-                throw new Exception("Windows FileSystem Backup Sets can only be created on a Windows DS-Client");
+                throw new Exception("MS SQL Server Backup Sets can only be created on a Windows DS-Client");
 
             // Get the requested Backup Set from DS-Client
             WriteVerbose("Retrieving Backup Set from DS-Client...");
@@ -68,7 +71,7 @@ namespace PSAsigraDSClient
 
             // Process any Inclusion Items
             if (IncludeItem != null)
-                backupSetItems.AddRange(ProcessWin32FSInclusionItems(dataSourceBrowser, computer, IncludeItem, MaxGenerations, ExcludeAltDataStreams, ExcludePermissions));
+                backupSetItems.AddRange(ProcessMsSqlInclusionItems(dataSourceBrowser, computer, IncludeItem, MaxGenerations, BackupLog, RunDBCC, DBCCErrorStop));
 
             // Get the existing specified items and store in the list
             backupSetItems.AddRange(backupSet.items());

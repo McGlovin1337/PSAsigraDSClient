@@ -1,6 +1,5 @@
 ﻿using AsigraDSClientApi;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Management.Automation;
 using static PSAsigraDSClient.DSClientCommon;

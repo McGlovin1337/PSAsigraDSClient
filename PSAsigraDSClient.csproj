@@ -53,6 +53,7 @@
     <Compile Include="PSAsigraDSClient\AddDSClientArchiveFilter.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientDailySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMonthlySchedule.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientMSSqlServerBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientOneTimeSchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientTimeRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientWeeklySchedule.cs" />

@@ -48,8 +48,12 @@ namespace PSAsigraDSClient
             // Create a Data Source Browser
             DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__FileSystem);
 
+            // Try to resolve the supplied Computer
+            string computer = dataSourceBrowser.expandToFullPath(Computer);
+            WriteVerbose("Specified Computer resolved to: " + computer);
+
             // Set the Credentials
-            Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(Computer));            
+            Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));            
 
             if (Credential != null)
             {
@@ -66,7 +70,7 @@ namespace PSAsigraDSClient
 
             // Create the Backup Set Object
             DataBrowserWithSetCreation setCreation = DataBrowserWithSetCreation.from(dataSourceBrowser);
-            BackupSet newBackupSet = setCreation.createBackupSet(Computer);
+            BackupSet newBackupSet = setCreation.createBackupSet(computer);
 
             // Process the Common Backup Set Parameters
             newBackupSet = ProcessBaseBackupSetParams(MyInvocation.BoundParameters, newBackupSet);
@@ -77,13 +81,13 @@ namespace PSAsigraDSClient
                 List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
                 if (ExcludeItem != null)
-                    backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, Computer, ExcludeItem));
+                    backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem));
 
                 if (RegexExcludeItem != null)
-                    backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, Computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));
+                    backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));
 
                 if (IncludeItem != null)
-                    backupSetItems.AddRange(ProcessWin32FSInclusionItems(dataSourceBrowser, Computer, IncludeItem, MaxGenerations, ExcludeAltDataStreams, ExcludePermissions));
+                    backupSetItems.AddRange(ProcessWin32FSInclusionItems(dataSourceBrowser, computer, IncludeItem, MaxGenerations, ExcludeAltDataStreams, ExcludePermissions));
 
                 newBackupSet.setItems(backupSetItems.ToArray());
             }

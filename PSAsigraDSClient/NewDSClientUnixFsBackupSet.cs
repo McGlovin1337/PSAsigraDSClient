@@ -67,8 +67,12 @@ namespace PSAsigraDSClient
             // Create a Data Source Browser
             DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__FileSystem);
 
+            // Try to resolve the supplied Computer
+            string computer = dataSourceBrowser.expandToFullPath(Computer);
+            WriteVerbose("Specified Computer resolved to: " + computer);
+
             // Set the Credentials
-            UnixFS_Generic_BackupSetCredentials backupSetCredentials = UnixFS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(Computer));
+            UnixFS_Generic_BackupSetCredentials backupSetCredentials = UnixFS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
 
             if (Credential != null)
             {
@@ -110,7 +114,7 @@ namespace PSAsigraDSClient
 
             // Create the Backup Set Object
             DataBrowserWithSetCreation setCreation = DataBrowserWithSetCreation.from(dataSourceBrowser);
-            BackupSet newBackupSet = setCreation.createBackupSet(Computer);
+            BackupSet newBackupSet = setCreation.createBackupSet(computer);
 
             // Process the Common Backup Set Parameters
             newBackupSet = ProcessBaseBackupSetParams(MyInvocation.BoundParameters, newBackupSet);
@@ -121,16 +125,16 @@ namespace PSAsigraDSClient
                 List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
                 if (ExcludeItem != null)
-                    backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, Computer, ExcludeItem));
+                    backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem));
 
                 if (RegexExcludeItem != null)
-                    backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, Computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));
+                    backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));
 
                 if (IncludeItem != null)
                 {
                     foreach (string item in IncludeItem)
                     {
-                        UnixFS_BackupSetInclusionItem inclusionItem = UnixFS_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(Computer, item, MaxGenerations));
+                        UnixFS_BackupSetInclusionItem inclusionItem = UnixFS_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, item, MaxGenerations));
 
                         if (MyInvocation.BoundParameters.ContainsKey("ExcludeACLs"))
                             inclusionItem.setIncludingACL(false);

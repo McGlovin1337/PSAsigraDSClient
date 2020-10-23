@@ -57,8 +57,12 @@ namespace PSAsigraDSClient
             // Create Data Source Browser
             DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__SQLServer);
 
+            // Try to resolve the supplied Computer
+            string computer = dataSourceBrowser.expandToFullPath(Computer);
+            WriteVerbose("Specified Computer resolved to: " + computer);
+
             // Set Computer Credentials
-            Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(Computer));
+            Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
 
             if (Credential != null)
             {
@@ -101,13 +105,13 @@ namespace PSAsigraDSClient
                 List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
                 if (ExcludeItem != null)
-                    backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, Computer, ExcludeItem));
+                    backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem));
 
                 if (RegexExcludeItem != null)
-                    backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, Computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));
+                    backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));
 
                 if (IncludeItem != null)
-                    backupSetItems.AddRange(ProcessMsSqlInclusionItems(dataSourceBrowser, Computer, IncludeItem, MaxGenerations, BackupLog, RunDBCC, DBCCErrorStop));
+                    backupSetItems.AddRange(ProcessMsSqlInclusionItems(dataSourceBrowser, computer, IncludeItem, MaxGenerations, BackupLog, RunDBCC, DBCCErrorStop));
 
                 newSqlBackupSet.setItems(backupSetItems.ToArray());
             }

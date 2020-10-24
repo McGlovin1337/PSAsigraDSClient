@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -130,7 +131,69 @@ namespace PSAsigraDSClient
             }
 
             // Process this Cmdlets specific Parameters
-            newSqlBackupSet = ProcessMsSqlServerBackupSetParams(MyInvocation.BoundParameters, newSqlBackupSet);
+            // Process Dump Parameters
+            mssql_dump_parameters dumpParameters = new mssql_dump_parameters
+            {
+                dump_method = StringToESQLDumpMethod(DumpMethod),
+                path = DumpPath ?? ""
+            };
+            newSqlBackupSet.setDumpParameters(dumpParameters);
+
+            // Process Incremental Policies
+            incremental_policies incrementalPolicies = new incremental_policies
+            {
+                backup_policy = StringToEBackupPolicy(BackupMethod)
+            };
+
+            if (MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay") || FullMonthlyTime != null)
+            {
+                if (MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay"))
+                    incrementalPolicies.force_full_monthly_day = FullMonthlyDay;
+
+                if (FullMonthlyTime != null)
+                    incrementalPolicies.force_full_monthly_time = StringTotime_in_day(FullMonthlyTime);
+
+                incrementalPolicies.is_force_full_monthly = true;
+            }
+
+            if (FullWeeklyDay != null || FullWeeklyTime != null)
+            {
+                if (FullWeeklyDay != null)
+                    incrementalPolicies.force_full_weekly_day = StringToEWeekDay(FullWeeklyDay);
+
+                if (FullWeeklyTime != null)
+                    incrementalPolicies.force_full_weekly_time = StringTotime_in_day(FullWeeklyTime);
+
+                incrementalPolicies.is_force_full_weekly = true;
+            }
+
+            if (FullPeriod != null || MyInvocation.BoundParameters.ContainsKey("FullPeriodValue"))
+            {
+                if (FullPeriod != null)
+                    incrementalPolicies.unit_type = StringToETimeUnit(FullPeriod);
+
+                if (MyInvocation.BoundParameters.ContainsKey("FullPeriodValue"))
+                    incrementalPolicies.unit_value = FullPeriodValue;
+
+                incrementalPolicies.is_force_full_periodically = true;
+            }
+
+            if (SkipWeekDays != null || SkipWeekDaysFrom != null || SkipWeekDaysTo != null)
+            {
+                if (SkipWeekDays != null)
+                    incrementalPolicies.skip_full_on_weekdays = StringArrayEScheduleWeekDaysToInt(SkipWeekDays);
+
+                if (SkipWeekDaysFrom != null)
+                    incrementalPolicies.skip_full_on_weekdays_from = StringTotime_in_day(SkipWeekDaysFrom);
+
+                if (SkipWeekDaysTo != null)
+                    incrementalPolicies.skip_full_on_weekdays_to = StringTotime_in_day(SkipWeekDaysTo);
+
+                if (incrementalPolicies.skip_full_on_weekdays > 0)
+                    incrementalPolicies.is_skip_full_on_weekdays = true;
+            }
+
+            newSqlBackupSet.setIncrementalPolicies(incrementalPolicies);
 
             // Add the Backup Set to the DS-Client
             WriteVerbose("Adding the new Backup Set Object to DS-Client...");

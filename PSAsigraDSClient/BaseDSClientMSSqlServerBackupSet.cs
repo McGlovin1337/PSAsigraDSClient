@@ -85,54 +85,7 @@ namespace PSAsigraDSClient
             ProcessMsSqlBackupSet();
         }
 
-        protected static MSSQL_BackupSet ProcessMsSqlServerBackupSetParams(Dictionary<string, object> sqlParams, MSSQL_BackupSet backupSet)
-        {
-            // Set the Dump Method
-            sqlParams.TryGetValue("DumpMethod", out object DumpMethod);
-            sqlParams.TryGetValue("DumpPath", out object DumpPath);
-
-            mssql_dump_parameters dumpParameters = new mssql_dump_parameters
-            {
-                dump_method = StringToESQLDumpMethod(DumpMethod as string),
-                path = (DumpPath != null) ? DumpPath as string : ""
-            };
-            backupSet.setDumpParameters(dumpParameters);
-
-            // Set the Incremental Policy
-            sqlParams.TryGetValue("BackupMethod", out object BackupMethod);
-            sqlParams.TryGetValue("FullMonthlyDay", out object FullMonthlyDay);
-            sqlParams.TryGetValue("FullMonthlyTime", out object FullMonthlyTime);
-            sqlParams.TryGetValue("FullWeeklyDay", out object FullWeeklyDay);
-            sqlParams.TryGetValue("FullWeeklyTime", out object FullWeeklyTime);
-            sqlParams.TryGetValue("FullPeriod", out object FullPeriod);
-            sqlParams.TryGetValue("FullPeriodValue", out object FullPeriodValue);
-            sqlParams.TryGetValue("SkipWeekDays", out object SkipWeekDays);
-            sqlParams.TryGetValue("SkipWeekDaysFrom", out object SkipWeekDaysFrom);
-            sqlParams.TryGetValue("SkipWeekDaysTo", out object SkipWeekDaysTo);
-
-            incremental_policies incrementalPolicies = new incremental_policies
-            {
-                backup_policy = StringToEBackupPolicy(BackupMethod as string),
-                force_full_monthly_day = (FullMonthlyDay as int?).GetValueOrDefault(1),
-                force_full_monthly_time = (FullMonthlyTime != null) ? StringTotime_in_day(FullMonthlyTime as string) : StringTotime_in_day("00:00:00"),
-                force_full_weekly_day = (FullWeeklyDay != null) ? StringToEWeekDay(FullWeeklyDay as string) : EWeekDay.EWeekDay__UNDEFINED,
-                force_full_weekly_time = (FullWeeklyTime != null) ? StringTotime_in_day(FullWeeklyTime as string) : StringTotime_in_day("00:00:00"),
-                is_force_full_monthly = (FullMonthlyDay != null) ? true : false,
-                is_force_full_periodically = (FullPeriod != null) ? true : false,
-                is_force_full_weekly = (FullWeeklyDay != null) ? true : false,
-                is_skip_full_on_weekdays = (SkipWeekDays != null) ? true : false,
-                skip_full_on_weekdays = (SkipWeekDays != null) ? StringArrayEScheduleWeekDaysToInt(SkipWeekDays as string[]) : (int)EScheduleWeekDays.EScheduleWeekDays__UNDEFINED,
-                skip_full_on_weekdays_from = (SkipWeekDaysFrom != null) ? StringTotime_in_day(SkipWeekDaysFrom as string) : StringTotime_in_day("00:00:00"),
-                skip_full_on_weekdays_to = (SkipWeekDaysTo != null) ? StringTotime_in_day(SkipWeekDaysTo as string) : StringTotime_in_day("00:00:00"),
-                unit_type = (FullPeriod != null) ? StringToETimeUnit(FullPeriod as string) : ETimeUnit.ETimeUnit__UNDEFINED,
-                unit_value = (FullPeriodValue as int?).GetValueOrDefault(1)
-            };
-            backupSet.setIncrementalPolicies(incrementalPolicies);
-
-            return backupSet;
-        }
-
-        private static int StringArrayEScheduleWeekDaysToInt(IEnumerable<string> weekdays)
+        protected static int StringArrayEScheduleWeekDaysToInt(IEnumerable<string> weekdays)
         {
             int WeekDays = 0;
 
@@ -167,7 +120,7 @@ namespace PSAsigraDSClient
             return WeekDays;
         }
 
-        private static EBackupPolicy StringToEBackupPolicy(string backupPolicy)
+        protected static EBackupPolicy StringToEBackupPolicy(string backupPolicy)
         {
             EBackupPolicy Policy = EBackupPolicy.EBackupPolicy__UNDEFINED;
 
@@ -187,7 +140,7 @@ namespace PSAsigraDSClient
             return Policy;
         }
 
-        private static ESQLDumpMethod StringToESQLDumpMethod(string dumpMethod)
+        protected static ESQLDumpMethod StringToESQLDumpMethod(string dumpMethod)
         {
             ESQLDumpMethod DumpMethod = ESQLDumpMethod.ESQLDumpMethod__UNDEFINED;
 

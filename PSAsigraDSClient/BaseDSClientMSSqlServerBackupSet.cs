@@ -140,7 +140,7 @@ namespace PSAsigraDSClient
             return Policy;
         }
 
-        protected static ESQLDumpMethod StringToESQLDumpMethod(string dumpMethod)
+        public static ESQLDumpMethod StringToESQLDumpMethod(string dumpMethod)
         {
             ESQLDumpMethod DumpMethod = ESQLDumpMethod.ESQLDumpMethod__UNDEFINED;
 

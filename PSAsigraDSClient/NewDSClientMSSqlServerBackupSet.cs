@@ -52,12 +52,16 @@ namespace PSAsigraDSClient
 
         protected override void ProcessMsSqlBackupSet()
         {
-            // Create Data Source Browser
-            DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__SQLServer);
+            // Create Data Source Browser to Resolve Computer (expandToFullPath method doesn't work when data browser is SQLServer)
+            DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__FileSystem);
 
             // Try to resolve the supplied Computer
             string computer = dataSourceBrowser.expandToFullPath(Computer);
             WriteVerbose("Specified Computer resolved to: " + computer);
+
+            // Change Data Source Browser to correct type
+            dataSourceBrowser.Dispose();
+            dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__SQLServer);
 
             // Set Computer Credentials
             Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
@@ -142,57 +146,21 @@ namespace PSAsigraDSClient
             // Process Incremental Policies
             incremental_policies incrementalPolicies = new incremental_policies
             {
-                backup_policy = StringToEBackupPolicy(BackupMethod)
+                backup_policy = StringToEBackupPolicy(BackupMethod),
+                force_full_monthly_day = (MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay")) ? FullMonthlyDay : 1,
+                force_full_monthly_time = (FullMonthlyTime != null) ? StringTotime_in_day(FullMonthlyTime) : StringTotime_in_day("19:00:00"),
+                is_force_full_monthly = (MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay")) ? true : false,
+                force_full_weekly_day = (FullWeeklyDay != null) ? StringToEWeekDay(FullWeeklyDay) : EWeekDay.EWeekDay__UNDEFINED,
+                force_full_weekly_time = (FullWeeklyTime != null) ? StringTotime_in_day(FullWeeklyTime) : StringTotime_in_day("19:00:00"),
+                is_force_full_weekly = (FullWeeklyDay != null) ? true : false,
+                unit_type = (FullPeriod != null) ? StringToETimeUnit(FullPeriod) : ETimeUnit.ETimeUnit__UNDEFINED,
+                unit_value = (MyInvocation.BoundParameters.ContainsKey("FullPeriodValue")) ? FullPeriodValue : 0,
+                is_force_full_periodically = (FullPeriod != null) ? true : false,
+                skip_full_on_weekdays = (SkipWeekDays != null) ? StringArrayEScheduleWeekDaysToInt(SkipWeekDays) : (int)EScheduleWeekDays.EScheduleWeekDays__UNDEFINED,
+                skip_full_on_weekdays_from = (SkipWeekDaysFrom != null) ? StringTotime_in_day(SkipWeekDaysFrom) : StringTotime_in_day("07:00:00"),
+                skip_full_on_weekdays_to = (SkipWeekDaysTo != null) ? StringTotime_in_day(SkipWeekDaysTo) : StringTotime_in_day("19:00:00"),
+                is_skip_full_on_weekdays = (SkipWeekDays != null) ? true : false
             };
-
-            if (MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay") || FullMonthlyTime != null)
-            {
-                if (MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay"))
-                    incrementalPolicies.force_full_monthly_day = FullMonthlyDay;
-
-                if (FullMonthlyTime != null)
-                    incrementalPolicies.force_full_monthly_time = StringTotime_in_day(FullMonthlyTime);
-
-                incrementalPolicies.is_force_full_monthly = true;
-            }
-
-            if (FullWeeklyDay != null || FullWeeklyTime != null)
-            {
-                if (FullWeeklyDay != null)
-                    incrementalPolicies.force_full_weekly_day = StringToEWeekDay(FullWeeklyDay);
-
-                if (FullWeeklyTime != null)
-                    incrementalPolicies.force_full_weekly_time = StringTotime_in_day(FullWeeklyTime);
-
-                incrementalPolicies.is_force_full_weekly = true;
-            }
-
-            if (FullPeriod != null || MyInvocation.BoundParameters.ContainsKey("FullPeriodValue"))
-            {
-                if (FullPeriod != null)
-                    incrementalPolicies.unit_type = StringToETimeUnit(FullPeriod);
-
-                if (MyInvocation.BoundParameters.ContainsKey("FullPeriodValue"))
-                    incrementalPolicies.unit_value = FullPeriodValue;
-
-                incrementalPolicies.is_force_full_periodically = true;
-            }
-
-            if (SkipWeekDays != null || SkipWeekDaysFrom != null || SkipWeekDaysTo != null)
-            {
-                if (SkipWeekDays != null)
-                    incrementalPolicies.skip_full_on_weekdays = StringArrayEScheduleWeekDaysToInt(SkipWeekDays);
-
-                if (SkipWeekDaysFrom != null)
-                    incrementalPolicies.skip_full_on_weekdays_from = StringTotime_in_day(SkipWeekDaysFrom);
-
-                if (SkipWeekDaysTo != null)
-                    incrementalPolicies.skip_full_on_weekdays_to = StringTotime_in_day(SkipWeekDaysTo);
-
-                if (incrementalPolicies.skip_full_on_weekdays > 0)
-                    incrementalPolicies.is_skip_full_on_weekdays = true;
-            }
-
             newSqlBackupSet.setIncrementalPolicies(incrementalPolicies);
 
             // Add the Backup Set to the DS-Client

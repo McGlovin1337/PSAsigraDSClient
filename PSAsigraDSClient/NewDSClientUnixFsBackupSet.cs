@@ -73,44 +73,45 @@ namespace PSAsigraDSClient
 
             // Set the Credentials
             UnixFS_Generic_BackupSetCredentials backupSetCredentials = UnixFS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
-
             if (Credential != null)
-            {
-                string user = Credential.UserName;
-                string pass = Credential.GetNetworkCredential().Password;
-
-                if (SSHKeyFile != null)
-                {
-                    UnixFS_SSH_BackupSetCredentials sshBackupSetCredentials = UnixFS_SSH_BackupSetCredentials.from(backupSetCredentials);
-
-                    if (SSHInterpreter != null)
-                    {
-                        SSHAccesorType sshAccessType = StringToSSHAccesorType(SSHInterpreter);
-
-                        sshBackupSetCredentials.setSSHAccessType(sshAccessType, SSHInterpreterPath);
-                    }
-
-                    if (SudoCredential != null)
-                    {
-                        string sudoUser = SudoCredential.UserName;
-                        string sudoPass = SudoCredential.GetNetworkCredential().Password;
-
-                        sshBackupSetCredentials.setSudoAs(sudoUser, sudoPass);
-                    }
-
-                    sshBackupSetCredentials.setCredentialsViaKeyFile(user, SSHKeyFile, pass);
-                }
-                else
-                {
-                    backupSetCredentials.setCredentials(user, pass);
-                }
-            }
+                backupSetCredentials.setCredentials(Credential.UserName, Credential.GetNetworkCredential().Password);
             else
             {
                 WriteVerbose("Credentials not specified, using DS-Client Credentials...");
                 backupSetCredentials.setUsingClientCredentials(true);
             }
             dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
+
+            if (SSHKeyFile != null || SudoCredential != null || SSHInterpreter != null)
+            {
+                try
+                {
+                    UnixFS_SSH_BackupSetCredentials sshBackupSetCredentials = UnixFS_SSH_BackupSetCredentials.from(backupSetCredentials);
+
+                    if (SSHInterpreter != null)
+                    {
+                        SSHAccesorType sshAccessType = BaseDSClientBackupSet.StringToSSHAccesorType(SSHInterpreter);
+
+                        sshBackupSetCredentials.setSSHAccessType(sshAccessType, SSHInterpreterPath);
+                    }
+
+                    if (SudoCredential != null)
+                        sshBackupSetCredentials.setSudoAs(SudoCredential.UserName, SudoCredential.GetNetworkCredential().Password);
+
+                    if (SSHKeyFile != null)
+                        sshBackupSetCredentials.setCredentialsViaKeyFile(Credential.UserName, SSHKeyFile, Credential.GetNetworkCredential().Password);
+
+                    dataSourceBrowser.setCurrentCredentials(sshBackupSetCredentials);
+
+                    sshBackupSetCredentials.Dispose();
+                }
+                catch
+                {
+                    WriteWarning("Unable to set SSH Credential Options");
+                }
+            }
+            else
+                backupSetCredentials.Dispose();
 
             // Create the Backup Set Object
             DataBrowserWithSetCreation setCreation = DataBrowserWithSetCreation.from(dataSourceBrowser);
@@ -141,15 +142,18 @@ namespace PSAsigraDSClient
                         else
                             inclusionItem.setIncludingACL(true);
 
-                        if (MyInvocation.BoundParameters.ContainsKey("ExcludePosixACLs"))
+                        if (computer.Split('\\').First() == "Local File System")
                         {
-                            UnixFS_LinuxLFS_BackupSetInclusionItem linuxInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
-                            linuxInclusionItem.setIncludingPosixACL(false);
-                        }
-                        else
-                        {
-                            UnixFS_LinuxLFS_BackupSetInclusionItem linuxInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
-                            linuxInclusionItem.setIncludingPosixACL(true);
+                            if (MyInvocation.BoundParameters.ContainsKey("ExcludePosixACLs"))
+                            {
+                                UnixFS_LinuxLFS_BackupSetInclusionItem linuxInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
+                                linuxInclusionItem.setIncludingPosixACL(false);
+                            }
+                            else
+                            {
+                                UnixFS_LinuxLFS_BackupSetInclusionItem linuxInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
+                                linuxInclusionItem.setIncludingPosixACL(true);
+                            }
                         }
 
                         backupSetItems.Add(inclusionItem);

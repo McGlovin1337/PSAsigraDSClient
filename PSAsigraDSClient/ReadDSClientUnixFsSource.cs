@@ -5,11 +5,24 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommunications.Read, "DSClientWinFsSource")]
+    [Cmdlet(VerbsCommunications.Read, "DSClientUnixFsSource")]
     [OutputType(typeof(SourceItemInfo))]
 
-    public class ReadDSClientWinFsSource: BaseDSClientBackupSource
+    public class ReadDSClientUnixFsSource: BaseDSClientBackupSource
     {
+        [Parameter(HelpMessage = "Path to SSH Key File on DS-Client")]
+        public string SSHKeyFile { get; set; }
+
+        [Parameter(HelpMessage = "SSH Interpreter to access the data")]
+        [ValidateSet("Perl", "Python", "Direct")]
+        public string SSHInterpreter { get; set; }
+
+        [Parameter(HelpMessage = "SSH Interpreter path")]
+        public string SSHInterpreterPath { get; set; }
+
+        [Parameter(HelpMessage = "Specify SUDO User Credentials")]
+        public PSCredential SudoCredential { get; set; }
+
         protected override void DSClientProcessRecord()
         {
             // Initialize a Data Source Browser
@@ -17,17 +30,41 @@ namespace PSAsigraDSClient
 
             // Try to resolve the supplied Computer
             string computer = dataSourceBrowser.expandToFullPath(Computer);
-            computer = dataSourceBrowser.expandToFullPath(computer);
             WriteVerbose("Specified Computer resolved to: " + computer);
 
             // Set the Credentials
-            Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
+            UnixFS_Generic_BackupSetCredentials backupSetCredentials = UnixFS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
 
             if (Credential != null)
             {
                 string user = Credential.UserName;
                 string pass = Credential.GetNetworkCredential().Password;
-                backupSetCredentials.setCredentials(user, pass);
+
+                if (SSHKeyFile != null)
+                {
+                    UnixFS_SSH_BackupSetCredentials sshBackupSetCredentials = UnixFS_SSH_BackupSetCredentials.from(backupSetCredentials);
+
+                    if (SSHInterpreter != null)
+                    {
+                        SSHAccesorType sshAccessType = BaseDSClientBackupSet.StringToSSHAccesorType(SSHInterpreter);
+
+                        sshBackupSetCredentials.setSSHAccessType(sshAccessType, SSHInterpreterPath);
+                    }
+
+                    if (SudoCredential != null)
+                    {
+                        string sudoUser = SudoCredential.UserName;
+                        string sudoPass = SudoCredential.GetNetworkCredential().Password;
+
+                        sshBackupSetCredentials.setSudoAs(sudoUser, sudoPass);
+                    }
+
+                    sshBackupSetCredentials.setCredentialsViaKeyFile(user, SSHKeyFile, pass);
+                }
+                else
+                {
+                    backupSetCredentials.setCredentials(user, pass);
+                }
             }
             else
             {
@@ -60,14 +97,15 @@ namespace PSAsigraDSClient
             {
                 List<ItemPath> newPaths = new List<ItemPath>();
 
-                if (!string.IsNullOrEmpty(path) && path.Last() != '\\')
-                    path += "\\";
+                if (!string.IsNullOrEmpty(path) && path.Last() != '/')
+                    path += "/";
 
                 foreach (browse_item_info item in browseItems)
                     newPaths.Add(new ItemPath(path + item.name, 0));
 
                 while (newPaths.Count() > 0)
                 {
+                    WriteVerbose("Items to enumerate: " + newPaths.Count());
                     // Select the first item in the list
                     ItemPath currentPath = newPaths.ElementAt(0);
 
@@ -86,12 +124,12 @@ namespace PSAsigraDSClient
 
                             if (!item.isfile && subItemDepth <= RecursiveDepth)
                             {
-                                newPaths.Insert(index, new ItemPath(currentPath.Path + "\\" + item.name, subItemDepth));
+                                newPaths.Insert(index, new ItemPath(currentPath.Path + "/" + item.name, subItemDepth));
                                 index++;
                             }
                         }
                     }
-                    catch(APIException e)
+                    catch (APIException e)
                     {
                         WriteWarning("Failed to Enumerate Path: " + currentPath.Path + " Exception: " + e);
                     }

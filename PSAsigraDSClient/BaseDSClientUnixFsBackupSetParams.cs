@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Management.Automation;
 
 namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientUnixFsBackupSetParams: BaseDSClientBackupSetParams
     {
-        [Parameter(HelpMessage = "Specify the SSH Iterpreter to access the data")]
+        [Parameter(HelpMessage = "Specify the SSH Interpreter to access the data")]
         [ValidateSet("Perl", "Python", "Direct")]
         public string SSHInterpreter { get; set; }
 

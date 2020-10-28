@@ -41,6 +41,12 @@ namespace PSAsigraDSClient
         [Parameter(Mandatory = true, ParameterSetName = "DumpRestore", HelpMessage = "Only Restore the Database Dump File")]
         public SwitchParameter RestoreDumpOnly { get; set; }
 
+        [Parameter(HelpMessage = "Specify Max Pending Asynchronous I/O per File")]
+        public int MaxPendingAsyncIO { get; set; } = 0;
+
+        [Parameter(HelpMessage = "Specify the number of DS-System Read Threads")]
+        public int ReadThreads { get; set; } = 0;
+
         protected override void DSClientProcessRecord()
         {
             // Parameter Validation

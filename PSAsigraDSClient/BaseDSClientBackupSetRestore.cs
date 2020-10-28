@@ -28,12 +28,6 @@ namespace PSAsigraDSClient
         [ValidateSet("Production", "Drill", "ProductionDrill")]
         public string RestoreClassification { get; set; } = "Production";
 
-        [Parameter(HelpMessage = "Specify Max Pending Asynchronous I/O per File")]
-        public int MaxPendingAsyncIO { get; set; } = 0;
-
-        [Parameter(HelpMessage = "Specify the number of DS-System Read Threads")]
-        public int ReadThreads { get; set; } = 0;
-
         [Parameter(HelpMessage = "Specify to use Detailed Log")]
         public SwitchParameter UseDetailedLog { get; set; }
 

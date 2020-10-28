@@ -36,6 +36,8 @@ namespace PSAsigraDSClient
             }
             dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
 
+            backupSetCredentials.Dispose();
+
             // Set the Starting path
             string path = Path ?? "";
 
@@ -54,7 +56,8 @@ namespace PSAsigraDSClient
                     sourceItems.Add(new SourceItemInfo(path, item));
 
             foreach (browse_item_info item in browseItems)
-                sourceItems.Add(new SourceItemInfo(path, item));
+                if (!item.isfile)
+                    sourceItems.Add(new SourceItemInfo(path, item));
 
             if (Recursive)
             {
@@ -68,6 +71,7 @@ namespace PSAsigraDSClient
 
                 while (newPaths.Count() > 0)
                 {
+                    WriteVerbose("Items to enumerate: " + newPaths.Count());
                     // Select the first item in the list
                     ItemPath currentPath = newPaths.ElementAt(0);
 

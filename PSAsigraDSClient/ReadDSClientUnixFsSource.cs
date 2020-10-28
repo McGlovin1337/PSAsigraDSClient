@@ -36,11 +36,17 @@ namespace PSAsigraDSClient
             UnixFS_Generic_BackupSetCredentials backupSetCredentials = UnixFS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
 
             if (Credential != null)
+                backupSetCredentials.setCredentials(Credential.UserName, Credential.GetNetworkCredential().Password);
+            else
             {
-                string user = Credential.UserName;
-                string pass = Credential.GetNetworkCredential().Password;
+                WriteVerbose("Credentials not specified, using DS-Client Credentials...");
+                backupSetCredentials.setUsingClientCredentials(true);
+            }
+            dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
 
-                if (SSHKeyFile != null)
+            if (SSHKeyFile != null || SudoCredential != null || SSHInterpreter != null)
+            {
+                try
                 {
                     UnixFS_SSH_BackupSetCredentials sshBackupSetCredentials = UnixFS_SSH_BackupSetCredentials.from(backupSetCredentials);
 
@@ -52,26 +58,22 @@ namespace PSAsigraDSClient
                     }
 
                     if (SudoCredential != null)
-                    {
-                        string sudoUser = SudoCredential.UserName;
-                        string sudoPass = SudoCredential.GetNetworkCredential().Password;
+                        sshBackupSetCredentials.setSudoAs(SudoCredential.UserName, SudoCredential.GetNetworkCredential().Password);
 
-                        sshBackupSetCredentials.setSudoAs(sudoUser, sudoPass);
-                    }
+                    if (SSHKeyFile != null)
+                        sshBackupSetCredentials.setCredentialsViaKeyFile(Credential.UserName, SSHKeyFile, Credential.GetNetworkCredential().Password);
 
-                    sshBackupSetCredentials.setCredentialsViaKeyFile(user, SSHKeyFile, pass);
+                    dataSourceBrowser.setCurrentCredentials(sshBackupSetCredentials);
+
+                    sshBackupSetCredentials.Dispose();
                 }
-                else
+                catch
                 {
-                    backupSetCredentials.setCredentials(user, pass);
+                    WriteWarning("Unable to set SSH Credential Options");
                 }
             }
             else
-            {
-                WriteVerbose("Credentials not specified, using DS-Client Credentials...");
-                backupSetCredentials.setUsingClientCredentials(true);
-            }
-            dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
+                backupSetCredentials.Dispose();
 
             // Set the Starting path
             string path = Path ?? "";
@@ -101,7 +103,8 @@ namespace PSAsigraDSClient
                     path += "/";
 
                 foreach (browse_item_info item in browseItems)
-                    newPaths.Add(new ItemPath(path + item.name, 0));
+                    if (!item.isfile)
+                        newPaths.Add(new ItemPath(path + item.name, 0));
 
                 while (newPaths.Count() > 0)
                 {

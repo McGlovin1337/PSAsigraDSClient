@@ -38,17 +38,12 @@ namespace PSAsigraDSClient
                     }
 
                     if (SudoCredential != null)
-                    {
-                        string sudoUser = SudoCredential.UserName;
-                        string sudoPass = SudoCredential.GetNetworkCredential().Password;
-
-                        unixFSSSHBackupSetCredentials.setSudoAs(sudoUser, sudoPass);
-                    }
+                        unixFSSSHBackupSetCredentials.setSudoAs(SudoCredential.UserName, SudoCredential.GetNetworkCredential().Password);
 
                     if (SSHKeyFile != null)
-                    {
                         unixFSSSHBackupSetCredentials.setCredentialsViaKeyFile(Credential.UserName, SSHKeyFile, Credential.GetNetworkCredential().Password);
-                    }
+
+                    dataSourceBrowser.setCurrentCredentials(unixFSSSHBackupSetCredentials);
 
                     unixFSSSHBackupSetCredentials.Dispose();
                 }

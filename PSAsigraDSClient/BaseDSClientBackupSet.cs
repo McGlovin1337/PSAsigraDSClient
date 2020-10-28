@@ -453,13 +453,15 @@ namespace PSAsigraDSClient
                 UseLocalStorage = backupSet.isUsingLocalStorage();
                 ForceBackup = backupSet.isForceBackup();
                 ErrorLimit = backupSet.getBackupErrorLimit();
-                MaxPendingAsyncIO = backupSet.getMaxPendingAsyncIO();
+                if (dSClientOSType.OsType == "Windows")
+                    MaxPendingAsyncIO = backupSet.getMaxPendingAsyncIO();
                 PreScan = backupSet.getPreScanByDefault();
                 CreatedByPolicy = backupSet.isCreatedByBackupPolicy();
                 Notification = dSClientBackupSetNotifications.ToArray();
                 SnmpTrapNotification = IntEBackupCompletionToArray(backupSet.getSNMPTrapsConditions());
                 PrePost = dSClientPrePosts.ToArray();
-                ReadBufferSize = backupSet.getReadBufferSize();
+                if (dSClientOSType.OsType == "Windows")
+                    ReadBufferSize = backupSet.getReadBufferSize();
                 UseTransmissionCache = backupSet.isUsingLocalTransmissionCache();
                 DetailedLog = backupSet.isUsingDetailedLog();
                 InfinateBLMGenerations = backupSet.isUsingInfBLMGen();
@@ -966,10 +968,18 @@ namespace PSAsigraDSClient
 
             public UnixFSBackupSetInclusionOptions(UnixFS_BackupSetInclusionItem inclusionItem)
             {
-                UnixFS_LinuxLFS_BackupSetInclusionItem linuxFSBackupSetInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
-
                 IncludeACLs = inclusionItem.isIncludingACL();
-                IncludePosixACLs = linuxFSBackupSetInclusionItem.isIncludingPosixACL();
+
+                try
+                {
+                    UnixFS_LinuxLFS_BackupSetInclusionItem linuxFSBackupSetInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
+
+                    IncludePosixACLs = linuxFSBackupSetInclusionItem.isIncludingPosixACL();
+                }
+                catch
+                {
+                    IncludePosixACLs = false;
+                }
             }
 
             public override string ToString()

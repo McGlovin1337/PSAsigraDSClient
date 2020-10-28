@@ -90,7 +90,7 @@ namespace PSAsigraDSClient
 
                     if (SSHInterpreter != null)
                     {
-                        SSHAccesorType sshAccessType = BaseDSClientBackupSet.StringToSSHAccesorType(SSHInterpreter);
+                        SSHAccesorType sshAccessType = StringToSSHAccesorType(SSHInterpreter);
 
                         sshBackupSetCredentials.setSSHAccessType(sshAccessType, SSHInterpreterPath);
                     }

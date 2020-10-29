@@ -116,26 +116,32 @@ namespace PSAsigraDSClient
             newScheduleDetail.setTasks(enabledTasks);
 
             // Convert the Enabled Validation options to int, and add to Schedule
-            int enabledValidationOpts = 0;
+            if ((enabledTasks & (int)ETaskToRun.ETaskToRun__Validation) > 0)
+            {
+                int enabledValidationOpts = 0;
 
-            if (LastGenOnly == true)
-                enabledValidationOpts += (int)EScheduleValidationOption.EScheduleValidationOption__LastGen;
-            if (ExcludeDeleted == true)
-                enabledValidationOpts += (int)EScheduleValidationOption.EScheduleValidationOption__ExcludeDeletedFiles;
-            if (Resume == true)
-                enabledValidationOpts += (int)EScheduleValidationOption.EScheduleValidationOption__Resume;
+                if (LastGenOnly == true)
+                    enabledValidationOpts += (int)EScheduleValidationOption.EScheduleValidationOption__LastGen;
+                if (ExcludeDeleted == true)
+                    enabledValidationOpts += (int)EScheduleValidationOption.EScheduleValidationOption__ExcludeDeletedFiles;
+                if (Resume == true)
+                    enabledValidationOpts += (int)EScheduleValidationOption.EScheduleValidationOption__Resume;
 
-            newScheduleDetail.setValidationOptions(enabledValidationOpts);
+                newScheduleDetail.setValidationOptions(enabledValidationOpts);
+            }
 
             // Set the BLM Options
-            blm_schedule_options blmOptions = new blm_schedule_options
+            if ((enabledTasks & (int)ETaskToRun.ETaskToRun__BLM) > 0)
             {
-                include_all_generations = IncludeAllGenerations,
-                use_back_reference = BackReference,
-                package_close = StringToEActivePackageClosing(PackageClosing)
-            };
+                blm_schedule_options blmOptions = new blm_schedule_options
+                {
+                    include_all_generations = IncludeAllGenerations,
+                    use_back_reference = BackReference,
+                    package_close = StringToEActivePackageClosing(PackageClosing)
+                };
 
-            newScheduleDetail.setBLMOptions(blmOptions);
+                newScheduleDetail.setBLMOptions(blmOptions);
+            }
 
             // Add the Schedule Detail to the Schedule
             WriteVerbose("Adding Schedule Detail to Schedule...");

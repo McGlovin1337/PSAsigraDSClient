@@ -35,6 +35,8 @@ namespace PSAsigraDSClient
             // Set the End Date if specified
             if (EndDate != null)
                 newDailyDetail.setPeriodEndDate(DateTimeToUnixEpoch(EndDate));
+            else
+                newDailyDetail.setPeriodEndDate(0);
 
             return newDailyDetail;
         }

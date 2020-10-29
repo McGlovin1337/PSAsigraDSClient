@@ -50,6 +50,8 @@ namespace PSAsigraDSClient
             // Set the End Date if specified
             if (EndDate != null)
                 newMonthlyDetail.setPeriodEndDate(DateTimeToUnixEpoch(EndDate));
+            else
+                newMonthlyDetail.setPeriodEndDate(0);
 
             return newMonthlyDetail;
         }

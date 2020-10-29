@@ -42,7 +42,7 @@ namespace PSAsigraDSClient
             newWeeklyDetail.setPeriodStartDate(DateTimeToUnixEpoch(StartDate));
 
             // Set the End Date if specified
-            if (EndDate != null)
+            if (MyInvocation.BoundParameters.ContainsKey("EndDate"))
                 newWeeklyDetail.setPeriodEndDate(DateTimeToUnixEpoch(EndDate));
             else
                 newWeeklyDetail.setPeriodEndDate(0);

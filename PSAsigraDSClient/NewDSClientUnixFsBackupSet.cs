@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.New, "DSClientUnixFsBackupSet")]
 
-    public class NewDSClientUnixFsBackupSet: BaseDSClientUnixFsBackupSetParams
+    public class NewDSClientUnixFsBackupSet: BaseDSClientUnixFsBackupSet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Backup Set")]
         [ValidateNotNullOrEmpty]
@@ -45,25 +45,8 @@ namespace PSAsigraDSClient
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify if Regex Exclusions Items are case insensitive")]
         public SwitchParameter RegexCaseInsensitive { get; set; }
 
-        protected override void DSClientProcessRecord()
+        protected override void ProcessUnixFsBackupSet()
         {
-            //Check DS-Client is Linux/Unix
-            if (DSClientOSType.OsType != "Linux")
-                throw new Exception("Unix FileSystem Backup Sets can only be created on a Unix DS-Client");
-
-            // Validate the Common Base Parameters
-            BaseBackupSetParamValidation(MyInvocation.BoundParameters);
-
-            // Validate Parameters specific to this Cmdlet
-            if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByDate") && ExcludeOldFilesDate == null)
-                throw new ParameterBindingException("A Date for ExcludeOldFilesDate must be specified when ExcludeOldFilesByDate is enabled");
-
-            if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByTimeSpan") && (ExcludeOldFilesTimeSpan == null || ExcludeOldFilesTimeSpanValue < 1))
-                throw new ParameterBindingException("A Time Span and Time Span Value must be specified when ExcludeOldFilesByTimeSpan is enabled");
-
-            if (SSHInterpreter == "Direct" && SSHInterpreterPath == null)
-                throw new ParameterBindingException("Direct SSH Interpretor requires an SSH Interpretor Path");
-
             // Create a Data Source Browser
             DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__FileSystem);
 
@@ -180,66 +163,7 @@ namespace PSAsigraDSClient
             }
 
             // Process this Cmdlets specific configuration
-            UnixFS_Generic_BackupSet newUnixBackupSet = UnixFS_Generic_BackupSet.from(newBackupSet);
-
-            if (MyInvocation.BoundParameters.ContainsKey("CheckCommonFiles"))
-                newUnixBackupSet.setCheckingCommonFiles(CheckCommonFiles);
-
-            if (MyInvocation.BoundParameters.ContainsKey("ForceBackup"))
-                newUnixBackupSet.setOption(EBackupSetOption.EBackupSetOption__ForceBackup, ForceBackup);
-
-            if (MyInvocation.BoundParameters.ContainsKey("FollowMountPoints"))
-                newUnixBackupSet.setOption(EBackupSetOption.EBackupSetOption__SSHFollowLink, FollowMountPoints);
-
-            if (MyInvocation.BoundParameters.ContainsKey("BackupHardLinks"))
-                newUnixBackupSet.setOption(EBackupSetOption.EBackupSetOption__HardLink, BackupHardLinks);
-
-            if (MyInvocation.BoundParameters.ContainsKey("IgnoreSnapshotFailure"))
-                newUnixBackupSet.setOption(EBackupSetOption.EBackupSetOption__SnapshotFailure, IgnoreSnapshotFailure);
-
-            if (MyInvocation.BoundParameters.ContainsKey("UseSnapDiff"))
-                newUnixBackupSet.setOption(EBackupSetOption.EBackupSetOption__UseSnapDiff, UseSnapDiff);
-
-            if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByDate"))
-            {
-                old_file_exclusion_config exclusionConfig = new old_file_exclusion_config
-                {
-                    type = EOldFileExclusionType.EOldFileExclusionType__Date,
-                    value = DateTimeToUnixEpoch(ExcludeOldFilesDate)
-                };
-
-                newUnixBackupSet.setOldFileExclusionOption(exclusionConfig);
-            }
-
-            if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByTimeSpan"))
-            {
-                old_file_exclusion_config exclusionConfig = new old_file_exclusion_config
-                {
-                    type = EOldFileExclusionType.EOldFileExclusionType__TimeSpan,
-                    unit = StringToETimeUnit(ExcludeOldFilesTimeSpan),
-                    value = ExcludeOldFilesTimeSpanValue
-                };
-
-                newUnixBackupSet.setOldFileExclusionOption(exclusionConfig);
-            }
-
-            if (MyInvocation.BoundParameters.ContainsKey("UseBuffer"))
-                newUnixBackupSet.setUsingBuffer(UseBuffer);
-
-            // CDP Configuration
-            if (MyInvocation.BoundParameters.ContainsKey("CDPInterval"))
-            {
-                CDP_settings cdpSettings = new CDP_settings
-                {
-                    backup_check_interval = CDPInterval,
-                    backup_strategy = (CDPStoppedChangingForInterval) ? ECDPBackupStrategy.ECDPBackupStrategy__BackupStopChangingFor : ECDPBackupStrategy.ECDPBackupStrategy__BackupNotOftenThan,
-                    file_change_detection_type = (CDPUseFileAlterationMonitor) ? ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__FileAlterationMonitor : ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__GenericScanner,
-                    suspendable_activities = SwitchParamsToECDPSuspendableScheduledActivityInt(CDPStopForRetention, CDPStopForBLM, CDPStopForValidation)
-                };
-                newUnixBackupSet.setCDPSettings(cdpSettings);
-
-                newUnixBackupSet.setContinuousDataProtection(true);
-            }
+            UnixFS_Generic_BackupSet newUnixBackupSet = ProcessUnixFsBackupSetParams(MyInvocation.BoundParameters, UnixFS_Generic_BackupSet.from(newBackupSet));            
 
             // Add the Backup Set to the DS-Client
             WriteVerbose("Adding the new Backup Set Object to DS-Client...");

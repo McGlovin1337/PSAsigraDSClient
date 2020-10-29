@@ -56,6 +56,7 @@
     <Compile Include="PSAsigraDSClient\AddDSClientMSSqlServerBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientOneTimeSchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientTimeRetentionRule.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientUnixFsBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientWeeklySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientWinFsBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientAdvancedConfig.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientStartBackupSetActivity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionRule.cs" />
-    <Compile Include="PSAsigraDSClient\BaseDSClientUnixFsBackupSetParams.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientUnixFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\CompareDSClientEncryptionKeys.cs" />
     <Compile Include="PSAsigraDSClient\DisableDSClientBackupSet.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="PSAsigraDSClient\SetDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSMTPNotification.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSNMPHeartbeat.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientUnixFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackup.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetDelete.cs" />

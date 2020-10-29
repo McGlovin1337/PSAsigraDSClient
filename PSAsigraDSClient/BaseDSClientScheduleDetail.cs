@@ -62,9 +62,6 @@ namespace PSAsigraDSClient
         [ValidateSet("DoNotClose", "CloseAtStart", "CloseAtEnd")]
         public string PackageClosing { get; set; }
 
-        [Parameter(HelpMessage = "Specify to Output Schedule Detail")]
-        public SwitchParameter PassThru { get; set; }
-
         protected abstract ScheduleDetail ProcessScheduleDetail(ScheduleManager dsClientScheduleMgr);
 
         protected override void DSClientProcessRecord()

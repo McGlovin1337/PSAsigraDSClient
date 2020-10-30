@@ -107,75 +107,54 @@ namespace PSAsigraDSClient
 
             private string EEventTypeToString(EEventType eventType)
             {
-                string EventType = null;
-
                 switch(eventType)
                 {
                     case EEventType.EEventType__Information:
-                        EventType = "Information";
-                        break;
+                        return "Information";
                     case EEventType.EEventType__Warning:
-                        EventType = "Warning";
-                        break;
+                        return "Warning";
                     case EEventType.EEventType__Error:
-                        EventType = "Error";
-                        break;
+                        return "Error";
+                    default:
+                        return null;
                 }
-
-                return EventType;
             }
 
             private string EEventCategoryToString(EEventCategory eventCategory)
             {
-                string EventCategory = null;
-
                 switch(eventCategory)
                 {
                     case EEventCategory.EEventCategory__Application:
-                        EventCategory = "Application";
-                        break;
+                        return "Application";
                     case EEventCategory.EEventCategory__Socket:
-                        EventCategory = "Socket";
-                        break;
+                        return "Socket";
                     case EEventCategory.EEventCategory__Message:
-                        EventCategory = "Message";
-                        break;
+                        return "Message";
                     case EEventCategory.EEventCategory__Database:
-                        EventCategory = "Database";
-                        break;
+                        return "Database";
                     case EEventCategory.EEventCategory__Exception:
-                        EventCategory = "Exception";
-                        break;
+                        return "Exception";
                     case EEventCategory.EEventCategory__IO:
-                        EventCategory = "IO";
-                        break;
+                        return "IO";
                     case EEventCategory.EEventCategory__System:
-                        EventCategory = "System";
-                        break;
+                        return "System";
                     case EEventCategory.EEventCategory__Security:
-                        EventCategory = "Security";
-                        break;
+                        return "Security";
                     case EEventCategory.EEventCategory__MAPI:
-                        EventCategory = "MAPI";
-                        break;
+                        return "MAPI";
                     case EEventCategory.EEventCategory__Novell:
-                        EventCategory = "Novell";
-                        break;
+                        return "Novell";
                     case EEventCategory.EEventCategory__Oracle:
-                        EventCategory = "Oracle";
-                        break;
+                        return "Oracle";
                     case EEventCategory.EEventCategory__RMAN:
-                        EventCategory = "RMAN";
-                        break;
+                        return "RMAN";
                     case EEventCategory.EEventCategory__XML:
-                        EventCategory = "XML";
-                        break;
+                        return "XML";
                     case EEventCategory.EEventCategory__DB2:
-                        EventCategory = "DB2";
-                        break;
+                        return "DB2";
+                    default:
+                        return null;
                 }
-
-                return EventCategory;
             }
         }
     }

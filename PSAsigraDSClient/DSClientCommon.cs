@@ -84,113 +84,81 @@ namespace PSAsigraDSClient
 
         public static EWeekDay StringToEWeekDay(string weekDay)
         {
-            EWeekDay WeekDay = EWeekDay.EWeekDay__UNDEFINED;
-
-            switch (weekDay)
+            switch (weekDay.ToLower())
             {
-                case "Monday":
-                    WeekDay = EWeekDay.EWeekDay__Monday;
-                    break;
-                case "Tuesday":
-                    WeekDay = EWeekDay.EWeekDay__Tuesday;
-                    break;
-                case "Wednesday":
-                    WeekDay = EWeekDay.EWeekDay__Wednesday;
-                    break;
-                case "Thursday":
-                    WeekDay = EWeekDay.EWeekDay__Thursday;
-                    break;
-                case "Friday":
-                    WeekDay = EWeekDay.EWeekDay__Friday;
-                    break;
-                case "Saturday":
-                    WeekDay = EWeekDay.EWeekDay__Saturday;
-                    break;
-                case "Sunday":
-                    WeekDay = EWeekDay.EWeekDay__Sunday;
-                    break;
+                case "monday":
+                    return EWeekDay.EWeekDay__Monday;
+                case "tuesday":
+                    return EWeekDay.EWeekDay__Tuesday;
+                case "wednesday":
+                    return EWeekDay.EWeekDay__Wednesday;
+                case "thursday":
+                    return EWeekDay.EWeekDay__Thursday;
+                case "friday":
+                    return EWeekDay.EWeekDay__Friday;
+                case "saturday":
+                    return EWeekDay.EWeekDay__Saturday;
+                case "sunday":
+                    return EWeekDay.EWeekDay__Sunday;
+                default:
+                    return EWeekDay.EWeekDay__UNDEFINED;
             }
-
-            return WeekDay;
         }
 
         public static string EWeekDayToString(EWeekDay weekDay)
         {
-            string WeekDay = null;
-
             switch(weekDay)
             {
                 case EWeekDay.EWeekDay__Monday:
-                    WeekDay = "Monday";
-                    break;
+                    return "Monday";
                 case EWeekDay.EWeekDay__Tuesday:
-                    WeekDay = "Tuesday";
-                    break;
+                    return "Tuesday";
                 case EWeekDay.EWeekDay__Wednesday:
-                    WeekDay = "Wednesday";
-                    break;
+                    return "Wednesday";
                 case EWeekDay.EWeekDay__Thursday:
-                    WeekDay = "Thursday";
-                    break;
+                    return "Thursday";
                 case EWeekDay.EWeekDay__Friday:
-                    WeekDay = "Friday";
-                    break;
+                    return "Friday";
                 case EWeekDay.EWeekDay__Saturday:
-                    WeekDay = "Saturday";
-                    break;
+                    return "Saturday";
                 case EWeekDay.EWeekDay__Sunday:
-                    WeekDay = "Sunday";
-                    break;
+                    return "Sunday";
+                default:
+                    return null;
             }
-
-            return WeekDay;
         }
 
         public static string EMonthToString(EMonth month)
         {
-            string Month = null;
-
             switch(month)
             {
                 case EMonth.EMonth__January:
-                    Month = "January";
-                    break;
+                    return "January";
                 case EMonth.EMonth__February:
-                    Month = "February";
-                    break;
+                    return "February";
                 case EMonth.EMonth__March:
-                    Month = "March";
-                    break;
+                    return "March";
                 case EMonth.EMonth__April:
-                    Month = "April";
-                    break;
+                    return "April";
                 case EMonth.EMonth__May:
-                    Month = "May";
-                    break;
+                    return "May";
                 case EMonth.EMonth__June:
-                    Month = "June";
-                    break;
+                    return "June";
                 case EMonth.EMonth__July:
-                    Month = "July";
-                    break;
+                    return "July";
                 case EMonth.EMonth__August:
-                    Month = "August";
-                    break;
+                    return "August";
                 case EMonth.EMonth__September:
-                    Month = "September";
-                    break;
+                    return "September";
                 case EMonth.EMonth__October:
-                    Month = "October";
-                    break;
+                    return "October";
                 case EMonth.EMonth__November:
-                    Month = "November";
-                    break;
+                    return "November";
                 case EMonth.EMonth__December:
-                    Month = "December";
-                    break;
+                    return "December";
+                default:
+                    return null;
             }
-
-            return Month;
         }
 
         public static DateTime UnixEpochToDateTime(int epoch)
@@ -274,98 +242,69 @@ namespace PSAsigraDSClient
 
         public static ECompressionType StringToECompressionType(string compressionType)
         {
-            ECompressionType eCompressionType = ECompressionType.ECompressionType__UNDEFINED;
-
-            switch(compressionType)
+            switch(compressionType.ToLower())
             {
-                case "NONE":
-                    eCompressionType = ECompressionType.ECompressionType__NONE;
-                    break;
-                case "ZLIB":
-                    eCompressionType = ECompressionType.ECompressionType__ZLIB;
-                    break;
-                case "LZOP":
-                    eCompressionType = ECompressionType.ECompressionType__LZOP;
-                    break;
-                case "ZLIB_LO":
-                    eCompressionType = ECompressionType.ECompressionType__ZLIB_LO;
-                    break;
-                case "ZLIB_MED":
-                    eCompressionType = ECompressionType.ECompressionType__ZLIB_MED;
-                    break;
-                case "ZLIB_HI":
-                    eCompressionType = ECompressionType.ECompressionType__ZLIB_HI;
-                    break;
+                case "none":
+                    return ECompressionType.ECompressionType__NONE;
+                case "zlib":
+                    return ECompressionType.ECompressionType__ZLIB;
+                case "lzop":
+                    return ECompressionType.ECompressionType__LZOP;
+                case "zlib_lo":
+                    return ECompressionType.ECompressionType__ZLIB_LO;
+                case "zlib_med":
+                    return ECompressionType.ECompressionType__ZLIB_MED;
+                case "zlib_hi":
+                    return ECompressionType.ECompressionType__ZLIB_HI;
                 default:
-                    eCompressionType = ECompressionType.ECompressionType__UNDEFINED;
-                    break;
+                    return ECompressionType.ECompressionType__UNDEFINED;
             }
-
-            return eCompressionType;
         }
 
         public static string ETimeUnitToString(ETimeUnit timeUnit)
         {
-            string TimeUnit = null;
-
             switch(timeUnit)
             {
                 case ETimeUnit.ETimeUnit__Seconds:
-                    TimeUnit = "Seconds";
-                    break;
+                    return "Seconds";
                 case ETimeUnit.ETimeUnit__Minutes:
-                    TimeUnit = "Minutes";
-                    break;
+                    return "Minutes";
                 case ETimeUnit.ETimeUnit__Hours:
-                    TimeUnit = "Hours";
-                    break;
+                    return "Hours";
                 case ETimeUnit.ETimeUnit__Days:
-                    TimeUnit = "Days";
-                    break;
+                    return "Days";
                 case ETimeUnit.ETimeUnit__Weeks:
-                    TimeUnit = "Weeks";
-                    break;
+                    return "Weeks";
                 case ETimeUnit.ETimeUnit__Months:
-                    TimeUnit = "Months";
-                    break;
+                    return "Months";
                 case ETimeUnit.ETimeUnit__Years:
-                    TimeUnit = "Years";
-                    break;
+                    return "Years";
+                default:
+                    return null;
             }
-
-            return TimeUnit;
         }
 
         public static ETimeUnit StringToETimeUnit(string timeUnit)
         {
-            ETimeUnit TimeUnit = ETimeUnit.ETimeUnit__UNDEFINED;
-
-            switch(timeUnit)
+            switch(timeUnit.ToLower())
             {
-                case "Seconds":
-                    TimeUnit = ETimeUnit.ETimeUnit__Seconds;
-                    break;
-                case "Minutes":
-                    TimeUnit = ETimeUnit.ETimeUnit__Minutes;
-                    break;
-                case "Hours":
-                    TimeUnit = ETimeUnit.ETimeUnit__Hours;
-                    break;
-                case "Days":
-                    TimeUnit = ETimeUnit.ETimeUnit__Days;
-                    break;
-                case "Weeks":
-                    TimeUnit = ETimeUnit.ETimeUnit__Weeks;
-                    break;
-                case "Months":
-                    TimeUnit = ETimeUnit.ETimeUnit__Months;
-                    break;
-                case "Years":
-                    TimeUnit = ETimeUnit.ETimeUnit__Years;
-                    break;
+                case "seconds":
+                    return ETimeUnit.ETimeUnit__Seconds;
+                case "minutes":
+                    return ETimeUnit.ETimeUnit__Minutes;
+                case "hours":
+                    return ETimeUnit.ETimeUnit__Hours;
+                case "days":
+                    return ETimeUnit.ETimeUnit__Days;
+                case "weeks":
+                    return ETimeUnit.ETimeUnit__Weeks;
+                case "months":
+                    return ETimeUnit.ETimeUnit__Months;
+                case "years":
+                    return ETimeUnit.ETimeUnit__Years;
+                default:
+                    return ETimeUnit.ETimeUnit__UNDEFINED;
             }
-
-            return TimeUnit;
         }
     }
 }

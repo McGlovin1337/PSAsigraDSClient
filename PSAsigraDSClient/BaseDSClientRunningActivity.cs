@@ -62,106 +62,73 @@ namespace PSAsigraDSClient
 
         public static string EActivityTypeToString(EActivityType activityType)
         {
-            string ActivityType = null;
-
             switch(activityType)
             {
                 case EActivityType.EActivityType__Backup:
-                    ActivityType = "Backup";
-                    break;
+                    return "Backup";
                 case EActivityType.EActivityType__CDP_Backup:
-                    ActivityType = "CDPBackup";
-                    break;
+                    return "CDPBackup";
                 case EActivityType.EActivityType__Restore:
-                    ActivityType = "Restore";
-                    break;
+                    return "Restore";
                 case EActivityType.EActivityType__DailyAdmin:
-                    ActivityType = "DailyAdmin";
-                    break;
+                    return "DailyAdmin";
                 case EActivityType.EActivityType__WeeklyAdmin:
-                    ActivityType = "WeeklyAdmin";
-                    break;
+                    return "WeeklyAdmin";
                 case EActivityType.EActivityType__Delete:
-                    ActivityType = "Delete";
-                    break;
+                    return "Delete";
                 case EActivityType.EActivityType__Recovery:
-                    ActivityType = "Recovery";
-                    break;
+                    return "Recovery";
                 case EActivityType.EActivityType__Synchronization:
-                    ActivityType = "Synchronization";
-                    break;
+                    return "Synchronization";
                 case EActivityType.EActivityType__DiscTapeRequest:
-                    ActivityType = "DiscTapeRequest";
-                    break;
+                    return "DiscTapeRequest";
                 case EActivityType.EActivityType__DiscTapeRestore:
-                    ActivityType = "DiscTapeRestore";
-                    break;
+                    return "DiscTapeRestore";
                 case EActivityType.EActivityType__BLMRequest:
-                    ActivityType = "BLMRequest";
-                    break;
+                    return "BLMRequest";
                 case EActivityType.EActivityType__OnLineFileSummary:
-                    ActivityType = "OnlineFileSummary";
-                    break;
+                    return "OnlineFileSummary";
                 case EActivityType.EActivityType__Registration:
-                    ActivityType = "Registration";
-                    break;
+                    return "Registration";
                 case EActivityType.EActivityType__LANAnalyze:
-                    ActivityType = "LANAnalyze";
-                    break;
+                    return "LANAnalyze";
                 case EActivityType.EActivityType__BLMRestore:
-                    ActivityType = "BLMRestore";
-                    break;
+                    return "BLMRestore";
                 case EActivityType.EActivityType__Validation:
-                    ActivityType = "Validation";
-                    break;
+                    return "Validation";
                 case EActivityType.EActivityType__Retention:
-                    ActivityType = "Retention";
-                    break;
+                    return "Retention";
                 case EActivityType.EActivityType__TapeConversion:
-                    ActivityType = "TapeConversion";
-                    break;
+                    return "TapeConversion";
                 case EActivityType.EActivityType__CacheCopy:
-                    ActivityType = "CacheCopy";
-                    break;
+                    return "CacheCopy";
                 case EActivityType.EActivityType__CacheMonitor:
-                    ActivityType = "CacheMonitor";
-                    break;
+                    return "CacheMonitor";
                 case EActivityType.EActivityType__AppAutoUpgrade:
-                    ActivityType = "AppAutoUpgrade";
-                    break;
+                    return "AppAutoUpgrade";
                 case EActivityType.EActivityType__Convert:
-                    ActivityType = "Convert";
-                    break;
+                    return "Convert";
                 case EActivityType.EActivityType__CancelConvert:
-                    ActivityType = "CancelConvert";
-                    break;
+                    return "CancelConvert";
                 case EActivityType.EActivityType__CleanLocalOnlyTrash:
-                    ActivityType = "CleanLocalOnlyTrash";
-                    break;
+                    return "CleanLocalOnlyTrash";
                 case EActivityType.EActivityType__Connection:
-                    ActivityType = "Connection";
-                    break;
+                    return "Connection";
                 case EActivityType.EActivityType__TestConnection:
-                    ActivityType = "TestConnection";
-                    break;
+                    return "TestConnection";
                 case EActivityType.EActivityType__CloudDatabaseUpload:
-                    ActivityType = "CloudDatabaseUpload";
-                    break;
+                    return "CloudDatabaseUpload";
                 case EActivityType.EActivityType__LANResourceDiscovery:
-                    ActivityType = "LANResourceDiscovery";
-                    break;
+                    return "LANResourceDiscovery";
                 case EActivityType.EActivityType__SnapshotRestore:
-                    ActivityType = "SnapshotRestore";
-                    break;
+                    return "SnapshotRestore";
                 case EActivityType.EActivityType__SnapshotTransfer:
-                    ActivityType = "SnapshotTransfer";
-                    break;
+                    return "SnapshotTransfer";
                 case EActivityType.EActivityType__CancelSnapshotTransfer:
-                    ActivityType = "CancelSnapshotTransfer";
-                    break;
+                    return "CancelSnapshotTransfer";
+                default:
+                    return null;
             }
-
-            return ActivityType;
         }
     }
 }

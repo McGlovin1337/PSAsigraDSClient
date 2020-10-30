@@ -44,40 +44,29 @@ namespace PSAsigraDSClient
 
             private string EDSToolsToString(EDSTools tool)
             {
-                string Tool = null;
-
                 switch(tool)
                 {
                     case EDSTools.EDSTools__DSRecoveryTools:
-                        Tool = "DSRecoveryTools";
-                        break;
+                        return "DSRecoveryTools";
                     case EDSTools.EDSTools__LocalStorage:
-                        Tool = "LocalStorage";
-                        break;
+                        return "LocalStorage";
                     case EDSTools.EDSTools__DiscTape:
-                        Tool = "DiscTape";
-                        break;
+                        return "DiscTape";
                     case EDSTools.EDSTools__DisableCommonFile:
-                        Tool = "DisableCommonFile";
-                        break;
+                        return "DisableCommonFile";
                     case EDSTools.EDSTools__BackupLifecycleManagement:
-                        Tool = "BackupLifecycleManagement";
-                        break;
+                        return "BackupLifecycleManagement";
                     case EDSTools.EDSTools__LocalOnly:
-                        Tool = "LocalOnly";
-                        break;
+                        return "LocalOnly";
                     case EDSTools.EDSTools__LocalDSVDR:
-                        Tool = "LocalDSVDR";
-                        break;
+                        return "LocalDSVDR";
                     case EDSTools.EDSTools__RemoteDSVDR:
-                        Tool = "RemoteDSVDR";
-                        break;
+                        return "RemoteDSVDR";
                     case EDSTools.EDSTools__SnapshotManager:
-                        Tool = "SnapshotManager";
-                        break;
+                        return "SnapshotManager";
+                    default:
+                        return null;
                 }
-
-                return Tool;
             }
         }
     }

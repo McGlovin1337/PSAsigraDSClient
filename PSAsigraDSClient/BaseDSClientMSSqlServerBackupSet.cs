@@ -122,42 +122,32 @@ namespace PSAsigraDSClient
 
         protected static EBackupPolicy StringToEBackupPolicy(string backupPolicy)
         {
-            EBackupPolicy Policy = EBackupPolicy.EBackupPolicy__UNDEFINED;
-
-            switch(backupPolicy)
+            switch(backupPolicy.ToLower())
             {
-                case "Full":
-                    Policy = EBackupPolicy.EBackupPolicy__FullBackup;
-                    break;
-                case "FullDiff":
-                    Policy = EBackupPolicy.EBackupPolicy__DiffBackup;
-                    break;
-                case "FullInc":
-                    Policy = EBackupPolicy.EBackupPolicy__IncBackup;
-                    break;
-            }    
-
-            return Policy;
+                case "full":
+                    return EBackupPolicy.EBackupPolicy__FullBackup;
+                case "fulldiff":
+                    return EBackupPolicy.EBackupPolicy__DiffBackup;
+                case "fullinc":
+                    return EBackupPolicy.EBackupPolicy__IncBackup;
+                default:
+                    return EBackupPolicy.EBackupPolicy__UNDEFINED;
+            }
         }
 
         public static ESQLDumpMethod StringToESQLDumpMethod(string dumpMethod)
         {
-            ESQLDumpMethod DumpMethod = ESQLDumpMethod.ESQLDumpMethod__UNDEFINED;
-
-            switch(dumpMethod)
+            switch(dumpMethod.ToLower())
             {
-                case "DumpLocal":
-                    DumpMethod = ESQLDumpMethod.ESQLDumpMethod__DumpToSQLPath;
-                    break;
-                case "DumpBuffer":
-                    DumpMethod = ESQLDumpMethod.ESQLDumpMethod__DumpToClientBuffer;
-                    break;
-                case "DumpPipe":
-                    DumpMethod = ESQLDumpMethod.ESQLDumpMethod__DumpToPipe;
-                    break;
+                case "dumplocal":
+                    return ESQLDumpMethod.ESQLDumpMethod__DumpToSQLPath;
+                case "dumpbuffer":
+                    return ESQLDumpMethod.ESQLDumpMethod__DumpToClientBuffer;
+                case "dumppipe":
+                    return ESQLDumpMethod.ESQLDumpMethod__DumpToPipe;
+                default:
+                    return ESQLDumpMethod.ESQLDumpMethod__UNDEFINED;
             }
-
-            return DumpMethod;
         }
     }
 }

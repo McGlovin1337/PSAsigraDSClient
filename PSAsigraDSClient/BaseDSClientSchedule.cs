@@ -13,17 +13,17 @@ namespace PSAsigraDSClient
 
         protected EActivePackageClosing StringToEActivePackageClosing(string packageClose)
         {
-            if (packageClose == "DoNotClose")
-                return EActivePackageClosing.EActivePackageClosing__DoNotClose;
-
-            if (packageClose == "CloseAtStart")
-                return EActivePackageClosing.EActivePackageClosing__CloseAtStart;
-
-            if (packageClose == "CloseAtEnd")
-                return EActivePackageClosing.EActivePackageClosing__CloseAtEnd;
-
-            // Default return
-            return EActivePackageClosing.EActivePackageClosing__UNDEFINED;
+            switch(packageClose.ToLower())
+            {
+                case "donotclose":
+                    return EActivePackageClosing.EActivePackageClosing__DoNotClose;
+                case "closeatstart":
+                    return EActivePackageClosing.EActivePackageClosing__CloseAtStart;
+                case "closeatend":
+                    return EActivePackageClosing.EActivePackageClosing__CloseAtEnd;
+                default:
+                    return EActivePackageClosing.EActivePackageClosing__UNDEFINED;
+            }
         }
 
         protected int ScheduleWeekDaysToInt(string[] weekDays)
@@ -32,27 +32,27 @@ namespace PSAsigraDSClient
 
             foreach (string weekday in weekDays)
             {
-                switch(weekday)
+                switch(weekday.ToLower())
                 {
-                    case "Mon":
+                    case "mon":
                         WeekDays += 1;
                         break;
-                    case "Tue":
+                    case "tue":
                         WeekDays += 2;
                         break;
-                    case "Wed":
+                    case "wed":
                         WeekDays += 4;
                         break;
-                    case "Thu":
+                    case "thu":
                         WeekDays += 8;
                         break;
-                    case "Fri":
+                    case "fri":
                         WeekDays += 16;
                         break;
-                    case "Sat":
+                    case "sat":
                         WeekDays += 32;
                         break;
-                    case "Sun":
+                    case "sun":
                         WeekDays += 64;
                         break;
                 }
@@ -63,46 +63,33 @@ namespace PSAsigraDSClient
 
         protected EScheduleMonthlyStartDay StringToEScheduleMonthlyStartDay(string startWeekDay)
         {
-            EScheduleMonthlyStartDay StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__UNDEFINED;
-
-            switch(startWeekDay)
+            switch(startWeekDay.ToLower())
             {
-                case "DayOfMonth":
-                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__DayOfMonth;
-                    break;
-                case "Mon":
-                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Monday;
-                    break;
-                case "Tue":
-                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Tuesday;
-                    break;
-                case "Wed":
-                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Wednesday;
-                    break;
-                case "Thu":
-                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Thrusday;
-                    break;
-                case "Fri":
-                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Friday;
-                    break;
-                case "Sat":
-                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Saturday;
-                    break;
-                case "Sun":
-                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Sunday;
-                    break;
-                case "Day":
-                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Day;
-                    break;
-                case "WeekDay":
-                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__WeekDay;
-                    break;
-                case "WeekEndDay":
-                    StartWeekDay = EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__WeekEndDay;
-                    break;
+                case "dayofmonth":
+                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__DayOfMonth;
+                case "mon":
+                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Monday;
+                case "tue":
+                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Tuesday;
+                case "wed":
+                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Wednesday;
+                case "thu":
+                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Thrusday;
+                case "fri":
+                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Friday;
+                case "sat":
+                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Saturday;
+                case "sun":
+                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Sunday;
+                case "day":
+                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Day;
+                case "weekday":
+                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__WeekDay;
+                case "weekendday":
+                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__WeekEndDay;
+                default:
+                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__UNDEFINED;
             }
-
-            return StartWeekDay;
         }
 
         public class DSClientScheduleInfo
@@ -353,25 +340,17 @@ namespace PSAsigraDSClient
             // Convert the EActivePackageClosing Enum to a Human Friendly String
             private string PackageCloseConvert(EActivePackageClosing packageClose)
             {
-                string PackageClose = null;
-
                 switch(packageClose)
                 {
                     case EActivePackageClosing.EActivePackageClosing__DoNotClose:
-                        PackageClose = "DoNotClose";
-                        break;
+                        return "DoNotClose";
                     case EActivePackageClosing.EActivePackageClosing__CloseAtStart:
-                        PackageClose = "AtStart";
-                        break;
+                        return "AtStart";
                     case EActivePackageClosing.EActivePackageClosing__CloseAtEnd:
-                        PackageClose = "AtEnd";
-                        break;
-                    /*case EActivePackageClosing.EActivePackageClosing__UNDEFINED:
-                        PackageClose = "Undefined";
-                        break;*/
+                        return "AtEnd";
+                    default:
+                        return null;
                 }
-
-                return PackageClose;
             }
 
             public override string ToString()

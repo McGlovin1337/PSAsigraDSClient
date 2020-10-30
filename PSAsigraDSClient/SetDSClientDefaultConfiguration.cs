@@ -250,20 +250,20 @@ namespace PSAsigraDSClient
 
         public static EOpenFileStrategy StringToEOpenFileStrategy(string openFileMethod)
         {
-            EOpenFileStrategy strategy = EOpenFileStrategy.EOpenFileStrategy__UNDEFINED;
+            EOpenFileStrategy strategy;
 
-            switch (openFileMethod)
+            switch (openFileMethod.ToLower())
             {
-                case "TryDenyWrite":
+                case "trydenywrite":
                     strategy = EOpenFileStrategy.EOpenFileStrategy__TryDenyWrite;
                     break;
-                case "DenyWrite":
+                case "denywrite":
                     strategy = EOpenFileStrategy.EOpenFileStrategy__DenyWrite;
                     break;
-                case "PreventWrite":
+                case "preventwrite":
                     strategy = EOpenFileStrategy.EOpenFileStrategy__PreventWrite;
                     break;
-                case "AllowWrite":
+                case "allowwrite":
                     strategy = EOpenFileStrategy.EOpenFileStrategy__AllowWrite;
                     break;
                 default:

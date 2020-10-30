@@ -249,45 +249,48 @@ namespace PSAsigraDSClient
 
         private static EMonth StringToEMonth(string month)
         {
-            EMonth Month = EMonth.EMonth__UNDEFINED;
+            EMonth Month;
 
-            switch (month)
+            switch (month.ToLower())
             {
-                case "January":
+                case "january":
                     Month = EMonth.EMonth__January;
                     break;
-                case "February":
+                case "february":
                     Month = EMonth.EMonth__February;
                     break;
-                case "March":
+                case "march":
                     Month = EMonth.EMonth__March;
                     break;
-                case "April":
+                case "april":
                     Month = EMonth.EMonth__April;
                     break;
-                case "May":
+                case "may":
                     Month = EMonth.EMonth__May;
                     break;
-                case "June":
+                case "june":
                     Month = EMonth.EMonth__June;
                     break;
-                case "July":
+                case "july":
                     Month = EMonth.EMonth__July;
                     break;
-                case "August":
+                case "august":
                     Month = EMonth.EMonth__August;
                     break;
-                case "September":
+                case "september":
                     Month = EMonth.EMonth__September;
                     break;
-                case "October":
+                case "october":
                     Month = EMonth.EMonth__October;
                     break;
-                case "November":
+                case "november":
                     Month = EMonth.EMonth__November;
                     break;
-                case "December":
+                case "december":
                     Month = EMonth.EMonth__December;
+                    break;
+                default:
+                    Month = EMonth.EMonth__UNDEFINED;
                     break;
             }
 
@@ -296,30 +299,33 @@ namespace PSAsigraDSClient
 
         public static RetentionTimeUnit StringToRetentionTimeUnit(string timeUnit)
         {
-            RetentionTimeUnit TimeUnit = RetentionTimeUnit.RetentionTimeUnit__UNDEFINED;
+            RetentionTimeUnit TimeUnit;
 
-            switch (timeUnit)
+            switch (timeUnit.ToLower())
             {
-                case "Seconds":
+                case "seconds":
                     TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Seconds;
                     break;
-                case "Minutes":
+                case "minutes":
                     TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Minutes;
                     break;
-                case "Hours":
+                case "hours":
                     TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Hours;
                     break;
-                case "Days":
+                case "days":
                     TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Days;
                     break;
-                case "Weeks":
+                case "weeks":
                     TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Weeks;
                     break;
-                case "Months":
+                case "months":
                     TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Months;
                     break;
-                case "Years":
+                case "years":
                     TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Years;
+                    break;
+                default:
+                    TimeUnit = RetentionTimeUnit.RetentionTimeUnit__UNDEFINED;
                     break;
             }
 

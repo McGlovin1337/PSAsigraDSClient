@@ -122,28 +122,19 @@ namespace PSAsigraDSClient
 
         public static ENotificationMethod StringToENotificationMethod(string notifyMethod)
         {
-            ENotificationMethod eNotificationMethod = ENotificationMethod.ENotificationMethod__UNDEFINED;
-
-            switch(notifyMethod)
+            switch(notifyMethod.ToLower())
             {
-                case "Email":
-                    eNotificationMethod = ENotificationMethod.ENotificationMethod__Email;
-                    break;
-                case "Pager":
-                    eNotificationMethod = ENotificationMethod.ENotificationMethod__Page;
-                    break;
-                case "Broadcast":
-                    eNotificationMethod = ENotificationMethod.ENotificationMethod__Broadcast;
-                    break;
-                case "Event":
-                    eNotificationMethod = ENotificationMethod.ENotificationMethod__Event;
-                    break;
+                case "email":
+                    return ENotificationMethod.ENotificationMethod__Email;
+                case "pager":
+                    return ENotificationMethod.ENotificationMethod__Page;
+                case "broadcast":
+                    return ENotificationMethod.ENotificationMethod__Broadcast;
+                case "event":
+                    return ENotificationMethod.ENotificationMethod__Event;
                 default:
-                    eNotificationMethod = ENotificationMethod.ENotificationMethod__UNDEFINED;
-                    break;
+                    return ENotificationMethod.ENotificationMethod__UNDEFINED;
             }
-
-            return eNotificationMethod;
         }
 
         public static int ArrayToNotificationCompletionToInt(string[] notifyCompletion)
@@ -152,18 +143,18 @@ namespace PSAsigraDSClient
 
             foreach (string notifyC in notifyCompletion)
             {
-                switch(notifyC)
+                switch(notifyC.ToLower())
                 {
-                    case "Incomplete":
+                    case "incomplete":
                         NotifyValue += 1;
                         break;
-                    case "CompletedWithErrors":
+                    case "completedwitherrors":
                         NotifyValue += 2;
                         break;
-                    case "Successful":
+                    case "successful":
                         NotifyValue += 4;
                         break;
-                    case "CompletedWithWarnings":
+                    case "completedwithwarnings":
                         NotifyValue += 1024;
                         break;
                 }

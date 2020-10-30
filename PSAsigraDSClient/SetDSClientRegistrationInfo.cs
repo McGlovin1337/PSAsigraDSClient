@@ -134,69 +134,50 @@ namespace PSAsigraDSClient
 
         private static EIndustryVertical StringToEIndustryVertical(string industry)
         {
-            EIndustryVertical Industry = EIndustryVertical.EIndustryVertical__UNDEFINED;
-
-            switch(industry)
+            switch(industry.ToLower())
             {
-                case "ManufacturingAndEnergy":
-                    Industry = EIndustryVertical.EIndustryVertical__ManufacturingAndEnergy;
-                    break;
-                case "RetailAndWholesaleTrade":
-                    Industry = EIndustryVertical.EIndustryVertical__RetailAndWholesaleTrade;
-                    break;
-                case "UtilitiesAndTelecommunications":
-                    Industry = EIndustryVertical.EIndustryVertical__UtilitiesAndTelecommunications;
-                    break;
-                case "ComputersHardwareSoftware":
-                    Industry = EIndustryVertical.EIndustryVertical__ComputersHardwareSoftware;
-                    break;
-                case "BusinessServicesAndConstruction":
-                    Industry = EIndustryVertical.EIndustryVertical__BusinessServicesAndConstruction;
-                    break;
-                case "MediaEntertainmentAndLeisure":
-                    Industry = EIndustryVertical.EIndustryVertical__MediaEntertainmentAndLeisure;
-                    break;
-                case "FinancialServicesAndInsurance":
-                    Industry = EIndustryVertical.EIndustryVertical__FinancialServicesAndInsurance;
-                    break;
-                case "PublicSectorAndHealthcare":
-                    Industry = EIndustryVertical.EIndustryVertical__PublicSectorAndHealthcare;
-                    break;
+                case "manufacturingandenergy":
+                    return EIndustryVertical.EIndustryVertical__ManufacturingAndEnergy;
+                case "retailandwholesaletrade":
+                    return EIndustryVertical.EIndustryVertical__RetailAndWholesaleTrade;
+                case "utilitiesandtelecommunications":
+                    return EIndustryVertical.EIndustryVertical__UtilitiesAndTelecommunications;
+                case "computershardwaresoftware":
+                    return EIndustryVertical.EIndustryVertical__ComputersHardwareSoftware;
+                case "businessservicesandconstruction":
+                    return EIndustryVertical.EIndustryVertical__BusinessServicesAndConstruction;
+                case "mediaentertainmentandleisure":
+                    return EIndustryVertical.EIndustryVertical__MediaEntertainmentAndLeisure;
+                case "financialservicesandinsurance":
+                    return EIndustryVertical.EIndustryVertical__FinancialServicesAndInsurance;
+                case "publicsectorandhealthcare":
+                    return EIndustryVertical.EIndustryVertical__PublicSectorAndHealthcare;
+                default:
+                    return EIndustryVertical.EIndustryVertical__UNDEFINED;
             }
-
-            return Industry;
         }
 
         private static EEncryptionType StringToEEncryptionType(string encryptionType)
         {
-            EEncryptionType EncryptionType = EEncryptionType.EEncryptionType__UNDEFINED;
-
-            switch(encryptionType)
+            switch(encryptionType.ToLower())
             {
-                case "DES":
-                    EncryptionType = EEncryptionType.EEncryptionType__DES;
-                    break;
-                case "AES128":
-                    EncryptionType = EEncryptionType.EEncryptionType__AES128;
-                    break;
-                case "AES192":
-                    EncryptionType = EEncryptionType.EEncryptionType__AES192;
-                    break;
-                case "AES256":
-                    EncryptionType = EEncryptionType.EEncryptionType__AES256;
-                    break;
-                case "AES128IV":
-                    EncryptionType = EEncryptionType.EEncryptionType__AES128_IV;
-                    break;
-                case "AES192IV":
-                    EncryptionType = EEncryptionType.EEncryptionType__AES192_IV;
-                    break;
-                case "AES256IV":
-                    EncryptionType = EEncryptionType.EEncryptionType__AES256_IV;
-                    break;
+                case "des":
+                    return EEncryptionType.EEncryptionType__DES;
+                case "aes128":
+                    return EEncryptionType.EEncryptionType__AES128;
+                case "aes192":
+                    return EEncryptionType.EEncryptionType__AES192;
+                case "aes256":
+                    return EEncryptionType.EEncryptionType__AES256;
+                case "aes128iv":
+                    return EEncryptionType.EEncryptionType__AES128_IV;
+                case "aes192iv":
+                    return EEncryptionType.EEncryptionType__AES192_IV;
+                case "aes256iv":
+                    return EEncryptionType.EEncryptionType__AES256_IV;
+                default:
+                    return EEncryptionType.EEncryptionType__UNDEFINED;
             }
-
-            return EncryptionType;
         }
     }
 }

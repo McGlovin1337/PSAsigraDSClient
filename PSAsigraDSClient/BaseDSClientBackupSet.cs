@@ -533,25 +533,19 @@ namespace PSAsigraDSClient
 
             private string EVMwareLibraryVersionToString(EVMwareLibraryVersion libraryVersion)
             {
-                string Version = null;
-
                 switch(libraryVersion)
                 {
                     case EVMwareLibraryVersion.EVMwareLibraryVersion__Latest:
-                        Version = "Latest";
-                        break;
+                        return "Latest";
                     case EVMwareLibraryVersion.EVMwareLibraryVersion__VDDK5_5:
-                        Version = "VDDK5.5";
-                        break;
+                        return "VDDK5.5";
                     case EVMwareLibraryVersion.EVMwareLibraryVersion__VDDK6_0:
-                        Version = "VDDK6.0";
-                        break;
+                        return "VDDK6.0";
                     case EVMwareLibraryVersion.EVMwareLibraryVersion__VDDK6_5:
-                        Version = "VDDK6.5";
-                        break;
+                        return "VDDK6.5";
+                    default:
+                        return null;
                 }
-
-                return Version;
             }
         }
 
@@ -645,22 +639,17 @@ namespace PSAsigraDSClient
 
             private string ESQLDumpMethodToString(ESQLDumpMethod dumpMethod)
             {
-                string DumpMethod = null;
-
                 switch(dumpMethod)
                 {
                     case ESQLDumpMethod.ESQLDumpMethod__DumpToSQLPath:
-                        DumpMethod = "SQLPath";
-                        break;
+                        return "SQLPath";
                     case ESQLDumpMethod.ESQLDumpMethod__DumpToClientBuffer:
-                        DumpMethod = "ClientBuffer";
-                        break;
+                        return "ClientBuffer";
                     case ESQLDumpMethod.ESQLDumpMethod__DumpToPipe:
-                        DumpMethod = "Pipe";
-                        break;
+                        return "Pipe";
+                    default:
+                        return null;
                 }
-
-                return DumpMethod;
             }
         }
 
@@ -833,131 +822,93 @@ namespace PSAsigraDSClient
 
             private string EBrowseItemTypeToString(EBrowseItemType itemType)
             {
-                string ItemType = null;
-
                 switch(itemType)
                 {
                     case EBrowseItemType.EBrowseItemType__Drive:
-                        ItemType = "Drive";
-                        break;
+                        return "Drive";
                     case EBrowseItemType.EBrowseItemType__Share:
-                        ItemType = "Share";
-                        break;
+                        return "Share";
                     case EBrowseItemType.EBrowseItemType__Directory:
-                        ItemType = "Directory";
-                        break;
+                        return "Directory";
                     case EBrowseItemType.EBrowseItemType__File:
-                        ItemType = "File";
-                        break;
+                        return "File";
                     case EBrowseItemType.EBrowseItemType__SystemState:
-                        ItemType = "SystemState";
-                        break;
+                        return "SystemState";
                     case EBrowseItemType.EBrowseItemType__ServicesDB:
-                        ItemType = "ServicesDatabase";
-                        break;
+                        return "ServicesDatabase";
                     case EBrowseItemType.EBrowseItemType__DatabaseInstance:
-                        ItemType = "DatabaseInstance";
-                        break;
+                        return "DatabaseInstance";
                     case EBrowseItemType.EBrowseItemType__Database:
-                        ItemType = "Database";
-                        break;
+                        return "Database";
                     case EBrowseItemType.EBrowseItemType__Tablespace:
-                        ItemType = "OracleTablespace";
-                        break;
+                        return "OracleTablespace";
                     case EBrowseItemType.EBrowseItemType__ControlFile:
-                        ItemType = "OracleControlFile";
-                        break;
+                        return "OracleControlFile";
                     case EBrowseItemType.EBrowseItemType__ArchiveLog:
-                        ItemType = "OracleArchiveLog";
-                        break;
+                        return "OracleArchiveLog";
                     case EBrowseItemType.EBrowseItemType__VirtualMachine:
-                        ItemType = "VirtualMachine";
-                        break;
+                        return "VirtualMachine";
                     case EBrowseItemType.EBrowseItemType__VssExchange:
-                        ItemType = "VSSExchange";
-                        break;
+                        return "VSSExchange";
                     case EBrowseItemType.EBrowseItemType__VmDisk:
-                        ItemType = "VirtualMachineDisk";
-                        break;
+                        return "VirtualMachineDisk";
+                    default:
+                        return null;
                 }
-
-                return ItemType;
             }
 
             private string EItemOptionToString(EItemOption itemOption)
             {
-                string ItemOption = null;
-
                 switch(itemOption)
                 {
                     case EItemOption.EItemOption__UnixFSBackupACL:
-                        ItemOption = "UnixFSBackupACL";
-                        break;
+                        return "UnixFSBackupACL";
                     case EItemOption.EItemOption__UnixFSBackupPOSIX_ACL:
-                        ItemOption = "UnixFSBackupPosixACL";
-                        break;
+                        return "UnixFSBackupPosixACL";
                     case EItemOption.EItemOption__UnixFSBackupSElinux:
-                        ItemOption = "UnixFSBackupSELinux";
-                        break;
+                        return "UnixFSBackupSELinux";
                     case EItemOption.EItemOption__WinFSBackupPermissions:
-                        ItemOption = "WinFSBackupPermissions";
-                        break;
+                        return "WinFSBackupPermissions";
                     case EItemOption.EItemOption__WinFSBackupStreams:
-                        ItemOption = "WinFSBackupStreams";
-                        break;
+                        return "WinFSBackupStreams";
                     case EItemOption.EItemOption__WinExchangeDoNotTruncateTransactionLog:
-                        ItemOption = "DoNotTruncateExchangeLog";
-                        break;
+                        return "DoNotTruncateExchangeLog";
                     case EItemOption.EItemOption__WinSQLRunDBCCBeforeBackup:
-                        ItemOption = "SqlServerRunDBCC";
-                        break;
+                        return "SqlServerRunDBCC";
                     case EItemOption.EItemOption__WinSQLBackupTransactionLog:
-                        ItemOption = "SqlServerBackupTransactionLog";
-                        break;
+                        return "SqlServerBackupTransactionLog";
                     case EItemOption.EItemOption__WinSQLStopOnDBCCError:
-                        ItemOption = "SqlServerStopOnDBCCError";
-                        break;
+                        return "SqlServerStopOnDBCCError";
                     case EItemOption.EItemOption__VSSExchangeBackupPasiveDatabase:
-                        ItemOption = "VSSExchangeBackupPassiveDatabase";
-                        break;
+                        return "VSSExchangeBackupPassiveDatabase";
                     case EItemOption.EItemOption__VSSExchangeBackupActiveDatabase:
-                        ItemOption = "VSSExchangeBackupActiveDatabase";
-                        break;
+                        return "VSSExchangeBackupActiveDatabase";
                     case EItemOption.EItemOption__MacFSFileAttributes:
-                        ItemOption = "MacFSFileAttributes";
-                        break;
+                        return "MacFSFileAttributes";
                     case EItemOption.EItemOption__MacFSResourceFork:
-                        ItemOption = "MacFSResourceFork";
-                        break;
+                        return "MacFSResourceFork";
                     case EItemOption.EItemOption__NovellBackupPermissions:
-                        ItemOption = "NovellBackupPermissions";
-                        break;
+                        return "NovellBackupPermissions";
                     case EItemOption.EItemOption__NovellBackupAttributes:
-                        ItemOption = "NovellBackupAttributes";
-                        break;
+                        return "NovellBackupAttributes";
+                    default:
+                        return null;
                 }
-
-                return ItemOption;
             }
 
             private string EBackupSetItemTypeToString(EBackupSetItemType itemType)
             {
-                string Type = null;
-
                 switch(itemType)
                 {
                     case EBackupSetItemType.EBackupSetItemType__Inclusion:
-                        Type = "Inclusion";
-                        break;
+                        return "Inclusion";
                     case EBackupSetItemType.EBackupSetItemType__Exclusion:
-                        Type = "Exclusion";
-                        break;
+                        return "Exclusion";
                     case EBackupSetItemType.EBackupSetItemType__RegExExclusion:
-                        Type = "RegexExclusion";
-                        break;
+                        return "RegexExclusion";
+                    default:
+                        return null;
                 }
-
-                return Type;
             }
         }
 
@@ -1132,178 +1083,121 @@ namespace PSAsigraDSClient
 
             private string EApplicationTypeToString(EApplicationType applicationType)
             {
-                string ApplicationType = null;
-
                 switch(applicationType)
                 {
                     case EApplicationType.EApplicationType__File:
-                        ApplicationType = "FileSystem";
-                        break;
+                        return "FileSystem";
                     case EApplicationType.EApplicationType__Registry:
-                        ApplicationType = "WindowsRegistry";
-                        break;
+                        return "WindowsRegistry";
                     case EApplicationType.EApplicationType__Bindery:
-                        ApplicationType = "NovelBindery";
-                        break;
+                        return "NovelBindery";
                     case EApplicationType.EApplicationType__NDS:
-                        ApplicationType = "NovelNDS";
-                        break;
+                        return "NovelNDS";
                     case EApplicationType.EApplicationType__Database:
-                        ApplicationType = "Database";
-                        break;
+                        return "Database";
                     case EApplicationType.EApplicationType__Exchange:
-                        ApplicationType = "MSExchange";
-                        break;
+                        return "MSExchange";
                     case EApplicationType.EApplicationType__Service:
-                        ApplicationType = "WindowsService";
-                        break;
+                        return "WindowsService";
                     case EApplicationType.EApplicationType__ServiceDatabase:
-                        ApplicationType = "WindowsServiceDatabase";
-                        break;
+                        return "WindowsServiceDatabase";
                     case EApplicationType.EApplicationType__SystemState:
-                        ApplicationType = "WindowsSystemState";
-                        break;
+                        return "WindowsSystemState";
                     case EApplicationType.EApplicationType__OracleDatabase:
-                        ApplicationType = "OracleDatabase";
-                        break;
+                        return "OracleDatabase";
                     case EApplicationType.EApplicationType__OracleTableSpace:
-                        ApplicationType = "OracleTableSpace";
-                        break;
+                        return "OracleTableSpace";
                     case EApplicationType.EApplicationType__OracleArchiveLogs:
-                        ApplicationType = "OracleArchiveLogs";
-                        break;
+                        return "OracleArchiveLogs";
                     case EApplicationType.EApplicationType__OracleControlFile:
-                        ApplicationType = "OracleControlFile";
-                        break;
+                        return "OracleControlFile";
                     case EApplicationType.EApplicationType__EmailLotusFolder:
-                        ApplicationType = "EmailLotusFolder";
-                        break;
+                        return "EmailLotusFolder";
                     case EApplicationType.EApplicationType__EmailExchangeFolder:
-                        ApplicationType = "EmailExchangeFolder";
-                        break;
+                        return "EmailExchangeFolder";
                     case EApplicationType.EApplicationType__EmailOutlookFolder:
-                        ApplicationType = "EmailOutlookFolder";
-                        break;
+                        return "EmailOutlookFolder";
                     case EApplicationType.EApplicationType__ISeries:
-                        ApplicationType = "AS400iSeriesFolder";
-                        break;
+                        return "AS400iSeriesFolder";
                     case EApplicationType.EApplicationType__EmailGroupwiseFolder:
-                        ApplicationType = "EmailGroupwiseFolder";
-                        break;
+                        return "EmailGroupwiseFolder";
                     case EApplicationType.EApplicationType__MySql:
-                        ApplicationType = "MySqlServer";
-                        break;
+                        return "MySqlServer";
                     case EApplicationType.EApplicationType__SharePoint:
-                        ApplicationType = "SharePoint";
-                        break;
+                        return "SharePoint";
                     case EApplicationType.EApplicationType__LotusDomino:
-                        ApplicationType = "LotusDomino";
-                        break;
+                        return "LotusDomino";
                     case EApplicationType.EApplicationType__VssHyperV:
-                        ApplicationType = "VssHyperV";
-                        break;
+                        return "VssHyperV";
                     case EApplicationType.EApplicationType__VssSqlServer:
-                        ApplicationType = "VssSqlServer";
-                        break;
+                        return "VssSqlServer";
                     case EApplicationType.EApplicationType__VssExchangeServer:
-                        ApplicationType = "VssExchangeServer";
-                        break;
+                        return "VssExchangeServer";
                     case EApplicationType.EApplicationType__VssSharePointServer:
-                        ApplicationType = "VssSharePointServer";
-                        break;
+                        return "VssSharePointServer";
                     case EApplicationType.EApplicationType__VmwareVadpVM:
-                        ApplicationType = "VMWareVADPVirtualMachine";
-                        break;
+                        return "VMWareVADPVirtualMachine";
                     case EApplicationType.EApplicationType__VmwareVadpVD:
-                        ApplicationType = "VMWareVADPVirtualDisk";
-                        break;
+                        return "VMWareVADPVirtualDisk";
                     case EApplicationType.EApplicationType__SalesForce:
-                        ApplicationType = "SalesForce";
-                        break;
+                        return "SalesForce";
                     case EApplicationType.EApplicationType__P2V:
-                        ApplicationType = "P2V";
-                        break;
+                        return "P2V";
                     case EApplicationType.EApplicationType__GoogleApps:
-                        ApplicationType = "GoogleApps";
-                        break;
+                        return "GoogleApps";
                     case EApplicationType.EApplicationType__GoogleAppsDocument:
-                        ApplicationType = "GoogleAppsDocument";
-                        break;
+                        return "GoogleAppsDocument";
                     case EApplicationType.EApplicationType__GoogleAppsCalendar:
-                        ApplicationType = "GoogleAppsCalendar";
-                        break;
+                        return "GoogleAppsCalendar";
                     case EApplicationType.EApplicationType__GoogleAppsContact:
-                        ApplicationType = "GoogleAppsContact";
-                        break;
+                        return "GoogleAppsContact";
                     case EApplicationType.EApplicationType__GoogleAppsEmail:
-                        ApplicationType = "GoogleAppsEmail";
-                        break;
+                        return "GoogleAppsEmail";
                     case EApplicationType.EApplicationType__GoogleAppsSite:
-                        ApplicationType = "GoogleAppsSite";
-                        break;
+                        return "GoogleAppsSite";
                     case EApplicationType.EApplicationType__Office365:
-                        ApplicationType = "Office365";
-                        break;
+                        return "Office365";
                     case EApplicationType.EApplicationType__ExchangeOnline:
-                        ApplicationType = "ExchangeOnline";
-                        break;
+                        return "ExchangeOnline";
                     case EApplicationType.EApplicationType__Office365Outlook:
-                        ApplicationType = "Office365Outlook";
-                        break;
+                        return "Office365Outlook";
                     case EApplicationType.EApplicationType__Office365OutlookTasks:
-                        ApplicationType = "Office365OutlookTasks";
-                        break;
+                        return "Office365OutlookTasks";
                     case EApplicationType.EApplicationType__Office365OutlookNotes:
-                        ApplicationType = "Office365OutlookNotes";
-                        break;
+                        return "Office365OutlookNotes";
                     case EApplicationType.EApplicationType__Office365Calendar:
-                        ApplicationType = "Office365Calendar";
-                        break;
+                        return "Office365Calendar";
                     case EApplicationType.EApplicationType__Office365People:
-                        ApplicationType = "Office365People";
-                        break;
+                        return "Office365People";
                     case EApplicationType.EApplicationType__Office365Attachments:
-                        ApplicationType = "Office365Attachments";
-                        break;
+                        return "Office365Attachments";
                     case EApplicationType.EApplicationType__SharePointOnline:
-                        ApplicationType = "SharePointOnline";
-                        break;
+                        return "SharePointOnline";
                     case EApplicationType.EApplicationType__Office365Web:
-                        ApplicationType = "Office365Web";
-                        break;
+                        return "Office365Web";
                     case EApplicationType.EApplicationType__Office365List:
-                        ApplicationType = "Office365List";
-                        break;
+                        return "Office365List";
                     case EApplicationType.EApplicationType__Office365Sites:
-                        ApplicationType = "Office365Sites";
-                        break;
+                        return "Office365Sites";
                     case EApplicationType.EApplicationType__Office365ListItem:
-                        ApplicationType = "Office365ListItem";
-                        break;
+                        return "Office365ListItem";
                     case EApplicationType.EApplicationType__VmwareFLRDisk:
-                        ApplicationType = "VMWareFLRDisk";
-                        break;
+                        return "VMWareFLRDisk";
                     case EApplicationType.EApplicationType__VmwareFLRVolume:
-                        ApplicationType = "VMWareFLRVolume";
-                        break;
+                        return "VMWareFLRVolume";
                     case EApplicationType.EApplicationType__VmwareFLRDirUnexpanded:
-                        ApplicationType = "VMWareFLRDirUnexpanded";
-                        break;
+                        return "VMWareFLRDirUnexpanded";
                     case EApplicationType.EApplicationType__VmwareFLRDir:
-                        ApplicationType = "VMWareFLRDir";
-                        break;
+                        return "VMWareFLRDir";
                     case EApplicationType.EApplicationType__VmwareFLRMachine:
-                        ApplicationType = "VMWareFLRMachine";
-                        break;
+                        return "VMWareFLRMachine";
                     case EApplicationType.EApplicationType__AmazonWebServices:
-                        ApplicationType = "AmazonWebServices";
-                        break;
+                        return "AmazonWebServices";
                     case EApplicationType.EApplicationType__VmReplication:
-                        ApplicationType = "VMReplication";
-                        break;
+                        return "VMReplication";
+                    default:
+                        return null;
                 }
-
-                return ApplicationType;
             }
         }
 
@@ -1327,22 +1221,17 @@ namespace PSAsigraDSClient
 
             private string EOldFileExclusionTypeToString(EOldFileExclusionType type)
             {
-                string Type = null;
-
                 switch(type)
                 {
                     case EOldFileExclusionType.EOldFileExclusionType__None:
-                        Type = "None";
-                        break;
+                        return "None";
                     case EOldFileExclusionType.EOldFileExclusionType__Date:
-                        Type = "Date";
-                        break;
+                        return "Date";
                     case EOldFileExclusionType.EOldFileExclusionType__TimeSpan:
-                        Type = "TimeSpan";
-                        break;
+                        return "TimeSpan";
+                    default:
+                        return null;
                 }
-
-                return Type;
             }
         }
 
@@ -1385,42 +1274,32 @@ namespace PSAsigraDSClient
 
             private string ECDPBackupStrategyToString(ECDPBackupStrategy backupStrategy)
             {
-                string BackupStrategy = null;
-
                 switch(backupStrategy)
                 {
                     case ECDPBackupStrategy.ECDPBackupStrategy__BackupNotOftenThan:
-                        BackupStrategy = "NotMoreThanInterval";
-                        break;
+                        return "NotMoreThanInterval";
                     case ECDPBackupStrategy.ECDPBackupStrategy__BackupStopChangingFor:
-                        BackupStrategy = "NoChangeWithinInterval";
-                        break;
+                        return "NoChangeWithinInterval";
+                    default:
+                        return null;
                 }
-
-                return BackupStrategy;
             }
 
             private string ECDPFileChangeDetectionTypeToString(ECDPFileChangeDetectionType changeDetectionType)
             {
-                string ChangeDetection = null;
-
                 switch(changeDetectionType)
                 {
                     case ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__WinBuiltInMonitor:
-                        ChangeDetection = "WindowsBuiltInMonitor";
-                        break;
+                        return "WindowsBuiltInMonitor";
                     case ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__MLREmailMonitor:
-                        ChangeDetection = "MLREmailMonitor";
-                        break;
+                        return "MLREmailMonitor";
                     case ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__GenericScanner:
-                        ChangeDetection = "GenericScanner";
-                        break;
+                        return "GenericScanner";
                     case ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__FileAlterationMonitor:
-                        ChangeDetection = "FileAlterationMonitor";
-                        break;
+                        return "FileAlterationMonitor";
+                    default:
+                        return null;
                 }
-
-                return ChangeDetection;
             }
 
             private string[] ECDPSuspendableScheduledActivityIntToString(int suspendableActivities)
@@ -1520,48 +1399,36 @@ namespace PSAsigraDSClient
 
         private static string EPrePostExecutionTypeToString(EPrePostExecutionType executionType)
         {
-            string ExecutionType = null;
-
             switch(executionType)
             {
                 case EPrePostExecutionType.EPrePostExecutionType__RunCommand:
-                    ExecutionType = "RunCommand";
-                    break;
+                    return "RunCommand";
                 case EPrePostExecutionType.EPrePostExecutionType__StartService:
-                    ExecutionType = "StartService";
-                    break;
+                    return "StartService";
                 case EPrePostExecutionType.EPrePostExecutionType__StopService:
-                    ExecutionType = "StopService";
-                    break;
+                    return "StopService";
+                default:
+                    return null;
             }
-
-            return ExecutionType;
         }
 
         private static string EPreExecutionCheckTypeToString(EPreExecutionCheckType checkType)
         {
-            string CheckType = null;
-
             switch(checkType)
             {
                 case EPreExecutionCheckType.EPreExecutionCheckType__OnExitCode:
-                    CheckType = "OnExitCode";
-                    break;
+                    return "OnExitCode";
                 case EPreExecutionCheckType.EPreExecutionCheckType__OnFileExistence:
-                    CheckType = "OnFileExistence";
-                    break;
+                    return "OnFileExistence";
                 case EPreExecutionCheckType.EPreExecutionCheckType__OnOutputString:
-                    CheckType = "OnOutputString";
-                    break;
+                    return "OnOutputString";
                 case EPreExecutionCheckType.EPreExecutionCheckType__OnExecutionSuccess:
-                    CheckType = "OnExecutionSuccess";
-                    break;
+                    return "OnExecutionSuccess";
                 case EPreExecutionCheckType.EPreExecutionCheckType__OnExecutionFailure:
-                    CheckType = "OnExecutionFailure";
-                    break;
+                    return "OnExecutionFailure";
+                default:
+                    return null;
             }
-
-            return CheckType;
         }
 
         public static string EBackupDataTypeToString(EBackupDataType dataType)
@@ -1667,103 +1534,71 @@ namespace PSAsigraDSClient
 
         public static EBackupDataType StringToEBackupDataType(string dataType)
         {
-            EBackupDataType DataType = EBackupDataType.EBackupDataType__UNDEFINED;
-
-            switch(dataType)
+            switch(dataType.ToLower())
             {
-                case "FileSystem":
-                    DataType = EBackupDataType.EBackupDataType__FileSystem;
-                    break;
-                case "MSSQLServer":
-                    DataType = EBackupDataType.EBackupDataType__SQLServer;
-                    break;
-                case "MSExchange":
-                    DataType = EBackupDataType.EBackupDataType__ExchangeServer;
-                    break;
-                case "Oracle":
-                    DataType = EBackupDataType.EBackupDataType__Oracle;
-                    break;
-                case "PermissionsOnly":
-                    DataType = EBackupDataType.EBackupDataType__Permissions;
-                    break;
-                case "MSExchangeItemLevel":
-                    DataType = EBackupDataType.EBackupDataType__ExchangeEmail;
-                    break;
-                case "OutlookEmail":
-                    DataType = EBackupDataType.EBackupDataType__OutlookEmail;
-                    break;
-                case "SystemI":
-                    DataType = EBackupDataType.EBackupDataType__SystemI;
-                    break;
-                case "MySQL":
-                    DataType = EBackupDataType.EBackupDataType__MySQL;
-                    break;
-                case "PostgreSQL":
-                    DataType = EBackupDataType.EBackupDataType__PostgreSQL;
-                    break;
-                case "DB2":
-                    DataType = EBackupDataType.EBackupDataType__DB2;
-                    break;
-                case "LotusNotesEmail":
-                    DataType = EBackupDataType.EBackupDataType__LotusNotesEmail;
-                    break;
-                case "GroupWiseEmail":
-                    DataType = EBackupDataType.EBackupDataType__GroupwiseEmail;
-                    break;
-                case "SharepointItemLevel":
-                    DataType = EBackupDataType.EBackupDataType__Sharepoint;
-                    break;
-                case "VMWareVMDK":
-                    DataType = EBackupDataType.EBackupDataType__VMWare;
-                    break;
-                case "XenServer":
-                    DataType = EBackupDataType.EBackupDataType__XenServer;
-                    break;
-                case "Sybase":
-                    DataType = EBackupDataType.EBackupDataType__Sybase;
-                    break;
-                case "HyperVServer":
-                    DataType = EBackupDataType.EBackupDataType__HyperV;
-                    break;
-                case "VMWareVADP":
-                    DataType = EBackupDataType.EBackupDataType__VMwareVADP;
-                    break;
-                case "VSSMSSQLServer":
-                    DataType = EBackupDataType.EBackupDataType__VSSSQLServer;
-                    break;
-                case "VSSMSExchange":
-                    DataType = EBackupDataType.EBackupDataType__VSSExchange;
-                    break;
-                case "VSSSharepoint":
-                    DataType = EBackupDataType.EBackupDataType__VSSSharePoint;
-                    break;
-                case "SalesForce":
-                    DataType = EBackupDataType.EBackupDataType__SalesForce;
-                    break;
-                case "GoogleApps":
-                    DataType = EBackupDataType.EBackupDataType__GoogleApps;
-                    break;
-                case "Office365":
-                    DataType = EBackupDataType.EBackupDataType__Office365;
-                    break;
-                case "OracleSBT":
-                    DataType = EBackupDataType.EBackupDataType__OracleSBT;
-                    break;
-                case "LotusDomino":
-                    DataType = EBackupDataType.EBackupDataType__LotusDomino;
-                    break;
-                case "HyperVCluster":
-                    DataType = EBackupDataType.EBackupDataType__ClusteredHyperV;
-                    break;
-                case "P2V":
-                    DataType = EBackupDataType.EBackupDataType__PToV;
-                    break;
-                case "MSExchangeEWS":
-                    DataType = EBackupDataType.EBackupDataType__ExchangeEMailEWS;
-                    break;
+                case "filesystem":
+                    return EBackupDataType.EBackupDataType__FileSystem;
+                case "mssqlserver":
+                    return EBackupDataType.EBackupDataType__SQLServer;
+                case "msexchange":
+                    return EBackupDataType.EBackupDataType__ExchangeServer;
+                case "oracle":
+                    return EBackupDataType.EBackupDataType__Oracle;
+                case "permissionsonly":
+                    return EBackupDataType.EBackupDataType__Permissions;
+                case "msexchangeitemlevel":
+                    return EBackupDataType.EBackupDataType__ExchangeEmail;
+                case "outlookemail":
+                    return EBackupDataType.EBackupDataType__OutlookEmail;
+                case "systemi":
+                    return EBackupDataType.EBackupDataType__SystemI;
+                case "mysql":
+                    return EBackupDataType.EBackupDataType__MySQL;
+                case "postgresql":
+                    return EBackupDataType.EBackupDataType__PostgreSQL;
+                case "db2":
+                    return EBackupDataType.EBackupDataType__DB2;
+                case "lotusnotesemail":
+                    return EBackupDataType.EBackupDataType__LotusNotesEmail;
+                case "groupwiseemail":
+                    return EBackupDataType.EBackupDataType__GroupwiseEmail;
+                case "sharepointitemlevel":
+                    return EBackupDataType.EBackupDataType__Sharepoint;
+                case "vmwarevmdk":
+                    return EBackupDataType.EBackupDataType__VMWare;
+                case "xenserver":
+                    return EBackupDataType.EBackupDataType__XenServer;
+                case "sybase":
+                    return EBackupDataType.EBackupDataType__Sybase;
+                case "hypervserver":
+                    return EBackupDataType.EBackupDataType__HyperV;
+                case "vmwarevadp":
+                    return EBackupDataType.EBackupDataType__VMwareVADP;
+                case "vssmssqlserver":
+                    return EBackupDataType.EBackupDataType__VSSSQLServer;
+                case "vssmsexchange":
+                    return EBackupDataType.EBackupDataType__VSSExchange;
+                case "vsssharepoint":
+                    return EBackupDataType.EBackupDataType__VSSSharePoint;
+                case "salesforce":
+                    return EBackupDataType.EBackupDataType__SalesForce;
+                case "googleapps":
+                    return EBackupDataType.EBackupDataType__GoogleApps;
+                case "office365":
+                    return EBackupDataType.EBackupDataType__Office365;
+                case "oraclesbt":
+                    return EBackupDataType.EBackupDataType__OracleSBT;
+                case "lotusdomino":
+                    return EBackupDataType.EBackupDataType__LotusDomino;
+                case "hypervcluster":
+                    return EBackupDataType.EBackupDataType__ClusteredHyperV;
+                case "p2v":
+                    return EBackupDataType.EBackupDataType__PToV;
+                case "msexchangeews":
+                    return EBackupDataType.EBackupDataType__ExchangeEMailEWS;
+                default:
+                    return EBackupDataType.EBackupDataType__UNDEFINED;
             }
-
-            return DataType;
         }
 
         public static string EBackupSetTypeToString(EBackupSetType setType)
@@ -1791,7 +1626,7 @@ namespace PSAsigraDSClient
 
         public static EBackupSetType StringToEBackupSetType(string setType)
         {
-            EBackupSetType SetType = EBackupSetType.EBackupSetType__UNDEFINED;
+            EBackupSetType SetType;
 
             switch (setType.ToLower())
             {
@@ -1806,6 +1641,9 @@ namespace PSAsigraDSClient
                     break;
                 case "localonly":
                     SetType = EBackupSetType.EBackupSetType__LocalOnly;
+                    break;
+                default:
+                    SetType = EBackupSetType.EBackupSetType__UNDEFINED;
                     break;
             }
 
@@ -1834,22 +1672,17 @@ namespace PSAsigraDSClient
 
         public static SSHAccesorType StringToSSHAccesorType(string accessType)
         {
-            SSHAccesorType AccessType = SSHAccesorType.SSHAccesorType__UNDEFINED;
-
             switch(accessType.ToLower())
             {
                 case "perl":
-                    AccessType = SSHAccesorType.SSHAccesorType__Perl;
-                    break;
+                    return SSHAccesorType.SSHAccesorType__Perl;
                 case "python":
-                    AccessType = SSHAccesorType.SSHAccesorType__Python;
-                    break;
+                    return SSHAccesorType.SSHAccesorType__Python;
                 case "direct":
-                    AccessType = SSHAccesorType.SSHAccesorType__Direct;
-                    break;
+                    return SSHAccesorType.SSHAccesorType__Direct;
+                default:
+                    return SSHAccesorType.SSHAccesorType__UNDEFINED;
             }
-
-            return AccessType;
         }
 
         protected static int SwitchParamsToECDPSuspendableScheduledActivityInt(bool retention, bool blm, bool validation)

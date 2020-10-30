@@ -156,24 +156,27 @@ namespace PSAsigraDSClient
 
         private static EFileOverwriteOption StringToEFileOverwriteOption(string overwriteOption)
         {
-            EFileOverwriteOption OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__UNDEFINED;
+            EFileOverwriteOption OverwriteOption;
 
-            switch (overwriteOption)
+            switch (overwriteOption.ToLower())
             {
-                case "RestoreAll":
+                case "restoreall":
                     OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__RestoreAll;
                     break;
-                case "RestoreNewer":
+                case "restorenewer":
                     OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__RestoreNewer;
                     break;
-                case "RestoreOlder":
+                case "restoreolder":
                     OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__RestoreOlder;
                     break;
-                case "RestoreDifferent":
+                case "restoredifferent":
                     OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__RestoreDifferent;
                     break;
-                case "SkipExisting":
+                case "skipexisting":
                     OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__SkipExisting;
+                    break;
+                default:
+                    OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__UNDEFINED;
                     break;
             }
 
@@ -182,18 +185,21 @@ namespace PSAsigraDSClient
 
         private static ERestoreMethod StringToERestoreMethod(string restoreMethod)
         {
-            ERestoreMethod RestoreMethod = ERestoreMethod.ERestoreMethod__UNDEFINED;
+            ERestoreMethod RestoreMethod;
 
-            switch (restoreMethod)
+            switch (restoreMethod.ToLower())
             {
-                case "Save":
+                case "save":
                     RestoreMethod = ERestoreMethod.ERestoreMethod__Save;
                     break;
-                case "Fast":
+                case "fast":
                     RestoreMethod = ERestoreMethod.ERestoreMethod__Fast;
                     break;
-                case "UseBuffer":
+                case "usebuffer":
                     RestoreMethod = ERestoreMethod.ERestoreMethod__UseBuffer;
+                    break;
+                default:
+                    RestoreMethod = ERestoreMethod.ERestoreMethod__UNDEFINED;
                     break;
             }
 
@@ -202,18 +208,21 @@ namespace PSAsigraDSClient
 
         private static ERestorePermission StringToERestorePermission(string restorePermission)
         {
-            ERestorePermission RestorePermission = ERestorePermission.ERestorePermission__UNDEFINED;
+            ERestorePermission RestorePermission;
 
-            switch (restorePermission)
+            switch (restorePermission.ToLower())
             {
-                case "Yes":
+                case "yes":
                     RestorePermission = ERestorePermission.ERestorePermission__Yes;
                     break;
-                case "Skip":
+                case "skip":
                     RestorePermission = ERestorePermission.ERestorePermission__Skip;
                     break;
-                case "Only":
+                case "only":
                     RestorePermission = ERestorePermission.ERestorePermission__Only;
+                    break;
+                default:
+                    RestorePermission = ERestorePermission.ERestorePermission__UNDEFINED;
                     break;
             }
 

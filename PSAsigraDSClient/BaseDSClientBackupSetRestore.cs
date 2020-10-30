@@ -37,45 +37,48 @@ namespace PSAsigraDSClient
 
         protected ERestoreReason StringToERestoreReason(string reason)
         {
-            ERestoreReason Reason = ERestoreReason.ERestoreReason__UNDEFINED;
+            ERestoreReason Reason;
 
-            switch (reason)
+            switch (reason.ToLower())
             {
-                case "AccidentalDeletion":
+                case "accidentaldeletion":
                     Reason = ERestoreReason.ERestoreReason__UserErrorDataDeletion;
                     break;
-                case "MaliciousIntent":
+                case "maliciousintent":
                     Reason = ERestoreReason.ERestoreReason__MaliciousIntent;
                     break;
-                case "DeviceLostOrStolen":
+                case "devicelostorstolen":
                     Reason = ERestoreReason.ERestoreReason__DeviceLostOrStolen;
                     break;
-                case "HardwareFault":
+                case "hardwarefault":
                     Reason = ERestoreReason.ERestoreReason__HardwareMalfunction;
                     break;
-                case "SoftwareFault":
+                case "softwarefault":
                     Reason = ERestoreReason.ERestoreReason__SoftwareMalfunction;
                     break;
-                case "DataStolen":
+                case "datastolen":
                     Reason = ERestoreReason.ERestoreReason__DataStolen;
                     break;
-                case "DataCorruption":
+                case "datacorruption":
                     Reason = ERestoreReason.ERestoreReason__DataCorruption;
                     break;
-                case "NaturalDisaster":
+                case "naturaldisaster":
                     Reason = ERestoreReason.ERestoreReason__NaturalDisasters;
                     break;
-                case "PowerOutage":
+                case "poweroutage":
                     Reason = ERestoreReason.ERestoreReason__PowerOutages;
                     break;
-                case "OtherDisaster":
+                case "otherdisaster":
                     Reason = ERestoreReason.ERestoreReason__OtherDisaster;
                     break;
-                case "PreviousGeneration":
+                case "previousgeneration":
                     Reason = ERestoreReason.ERestoreReason__PreviousGeneration;
                     break;
-                case "DeviceDamaged":
+                case "devicedamaged":
                     Reason = ERestoreReason.ERestoreReason__DeviceDamaged;
+                    break;
+                default:
+                    Reason = ERestoreReason.ERestoreReason__UNDEFINED;
                     break;
             }
 
@@ -84,18 +87,21 @@ namespace PSAsigraDSClient
 
         protected ERestoreClassification StringToERestoreClassification(string classification)
         {
-            ERestoreClassification Classification = ERestoreClassification.ERestoreClassification__UNDEFINED;
+            ERestoreClassification Classification;
 
-            switch (classification)
+            switch (classification.ToLower())
             {
-                case "Production":
+                case "production":
                     Classification = ERestoreClassification.ERestoreClassification__Production;
                     break;
-                case "Drill":
+                case "drill":
                     Classification = ERestoreClassification.ERestoreClassification__StopAfterDrillUsedOut;
                     break;
-                case "ProductionDrill":
+                case "productiondrill":
                     Classification = ERestoreClassification.ERestoreClassification__ProductionAfterDrillUsedOut;
+                    break;
+                default:
+                    Classification = ERestoreClassification.ERestoreClassification__UNDEFINED;
                     break;
             }
 
@@ -104,21 +110,24 @@ namespace PSAsigraDSClient
 
         protected ERestoreLocalStorageHandling StringToERestoreLocalStorageHandling(string method)
         {
-            ERestoreLocalStorageHandling Method = ERestoreLocalStorageHandling.ERestoreLocalStorageHandling__UNDEFINED;
+            ERestoreLocalStorageHandling Method;
 
-            switch (method)
+            switch (method.ToLower())
             {
-                case "None":
+                case "none":
                     Method = ERestoreLocalStorageHandling.ERestoreLocalStorageHandling__None;
                     break;
-                case "ConnectDsSysFirst":
+                case "connectdssysfirst":
                     Method = ERestoreLocalStorageHandling.ERestoreLocalStorageHandling__ConnectFirst;
                     break;
-                case "ConnectDsSysNeeded":
+                case "connectdssysneeded":
                     Method = ERestoreLocalStorageHandling.ERestoreLocalStorageHandling__ConnectIfNeeded;
                     break;
-                case "ContinueWithoutDsSys":
+                case "continuewithoutdssys":
                     Method = ERestoreLocalStorageHandling.ERestoreLocalStorageHandling__ContinueIfDisconnect;
+                    break;
+                default:
+                    Method = ERestoreLocalStorageHandling.ERestoreLocalStorageHandling__UNDEFINED;
                     break;
             }
 

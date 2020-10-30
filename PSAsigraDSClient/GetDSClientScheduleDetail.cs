@@ -143,28 +143,21 @@ namespace PSAsigraDSClient
         // Method to convert the EScheduleDetailType Enum to a Human Friendly String
         private static string ScheduleDetailTypeToString(EScheduleDetailType detailType)
         {
-            string DetailType = null;
-
             switch(detailType)
             {
                 case EScheduleDetailType.EScheduleDetailType__OneTime:
-                    DetailType = "OneTime";
-                    break;
+                    return "OneTime";
                 case EScheduleDetailType.EScheduleDetailType__Daily:
-                    DetailType = "Daily";
-                    break;
+                    return "Daily";
                 case EScheduleDetailType.EScheduleDetailType__Weekly:
-                    DetailType = "Weekly";
-                    break;
+                    return "Weekly";
                 case EScheduleDetailType.EScheduleDetailType__Monthly:
-                    DetailType = "Monthly";
-                    break;
+                    return "Monthly";
                 case EScheduleDetailType.EScheduleDetailType__UNDEFINED:
-                    DetailType = "Undefined";
-                    break;
+                    return "Undefined";
+                default:
+                    return null;
             }
-
-            return DetailType;
         }
     }
 }

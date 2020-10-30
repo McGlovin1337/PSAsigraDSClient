@@ -96,28 +96,19 @@ namespace PSAsigraDSClient
 
             private string OpenFileOperationToString(EOpenFileStrategy openFileStrategy)
             {
-                string operation = null;
-
                 switch(openFileStrategy)
                 {
                     case EOpenFileStrategy.EOpenFileStrategy__TryDenyWrite:
-                        operation = "TryDenyWrite";
-                        break;
+                        return "TryDenyWrite";
                     case EOpenFileStrategy.EOpenFileStrategy__DenyWrite:
-                        operation = "DenyWrite";
-                        break;
+                        return "DenyWrite";
                     case EOpenFileStrategy.EOpenFileStrategy__PreventWrite:
-                        operation = "PreventWrite";
-                        break;
+                        return "PreventWrite";
                     case EOpenFileStrategy.EOpenFileStrategy__AllowWrite:
-                        operation = "AllowWrite";
-                        break;
-                    case EOpenFileStrategy.EOpenFileStrategy__UNDEFINED:
-                        operation = "Undefined";
-                        break;
+                        return "AllowWrite";
+                    default:
+                        return null;
                 }
-
-                return operation;
             }
         }        
     }

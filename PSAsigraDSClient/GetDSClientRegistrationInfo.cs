@@ -59,104 +59,75 @@ namespace PSAsigraDSClient
 
             private static string ENumberOfEmployeesToString(ENumberOfEmployees employees)
             {
-                string Employees = null;
-
                 switch(employees)
                 {
                     case ENumberOfEmployees.ENumberOfEmployees__Size1:
-                        Employees = "1-50";
-                        break;
+                        return "1-50";
                     case ENumberOfEmployees.ENumberOfEmployees__Size2:
-                        Employees = "51-200";
-                        break;
+                        return "51-200";
                     case ENumberOfEmployees.ENumberOfEmployees__Size3:
-                        Employees = "201-500";
-                        break;
+                        return "201-500";
                     case ENumberOfEmployees.ENumberOfEmployees__Size4:
-                        Employees = "501-1000";
-                        break;
+                        return "501-1000";
                     case ENumberOfEmployees.ENumberOfEmployees__Size5:
-                        Employees = "1001-5000";
-                        break;
+                        return "1001-5000";
                     case ENumberOfEmployees.ENumberOfEmployees__Size6:
-                        Employees = "5001-10000";
-                        break;
+                        return "5001-10000";
                     case ENumberOfEmployees.ENumberOfEmployees__Size7:
-                        Employees = "10001+";
-                        break;
+                        return "10001+";
+                    default:
+                        return null;
                 }
-
-                return Employees;
             }
 
             private static string EIndustryVerticalToString(EIndustryVertical industry)
             {
-                string Industry = null;
-
                 switch(industry)
                 {
                     case EIndustryVertical.EIndustryVertical__ManufacturingAndEnergy:
-                        Industry = "ManufacturingAndEnergy";
-                        break;
+                        return "ManufacturingAndEnergy";
                     case EIndustryVertical.EIndustryVertical__RetailAndWholesaleTrade:
-                        Industry = "RetailAndWholesaleTrade";
-                        break;
+                        return "RetailAndWholesaleTrade";
                     case EIndustryVertical.EIndustryVertical__UtilitiesAndTelecommunications:
-                        Industry = "UtilitiesAndTelecommunications";
-                        break;
+                        return "UtilitiesAndTelecommunications";
                     case EIndustryVertical.EIndustryVertical__ComputersHardwareSoftware:
-                        Industry = "ComputersHardwareSoftware";
-                        break;
+                        return "ComputersHardwareSoftware";
                     case EIndustryVertical.EIndustryVertical__BusinessServicesAndConstruction:
-                        Industry = "BusinessServicesAndConstruction";
-                        break;
+                        return "BusinessServicesAndConstruction";
                     case EIndustryVertical.EIndustryVertical__MediaEntertainmentAndLeisure:
-                        Industry = "MediaEntertainmentAndLeisure";
-                        break;
+                        return "MediaEntertainmentAndLeisure";
                     case EIndustryVertical.EIndustryVertical__FinancialServicesAndInsurance:
-                        Industry = "FinancialServicesAndInsurance";
-                        break;
+                        return "FinancialServicesAndInsurance";
                     case EIndustryVertical.EIndustryVertical__PublicSectorAndHealthcare:
-                        Industry = "PublicSectorAndHealthcare";
-                        break;
+                        return "PublicSectorAndHealthcare";
+                    default:
+                        return null;
                 }
-
-                return Industry;
             }
 
             private static string EEncryptionTypeToString(EEncryptionType encryptionType)
             {
-                string EncryptionType = null;
-
                 switch(encryptionType)
                 {
                     case EEncryptionType.EEncryptionType__NONE:
-                        EncryptionType = "None";
-                        break;
+                        return "None";
                     case EEncryptionType.EEncryptionType__DES:
-                        EncryptionType = "DES";
-                        break;
+                        return "DES";
                     case EEncryptionType.EEncryptionType__AES128:
-                        EncryptionType = "AES128";
-                        break;
+                        return "AES128";
                     case EEncryptionType.EEncryptionType__AES192:
-                        EncryptionType = "AES192";
-                        break;
+                        return "AES192";
                     case EEncryptionType.EEncryptionType__AES256:
-                        EncryptionType = "AES256";
-                        break;
+                        return "AES256";
                     case EEncryptionType.EEncryptionType__AES128_IV:
-                        EncryptionType = "AES128IV";
-                        break;
+                        return "AES128IV";
                     case EEncryptionType.EEncryptionType__AES192_IV:
-                        EncryptionType = "AES192IV";
-                        break;
+                        return "AES192IV";
                     case EEncryptionType.EEncryptionType__AES256_IV:
-                        EncryptionType = "AES256IV";
-                        break;
+                        return "AES256IV";
+                    default:
+                        return null;
                 }
-
-                return EncryptionType;
             }
         }
     }

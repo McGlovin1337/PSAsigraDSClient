@@ -49,45 +49,34 @@ namespace PSAsigraDSClient
 
             private string EQuotaOnToString(EQuotaOn quotaOn)
             {
-                string QuotaOn = null;
-
                 switch(quotaOn)
                 {
                     case EQuotaOn.EQuotaOn__OnlineClient:
-                        QuotaOn = "DSClientOnlineQuota";
-                        break;
+                        return "DSClientOnlineQuota";
                     case EQuotaOn.EQuotaOn__OnlineCustomer:
-                        QuotaOn = "CustomerOnlineQuota";
-                        break;
+                        return "CustomerOnlineQuota";
                     case EQuotaOn.EQuotaOn__LocalOnly:
-                        QuotaOn = "LocalOnlyQuota";
-                        break;
+                        return "LocalOnlyQuota";
+                    default:
+                        return null;
                 }
-
-                return QuotaOn;
             }
 
             private string EQuotaTypeToString(EQuotaType quotaType)
             {
-                string QuotaType = null;
-
                 switch(quotaType)
                 {
                     case EQuotaType.EQuotaType__None:
-                        QuotaType = "None";
-                        break;
+                        return "None";
                     case EQuotaType.EQuotaType__Protected:
-                        QuotaType = "ProtectedSize";
-                        break;
+                        return "ProtectedSize";
                     case EQuotaType.EQuotaType__Stored:
-                        QuotaType = "StoredSize";
-                        break;
+                        return "StoredSize";
                     case EQuotaType.EQuotaType__Native:
-                        QuotaType = "NativeSize";
-                        break;
+                        return "NativeSize";
+                    default:
+                        return null;
                 }
-
-                return QuotaType;
             }
         }
     }

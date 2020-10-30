@@ -1793,18 +1793,18 @@ namespace PSAsigraDSClient
         {
             EBackupSetType SetType = EBackupSetType.EBackupSetType__UNDEFINED;
 
-            switch (setType)
+            switch (setType.ToLower())
             {
-                case "OffSite":
+                case "offsite":
                     SetType = EBackupSetType.EBackupSetType__OffSite;
                     break;
-                case "Statistical":
+                case "statistical":
                     SetType = EBackupSetType.EBackupSetType__Statistical;
                     break;
-                case "SelfContained":
+                case "selfcontained":
                     SetType = EBackupSetType.EBackupSetType__SelfContained;
                     break;
-                case "LocalOnly":
+                case "localonly":
                     SetType = EBackupSetType.EBackupSetType__LocalOnly;
                     break;
             }
@@ -1836,15 +1836,15 @@ namespace PSAsigraDSClient
         {
             SSHAccesorType AccessType = SSHAccesorType.SSHAccesorType__UNDEFINED;
 
-            switch(accessType)
+            switch(accessType.ToLower())
             {
-                case "Perl":
+                case "perl":
                     AccessType = SSHAccesorType.SSHAccesorType__Perl;
                     break;
-                case "Python":
+                case "python":
                     AccessType = SSHAccesorType.SSHAccesorType__Python;
                     break;
-                case "Direct":
+                case "direct":
                     AccessType = SSHAccesorType.SSHAccesorType__Direct;
                     break;
             }

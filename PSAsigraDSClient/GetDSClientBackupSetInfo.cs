@@ -64,7 +64,7 @@ namespace PSAsigraDSClient
         public int RetentionRuleId { get; set; }
 
         [Parameter(Position = 6, ParameterSetName = "General", ValueFromPipelineByPropertyName = true, HelpMessage = "List Backup Sets of a specific type")]
-        [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
+        [ValidateSet("OffSite", "Statistical", "SelfContained", "LocalOnly")]
         public string SetType { get; set; }
 
         [Parameter(Position = 7, ParameterSetName = "General", HelpMessage = "List Backup Sets using Local Storage")]
@@ -112,7 +112,7 @@ namespace PSAsigraDSClient
                 dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.RetentionRuleId == RetentionRuleId);
 
             if (SetType != null)
-                dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.SetType == SetType);
+                dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.SetType.ToLower() == SetType.ToLower());
 
             if (MyInvocation.BoundParameters.ContainsKey("UseLocalStorage"))
                 dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.UseLocalStorage == UseLocalStorage);

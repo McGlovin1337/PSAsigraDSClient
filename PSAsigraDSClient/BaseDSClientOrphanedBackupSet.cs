@@ -19,9 +19,9 @@ namespace PSAsigraDSClient
         }
         protected class DSClientOrphanedBackupSet
         {
-            public string Computer { get; set; }
-            public string Name { get; set; }
-            public string Owner { get; set; }
+            public string Computer { get; private set; }
+            public string Name { get; private set; }
+            public string Owner { get; private set; }
 
             public DSClientOrphanedBackupSet(recovery_info recoveryInfo)
             {

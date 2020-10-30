@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Management.Automation;
 using AsigraDSClientApi;
 
@@ -31,12 +30,12 @@ namespace PSAsigraDSClient
 
         private class DSClientQuota
         {
-            public string QuotaType { get; set; }
-            public string QuotaMeasure { get; set; }
-            public long Used { get; set; }
-            public long Limit { get; set; }
-            public decimal PercentUsed { get; set; }
-            public int GracePercentage { get; set; }
+            public string QuotaType { get; private set; }
+            public string QuotaMeasure { get; private set; }
+            public long Used { get; private set; }
+            public long Limit { get; private set; }
+            public decimal PercentUsed { get; private set; }
+            public int GracePercentage { get; private set; }
 
             public DSClientQuota(EQuotaOn assigned, quota_information quotaInfo)
             {

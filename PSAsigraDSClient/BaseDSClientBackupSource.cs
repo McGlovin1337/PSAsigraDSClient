@@ -23,11 +23,11 @@ namespace PSAsigraDSClient
 
         protected class SourceItemInfo
         {
-            public string Path { get; set; }
-            public string Name { get; set; }
-            public bool IsFile { get; set; }
-            public long Size { get; set; }
-            public string Type { get; set; }
+            public string Path { get; private set; }
+            public string Name { get; private set; }
+            public bool IsFile { get; private set; }
+            public long Size { get; private set; }
+            public string Type { get; private set; }
 
             public SourceItemInfo(string path, browse_item_info item)
             {
@@ -41,8 +41,8 @@ namespace PSAsigraDSClient
 
         public class ItemPath
         {
-            public string Path { get; set; }
-            public int Depth { get; set; }
+            public string Path { get; private set; }
+            public int Depth { get; private set; }
 
             public ItemPath(string path, int depth)
             {

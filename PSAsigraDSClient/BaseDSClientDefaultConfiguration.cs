@@ -39,17 +39,17 @@ namespace PSAsigraDSClient
 
         protected class DSClientDefaultConfiguration
         {
-            public string CompressionType { get; set; }
-            public string DSClientBuffer { get; set; }
-            public string LocalStoragePath { get; set; }
-            public BaseDSClientNotification.DSClientBackupSetNotification BackupSetNotification { get; set; }
-            public int OnlineGenerations { get; set; }
-            public BaseDSClientRetentionRule.DSClientRetentionRule RetentionRule { get; set; }
-            public BaseDSClientSchedule.DSClientScheduleInfo Schedule { get; set; }
-            public string OpenFileOperation { get; set; }
-            public int OpenFileRetryInterval { get; set; }
-            public int OpenFileRetryTimes { get; set; }
-            public bool BackupFilePermissions { get; set; }
+            public string CompressionType { get; private set; }
+            public string DSClientBuffer { get; private set; }
+            public string LocalStoragePath { get; private set; }
+            public BaseDSClientNotification.DSClientBackupSetNotification BackupSetNotification { get; private set; }
+            public int OnlineGenerations { get; private set; }
+            public BaseDSClientRetentionRule.DSClientRetentionRule RetentionRule { get; private set; }
+            public BaseDSClientSchedule.DSClientScheduleInfo Schedule { get; private set; }
+            public string OpenFileOperation { get; private set; }
+            public int OpenFileRetryInterval { get; private set; }
+            public int OpenFileRetryTimes { get; private set; }
+            public bool BackupFilePermissions { get; private set; }
 
             public DSClientDefaultConfiguration(DefaultConfiguration defaultConfiguration)
             {

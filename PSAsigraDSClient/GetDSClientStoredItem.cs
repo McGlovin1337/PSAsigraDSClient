@@ -99,14 +99,14 @@ namespace PSAsigraDSClient
 
         private class DSClientBackupSetItemInfo
         {
-            public long ItemId { get; set; }
-            public string Path { get; set; }
-            public string Name { get; set; }
-            public string DataType { get; set; }
-            public long DataSize { get; set; }
-            public int FileCount { get; set; }
-            public bool IsFile { get; set; }
-            public bool Selectable { get; set; }
+            public long ItemId { get; private set; }
+            public string Path { get; private set; }
+            public string Name { get; private set; }
+            public string DataType { get; private set; }
+            public long DataSize { get; private set; }
+            public int FileCount { get; private set; }
+            public bool IsFile { get; private set; }
+            public bool Selectable { get; private set; }
 
             public DSClientBackupSetItemInfo(string path, SelectableItem item, selectable_size itemSize)
             {

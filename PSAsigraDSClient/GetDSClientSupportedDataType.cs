@@ -37,7 +37,7 @@ namespace PSAsigraDSClient
 
         private class DSClientDataType
         {
-            public string DataType { get; set; }
+            public string DataType { get; private set; }
 
             public DSClientDataType(EBackupDataType dataType)
             {

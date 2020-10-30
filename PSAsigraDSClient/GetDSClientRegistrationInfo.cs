@@ -28,18 +28,18 @@ namespace PSAsigraDSClient
 
         private class DSClientRegistrationInfo
         {
-            public string AccountNumber { get; set; }
-            public string CustomerName { get; set; }
-            public string ClientNumber { get; set; }
-            public string DsSystemAddress { get; set; }
-            public string AccountKey { get; set; }
-            public string AccountKeyEncryption { get; set; }
-            public string PrivateKey { get; set; }
-            public string PrivateKeyEncryption { get; set; }
-            public bool EscrowKeys { get; set; }
-            public int CountryCode { get; set; }
-            public string Industry { get; set; }
-            public string Employees { get; set; }
+            public string AccountNumber { get; private set; }
+            public string CustomerName { get; private set; }
+            public string ClientNumber { get; private set; }
+            public string DsSystemAddress { get; private set; }
+            public string AccountKey { get; private set; }
+            public string AccountKeyEncryption { get; private set; }
+            public string PrivateKey { get; private set; }
+            public string PrivateKeyEncryption { get; private set; }
+            public bool EscrowKeys { get; private set; }
+            public int CountryCode { get; private set; }
+            public string Industry { get; private set; }
+            public string Employees { get; private set; }
 
             public DSClientRegistrationInfo(dsc_reg_info regInfo, user_info userInfo)
             {

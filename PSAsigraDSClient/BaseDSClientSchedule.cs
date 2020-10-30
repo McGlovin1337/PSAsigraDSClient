@@ -107,15 +107,15 @@ namespace PSAsigraDSClient
 
         public class DSClientScheduleInfo
         {
-            public int ScheduleId { get; set; }
-            public string Name { get; set; }
-            public int[] BackupSetId { get; set; }
-            public bool Active { get; set; }
-            public bool AdminOnly { get; set; }
-            public int CPUThrottle { get; set; }
-            public int ConcurrentBackupSets { get; set; }           
-            public bool NetworkDetection { get; set; }
-            public string ShortName { get; set; }
+            public int ScheduleId { get; private set; }
+            public string Name { get; private set; }
+            public int[] BackupSetId { get; private set; }
+            public bool Active { get; private set; }
+            public bool AdminOnly { get; private set; }
+            public int CPUThrottle { get; private set; }
+            public int ConcurrentBackupSets { get; private set; }           
+            public bool NetworkDetection { get; private set; }
+            public string ShortName { get; private set; }
 
             public DSClientScheduleInfo(schedule_info scheduleInfo)
             {
@@ -167,7 +167,7 @@ namespace PSAsigraDSClient
 
         protected class OneTimeScheduleType
         {
-            public DateTime StartDate { get; set; }
+            public DateTime StartDate { get; private set; }
 
             public OneTimeScheduleType(int startDate)
             {
@@ -182,7 +182,7 @@ namespace PSAsigraDSClient
 
         protected class DailyScheduleType
         {
-            public int RepeatDays { get; set; }
+            public int RepeatDays { get; private set; }
 
             public DailyScheduleType(int days)
             {
@@ -197,8 +197,8 @@ namespace PSAsigraDSClient
 
         protected class WeeklyScheduleType
         {
-            public int RepeatWeeks { get; set; }
-            public string[] ScheduleDays { get; set; }
+            public int RepeatWeeks { get; private set; }
+            public string[] ScheduleDays { get; private set; }
 
             public WeeklyScheduleType(int repeat, int days)
             {
@@ -214,9 +214,9 @@ namespace PSAsigraDSClient
 
         protected class MonthlyScheduleType
         {
-            public int RepeatMonths { get; set; }
-            public int ScheduleDay { get; set; }
-            public string MonthlyStartDay { get; set; }
+            public int RepeatMonths { get; private set; }
+            public int ScheduleDay { get; private set; }
+            public string MonthlyStartDay { get; private set; }
 
             public MonthlyScheduleType(int repeat, int schedDay, EScheduleMonthlyStartDay startDay)
             {
@@ -275,12 +275,12 @@ namespace PSAsigraDSClient
 
             private int _numTasks = 0;
 
-            public bool Backup { get; set; }
-            public bool Retention { get; set; }
-            public bool Validation { get; set; }
-            public bool BLM { get; set; }
-            public bool LANScan { get; set; }
-            public bool CleanTrash { get; set; }
+            public bool Backup { get; private set; }
+            public bool Retention { get; private set; }
+            public bool Validation { get; private set; }
+            public bool BLM { get; private set; }
+            public bool LANScan { get; private set; }
+            public bool CleanTrash { get; private set; }
             public string Replication 
             {
                 get { return _replication; }

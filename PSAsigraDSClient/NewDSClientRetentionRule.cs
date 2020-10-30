@@ -210,8 +210,8 @@ namespace PSAsigraDSClient
 
         private class DSClientNewRetentionRule
         {
-            public int RetentionRuleId { get; set; }
-            public string Name { get; set; }
+            public int RetentionRuleId { get; private set; }
+            public string Name { get; private set; }
 
             public DSClientNewRetentionRule(RetentionRule retentionRule)
             {

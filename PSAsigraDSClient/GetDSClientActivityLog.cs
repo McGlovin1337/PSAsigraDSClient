@@ -88,21 +88,21 @@ namespace PSAsigraDSClient
 
         private class DSClientAcivityLog
         {
-            public int ActivityId { get; set; }
-            public string ActivityType { get; set; }
-            public int BackupSetId { get; set; }
-            public string Description { get; set; }
-            public DateTime StartTime { get; set; }
-            public DateTime EndTime { get; set; }
-            public string Status { get; set; }
-            public long DataSize { get; set; }
-            public int FileCount { get; set; }
-            public int Errors { get; set; }
-            public int Warnings { get; set; }
-            public long Transmit { get; set; }
-            public long NetTransmit { get; set; }
-            public int ScheduleId { get; set; }
-            public string User { get; set; }
+            public int ActivityId { get; private set; }
+            public string ActivityType { get; private set; }
+            public int BackupSetId { get; private set; }
+            public string Description { get; private set; }
+            public DateTime StartTime { get; private set; }
+            public DateTime EndTime { get; private set; }
+            public string Status { get; private set; }
+            public long DataSize { get; private set; }
+            public int FileCount { get; private set; }
+            public int Errors { get; private set; }
+            public int Warnings { get; private set; }
+            public long Transmit { get; private set; }
+            public long NetTransmit { get; private set; }
+            public int ScheduleId { get; private set; }
+            public string User { get; private set; }
 
             public DSClientAcivityLog(activity_log_info activityLogInfo)
             {

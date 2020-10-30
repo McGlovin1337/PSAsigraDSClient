@@ -32,14 +32,14 @@ namespace PSAsigraDSClient
 
         private class DSClientLoadSummary
         {
-            public int NodeId { get; set; }
-            public int Activities { get; set; }
-            public int CpuLoad { get; set; }
-            public int MemoryLoad { get; set; }
-            public int MemoryCommit { get; set; }
-            public int NetworkReceive { get; set; }
-            public int NetworkSend { get; set; }
-            public DateTime TimeStamp { get; set; }
+            public int NodeId { get; private set; }
+            public int Activities { get; private set; }
+            public int CpuLoad { get; private set; }
+            public int MemoryLoad { get; private set; }
+            public int MemoryCommit { get; private set; }
+            public int NetworkReceive { get; private set; }
+            public int NetworkSend { get; private set; }
+            public DateTime TimeStamp { get; private set; }
 
             public DSClientLoadSummary(dsclient_load dsclientLoad)
             {

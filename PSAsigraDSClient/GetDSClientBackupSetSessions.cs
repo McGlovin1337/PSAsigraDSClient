@@ -37,12 +37,12 @@ namespace PSAsigraDSClient
 
         private class DSClientBackupSessions
         {
-            public int BackupSetId { get; set; }
-            public int ActivityId { get; set; }
-            public DateTime StartTime { get; set; }
-            public DateTime EndTime { get; set; }
-            public int Files { get; set; }
-            public long Size { get; set; }
+            public int BackupSetId { get; private set; }
+            public int ActivityId { get; private set; }
+            public DateTime StartTime { get; private set; }
+            public DateTime EndTime { get; private set; }
+            public int Files { get; private set; }
+            public long Size { get; private set; }
 
             public DSClientBackupSessions(int backupSetId, backup_sessions backupSessions)
             {

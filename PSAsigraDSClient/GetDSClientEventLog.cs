@@ -82,15 +82,15 @@ namespace PSAsigraDSClient
 
         private class DSClientEventLog
         {
-            public int EventId { get; set; }
-            public DateTime DateTime { get; set; }
-            public string EventType { get; set; }
-            public string Description { get; set; }
-            public string ExtraInfo { get; set; }
-            public string EventCategory { get; set; }
-            public int ActivityId { get; set; }
-            public int NodeId { get; set; }
-            public string User { get; set; }
+            public int EventId { get; private set; }
+            public DateTime DateTime { get; private set; }
+            public string EventType { get; private set; }
+            public string Description { get; private set; }
+            public string ExtraInfo { get; private set; }
+            public string EventCategory { get; private set; }
+            public int ActivityId { get; private set; }
+            public int NodeId { get; private set; }
+            public string User { get; private set; }
 
             public DSClientEventLog(event_log_info eventLogInfo)
             {

@@ -303,43 +303,43 @@ namespace PSAsigraDSClient
 
         protected class DSClientBackupSet
         {
-            public int BackupSetId { get; set; }
-            public string Computer { get; set; }
-            public string Name { get; set; }
-            public bool Enabled { get; set; }
-            public DateTime LastSuccess { get; set; }
-            public dynamic DataType { get; set; }
-            public DSClientBackupSetItem[] BackupItems { get; set; }
-            public bool Synchronized { get; set; }
-            public DateTime LastSynchronized { get; set; }
-            public int ScheduleId { get; set; }
-            public string ScheduleName { get; set; }
-            public int SchedulePriority { get; set; }
-            public int RetentionRuleId { get; set; }
-            public string RetentionRuleName { get; set; }
-            public long OnlineDataSize { get; set; }
-            public int OnlineFileCount { get; set; }
-            public string CompressionType { get; set; }
-            public long CompressedSize { get; set; }
-            public long LocalStorageDataSize { get; set; }
-            public int LocalStorageFileCount { get; set; }
-            public string SetType { get; set; }
-            public bool UseLocalStorage { get; set; }
-            public bool ForceBackup { get; set; }
-            public int ErrorLimit { get; set; }
-            public int MaxPendingAsyncIO { get; set; }
-            public bool PreScan { get; set; }
-            public bool CreatedByPolicy { get; set; }
-            public DSClientBackupSetNotification[] Notification { get; set; }
-            public string[] SnmpTrapNotification { get; set; }
-            public DSClientPrePost[] PrePost { get; set; }
-            public int ReadBufferSize { get; set; }
-            public bool UseTransmissionCache { get; set; }
-            public bool DetailedLog { get; set; }
-            public bool InfinateBLMGenerations { get; set; }
-            public ShareInfo[] ShareInfo { get; set; }
-            public int OwnerId { get; set; }
-            public string OwnerName { get; set; }
+            public int BackupSetId { get; private set; }
+            public string Computer { get; private set; }
+            public string Name { get; private set; }
+            public bool Enabled { get; private set; }
+            public DateTime LastSuccess { get; private set; }
+            public dynamic DataType { get; private set; }
+            public DSClientBackupSetItem[] BackupItems { get; private set; }
+            public bool Synchronized { get; private set; }
+            public DateTime LastSynchronized { get; private set; }
+            public int ScheduleId { get; private set; }
+            public string ScheduleName { get; private set; }
+            public int SchedulePriority { get; private set; }
+            public int RetentionRuleId { get; private set; }
+            public string RetentionRuleName { get; private set; }
+            public long OnlineDataSize { get; private set; }
+            public int OnlineFileCount { get; private set; }
+            public string CompressionType { get; private set; }
+            public long CompressedSize { get; private set; }
+            public long LocalStorageDataSize { get; private set; }
+            public int LocalStorageFileCount { get; private set; }
+            public string SetType { get; private set; }
+            public bool UseLocalStorage { get; private set; }
+            public bool ForceBackup { get; private set; }
+            public int ErrorLimit { get; private set; }
+            public int MaxPendingAsyncIO { get; private set; }
+            public bool PreScan { get; private set; }
+            public bool CreatedByPolicy { get; private set; }
+            public DSClientBackupSetNotification[] Notification { get; private set; }
+            public string[] SnmpTrapNotification { get; private set; }
+            public DSClientPrePost[] PrePost { get; private set; }
+            public int ReadBufferSize { get; private set; }
+            public bool UseTransmissionCache { get; private set; }
+            public bool DetailedLog { get; private set; }
+            public bool InfinateBLMGenerations { get; private set; }
+            public ShareInfo[] ShareInfo { get; private set; }
+            public int OwnerId { get; private set; }
+            public string OwnerName { get; private set; }
 
             public DSClientBackupSet(BackupSet backupSet, DSClientOSType dSClientOSType)
             {
@@ -475,11 +475,11 @@ namespace PSAsigraDSClient
 
         protected class DB2BackupSet
         {
-            public bool UseBuffer { get; set; }
-            public string ArchiveLogPath { get; set; }
-            public string DumpPath { get; set; }
-            public bool OnlineBackup { get; set; }
-            public bool PruneHistoryOrLogFile { get; set; }
+            public bool UseBuffer { get; private set; }
+            public string ArchiveLogPath { get; private set; }
+            public string DumpPath { get; private set; }
+            public bool OnlineBackup { get; private set; }
+            public bool PruneHistoryOrLogFile { get; private set; }
 
             public DB2BackupSet(BackupSet backupSet)
             {
@@ -500,15 +500,15 @@ namespace PSAsigraDSClient
 
         protected class VMWareVADPBackupSet
         {
-            public bool UseBuffer { get; set; }
-            public bool IncrementalP2VBackup { get; set; }
-            public bool BackupVMMemory { get; set; }
-            public bool SnapshotQuiesce { get; set; }
-            public bool SameTimeSnapshot { get; set; }
-            public bool UseCBT { get; set; }
-            public bool UseFLR { get; set; }
-            public bool UseLocalVDR { get; set; }
-            public string VMLibraryVersion { get; set; }
+            public bool UseBuffer { get; private set; }
+            public bool IncrementalP2VBackup { get; private set; }
+            public bool BackupVMMemory { get; private set; }
+            public bool SnapshotQuiesce { get; private set; }
+            public bool SameTimeSnapshot { get; private set; }
+            public bool UseCBT { get; private set; }
+            public bool UseFLR { get; private set; }
+            public bool UseLocalVDR { get; private set; }
+            public string VMLibraryVersion { get; private set; }
 
             public VMWareVADPBackupSet(BackupSet backupSet)
             {
@@ -620,8 +620,8 @@ namespace PSAsigraDSClient
 
         protected class MSSQLBackupSet: IncrementalPolicy
         {
-            public string DumpMethod { get; set; }
-            public string DumpPath { get; set; }
+            public string DumpMethod { get; private set; }
+            public string DumpPath { get; private set; }
 
             public MSSQLBackupSet(BackupSet backupSet)
             {
@@ -666,16 +666,16 @@ namespace PSAsigraDSClient
 
         protected class UnixFSBackupSet
         {
-            public bool IsCDP { get; set; }
-            public DSClientCDPSettings CDPSettings { get; set; }
-            public OldFileExclusionConfig OldFileExclusionOptions { get; set; }
-            public bool CheckCommonFiles { get; set; }
-            public bool UseBuffer { get; set; }
-            public bool ForceBackup { get; set; }
-            public bool FollowMountPoints { get; set; }
-            public bool BackupHardLinks { get; set; }
-            public bool IgnoreSnapshotFailures { get; set; }
-            public bool UseSnapDiff { get; set; }
+            public bool IsCDP { get; private set; }
+            public DSClientCDPSettings CDPSettings { get; private set; }
+            public OldFileExclusionConfig OldFileExclusionOptions { get; private set; }
+            public bool CheckCommonFiles { get; private set; }
+            public bool UseBuffer { get; private set; }
+            public bool ForceBackup { get; private set; }
+            public bool FollowMountPoints { get; private set; }
+            public bool BackupHardLinks { get; private set; }
+            public bool IgnoreSnapshotFailures { get; private set; }
+            public bool UseSnapDiff { get; private set; }
 
             public UnixFSBackupSet(BackupSet backupSet)
             {
@@ -701,21 +701,21 @@ namespace PSAsigraDSClient
 
         protected class Win32FSBackupSet
         {
-            public bool BackupRemoteStorage { get; set; }
-            public bool BackupSingleInstanceStore { get; set; }
-            public bool IsCDP { get; set; }
-            public DSClientCDPSettings CDPSettings { get; set; }
-            public bool UseVSS { get; set; }
-            public VSSInfo[] VSSWriters { get; set; }
-            public bool ExcludeVSSComponents { get; set; }
-            public VSSInfo[] VSSComponentExclusions { get; set; }
-            public bool IgnoreVSSComponents { get; set; }
-            public bool IgnoreVSSWriters { get; set; }
-            public bool FollowJunctionPoint { get; set; }
-            public bool IgnoreAutoFileFilters { get; set; }
-            public OldFileExclusionConfig OldFileExclusionOptions { get; set; }
-            public bool CheckCommonFiles { get; set; }
-            public bool UseBuffer { get; set; }
+            public bool BackupRemoteStorage { get; private set; }
+            public bool BackupSingleInstanceStore { get; private set; }
+            public bool IsCDP { get; private set; }
+            public DSClientCDPSettings CDPSettings { get; private set; }
+            public bool UseVSS { get; private set; }
+            public VSSInfo[] VSSWriters { get; private set; }
+            public bool ExcludeVSSComponents { get; private set; }
+            public VSSInfo[] VSSComponentExclusions { get; private set; }
+            public bool IgnoreVSSComponents { get; private set; }
+            public bool IgnoreVSSWriters { get; private set; }
+            public bool FollowJunctionPoint { get; private set; }
+            public bool IgnoreAutoFileFilters { get; private set; }
+            public OldFileExclusionConfig OldFileExclusionOptions { get; private set; }
+            public bool CheckCommonFiles { get; private set; }
+            public bool UseBuffer { get; private set; }
 
             public Win32FSBackupSet(BackupSet backupSet)
             {
@@ -764,15 +764,15 @@ namespace PSAsigraDSClient
 
         protected class DSClientBackupSetItem
         {
-            public string Type { get; set; }
-            public string Folder { get; set; }
-            public string[] ItemOption { get; set; }
-            public string Filter { get; set; }
-            public bool SubDirDescend { get; set; }
-            public string ItemType { get; set; }
-            public int MaxGenerations { get; set; }
-            public dynamic InclusionOptions { get; set; }
-            public RegexItemExclusionOptions RegexExclusionOptions { get; set; } 
+            public string Type { get; private set; }
+            public string Folder { get; private set; }
+            public string[] ItemOption { get; private set; }
+            public string Filter { get; private set; }
+            public bool SubDirDescend { get; private set; }
+            public string ItemType { get; private set; }
+            public int MaxGenerations { get; private set; }
+            public dynamic InclusionOptions { get; private set; }
+            public RegexItemExclusionOptions RegexExclusionOptions { get; private set; } 
 
             public DSClientBackupSetItem(BackupSetItem backupSetItem, EBackupDataType backupDataType, DSClientOSType dSClientOSType)
             {
@@ -963,8 +963,8 @@ namespace PSAsigraDSClient
 
         protected class UnixFSBackupSetInclusionOptions
         {
-            public bool IncludeACLs { get; set; }
-            public bool IncludePosixACLs { get; set; }
+            public bool IncludeACLs { get; private set; }
+            public bool IncludePosixACLs { get; private set; }
 
             public UnixFSBackupSetInclusionOptions(UnixFS_BackupSetInclusionItem inclusionItem)
             {
@@ -995,8 +995,8 @@ namespace PSAsigraDSClient
 
         protected class Win32FSBackupSetInclusionOptions
         {
-            public bool IncludeAltDatastreams { get; set; }
-            public bool IncludePermissions { get; set; }
+            public bool IncludeAltDatastreams { get; private set; }
+            public bool IncludePermissions { get; private set; }
 
             public Win32FSBackupSetInclusionOptions(Win32FS_BackupSetInclusionItem inclusionItem)
             {
@@ -1017,11 +1017,11 @@ namespace PSAsigraDSClient
 
         protected class RegexItemExclusionOptions
         {
-            public string Expression { get; set; }
-            public bool CaseSensitive { get; set; }
-            public bool Inclusion { get; set; }
-            public bool MatchDirectories { get; set; }
-            public bool NegateExpression { get; set; }
+            public string Expression { get; private set; }
+            public bool CaseSensitive { get; private set; }
+            public bool Inclusion { get; private set; }
+            public bool MatchDirectories { get; private set; }
+            public bool NegateExpression { get; private set; }
 
             public RegexItemExclusionOptions(BackupSetRegexExclusion regexExclusion)
             {
@@ -1040,9 +1040,9 @@ namespace PSAsigraDSClient
 
         protected class ForceFullDayTime
         {
-            public bool ForceFull { get; set; }
-            public string Day { get; set; }
-            public TimeInDay Time { get; set; }
+            public bool ForceFull { get; private set; }
+            public string Day { get; private set; }
+            public TimeInDay Time { get; private set; }
 
             public ForceFullDayTime(bool forceFull, int day, time_in_day time)
             {
@@ -1066,9 +1066,9 @@ namespace PSAsigraDSClient
 
         protected class ForceFullPeriod
         {
-            public bool ForceFull { get; set; }
-            public string TimeUnit { get; set; }
-            public int TimeValue { get; set; }
+            public bool ForceFull { get; private set; }
+            public string TimeUnit { get; private set; }
+            public int TimeValue { get; private set; }
 
             public ForceFullPeriod(bool forceFull, ETimeUnit unit, int value)
             {
@@ -1085,10 +1085,10 @@ namespace PSAsigraDSClient
 
         protected class SkipFullWeekDays
         {
-            public bool SkipFull { get; set; }
-            public string[] SkipWeekDays { get; set; }
-            public TimeInDay SkipWeekDaysFrom { get; set; }
-            public TimeInDay SkipWeekDaysTo { get; set; }
+            public bool SkipFull { get; private set; }
+            public string[] SkipWeekDays { get; private set; }
+            public TimeInDay SkipWeekDaysFrom { get; private set; }
+            public TimeInDay SkipWeekDaysTo { get; private set; }
 
             public SkipFullWeekDays(bool skipFull, int weekDays, time_in_day from, time_in_day to)
             {
@@ -1106,13 +1106,13 @@ namespace PSAsigraDSClient
 
         protected class ShareInfo
         {
-            public int GlobalId { get; set; }
-            public int LocalId { get; set; }
-            public int ServerId { get; set; }
-            public string Path { get; set; }
-            public string DirectoryType { get; set; }
-            public string Info { get; set; }
-            public string AdditionalInfo { get; set; }
+            public int GlobalId { get; private set; }
+            public int LocalId { get; private set; }
+            public int ServerId { get; private set; }
+            public string Path { get; private set; }
+            public string DirectoryType { get; private set; }
+            public string Info { get; private set; }
+            public string AdditionalInfo { get; private set; }
 
             public ShareInfo(shares_info shareInfo)
             {
@@ -1309,9 +1309,9 @@ namespace PSAsigraDSClient
 
         protected class OldFileExclusionConfig
         {
-            public string Type { get; set; }
-            public string TimeUnit { get; set; }
-            public int Value { get; set; }
+            public string Type { get; private set; }
+            public string TimeUnit { get; private set; }
+            public int Value { get; private set; }
 
             public OldFileExclusionConfig(old_file_exclusion_config exclusionConfig)
             {
@@ -1348,8 +1348,8 @@ namespace PSAsigraDSClient
 
         protected class VSSInfo
         {
-            public string Name { get; set; }
-            public string WriterGuid { get; set; }
+            public string Name { get; private set; }
+            public string WriterGuid { get; private set; }
 
             public VSSInfo(vss_exclusion_info vssInfo)
             {
@@ -1365,10 +1365,10 @@ namespace PSAsigraDSClient
 
         protected class DSClientCDPSettings
         {
-            public int CheckInterval { get; set; }
-            public string BackupStrategy { get; set; }
-            public string ChangeDetection { get; set; }
-            public string[] SuspendableActivity { get; set; }
+            public int CheckInterval { get; private set; }
+            public string BackupStrategy { get; private set; }
+            public string ChangeDetection { get; private set; }
+            public string[] SuspendableActivity { get; private set; }
 
             public DSClientCDPSettings(CDP_settings cdpSettings)
             {
@@ -1440,14 +1440,14 @@ namespace PSAsigraDSClient
 
         protected class DSClientPrePost
         {
-            public int Id { get; set; }
-            public string Command { get; set; }
-            public string ExecutionType { get; set; }
-            public string BackupRestore { get; set; }
-            public string PrePost { get; set; }
-            public bool RemoteExecute { get; set; }
-            public PreOptions PreOptions { get; set; }
-            public PostOptions PostOptions { get; set; }
+            public int Id { get; private set; }
+            public string Command { get; private set; }
+            public string ExecutionType { get; private set; }
+            public string BackupRestore { get; private set; }
+            public string PrePost { get; private set; }
+            public bool RemoteExecute { get; private set; }
+            public PreOptions PreOptions { get; private set; }
+            public PostOptions PostOptions { get; private set; }
 
             public DSClientPrePost(pre_post_info prePostInfo)
             {
@@ -1469,9 +1469,9 @@ namespace PSAsigraDSClient
 
         protected class PostOptions
         {
-            public bool SkipIncomplete { get; set; }
-            public bool SkipSuccessful { get; set; }
-            public bool SkipWithErrors { get; set; }
+            public bool SkipIncomplete { get; private set; }
+            public bool SkipSuccessful { get; private set; }
+            public bool SkipWithErrors { get; private set; }
 
             public PostOptions(post_options postOptions)
             {
@@ -1493,13 +1493,13 @@ namespace PSAsigraDSClient
 
         protected class PreOptions
         {
-            public string Value { get; set; }
-            public int DelaySeconds { get; set; }
-            public bool EqualToValue { get; set; }
-            public bool ExecutionFailure { get; set; }
-            public string ResultCheck { get; set; }
-            public bool SkipActivity { get; set; }
-            public bool SkipPost { get; set; }
+            public string Value { get; private set; }
+            public int DelaySeconds { get; private set; }
+            public bool EqualToValue { get; private set; }
+            public bool ExecutionFailure { get; private set; }
+            public string ResultCheck { get; private set; }
+            public bool SkipActivity { get; private set; }
+            public bool SkipPost { get; private set; }
 
             public PreOptions(pre_options preOptions)
             {

@@ -10,7 +10,7 @@ namespace PSAsigraDSClient
     {
         public class DSClientOSType
         {
-            public string OsType { get; set; }
+            public string OsType { get; private set; }
 
             public DSClientOSType(EOSFlavour osType)
             {

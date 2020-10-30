@@ -79,14 +79,14 @@ namespace PSAsigraDSClient
 
         private class DSClientBSFileInfo
         {
-            public int DirectoryId { get; set; }
-            public string Path { get; set; }
-            public string Directory { get; set; }
-            public int FileId { get; set; }
-            public string FileName { get; set; }
-            public long FileSize { get; set; }
-            public int GenerationId { get; set; }
-            public DateTime LastModified { get; set; }
+            public int DirectoryId { get; private set; }
+            public string Path { get; private set; }
+            public string Directory { get; private set; }
+            public int FileId { get; private set; }
+            public string FileName { get; private set; }
+            public long FileSize { get; private set; }
+            public int GenerationId { get; private set; }
+            public DateTime LastModified { get; private set; }
 
             public DSClientBSFileInfo(find_file_info fileInfo)
             {

@@ -36,14 +36,14 @@ namespace PSAsigraDSClient
 
         private class DSClientNocSettings
         {
-            public string DsSysName { get; set; }
-            public string Address { get; set; }
-            public bool ClientMonitored { get; set; }
-            public int ConnectFrequency { get; set; }
-            public DateTime LastConnection { get; set; }
-            public DateTime LastSuccessConnection { get; set; }
-            public int RetryAttempts { get; set; }
-            public int RetryInterval { get; set; }
+            public string DsSysName { get; private set; }
+            public string Address { get; private set; }
+            public bool ClientMonitored { get; private set; }
+            public int ConnectFrequency { get; private set; }
+            public DateTime LastConnection { get; private set; }
+            public DateTime LastSuccessConnection { get; private set; }
+            public int RetryAttempts { get; private set; }
+            public int RetryInterval { get; private set; }
 
             public DSClientNocSettings(noc_settings nocSettings)
             {

@@ -28,19 +28,19 @@ namespace PSAsigraDSClient
 
         public class DSClientRunningActivity
         {
-            public int ActivityId { get; set; }
-            public string Description { get; set; }
-            public int FilesLeft { get; set; }
-            public int FilesProcessed { get; set; }
-            public bool Finished { get; set; }
-            public string ProcessDir { get; set; }
-            public int SetId { get; set; }
-            public long SizeLeft { get; set; }
-            public long SizeProcessed { get; set; }
-            public DateTime StartTime { get; set; }
-            public string StatusMsg { get; set; }
-            public string Type { get; set; }
-            public string User { get; set; }
+            public int ActivityId { get; private set; }
+            public string Description { get; private set; }
+            public int FilesLeft { get; private set; }
+            public int FilesProcessed { get; private set; }
+            public bool Finished { get; private set; }
+            public string ProcessDir { get; private set; }
+            public int SetId { get; private set; }
+            public long SizeLeft { get; private set; }
+            public long SizeProcessed { get; private set; }
+            public DateTime StartTime { get; private set; }
+            public string StatusMsg { get; private set; }
+            public string Type { get; private set; }
+            public string User { get; private set; }
 
             public DSClientRunningActivity(running_activity_info activityInfo)
             {

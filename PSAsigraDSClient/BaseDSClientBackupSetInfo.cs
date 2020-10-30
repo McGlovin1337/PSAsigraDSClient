@@ -28,31 +28,31 @@ namespace PSAsigraDSClient
 
         public class DSClientBackupSetInfo
         {
-            public int BackupSetId { get; set; }
-            public string Computer { get; set; }
-            public string Name { get; set; }
-            public bool Enabled { get; set; }
-            public DateTime LastBackup { get; set; }
-            public DateTime LastSuccess { get; set; }
-            public string DataType { get; set; }
-            public bool Synchronized { get; set; }
-            public DateTime LastSynchronized { get; set; }
-            public int ScheduleId { get; set; }
-            public string ScheduleName { get; set; }
-            public int RetentionRuleId { get; set; }
-            public string RetentionRuleName { get; set; }
-            public long OnlineDataSize { get; set; }
-            public int OnlineFileCount { get; set; }
-            public long CompressedSize { get; set; }
-            public long LocalStorageDataSize { get; set; }
-            public int LocalStorageFileCount { get; set; }
-            public string SetType { get; set; }
-            public bool UseLocalStorage { get; set; }
-            public bool HasItems { get; set; }
-            public bool IsCDP { get; set; }
-            public bool CreatedByPolicy { get; set; }
-            public int OwnerId { get; set; }
-            public string OwnerName { get; set; }
+            public int BackupSetId { get; private set; }
+            public string Computer { get; private set; }
+            public string Name { get; private set; }
+            public bool Enabled { get; private set; }
+            public DateTime LastBackup { get; private set; }
+            public DateTime LastSuccess { get; private set; }
+            public string DataType { get; private set; }
+            public bool Synchronized { get; private set; }
+            public DateTime LastSynchronized { get; private set; }
+            public int ScheduleId { get; private set; }
+            public string ScheduleName { get; private set; }
+            public int RetentionRuleId { get; private set; }
+            public string RetentionRuleName { get; private set; }
+            public long OnlineDataSize { get; private set; }
+            public int OnlineFileCount { get; private set; }
+            public long CompressedSize { get; private set; }
+            public long LocalStorageDataSize { get; private set; }
+            public int LocalStorageFileCount { get; private set; }
+            public string SetType { get; private set; }
+            public bool UseLocalStorage { get; private set; }
+            public bool HasItems { get; private set; }
+            public bool IsCDP { get; private set; }
+            public bool CreatedByPolicy { get; private set; }
+            public int OwnerId { get; private set; }
+            public string OwnerName { get; private set; }
 
             public DSClientBackupSetInfo(backup_set_info backupSetInfo)
             {

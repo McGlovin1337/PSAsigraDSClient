@@ -49,11 +49,11 @@ namespace PSAsigraDSClient
 
         public class DSClientBackupSetNotification
         {
-            public int NotificationId { get; set; }
-            public string Method { get; set; }
-            public string[] Completion { get; set; }
-            public string[] EmailOption { get; set; }
-            public string Recipient { get; set; }
+            public int NotificationId { get; private set; }
+            public string Method { get; private set; }
+            public string[] Completion { get; private set; }
+            public string[] EmailOption { get; private set; }
+            public string Recipient { get; private set; }
 
             public DSClientBackupSetNotification(notification_info notifyInfo)
             {

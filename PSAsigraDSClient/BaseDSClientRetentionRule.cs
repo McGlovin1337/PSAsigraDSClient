@@ -27,34 +27,34 @@ namespace PSAsigraDSClient
 
         public class DSClientRetentionRule
         {
-            public int RetentionRuleId { get; set; }
-            public string Name { get; set; }
-            public int[] BackupSets { get; set; }
-            public DSClientTimeRetention[] TimeRetention { get; set; }
-            public string IntervalTimeRetention { get; set; }
-            public string WeeklyTimeRetention { get; set; }
-            public string MonthlyTimeRetention { get; set; }
-            public string YearlyTimeRetention { get; set; }
-            public DSClientArchiveRule[] ArchiveRule { get; set; }
-            public bool ArchiveSpecialFiles { get; set; }
-            public bool ArchiveLatestSpecialFiles { get; set; }
-            public bool CleanupRemovedFiles { get; set; }
-            public DSClientRetentionTimeSpan CleanupRemovedAfter { get; set; }
-            public int CleanupRemovedKeep { get; set; }
-            public bool NewBLMPackage { get; set; }
-            public bool DeleteIncompleteComponenets { get; set; }
-            public bool DeleteStub { get; set; }
-            public bool DeleteStubAllGens { get; set; }
-            public bool DeleteUnreferencedFiles { get; set; }
-            public bool KeepGensByPeriod { get; set; }
-            public int KeepLastGens { get; set; }
-            public DSClientRetentionTimeSpan KeepPeriodTimeSpan { get; set; }
-            public DSClientRetentionTimeSpan LocalStorageRetention { get; set; }
-            public bool LSCleanupRemovedFiles { get; set; }
-            public DSClientRetentionTimeSpan LSCleanupRemovedafter { get; set; }
-            public int LSCleanupRemovedKeep { get; set; }
-            public bool MoveObsoleteToBLM { get; set; }
-            public bool OnlyCompareBackupTime { get; set; }
+            public int RetentionRuleId { get; private set; }
+            public string Name { get; private set; }
+            public int[] BackupSets { get; private set; }
+            public DSClientTimeRetention[] TimeRetention { get; private set; }
+            public string IntervalTimeRetention { get; private set; }
+            public string WeeklyTimeRetention { get; private set; }
+            public string MonthlyTimeRetention { get; private set; }
+            public string YearlyTimeRetention { get; private set; }
+            public DSClientArchiveRule[] ArchiveRule { get; private set; }
+            public bool ArchiveSpecialFiles { get; private set; }
+            public bool ArchiveLatestSpecialFiles { get; private set; }
+            public bool CleanupRemovedFiles { get; private set; }
+            public DSClientRetentionTimeSpan CleanupRemovedAfter { get; private set; }
+            public int CleanupRemovedKeep { get; private set; }
+            public bool NewBLMPackage { get; private set; }
+            public bool DeleteIncompleteComponenets { get; private set; }
+            public bool DeleteStub { get; private set; }
+            public bool DeleteStubAllGens { get; private set; }
+            public bool DeleteUnreferencedFiles { get; private set; }
+            public bool KeepGensByPeriod { get; private set; }
+            public int KeepLastGens { get; private set; }
+            public DSClientRetentionTimeSpan KeepPeriodTimeSpan { get; private set; }
+            public DSClientRetentionTimeSpan LocalStorageRetention { get; private set; }
+            public bool LSCleanupRemovedFiles { get; private set; }
+            public DSClientRetentionTimeSpan LSCleanupRemovedafter { get; private set; }
+            public int LSCleanupRemovedKeep { get; private set; }
+            public bool MoveObsoleteToBLM { get; private set; }
+            public bool OnlyCompareBackupTime { get; private set; }
 
             public DSClientRetentionRule(RetentionRule retentionRule)
             {
@@ -116,13 +116,13 @@ namespace PSAsigraDSClient
 
         public class DSClientTimeRetention
         {
-            public string Type { get; set; }
-            public DSClientRetentionTimeSpan ValidFor { get; set; }
-            public DSClientRetentionTimeSpan IntervalRepeat { get; set; }
-            public TimeInDay SnapshotTime { get; set; }
-            public string WeeklyDay { get; set; }            
-            public string MonthlyDay { get; set; }
-            public string YearlyMonth { get; set; }
+            public string Type { get; private set; }
+            public DSClientRetentionTimeSpan ValidFor { get; private set; }
+            public DSClientRetentionTimeSpan IntervalRepeat { get; private set; }
+            public TimeInDay SnapshotTime { get; private set; }
+            public string WeeklyDay { get; private set; }            
+            public string MonthlyDay { get; private set; }
+            public string YearlyMonth { get; private set; }
 
             public DSClientTimeRetention(TimeRetentionOption timeRetention)
             {
@@ -204,8 +204,8 @@ namespace PSAsigraDSClient
 
         public class DSClientArchiveRule
         {
-            public DSClientRetentionTimeSpan TimeSpan { get; set; }
-            public DSClientArchiveFilterRule FilterRule { get; set; }
+            public DSClientRetentionTimeSpan TimeSpan { get; private set; }
+            public DSClientArchiveFilterRule FilterRule { get; private set; }
 
             public DSClientArchiveRule(ArchiveRule archiveRule)
             {
@@ -224,8 +224,8 @@ namespace PSAsigraDSClient
 
         public class DSClientRetentionTimeSpan
         {
-            public int Period { get; set; }
-            public string Unit { get; set; }
+            public int Period { get; private set; }
+            public string Unit { get; private set; }
 
             public DSClientRetentionTimeSpan(retention_time_span timeSpan)
             {

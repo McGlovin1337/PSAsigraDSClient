@@ -21,8 +21,8 @@ namespace PSAsigraDSClient
 
         public class DSClientArchiveFilterRule
         {
-            public string Name { get; set; }
-            public DSClientArchiveFilter[] Filter { get; set; }
+            public string Name { get; private set; }
+            public DSClientArchiveFilter[] Filter { get; private set; }
 
             public DSClientArchiveFilterRule()
             {
@@ -54,13 +54,13 @@ namespace PSAsigraDSClient
 
         public class DSClientArchiveFilter
         {
-            public string FilterType { get; set; }
-            public string Type { get; set; }
-            public string Pattern { get; set; }
-            public bool IncludeSubDirs { get; set; }
-            public bool CaseSensitive { get; set; }
-            public bool MatchDirectories { get; set; }
-            public bool NegateRegex { get; set; }
+            public string FilterType { get; private set; }
+            public string Type { get; private set; }
+            public string Pattern { get; private set; }
+            public bool IncludeSubDirs { get; private set; }
+            public bool CaseSensitive { get; private set; }
+            public bool MatchDirectories { get; private set; }
+            public bool NegateRegex { get; private set; }
 
             public DSClientArchiveFilter(ArchiveFilter archiveFilter)
             {

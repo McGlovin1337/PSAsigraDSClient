@@ -50,7 +50,5 @@ namespace PSAsigraDSClient
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Incomplete Components")]
         public SwitchParameter DeleteIncompleteComponents { get; set; }
-
-
     }
 }

@@ -21,17 +21,17 @@ namespace PSAsigraDSClient
 
         protected class DSClientAdvancedConfig
         {
-            public string Category { get; set; }
-            public string Name { get; set; }
-            public string Value { get; set; }
-            public string DefaultValue { get; set; }
-            public bool RestartRequired { get; set; }
-            public bool ReconnectRequired { get; set; }
-            public bool HasDefaultValue { get; set; }
-            public bool UseLocalSetting { get; set; }
-            public bool LocalItem { get; set; }
-            public bool GlobalItem { get; set; }
-            public int NodeId { get; set; }
+            public string Category { get; private set; }
+            public string Name { get; private set; }
+            public string Value { get; private set; }
+            public string DefaultValue { get; private set; }
+            public bool RestartRequired { get; private set; }
+            public bool ReconnectRequired { get; private set; }
+            public bool HasDefaultValue { get; private set; }
+            public bool UseLocalSetting { get; private set; }
+            public bool LocalItem { get; private set; }
+            public bool GlobalItem { get; private set; }
+            public int NodeId { get; private set; }
 
             public DSClientAdvancedConfig(advanced_config_info advancedConfig)
             {

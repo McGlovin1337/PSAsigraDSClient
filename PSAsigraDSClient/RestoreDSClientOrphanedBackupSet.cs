@@ -64,7 +64,7 @@ namespace PSAsigraDSClient
 
         private class DSClientBackupSetId
         {
-            public int BackupSetId { get; set; }
+            public int BackupSetId { get; private set; }
 
             public DSClientBackupSetId(int backupSetId)
             {

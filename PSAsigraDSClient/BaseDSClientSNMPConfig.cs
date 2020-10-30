@@ -84,8 +84,8 @@ namespace PSAsigraDSClient
 
         protected class DSClientSNMPInfo
         {
-            public int CommunityCount { get; set; }
-            public int HeartbeatInterval { get; set; }
+            public int CommunityCount { get; private set; }
+            public int HeartbeatInterval { get; private set; }
 
             public DSClientSNMPInfo(int numCommunities, int heartbeatInterval)
             {

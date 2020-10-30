@@ -33,8 +33,8 @@ namespace PSAsigraDSClient
 
         private class DSClientTools
         {
-            public string Tool { get; set; }
-            public bool Enabled { get; set; }
+            public string Tool { get; private set; }
+            public bool Enabled { get; private set; }
 
             public DSClientTools(ClientConfiguration clientConfiguration, EDSTools tool)
             {

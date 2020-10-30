@@ -43,9 +43,9 @@ namespace PSAsigraDSClient
 
         private class DSClientMFAUserEmails
         {
-            public string Username { get; set; }
-            public string Domain { get; set; }
-            public string Email { get; set; }
+            public string Username { get; private set; }
+            public string Domain { get; private set; }
+            public string Email { get; private set; }
 
             public DSClientMFAUserEmails (user_email userEmail)
             {

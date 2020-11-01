@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using AsigraDSClientApi;
+using System.Management.Automation;
 
 namespace PSAsigraDSClient
 {
@@ -7,9 +8,11 @@ namespace PSAsigraDSClient
 
     public class GetDSClientSMTPNotification: BaseDSClientSMTPNotification
     {
-        protected override void ProcessSMTPConfig(DSClientSMTPConfig dSClientSMTPConfig)
+        protected override void ProcessSMTPConfig(smtp_email_notification_info smtpInfo)
         {
-            WriteObject(dSClientSMTPConfig);
+            DSClientSMTPConfig smtpConfig = new DSClientSMTPConfig(smtpInfo);
+
+            WriteObject(smtpConfig);
         }
     }
 }

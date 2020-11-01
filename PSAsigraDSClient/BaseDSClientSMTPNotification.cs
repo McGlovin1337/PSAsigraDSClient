@@ -4,7 +4,7 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientSMTPNotification: DSClientCmdlet
     {
-        protected abstract void ProcessSMTPConfig(DSClientSMTPConfig dSClientSMTPConfig);
+        protected abstract void ProcessSMTPConfig(smtp_email_notification_info smtpInfo);
 
         protected override void DSClientProcessRecord()
         {
@@ -14,31 +14,29 @@ namespace PSAsigraDSClient
 
             smtp_email_notification_info smtpConfig = DSClientNotifyConfigMgr.getSMTPEmailNotification();
 
-            DSClientSMTPConfig dSClientSMTPConfig = new DSClientSMTPConfig(smtpConfig);
-
             DSClientNotifyConfigMgr.Dispose();
             DSClientConfigMgr.Dispose();
 
-            ProcessSMTPConfig(dSClientSMTPConfig);
+            ProcessSMTPConfig(smtpConfig);
         }
 
         protected class DSClientSMTPConfig
         {
-            public string SmtpServer { get; set; }
-            public int SmtpPort { get; set; }
-            public string SmtpUsername { get; set; }
-            public string SmtpPassword { get; set; } = "****";
-            public bool RequireSsl { get; set; }
-            public bool RequireTls { get; set; }
-            public string FromName { get; set; }
-            public string FromAddress { get; set; }
-            public string AdminEmail { get; set; }
-            public string PagerEmail { get; set; }
-            public bool SendDetail { get; set; }
-            public bool SendSummary { get; set; }
-            public bool SendHtmlSummary { get; set; }
-            public string SubjectAdmin { get; set; }
-            public string SubjectBackup { get; set; }
+            public string SmtpServer { get; private set; }
+            public int SmtpPort { get; private set; }
+            public string SmtpUsername { get; private set; }
+            public string SmtpPassword { get; private set; } = "****";
+            public bool RequireSsl { get; private set; }
+            public bool RequireTls { get; private set; }
+            public string FromName { get; private set; }
+            public string FromAddress { get; private set; }
+            public string AdminEmail { get; private set; }
+            public string PagerEmail { get; private set; }
+            public bool SendDetail { get; private set; }
+            public bool SendSummary { get; private set; }
+            public bool SendHtmlSummary { get; private set; }
+            public string SubjectAdmin { get; private set; }
+            public string SubjectBackup { get; private set; }
 
             public DSClientSMTPConfig(smtp_email_notification_info smtpConfig)
             {

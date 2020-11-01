@@ -53,29 +53,28 @@ namespace PSAsigraDSClient
         [ValidateLength(0, 256)]
         public string SubjectBackup { get; set; }
 
-        protected override void ProcessSMTPConfig(DSClientSMTPConfig dSClientSMTPConfig)
+        protected override void ProcessSMTPConfig(smtp_email_notification_info smtpInfo)
         {
-            // Copy the current Config and update all specified properties
-            DSClientSMTPConfig newDSClientSMTPConfig = dSClientSMTPConfig;
-
-            if (MyInvocation.BoundParameters.ContainsKey("SmtpServer"))
+            // Update SMTP Server Settings
+            smtp_server_info smtpServer = smtpInfo.smtp_server;
+            if (SmtpServer != null)
             {
                 WriteVerbose("Validating SmtpServer is a valid hostname or IP Address...");
                 bool validateSmtpHostname = DSClientCommon.ValidateHostname.ValidateHost(SmtpServer);
 
                 if (validateSmtpHostname == true)
-                    newDSClientSMTPConfig.SmtpServer = SmtpServer;
+                    smtpServer.address = SmtpServer;
                 else
                     throw new Exception("SmtpServer is not a valid IP Address or Hostname");
             }
 
             if (MyInvocation.BoundParameters.ContainsKey("SmtpPort"))
-                newDSClientSMTPConfig.SmtpPort = SmtpPort;
+                smtpServer.port = SmtpPort;
 
             if (MyInvocation.BoundParameters.ContainsKey("SmtpCredential"))
             {
-                newDSClientSMTPConfig.SmtpUsername = SmtpCredential.UserName;
-                newDSClientSMTPConfig.SmtpPassword = SmtpCredential.GetNetworkCredential().Password;
+                smtpServer.account_name = SmtpCredential.UserName;
+                smtpServer.password = SmtpCredential.GetNetworkCredential().Password;
             }
 
             if (RequireSsl == true && RequireTls == true)
@@ -83,83 +82,59 @@ namespace PSAsigraDSClient
 
             if (MyInvocation.BoundParameters.ContainsKey("RequireSsl"))
             {
-                newDSClientSMTPConfig.RequireSsl = RequireSsl;
+                smtpServer.require_ssl = RequireSsl;
                 if (RequireSsl == true)
-                    newDSClientSMTPConfig.RequireTls = false;
+                    smtpServer.require_tls = false;
             }
-
-            if (MyInvocation.BoundParameters.ContainsKey("RequireTls"))
+            else if (MyInvocation.BoundParameters.ContainsKey("RequireTls"))
             {
-                newDSClientSMTPConfig.RequireTls = RequireTls;
+                smtpServer.require_tls = RequireTls;
                 if (RequireTls == true)
-                    newDSClientSMTPConfig.RequireSsl = false;
+                    smtpServer.require_ssl = false;
             }
+            smtpInfo.smtp_server = smtpServer;
 
-            if (MyInvocation.BoundParameters.ContainsKey("FromName"))
-                newDSClientSMTPConfig.FromName = FromName;
+            // Set the From Details
+            if (FromName != null)
+                smtpInfo.from_display_name = FromName;
 
-            if (MyInvocation.BoundParameters.ContainsKey("FromAddress"))
-                newDSClientSMTPConfig.FromAddress = FromAddress;
+            if (FromAddress != null)
+                smtpInfo.from_email_address = FromAddress;
 
-            if (MyInvocation.BoundParameters.ContainsKey("AdminEmail"))
-                newDSClientSMTPConfig.AdminEmail = AdminEmail;
+            // Set the Recipient Details
+            email_notification_info recipients = smtpInfo.notification_info;
+            if (AdminEmail != null)
+                recipients.admin_email_addr = AdminEmail;
 
-            if (MyInvocation.BoundParameters.ContainsKey("PagerEmail"))
-                newDSClientSMTPConfig.PagerEmail = PagerEmail;
+            if (PagerEmail != null)
+                recipients.pager_email_addr = PagerEmail;
 
             if (MyInvocation.BoundParameters.ContainsKey("SendSummary"))
-                newDSClientSMTPConfig.SendSummary = SendSummary;
+                recipients.send_summary = SendSummary;
 
             if (MyInvocation.BoundParameters.ContainsKey("SendDetail"))
             {
                 if (SendDetail == true)
                 {
-                    newDSClientSMTPConfig.SendSummary = true;
-                    newDSClientSMTPConfig.SendDetail = true;
+                    recipients.send_summary = true;
+                    recipients.send_backup_detail_with_summary = true;
                 }
                 else
                 {
-                    newDSClientSMTPConfig.SendDetail = false;
+                    recipients.send_backup_detail_with_summary = false;
                 }
             }
 
             if (MyInvocation.BoundParameters.ContainsKey("SendHtmlSummary"))
-                newDSClientSMTPConfig.SendHtmlSummary = SendHtmlSummary;
+                recipients.send_summary_in_html_format = SendHtmlSummary;
 
-            if (MyInvocation.BoundParameters.ContainsKey("SubjectAdmin"))
-                newDSClientSMTPConfig.SubjectAdmin = SubjectAdmin;
+            if (SubjectAdmin != null)
+                recipients.subject_admin = SubjectAdmin;
 
-            if (MyInvocation.BoundParameters.ContainsKey("SubjectBackup"))
-                newDSClientSMTPConfig.SubjectBackup = SubjectBackup;
+            if (SubjectBackup != null)
+                recipients.subject_backup = SubjectBackup;
 
-
-            // Set the Asigra Api classes from the DSClientSMTPConfig class properties
-            smtp_server_info smtpServerInfo = new smtp_server_info {
-                account_name = newDSClientSMTPConfig.SmtpUsername,
-                address = newDSClientSMTPConfig.SmtpServer,
-                password = newDSClientSMTPConfig.SmtpPassword,
-                port = newDSClientSMTPConfig.SmtpPort,
-                require_ssl = newDSClientSMTPConfig.RequireSsl,
-                require_tls = newDSClientSMTPConfig.RequireTls
-            };
-
-            email_notification_info emailNotificationInfo = new email_notification_info {
-                admin_email_addr = newDSClientSMTPConfig.AdminEmail,
-                pager_email_addr = newDSClientSMTPConfig.PagerEmail,
-                send_backup_detail_with_summary = newDSClientSMTPConfig.SendDetail,
-                send_summary = newDSClientSMTPConfig.SendSummary,
-                send_summary_in_html_format = newDSClientSMTPConfig.SendHtmlSummary,
-                subject_admin = newDSClientSMTPConfig.SubjectAdmin,
-                subject_backup = newDSClientSMTPConfig.SubjectBackup
-            };
-
-            smtp_email_notification_info smtpEmailNotifyInfo = new smtp_email_notification_info
-            {
-                from_display_name = newDSClientSMTPConfig.FromName,
-                from_email_address = newDSClientSMTPConfig.FromAddress,
-                notification_info = emailNotificationInfo,
-                smtp_server = smtpServerInfo
-            };
+            smtpInfo.notification_info = recipients;
 
             // Assign the new SMTP configuration
             ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
@@ -167,7 +142,7 @@ namespace PSAsigraDSClient
             NotificationConfiguration DSClientNotifyConfigMgr = DSClientConfigMgr.getNotificationConfiguration();
 
             WriteVerbose("Setting DS-Client SMTP Notification Configuration...");
-            DSClientNotifyConfigMgr.setSMTPEmailNotification(smtpEmailNotifyInfo);
+            DSClientNotifyConfigMgr.setSMTPEmailNotification(smtpInfo);
             WriteObject("DS-Client SMTP Notification Configuration Updated");
 
             DSClientNotifyConfigMgr.Dispose();

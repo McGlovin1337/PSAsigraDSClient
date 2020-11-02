@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using System.Linq;
+using System.Management.Automation;
 using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
@@ -39,6 +40,28 @@ namespace PSAsigraDSClient
             }
         }
 
+        protected class SourceMSSqlItemInfo
+        {
+            public string Instance { get; private set; }
+            public string Name { get; private set; }
+            public string[] DataPath { get; private set; }
+            public string[] LogPath { get; private set; }
+
+            public SourceMSSqlItemInfo(mssql_db_path databaseItem)
+            {
+                mssql_path_item[] dbPaths = databaseItem.files_path;
+
+                Instance = databaseItem.instance;
+                Name = databaseItem.destination_db;
+                DataPath = dbPaths.Where(data => data.is_data)
+                    .Select(path => path.path)
+                    .ToArray();
+                LogPath = dbPaths.Where(log => !log.is_data)
+                    .Select(path => path.path)
+                    .ToArray();
+            }
+        }
+
         public class ItemPath
         {
             public string Path { get; private set; }
@@ -53,55 +76,39 @@ namespace PSAsigraDSClient
 
         public static string EBrowseItemTypeToString(EBrowseItemType itemType)
         {
-            string ItemType = null;
-
             switch (itemType)
             {
                 case EBrowseItemType.EBrowseItemType__Drive:
-                    ItemType = "Drive";
-                    break;
+                    return "Drive";
                 case EBrowseItemType.EBrowseItemType__Share:
-                    ItemType = "Share";
-                    break;
+                    return "Share";
                 case EBrowseItemType.EBrowseItemType__Directory:
-                    ItemType = "Directory";
-                    break;
+                    return "Directory";
                 case EBrowseItemType.EBrowseItemType__File:
-                    ItemType = "File";
-                    break;
+                    return "File";
                 case EBrowseItemType.EBrowseItemType__SystemState:
-                    ItemType = "SystemState";
-                    break;
+                    return "SystemState";
                 case EBrowseItemType.EBrowseItemType__ServicesDB:
-                    ItemType = "ServicesDatabase";
-                    break;
+                    return "ServicesDatabase";
                 case EBrowseItemType.EBrowseItemType__DatabaseInstance:
-                    ItemType = "DatabaseInstance";
-                    break;
+                    return "DatabaseInstance";
                 case EBrowseItemType.EBrowseItemType__Database:
-                    ItemType = "Database";
-                    break;
+                    return "Database";
                 case EBrowseItemType.EBrowseItemType__Tablespace:
-                    ItemType = "OracleTablespace";
-                    break;
+                    return "OracleTablespace";
                 case EBrowseItemType.EBrowseItemType__ControlFile:
-                    ItemType = "OracleControlFile";
-                    break;
+                    return "OracleControlFile";
                 case EBrowseItemType.EBrowseItemType__ArchiveLog:
-                    ItemType = "OracleArchiveLog";
-                    break;
+                    return "OracleArchiveLog";
                 case EBrowseItemType.EBrowseItemType__VirtualMachine:
-                    ItemType = "VirtualMachine";
-                    break;
+                    return "VirtualMachine";
                 case EBrowseItemType.EBrowseItemType__VssExchange:
-                    ItemType = "VssExchange";
-                    break;
+                    return "VssExchange";
                 case EBrowseItemType.EBrowseItemType__VmDisk:
-                    ItemType = "VirtualMachineDisk";
-                    break;
+                    return "VirtualMachineDisk";
+                default:
+                    return null;
             }
-
-            return ItemType;
         }
     }
 }

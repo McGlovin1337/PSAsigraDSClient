@@ -135,6 +135,7 @@
     <Compile Include="PSAsigraDSClient\NewDSClientUnixFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\PublishDSClientEncryptionKeys.cs" />
+    <Compile Include="PSAsigraDSClient\ReadDSClientMSSqlServerSource.cs" />
     <Compile Include="PSAsigraDSClient\ReadDSClientUnixFsSource.cs" />
     <Compile Include="PSAsigraDSClient\ReadDSClientWinFsSource.cs" />
     <Compile Include="PSAsigraDSClient\RegisterDSClient.cs" />

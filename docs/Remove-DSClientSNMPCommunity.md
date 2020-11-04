@@ -23,14 +23,14 @@ Removing the last host from a community will also remove the community.
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Remove-DSClientSNMPCommunity -Community public
 ```
 
 Removes the SNMP Community named public and all associated hosts
 
 ### Example 1
-```powershell
+```
 PS C:\> Remove-DSClientSNMPCommunity -Community public -Hosts monitoring.local
 ```
 
@@ -74,9 +74,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ### System.String[]
-
 ## OUTPUTS
 
 ### System.Object

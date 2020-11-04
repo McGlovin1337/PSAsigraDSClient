@@ -22,7 +22,7 @@ Display DS-Client Registration Info
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-DSClientRegistrationInfo
 ```
 
@@ -34,11 +34,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### AsigraDSClientApi.dsc_reg_info
-
 ## NOTES
 
 ## RELATED LINKS

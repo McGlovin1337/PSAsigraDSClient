@@ -22,7 +22,7 @@ Set the SNMP Heartbeat Interval, default is 0 (disabled)
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Set-DSClientSNMPHeartbeat -HearbeatInterval 5
 ```
 
@@ -51,7 +51,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Int32
-
 ## OUTPUTS
 
 ### System.Object

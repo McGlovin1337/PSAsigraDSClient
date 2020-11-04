@@ -22,14 +22,15 @@ Display the Detailed Schedule Configuration associated with a Schedule
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-DSClientScheduleDetail -ScheduleId 3
 ```
 
-List all the detailed schedules associated with ScheduleId 3. Use Get-DSClientSchedule to find ScheduleId
+List all the detailed schedules associated with ScheduleId 3.
+Use Get-DSClientSchedule to find ScheduleId
 
 ### Example 2
-```powershell
+```
 PS C:\> Get-DSClientScheduleDetail -ScheduleId 3 -Type Daily
 ```
 
@@ -74,11 +75,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Int32
-
 ## OUTPUTS
 
 ### PSAsigraDSClient.BaseDSClientSchedule+DSClientScheduleDetail
-
 ## NOTES
 
 ## RELATED LINKS

@@ -8,7 +8,7 @@ schema: 2.0.0
 # Add-DSClientSNMPCommunity
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Add a new SNMP Community and/or Hosts
 
 ## SYNTAX
 
@@ -17,16 +17,16 @@ Add-DSClientSNMPCommunity [-Community] <String> [-Hosts] <String[]> [<CommonPara
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Add a new SNMP Community and Hosts or add hosts to an existing Community
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
+```
+PS C:\> Add-DSClientSNMPCommunity -Community "private" -Hosts "192.168.1.100"
 ```
 
-{{ Add example description here }}
+Creates a new SNMP Community named "private" if it doesn't already exist, and adds the host "192.168.1.100"
 
 ## PARAMETERS
 
@@ -66,9 +66,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ### System.String[]
-
 ## OUTPUTS
 
 ### System.Object

@@ -23,7 +23,7 @@ Establishes a connection to an Asigra DS-Client and stores as a session for mana
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Enter-DSClientSession -Host my.dsclient.local -Credential joe.bloggs
 ```
 
@@ -86,7 +86,7 @@ Aliases:
 
 Required: False
 Position: 3
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -112,7 +112,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

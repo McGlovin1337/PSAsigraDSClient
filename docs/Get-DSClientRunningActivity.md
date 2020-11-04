@@ -22,7 +22,7 @@ Display the current running activities on the DS-Client computer
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-DSClientRunningActivity
 ```
 
@@ -34,11 +34,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### PSAsigraDSClient.GetDSClientRunningActivity+RunningActivityInfo
-
 ## NOTES
 
 ## RELATED LINKS

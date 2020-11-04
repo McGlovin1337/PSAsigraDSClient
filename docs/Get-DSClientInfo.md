@@ -22,7 +22,7 @@ Display Information about the connected DS-Client computer.
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-DSClientInfo
 ```
 
@@ -36,11 +36,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### AsigraDSClientApi.ds_client_info
-
 ## NOTES
 
 ## RELATED LINKS

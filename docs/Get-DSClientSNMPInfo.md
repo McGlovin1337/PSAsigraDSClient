@@ -22,7 +22,7 @@ Display DS-Client SNMP Configuration Info
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-DSClientSNMPInfo
 ```
 
@@ -34,11 +34,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### PSAsigraDSClient.BaseDSClientSNMPConfig+DSClientSNMPInfo
-
 ## NOTES
 
 ## RELATED LINKS

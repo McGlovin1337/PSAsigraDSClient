@@ -22,7 +22,7 @@ Send a stop request to a DS-Client Activity
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Stop-DSClientActivity -ActivityId 3
 ```
 
@@ -51,7 +51,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

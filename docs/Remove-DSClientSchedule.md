@@ -8,7 +8,7 @@ schema: 2.0.0
 # Remove-DSClientSchedule
 
 ## SYNOPSIS
-Remove a DS-Client Schedule
+Remove a Schedule from the DS-Client
 
 ## SYNTAX
 
@@ -17,16 +17,16 @@ Remove-DSClientSchedule [-ScheduleId] <Int32> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a DS-Client Schedule
+Removes a Schedule from the DS-Client
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Remove-DSClientSchedule -ScheduleId 5
+PS C:\> Remove-DSClientSchedule -ScheduleId 1
 ```
 
-Remove the DS-Client Schedule with ScheduleId 5
+Removes the Schedule with Id of 1 from the DS-Client
 
 ## PARAMETERS
 

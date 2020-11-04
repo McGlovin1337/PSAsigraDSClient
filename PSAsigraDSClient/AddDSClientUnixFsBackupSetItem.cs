@@ -6,7 +6,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Add, "DSClientUnixFsBackupSet")]
+    [Cmdlet(VerbsCommon.Add, "DSClientUnixFsBackupSetItem")]
 
     public class AddDSClientUnixFsBackupSetItem: BaseDSClientBackupSet
     {

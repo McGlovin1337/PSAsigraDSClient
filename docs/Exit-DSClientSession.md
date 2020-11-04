@@ -22,7 +22,7 @@ Closes the DS-Client connection and destroys the session.
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Exit-DSClientSession
 ```
 
@@ -36,7 +36,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

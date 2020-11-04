@@ -5,31 +5,32 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-DSClientScheduleDetail
+# Add-DSClientMonthlySchedule
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Adds a Monthly Schedule Detail to a Schedule
 
 ## SYNTAX
 
 ```
-Add-DSClientScheduleDetail [-ScheduleId] <Int32> [-Type] <String> [-StartTime] <String> [[-EndTime] <String>]
- [-NoEndTime] [[-HourlyFrequency] <Int32>] [-Backup] [-Retention] [-Validation] [-BLM] [-LANScan] [-CleanTrash]
- [-LastGenOnly] [-ExcludeDeleted] [-Resume] [-IncludeAllGenerations] [-BackReference]
- [[-PackageClosing] <String>] [<CommonParameters>]
+Add-DSClientMonthlySchedule [[-RepeatMonths] <Int32>] [[-ScheduleDay] <Int32>] [[-MonthlyStartDay] <String>]
+ [[-StartDate] <DateTime>] [[-EndDate] <DateTime>] [-ScheduleId] <Int32> -StartTime <String>
+ [-EndTime <String>] [-NoEndTime] [-HourlyFrequency <Int32>] [-Backup] [-Retention] [-Validation] [-BLM]
+ [-LANScan] [-CleanTrash] [-LastGenOnly] [-ExcludeDeleted] [-Resume] [-IncludeAllGenerations] [-BackReference]
+ [-PackageClosing <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Adds a Monthly Schedule Detail to aan existing Schedule
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Add-DSClientMonthlySchedule -ScheduleId 4 -RepeatMonths 1 -ScheduleDay 28 -StartTime "21:30" -NoEndTime -Backup -Retention -Validation
 ```
 
-{{ Add example description here }}
+Adds a Monthly Schedule that repeats every month on the last day of the month starting at 21:30 and performs Backup, Retention and Validation tasks
 
 ## PARAMETERS
 
@@ -42,7 +43,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 13
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -57,7 +58,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 20
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -72,7 +73,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 10
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -87,7 +88,22 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 15
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EndDate
+Set the End Date for this Schedule Detail
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -102,7 +118,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 7
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -117,7 +133,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 17
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -132,7 +148,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 9
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -147,7 +163,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 19
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -162,7 +178,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 14
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -177,7 +193,23 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 16
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MonthlyStartDay
+Set the Monthly Start Day
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+Accepted values: DayOfMonth, Mon, Tue, Wed, Thu, Fri, Sat, Sun, Day, WeekDay, WeekEndDay
+
+Required: False
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -192,7 +224,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 8
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -208,7 +240,22 @@ Aliases:
 Accepted values: DoNotClose, CloseAtStart, CloseAtEnd
 
 Required: False
-Position: 21
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RepeatMonths
+Set the Repeat Frequency in Months
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -223,7 +270,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 18
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -238,7 +285,22 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 11
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ScheduleDay
+Set the Day of the Month the Schedule Executes on
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -259,6 +321,21 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
+### -StartDate
+Set the Start Date for this Schedule Detail
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -StartTime
 Specify the Start Time in 24Hr Notation HH:mm:ss
 
@@ -268,23 +345,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 6
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Type
-The Type of Schedule Detail to Add
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: OneTime, Daily, Weekly, Monthly
-
-Required: True
-Position: 1
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -299,7 +360,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 12
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

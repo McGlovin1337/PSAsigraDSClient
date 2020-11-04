@@ -22,14 +22,14 @@ Display SNMP Communities and hosts configured on the DS-Client computer
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-DSClientSNMPCommunity
 ```
 
 Display a list of all configured SNMP Communities
 
 ### Example 2
-```powershell
+```
 PS C:\> Get-DSClientSNMPCommunity -Community pub*
 ```
 
@@ -73,13 +73,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ### System.String[]
-
 ## OUTPUTS
 
 ### PSAsigraDSClient.BaseDSClientSNMPConfig+DSClientSNMPCommunities
-
 ## NOTES
 
 ## RELATED LINKS

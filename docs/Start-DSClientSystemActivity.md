@@ -22,7 +22,7 @@ Start a DS-Client System Activity
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Start-DSClientSystemActivity -Activity DailyAdmin
 ```
 
@@ -52,7 +52,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

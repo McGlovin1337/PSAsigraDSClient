@@ -22,7 +22,7 @@ Display the Schedules configured on the DS-Client computer
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-DSClientSchedule
 ```
 
@@ -36,11 +36,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### PSAsigraDSClient.BaseDSClientSchedule+DSClientScheduleInfo
-
 ## NOTES
 
 ## RELATED LINKS

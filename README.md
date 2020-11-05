@@ -2,7 +2,7 @@
 
 ## About
 This is a collection of Powershell Cmdlets to Manage the Asigra DS-Client.\
-It uses the Asigra DS-Client API Library distributed with the Asigra DS-Client Software.\
+It uses the Asigra DS-Client API Library distributed with the Asigra DS-Client Software.
 
 This module supports both Windows and Linux DS-Clients and should be compatible with versions 13.0 through to 14.2
 

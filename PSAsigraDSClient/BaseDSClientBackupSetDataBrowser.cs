@@ -25,24 +25,36 @@ namespace PSAsigraDSClient
         {
             if (UseValidationSession == true)
             {
+                // Get the Validation View from SessionState
                 BackupSetValidationView validationView = SessionState.PSVariable.GetValue("ValidateView", null) as BackupSetValidationView;
 
                 if (validationView != null)
                     ProcessBackupSetData(validationView);
+
+                // Update the Validation View in SessionState
+                SessionState.PSVariable.Set("ValidateView", validationView);
             }
             else if (UseDeleteSession)
             {
+                // Get the Delete View from SessionState
                 BackupSetDeleteView deleteView = SessionState.PSVariable.GetValue("DeleteView", null) as BackupSetDeleteView;
 
                 if (deleteView != null)
                     ProcessBackupSetData(deleteView);
+
+                // Update the Delete View in SessionState
+                SessionState.PSVariable.Set("DeleteView", deleteView);
             }
             else if (UseRestoreSession)
             {
+                // Get the Restore View from SessionState
                 BackupSetRestoreView restoreView = SessionState.PSVariable.GetValue("RestoreView", null) as BackupSetRestoreView;
 
                 if (restoreView != null)
                     ProcessBackupSetData(restoreView);
+
+                // Update the Restore View in SessionState
+                SessionState.PSVariable.Set("RestoreView", restoreView);
             }
             else
             {

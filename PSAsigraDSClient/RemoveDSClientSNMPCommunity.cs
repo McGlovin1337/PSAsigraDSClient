@@ -33,11 +33,7 @@ namespace PSAsigraDSClient
                 {
                     WriteVerbose("Removing specified Hosts from Community...");
                     // Build a replacement Community
-                    DSClientSNMPCommunities replacementCommunity = new DSClientSNMPCommunities
-                    {
-                        Community = existingCommunity.Community,
-                        Hosts = existingCommunity.Hosts.Except(Hosts).ToArray()
-                    };
+                    DSClientSNMPCommunities replacementCommunity = new DSClientSNMPCommunities(existingCommunity.Community, existingCommunity.Hosts.Except(Hosts).ToArray());
 
                     // Remove the original Community
                     SNMPCommunities.Remove(existingCommunity);

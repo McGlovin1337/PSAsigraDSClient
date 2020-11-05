@@ -39,10 +39,7 @@ namespace PSAsigraDSClient
                     actualHosts = community.hosts;
                 }
 
-                DSClientSNMPCommunities.Add(new DSClientSNMPCommunities {
-                    Community = community.community,
-                    Hosts = actualHosts
-                });
+                DSClientSNMPCommunities.Add(new DSClientSNMPCommunities(community.community, actualHosts));
 
                 hostCounter = community.hosts.Count();
             }
@@ -96,8 +93,14 @@ namespace PSAsigraDSClient
 
         protected class DSClientSNMPCommunities
         {
-            public string Community { get; set; }
-            public string[] Hosts { get; set; }
+            public string Community { get; private set; }
+            public string[] Hosts { get; private set; }
+
+            public DSClientSNMPCommunities(string community, IEnumerable<string> hosts)
+            {
+                Community = community;
+                Hosts = hosts.ToArray();
+            }
         }
     }
 }

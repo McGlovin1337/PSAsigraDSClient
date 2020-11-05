@@ -33,11 +33,7 @@ namespace PSAsigraDSClient
                     foreach (var community in dSClientSNMPCommunities)
                     {
                         if (wcPattern.IsMatch(community.Community))
-                            filteredCommunities.Add(new DSClientSNMPCommunities
-                            {
-                                Community = community.Community,
-                                Hosts = community.Hosts
-                            });
+                            filteredCommunities.Add(new DSClientSNMPCommunities(community.Community, community.Hosts));
                     }
                 }
 
@@ -53,11 +49,7 @@ namespace PSAsigraDSClient
                             bool matchList = filteredCommunities.Contains(community);
 
                             if (matchList == false)
-                                filteredCommunities.Add(new DSClientSNMPCommunities
-                                {
-                                    Community = community.Community,
-                                    Hosts = community.Hosts
-                                });
+                                filteredCommunities.Add(new DSClientSNMPCommunities(community.Community, community.Hosts));
                         }
                     }
                 }

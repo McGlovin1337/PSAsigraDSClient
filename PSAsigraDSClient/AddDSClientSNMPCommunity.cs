@@ -39,10 +39,7 @@ namespace PSAsigraDSClient
                 string[] mergeHosts = Hosts.Union(existingCommunity.Hosts).ToArray();
 
                 // Form an updated DSClientSNMPCommunities object
-                DSClientSNMPCommunities updatedCommunity = new DSClientSNMPCommunities {
-                    Community = existingCommunity.Community,
-                    Hosts = mergeHosts
-                };
+                DSClientSNMPCommunities updatedCommunity = new DSClientSNMPCommunities(existingCommunity.Community, mergeHosts);
 
                 // Remove the existing Community from original DSClientSNMPCommunities
                 SNMPCommunities.Remove(existingCommunity);
@@ -54,10 +51,7 @@ namespace PSAsigraDSClient
             {
                 WriteVerbose("Creating a new SNMP Community...");
                 // Create a new Community
-                SNMPCommunities.Add(new DSClientSNMPCommunities {
-                    Community = Community,
-                    Hosts = Hosts
-                });
+                SNMPCommunities.Add(new DSClientSNMPCommunities(Community, Hosts));
             }
 
             // Create a new snmp_community_info object with all the updated and existing Communities

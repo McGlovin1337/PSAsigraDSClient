@@ -107,7 +107,7 @@ namespace PSAsigraDSClient
                 List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
                 if (ExcludeItem != null)
-                    backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem));
+                    backupSetItems.AddRange(ProcessMsSqlExclusionItems(dataSourceBrowser, computer, ExcludeItem));
 
                 if (RegexExcludeItem != null)
                     backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));

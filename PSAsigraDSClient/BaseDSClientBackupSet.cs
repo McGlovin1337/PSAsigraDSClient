@@ -158,6 +158,22 @@ namespace PSAsigraDSClient
             return fileItems;
         }
 
+        protected static IEnumerable<BackupSetFileItem> ProcessMsSqlExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items)
+        {
+            List<BackupSetFileItem> sqlItems = new List<BackupSetFileItem>();
+
+            foreach (string item in items)
+            {
+                // Trim any whitespace from the end of the item
+                string trimmedItem = item.Trim();
+
+                BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, item);
+                sqlItems.Add(exclusion);
+            }
+
+            return sqlItems;
+        }
+
         protected static IEnumerable<BackupSetRegexExclusion> ProcessRegexExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, string exclusionPath, bool excludeDir, bool caseInsensitive, IEnumerable<string> items)
         {
             List<BackupSetRegexExclusion> regexItems = new List<BackupSetRegexExclusion>();

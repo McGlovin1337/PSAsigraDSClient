@@ -14,7 +14,7 @@ The main goal of this project and module is to allow the creation of automated p
 This module has the following requirements:
 - PowerShell Version 5.1 (64bit)
 - .NET Framwork 4.7.2
-- Microsoft Visual C++ 2010 Runtime x64
+- Microsoft Visual C++ 2010 Redistributable x64
 
 ### Install
 You can install the module from the PowerShell Gallery:

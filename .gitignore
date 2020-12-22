@@ -338,3 +338,11 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/libeay32.dll
+/boost_thread-vc100-mt-1_43.dll
+/boost_system-vc100-mt-1_43.dll
+/boost_regex-vc100-mt-1_43.dll
+/boost_filesystem-vc100-mt-1_43.dll
+/boost_date_time-vc100-mt-1_43.dll
+/SSPI.dll
+/ssleay32.dll

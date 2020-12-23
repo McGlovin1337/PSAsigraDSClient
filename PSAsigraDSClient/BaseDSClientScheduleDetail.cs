@@ -6,7 +6,7 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientScheduleDetail: BaseDSClientSchedule
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, HelpMessage = "The ScheduleId to add Schedule Detail to")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The ScheduleId to add Schedule Detail to")]
         [ValidateNotNullOrEmpty]
         public int ScheduleId { get; set; }
 

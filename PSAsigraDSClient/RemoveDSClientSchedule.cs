@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
 
     public class RemoveDSClientSchedule: DSClientCmdlet
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, HelpMessage = "The ScheduleId to remove")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The ScheduleId to remove")]
         [ValidateNotNullOrEmpty]
         public int ScheduleId { get; set; }
 

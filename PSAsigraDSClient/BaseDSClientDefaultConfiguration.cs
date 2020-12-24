@@ -88,27 +88,10 @@ namespace PSAsigraDSClient
                     RetentionRule = new BaseDSClientRetentionRule.DSClientRetentionRule(retentionRule);
                 if (schedule != null)
                     Schedule = new BaseDSClientSchedule.DSClientScheduleInfo(schedule);
-                OpenFileOperation = OpenFileOperationToString(openFileStrategy);
+                OpenFileOperation = EnumToString(openFileStrategy);
                 OpenFileRetryInterval = defaultConfiguration.getDefaultOpenFilesRetryInterval();
                 OpenFileRetryTimes = defaultConfiguration.getDefaultOpenFilesRetryTimes();
                 BackupFilePermissions = defaultConfiguration.getDefaultToBackupPermissions();
-            }
-
-            private string OpenFileOperationToString(EOpenFileStrategy openFileStrategy)
-            {
-                switch(openFileStrategy)
-                {
-                    case EOpenFileStrategy.EOpenFileStrategy__TryDenyWrite:
-                        return "TryDenyWrite";
-                    case EOpenFileStrategy.EOpenFileStrategy__DenyWrite:
-                        return "DenyWrite";
-                    case EOpenFileStrategy.EOpenFileStrategy__PreventWrite:
-                        return "PreventWrite";
-                    case EOpenFileStrategy.EOpenFileStrategy__AllowWrite:
-                        return "AllowWrite";
-                    default:
-                        return null;
-                }
             }
         }        
     }

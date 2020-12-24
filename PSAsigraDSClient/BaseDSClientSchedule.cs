@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -331,26 +332,10 @@ namespace PSAsigraDSClient
             {
                 IncludeAllGenerations = blmOptions.include_all_generations;
                 BackReference = blmOptions.use_back_reference;
-                PackageClosing = PackageCloseConvert(blmOptions.package_close);
+                PackageClosing = EnumToString(blmOptions.package_close);
 
                 if ((IncludeAllGenerations || BackReference) == true || PackageClosing != null || PackageClosing != "Undefined")
                     _optionsSet = true;
-            }
-
-            // Convert the EActivePackageClosing Enum to a Human Friendly String
-            private string PackageCloseConvert(EActivePackageClosing packageClose)
-            {
-                switch(packageClose)
-                {
-                    case EActivePackageClosing.EActivePackageClosing__DoNotClose:
-                        return "DoNotClose";
-                    case EActivePackageClosing.EActivePackageClosing__CloseAtStart:
-                        return "AtStart";
-                    case EActivePackageClosing.EActivePackageClosing__CloseAtEnd:
-                        return "AtEnd";
-                    default:
-                        return null;
-                }
             }
 
             public override string ToString()

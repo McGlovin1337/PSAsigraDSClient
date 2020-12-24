@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -46,7 +47,7 @@ namespace PSAsigraDSClient
 
                 // Get the Schedule Type
                 EScheduleDetailType scheduleType = scheduleDetail.getType();
-                string ScheduleType = ScheduleDetailTypeToString(scheduleType);
+                string ScheduleType = EnumToString(scheduleType);
                 if (MyInvocation.BoundParameters.ContainsKey("Type"))
                     if (Type != ScheduleType)
                         continue;
@@ -138,26 +139,6 @@ namespace PSAsigraDSClient
 
             Schedule.Dispose();
             DSClientScheduleMgr.Dispose();
-        }
-
-        // Method to convert the EScheduleDetailType Enum to a Human Friendly String
-        private static string ScheduleDetailTypeToString(EScheduleDetailType detailType)
-        {
-            switch(detailType)
-            {
-                case EScheduleDetailType.EScheduleDetailType__OneTime:
-                    return "OneTime";
-                case EScheduleDetailType.EScheduleDetailType__Daily:
-                    return "Daily";
-                case EScheduleDetailType.EScheduleDetailType__Weekly:
-                    return "Weekly";
-                case EScheduleDetailType.EScheduleDetailType__Monthly:
-                    return "Monthly";
-                case EScheduleDetailType.EScheduleDetailType__UNDEFINED:
-                    return "Undefined";
-                default:
-                    return null;
-            }
         }
     }
 }

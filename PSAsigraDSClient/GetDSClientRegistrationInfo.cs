@@ -1,5 +1,6 @@
 ﻿using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -53,7 +54,7 @@ namespace PSAsigraDSClient
                 PrivateKeyEncryption = EEncryptionTypeToString(regInfo.private_key_enc);
                 EscrowKeys = regInfo.escrow_enc_key;
                 CountryCode = userInfo.country_code;
-                Industry = EIndustryVerticalToString(userInfo.industry_code);
+                Industry = EnumToString(userInfo.industry_code);
                 Employees = ENumberOfEmployeesToString(userInfo.num_of_employees);
             }
 
@@ -75,31 +76,6 @@ namespace PSAsigraDSClient
                         return "5001-10000";
                     case ENumberOfEmployees.ENumberOfEmployees__Size7:
                         return "10001+";
-                    default:
-                        return null;
-                }
-            }
-
-            private static string EIndustryVerticalToString(EIndustryVertical industry)
-            {
-                switch(industry)
-                {
-                    case EIndustryVertical.EIndustryVertical__ManufacturingAndEnergy:
-                        return "ManufacturingAndEnergy";
-                    case EIndustryVertical.EIndustryVertical__RetailAndWholesaleTrade:
-                        return "RetailAndWholesaleTrade";
-                    case EIndustryVertical.EIndustryVertical__UtilitiesAndTelecommunications:
-                        return "UtilitiesAndTelecommunications";
-                    case EIndustryVertical.EIndustryVertical__ComputersHardwareSoftware:
-                        return "ComputersHardwareSoftware";
-                    case EIndustryVertical.EIndustryVertical__BusinessServicesAndConstruction:
-                        return "BusinessServicesAndConstruction";
-                    case EIndustryVertical.EIndustryVertical__MediaEntertainmentAndLeisure:
-                        return "MediaEntertainmentAndLeisure";
-                    case EIndustryVertical.EIndustryVertical__FinancialServicesAndInsurance:
-                        return "FinancialServicesAndInsurance";
-                    case EIndustryVertical.EIndustryVertical__PublicSectorAndHealthcare:
-                        return "PublicSectorAndHealthcare";
                     default:
                         return null;
                 }

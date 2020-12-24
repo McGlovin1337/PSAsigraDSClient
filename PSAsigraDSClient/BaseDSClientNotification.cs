@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -29,21 +30,7 @@ namespace PSAsigraDSClient
 
             public DSClientNotification(ENotificationSendEmailThrough notifyType)
             {
-                switch(notifyType)
-                {
-                    case ENotificationSendEmailThrough.ENotificationSendEmailThrough__None:
-                        Type = "None";
-                        break;
-                    case ENotificationSendEmailThrough.ENotificationSendEmailThrough__MAPI:
-                        Type = "MAPI";
-                        break;
-                    case ENotificationSendEmailThrough.ENotificationSendEmailThrough__SMTP:
-                        Type = "SMTP";
-                        break;
-                    case ENotificationSendEmailThrough.ENotificationSendEmailThrough__UNDEFINED:
-                        Type = "Undefined";
-                        break;
-                }
+                Type = EnumToString(notifyType);
             }
         }
 
@@ -58,26 +45,7 @@ namespace PSAsigraDSClient
             public DSClientBackupSetNotification(notification_info notifyInfo)
             {
                 NotificationId = notifyInfo.id;
-
-                switch (notifyInfo.method)
-                {
-                    case ENotificationMethod.ENotificationMethod__Email:
-                        Method = "Email";
-                        break;
-                    case ENotificationMethod.ENotificationMethod__Page:
-                        Method = "Pager";
-                        break;
-                    case ENotificationMethod.ENotificationMethod__Broadcast:
-                        Method = "Broadcast";
-                        break;
-                    case ENotificationMethod.ENotificationMethod__Event:
-                        Method = "Event";
-                        break;
-                    case ENotificationMethod.ENotificationMethod__UNDEFINED:
-                        Method = "Undefined";
-                        break;
-                }
-
+                Method = EnumToString(notifyInfo.method);
                 Completion = IntEBackupCompletionToArray(notifyInfo.completion);
 
                 List<string> emailOpt = new List<string>();
@@ -94,7 +62,6 @@ namespace PSAsigraDSClient
                     emailOpt.Add("Undefined");*/
 
                 EmailOption = emailOpt.ToArray();
-
                 Recipient = notifyInfo.recipient;
             }
 

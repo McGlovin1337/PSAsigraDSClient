@@ -465,7 +465,7 @@ namespace PSAsigraDSClient
                 CompressedSize = backupSetOverviewInfo.status.dssystem_compressed_size;
                 LocalStorageDataSize = backupSetOverviewInfo.status.local_storage_data_size;
                 LocalStorageFileCount = backupSetOverviewInfo.status.local_storage_file_count;
-                SetType = EBackupSetTypeToString(backupSet.getSetType());
+                SetType = EnumToString(backupSet.getSetType());
                 UseLocalStorage = backupSet.isUsingLocalStorage();
                 ForceBackup = backupSet.isForceBackup();
                 ErrorLimit = backupSet.getBackupErrorLimit();
@@ -639,7 +639,7 @@ namespace PSAsigraDSClient
                 mssql_dump_parameters dumpParameters = mssqlBackupSet.getDumpParameters();
                 incremental_policies incrementalPolicies = mssqlBackupSet.getIncrementalPolicies();
 
-                DumpMethod = ESQLDumpMethodToString(dumpParameters.dump_method);
+                DumpMethod = EnumToString(dumpParameters.dump_method);
                 DumpPath = dumpParameters.path;
                 BackupPolicy = EBackupPolicyToString(incrementalPolicies.backup_policy);
                 ForceFullMonthly = new ForceFullDayTime(incrementalPolicies.is_force_full_monthly, incrementalPolicies.force_full_monthly_day, incrementalPolicies.force_full_monthly_time);
@@ -651,22 +651,7 @@ namespace PSAsigraDSClient
             public override string ToString()
             {
                 return "MSSqlServer";
-            }
-
-            private string ESQLDumpMethodToString(ESQLDumpMethod dumpMethod)
-            {
-                switch(dumpMethod)
-                {
-                    case ESQLDumpMethod.ESQLDumpMethod__DumpToSQLPath:
-                        return "SQLPath";
-                    case ESQLDumpMethod.ESQLDumpMethod__DumpToClientBuffer:
-                        return "ClientBuffer";
-                    case ESQLDumpMethod.ESQLDumpMethod__DumpToPipe:
-                        return "Pipe";
-                    default:
-                        return null;
-                }
-            }
+            }            
         }
 
         protected class UnixFSBackupSet
@@ -791,7 +776,7 @@ namespace PSAsigraDSClient
 
                 EBackupSetItemType itemType = backupSetItem.getType();                                
 
-                Type = EBackupSetItemTypeToString(itemType);
+                Type = EnumToString(itemType);
                 Folder = backupSetItem.getFolder();
                 ItemOption = ItemOptions.ToArray();
 
@@ -910,22 +895,7 @@ namespace PSAsigraDSClient
                     default:
                         return null;
                 }
-            }
-
-            private string EBackupSetItemTypeToString(EBackupSetItemType itemType)
-            {
-                switch(itemType)
-                {
-                    case EBackupSetItemType.EBackupSetItemType__Inclusion:
-                        return "Inclusion";
-                    case EBackupSetItemType.EBackupSetItemType__Exclusion:
-                        return "Exclusion";
-                    case EBackupSetItemType.EBackupSetItemType__RegExExclusion:
-                        return "RegexExclusion";
-                    default:
-                        return null;
-                }
-            }
+            }            
         }
 
         protected class UnixFSBackupSetInclusionOptions
@@ -1225,7 +1195,7 @@ namespace PSAsigraDSClient
 
             public OldFileExclusionConfig(old_file_exclusion_config exclusionConfig)
             {
-                Type = EOldFileExclusionTypeToString(exclusionConfig.type);
+                Type = EnumToString(exclusionConfig.type);
                 TimeUnit = ETimeUnitToString(exclusionConfig.unit);
                 Value = exclusionConfig.value;
             }
@@ -1233,21 +1203,6 @@ namespace PSAsigraDSClient
             public override string ToString()
             {
                 return Type;
-            }
-
-            private string EOldFileExclusionTypeToString(EOldFileExclusionType type)
-            {
-                switch(type)
-                {
-                    case EOldFileExclusionType.EOldFileExclusionType__None:
-                        return "None";
-                    case EOldFileExclusionType.EOldFileExclusionType__Date:
-                        return "Date";
-                    case EOldFileExclusionType.EOldFileExclusionType__TimeSpan:
-                        return "TimeSpan";
-                    default:
-                        return null;
-                }
             }
         }
 
@@ -1279,7 +1234,7 @@ namespace PSAsigraDSClient
             {
                 CheckInterval = cdpSettings.backup_check_interval;
                 BackupStrategy = ECDPBackupStrategyToString(cdpSettings.backup_strategy);
-                ChangeDetection = ECDPFileChangeDetectionTypeToString(cdpSettings.file_change_detection_type);
+                ChangeDetection = EnumToString(cdpSettings.file_change_detection_type);
                 SuspendableActivity = ECDPSuspendableScheduledActivityIntToString(cdpSettings.suspendable_activities);
             }
 
@@ -1299,24 +1254,7 @@ namespace PSAsigraDSClient
                     default:
                         return null;
                 }
-            }
-
-            private string ECDPFileChangeDetectionTypeToString(ECDPFileChangeDetectionType changeDetectionType)
-            {
-                switch(changeDetectionType)
-                {
-                    case ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__WinBuiltInMonitor:
-                        return "WindowsBuiltInMonitor";
-                    case ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__MLREmailMonitor:
-                        return "MLREmailMonitor";
-                    case ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__GenericScanner:
-                        return "GenericScanner";
-                    case ECDPFileChangeDetectionType.ECDPFileChangeDetectionType__FileAlterationMonitor:
-                        return "FileAlterationMonitor";
-                    default:
-                        return null;
-                }
-            }
+            }            
 
             private string[] ECDPSuspendableScheduledActivityIntToString(int suspendableActivities)
             {
@@ -1348,7 +1286,7 @@ namespace PSAsigraDSClient
             {
                 Id = prePostInfo.id;
                 Command = prePostInfo.command;
-                ExecutionType = EPrePostExecutionTypeToString(prePostInfo.executionType);
+                ExecutionType = EnumToString(prePostInfo.executionType);
                 BackupRestore = (prePostInfo.isForBackup == true) ? "Backup" : "Restore";
                 PrePost = (prePostInfo.isForPre == true) ? "Pre" : "Post";
                 RemoteExecute = prePostInfo.isRemote;
@@ -1402,7 +1340,7 @@ namespace PSAsigraDSClient
                 DelaySeconds = preOptions.delaySeconds;
                 EqualToValue = preOptions.equalTo;
                 ExecutionFailure = preOptions.orExecutionFailure;
-                ResultCheck = EPreExecutionCheckTypeToString(preOptions.resultType);
+                ResultCheck = EnumToString(preOptions.resultType);
                 SkipActivity = preOptions.skipActivity;
                 SkipPost = preOptions.skipPost;
             }
@@ -1410,40 +1348,6 @@ namespace PSAsigraDSClient
             public override string ToString()
             {
                 return Value;
-            }
-        }
-
-        private static string EPrePostExecutionTypeToString(EPrePostExecutionType executionType)
-        {
-            switch(executionType)
-            {
-                case EPrePostExecutionType.EPrePostExecutionType__RunCommand:
-                    return "RunCommand";
-                case EPrePostExecutionType.EPrePostExecutionType__StartService:
-                    return "StartService";
-                case EPrePostExecutionType.EPrePostExecutionType__StopService:
-                    return "StopService";
-                default:
-                    return null;
-            }
-        }
-
-        private static string EPreExecutionCheckTypeToString(EPreExecutionCheckType checkType)
-        {
-            switch(checkType)
-            {
-                case EPreExecutionCheckType.EPreExecutionCheckType__OnExitCode:
-                    return "OnExitCode";
-                case EPreExecutionCheckType.EPreExecutionCheckType__OnFileExistence:
-                    return "OnFileExistence";
-                case EPreExecutionCheckType.EPreExecutionCheckType__OnOutputString:
-                    return "OnOutputString";
-                case EPreExecutionCheckType.EPreExecutionCheckType__OnExecutionSuccess:
-                    return "OnExecutionSuccess";
-                case EPreExecutionCheckType.EPreExecutionCheckType__OnExecutionFailure:
-                    return "OnExecutionFailure";
-                default:
-                    return null;
             }
         }
 
@@ -1615,29 +1519,6 @@ namespace PSAsigraDSClient
                 default:
                     return EBackupDataType.EBackupDataType__UNDEFINED;
             }
-        }
-
-        public static string EBackupSetTypeToString(EBackupSetType setType)
-        {
-            string SetType = null;
-
-            switch (setType)
-            {
-                case EBackupSetType.EBackupSetType__OffSite:
-                    SetType = "OffSite";
-                    break;
-                case EBackupSetType.EBackupSetType__Statistical:
-                    SetType = "Statistical";
-                    break;
-                case EBackupSetType.EBackupSetType__SelfContained:
-                    SetType = "SelfContained";
-                    break;
-                case EBackupSetType.EBackupSetType__LocalOnly:
-                    SetType = "LocalOnly";
-                    break;
-            }
-
-            return SetType;
         }
 
         public static EBackupSetType StringToEBackupSetType(string setType)

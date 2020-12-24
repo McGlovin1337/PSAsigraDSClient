@@ -129,7 +129,7 @@ namespace PSAsigraDSClient
                 ETimeRetentionType type = timeRetention.getType();
                 retention_time_span validFor = timeRetention.getValidFor();
 
-                Type = ETimeRetentionTypeToString(type);
+                Type = EnumToString(type);
                 ValidFor = new DSClientRetentionTimeSpan(validFor);
 
                 if (type == ETimeRetentionType.ETimeRetentionType__Interval)
@@ -174,32 +174,6 @@ namespace PSAsigraDSClient
             {
                 return Type;
             }
-
-            private string ETimeRetentionTypeToString(ETimeRetentionType type)
-            {
-                string Type = null;
-
-                switch (type)
-                {
-                    case ETimeRetentionType.ETimeRetentionType__Interval:
-                        Type = "Interval";
-                        break;
-                    case ETimeRetentionType.ETimeRetentionType__Weekly:
-                        Type = "Weekly";
-                        break;
-                    case ETimeRetentionType.ETimeRetentionType__Monthly:
-                        Type = "Monthly";
-                        break;
-                    case ETimeRetentionType.ETimeRetentionType__Yearly:
-                        Type = "Yearly";
-                        break;
-                    case ETimeRetentionType.ETimeRetentionType__UNDEFINED:
-                        Type = "Undefined";
-                        break;
-                }
-
-                return Type;
-            }
         }
 
         public class DSClientArchiveRule
@@ -230,42 +204,7 @@ namespace PSAsigraDSClient
             public DSClientRetentionTimeSpan(retention_time_span timeSpan)
             {
                 Period = timeSpan.period;
-                Unit = RetentionTimeUnitToString(timeSpan.unit);
-            }
-
-            private string RetentionTimeUnitToString(RetentionTimeUnit unit)
-            {
-                string newUnit = null;
-
-                switch (unit)
-                {
-                    case RetentionTimeUnit.RetentionTimeUnit__Seconds:
-                        newUnit = "Seconds";
-                        break;
-                    case RetentionTimeUnit.RetentionTimeUnit__Minutes:
-                        newUnit = "Minutes";
-                        break;
-                    case RetentionTimeUnit.RetentionTimeUnit__Hours:
-                        newUnit = "Hours";
-                        break;
-                    case RetentionTimeUnit.RetentionTimeUnit__Days:
-                        newUnit = "Days";
-                        break;
-                    case RetentionTimeUnit.RetentionTimeUnit__Weeks:
-                        newUnit = "Weeks";
-                        break;
-                    case RetentionTimeUnit.RetentionTimeUnit__Months:
-                        newUnit = "Months";
-                        break;
-                    case RetentionTimeUnit.RetentionTimeUnit__Years:
-                        newUnit = "Years";
-                        break;
-                    case RetentionTimeUnit.RetentionTimeUnit__UNDEFINED:
-                        newUnit = "Undefined";
-                        break;
-                }
-
-                return newUnit;
+                Unit = EnumToString(timeSpan.unit);
             }
 
             public override string ToString()

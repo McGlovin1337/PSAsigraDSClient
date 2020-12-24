@@ -96,65 +96,13 @@ namespace PSAsigraDSClient
             {
                 EventId = eventLogInfo.event_id;
                 DateTime = UnixEpochToDateTime(eventLogInfo.when);
-                EventType = EEventTypeToString(eventLogInfo.type);
+                EventType = EnumToString(eventLogInfo.type);
                 Description = eventLogInfo.description;
                 ExtraInfo = eventLogInfo.extra_info;
-                EventCategory = EEventCategoryToString(eventLogInfo.category);
+                EventCategory = EnumToString(eventLogInfo.category);
                 ActivityId = eventLogInfo.activity_id;
                 NodeId = eventLogInfo.node_id;
                 User = eventLogInfo.user;
-            }
-
-            private string EEventTypeToString(EEventType eventType)
-            {
-                switch(eventType)
-                {
-                    case EEventType.EEventType__Information:
-                        return "Information";
-                    case EEventType.EEventType__Warning:
-                        return "Warning";
-                    case EEventType.EEventType__Error:
-                        return "Error";
-                    default:
-                        return null;
-                }
-            }
-
-            private string EEventCategoryToString(EEventCategory eventCategory)
-            {
-                switch(eventCategory)
-                {
-                    case EEventCategory.EEventCategory__Application:
-                        return "Application";
-                    case EEventCategory.EEventCategory__Socket:
-                        return "Socket";
-                    case EEventCategory.EEventCategory__Message:
-                        return "Message";
-                    case EEventCategory.EEventCategory__Database:
-                        return "Database";
-                    case EEventCategory.EEventCategory__Exception:
-                        return "Exception";
-                    case EEventCategory.EEventCategory__IO:
-                        return "IO";
-                    case EEventCategory.EEventCategory__System:
-                        return "System";
-                    case EEventCategory.EEventCategory__Security:
-                        return "Security";
-                    case EEventCategory.EEventCategory__MAPI:
-                        return "MAPI";
-                    case EEventCategory.EEventCategory__Novell:
-                        return "Novell";
-                    case EEventCategory.EEventCategory__Oracle:
-                        return "Oracle";
-                    case EEventCategory.EEventCategory__RMAN:
-                        return "RMAN";
-                    case EEventCategory.EEventCategory__XML:
-                        return "XML";
-                    case EEventCategory.EEventCategory__DB2:
-                        return "DB2";
-                    default:
-                        return null;
-                }
             }
         }
     }

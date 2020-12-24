@@ -8,6 +8,15 @@ namespace PSAsigraDSClient
 {
     public class DSClientCommon
     {
+        public static string EnumToString<T>(T e)
+        {
+            string result = e.ToString()
+                                .Split('_')
+                                .Last();
+
+            return result;
+        }
+
         public class DSClientOSType
         {
             public string OsType { get; private set; }

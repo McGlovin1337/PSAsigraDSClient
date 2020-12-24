@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient.PSAsigraDSClient
 {
@@ -29,9 +29,7 @@ namespace PSAsigraDSClient.PSAsigraDSClient
 
             public DSClientOperatingSystem(EOSFlavour osType)
             {
-                OperatingSystem = osType.ToString()
-                                        .Split('_')
-                                        .Last();
+                OperatingSystem = EnumToString(osType);
             }
         }
     }

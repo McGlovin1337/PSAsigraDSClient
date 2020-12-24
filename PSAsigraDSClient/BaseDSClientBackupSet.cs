@@ -991,7 +991,7 @@ namespace PSAsigraDSClient
             public ForceFullDayTime(bool forceFull, EWeekDay day, time_in_day time)
             {
                 ForceFull = forceFull;
-                Day = EWeekDayToString(day);
+                Day = EnumToString(day);
                 Time = new TimeInDay(time);
             }
 
@@ -1010,7 +1010,7 @@ namespace PSAsigraDSClient
             public ForceFullPeriod(bool forceFull, ETimeUnit unit, int value)
             {
                 ForceFull = forceFull;
-                TimeUnit = ETimeUnitToString(unit);
+                TimeUnit = EnumToString(unit);
                 TimeValue = value;
             }
 
@@ -1196,7 +1196,7 @@ namespace PSAsigraDSClient
             public OldFileExclusionConfig(old_file_exclusion_config exclusionConfig)
             {
                 Type = EnumToString(exclusionConfig.type);
-                TimeUnit = ETimeUnitToString(exclusionConfig.unit);
+                TimeUnit = EnumToString(exclusionConfig.unit);
                 Value = exclusionConfig.value;
             }
 

@@ -23,21 +23,7 @@ namespace PSAsigraDSClient
 
             public DSClientOSType(EOSFlavour osType)
             {
-                switch(osType)
-                {
-                    case EOSFlavour.EOSFlavour__Windows:
-                        OsType = "Windows";
-                        break;
-                    case EOSFlavour.EOSFlavour__Linux:
-                        OsType = "Linux";
-                        break;
-                    case EOSFlavour.EOSFlavour__Mac:
-                        OsType = "Mac";
-                        break;
-                    case EOSFlavour.EOSFlavour__UNDEFINED:
-                        OsType = "Undefined";
-                        break;
-                }
+                OsType = EnumToString(osType);
             }
         }
 
@@ -111,62 +97,6 @@ namespace PSAsigraDSClient
                     return EWeekDay.EWeekDay__Sunday;
                 default:
                     return EWeekDay.EWeekDay__UNDEFINED;
-            }
-        }
-
-        public static string EWeekDayToString(EWeekDay weekDay)
-        {
-            switch(weekDay)
-            {
-                case EWeekDay.EWeekDay__Monday:
-                    return "Monday";
-                case EWeekDay.EWeekDay__Tuesday:
-                    return "Tuesday";
-                case EWeekDay.EWeekDay__Wednesday:
-                    return "Wednesday";
-                case EWeekDay.EWeekDay__Thursday:
-                    return "Thursday";
-                case EWeekDay.EWeekDay__Friday:
-                    return "Friday";
-                case EWeekDay.EWeekDay__Saturday:
-                    return "Saturday";
-                case EWeekDay.EWeekDay__Sunday:
-                    return "Sunday";
-                default:
-                    return null;
-            }
-        }
-
-        public static string EMonthToString(EMonth month)
-        {
-            switch(month)
-            {
-                case EMonth.EMonth__January:
-                    return "January";
-                case EMonth.EMonth__February:
-                    return "February";
-                case EMonth.EMonth__March:
-                    return "March";
-                case EMonth.EMonth__April:
-                    return "April";
-                case EMonth.EMonth__May:
-                    return "May";
-                case EMonth.EMonth__June:
-                    return "June";
-                case EMonth.EMonth__July:
-                    return "July";
-                case EMonth.EMonth__August:
-                    return "August";
-                case EMonth.EMonth__September:
-                    return "September";
-                case EMonth.EMonth__October:
-                    return "October";
-                case EMonth.EMonth__November:
-                    return "November";
-                case EMonth.EMonth__December:
-                    return "December";
-                default:
-                    return null;
             }
         }
 
@@ -267,29 +197,6 @@ namespace PSAsigraDSClient
                     return ECompressionType.ECompressionType__ZLIB_HI;
                 default:
                     return ECompressionType.ECompressionType__UNDEFINED;
-            }
-        }
-
-        public static string ETimeUnitToString(ETimeUnit timeUnit)
-        {
-            switch(timeUnit)
-            {
-                case ETimeUnit.ETimeUnit__Seconds:
-                    return "Seconds";
-                case ETimeUnit.ETimeUnit__Minutes:
-                    return "Minutes";
-                case ETimeUnit.ETimeUnit__Hours:
-                    return "Hours";
-                case ETimeUnit.ETimeUnit__Days:
-                    return "Days";
-                case ETimeUnit.ETimeUnit__Weeks:
-                    return "Weeks";
-                case ETimeUnit.ETimeUnit__Months:
-                    return "Months";
-                case ETimeUnit.ETimeUnit__Years:
-                    return "Years";
-                default:
-                    return null;
             }
         }
 

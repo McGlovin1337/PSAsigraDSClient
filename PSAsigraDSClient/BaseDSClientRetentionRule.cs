@@ -141,7 +141,7 @@ namespace PSAsigraDSClient
                 {
                     WeeklyTimeRetentionOption weeklyTimeRetention = WeeklyTimeRetentionOption.from(timeRetention);
                     SnapshotTime = new TimeInDay(weeklyTimeRetention.getSnapshotTime());
-                    WeeklyDay = EWeekDayToString(weeklyTimeRetention.getTriggerDay());
+                    WeeklyDay = EnumToString(weeklyTimeRetention.getTriggerDay());
                 }
                 else if (type == ETimeRetentionType.ETimeRetentionType__Monthly)
                 {
@@ -154,7 +154,7 @@ namespace PSAsigraDSClient
                     YearlyTimeRetentionOption yearlyTimeRetention = YearlyTimeRetentionOption.from(timeRetention);
                     SnapshotTime = new TimeInDay(yearlyTimeRetention.getSnapshotTime());
                     MonthlyDay = MonthlyDayToString(yearlyTimeRetention.getDayOfMonth());
-                    YearlyMonth = EMonthToString(yearlyTimeRetention.getTriggerMonth());
+                    YearlyMonth = EnumToString(yearlyTimeRetention.getTriggerMonth());
                 }
             }
 

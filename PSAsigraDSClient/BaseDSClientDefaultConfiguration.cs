@@ -59,7 +59,7 @@ namespace PSAsigraDSClient
                 RetentionRule retentionRule = defaultConfiguration.getDefaultRetentionRule();
                 Schedule schedule = defaultConfiguration.getDefaultSchedule();
 
-                CompressionType = ECompressionTypeToString(compressionType);
+                CompressionType = EnumToString(compressionType);
                 DSClientBuffer = defaultConfiguration.getDefaultDSClientBuffer();
                 LocalStoragePath = defaultConfiguration.getDefaultLocalStoragePath();
                 BackupSetNotification = new BaseDSClientNotification.DSClientBackupSetNotification(notifyInfo[0]);
@@ -79,7 +79,7 @@ namespace PSAsigraDSClient
                 Schedule schedule = defaultConfiguration.getDefaultSchedule();
                 EOpenFileStrategy openFileStrategy = defaultConfiguration.getDefaultOpenFilesOperation();
 
-                CompressionType = ECompressionTypeToString(compressionType);
+                CompressionType = EnumToString(compressionType);
                 DSClientBuffer = defaultConfiguration.getDefaultDSClientBuffer();
                 LocalStoragePath = defaultConfiguration.getDefaultLocalStoragePath();
                 BackupSetNotification = new BaseDSClientNotification.DSClientBackupSetNotification(notifyInfo[0]);

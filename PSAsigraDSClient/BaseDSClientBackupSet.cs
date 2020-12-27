@@ -461,7 +461,7 @@ namespace PSAsigraDSClient
                 RetentionRuleName = backupSetOverviewInfo.retention_rule_name;
                 OnlineDataSize = backupSetOverviewInfo.status.on_line_data_size;
                 OnlineFileCount = backupSetOverviewInfo.status.on_line_file_count;
-                CompressionType = ECompressionTypeToString(backupSet.getCompressionType());
+                CompressionType = EnumToString(backupSet.getCompressionType());
                 CompressedSize = backupSetOverviewInfo.status.dssystem_compressed_size;
                 LocalStorageDataSize = backupSetOverviewInfo.status.local_storage_data_size;
                 LocalStorageFileCount = backupSetOverviewInfo.status.local_storage_file_count;

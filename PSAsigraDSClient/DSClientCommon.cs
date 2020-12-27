@@ -10,9 +10,8 @@ namespace PSAsigraDSClient
     {
         public static string EnumToString<T>(T e)
         {
-            string result = e.ToString()
-                                .Split('_')
-                                .Last();
+            string result = Regex.Split(e.ToString(), "__")
+                                    .Last();
 
             return result;
         }
@@ -145,38 +144,6 @@ namespace PSAsigraDSClient
                 if (Validated.Success) return true;
                 return false;
             }
-        }
-
-        public static string ECompressionTypeToString(ECompressionType compressionType)
-        {
-            string compressType = null;
-
-            switch (compressionType)
-            {
-                case ECompressionType.ECompressionType__NONE:
-                    compressType = "None";
-                    break;
-                case ECompressionType.ECompressionType__ZLIB:
-                    compressType = "ZLIB";
-                    break;
-                case ECompressionType.ECompressionType__LZOP:
-                    compressType = "LZOP";
-                    break;
-                case ECompressionType.ECompressionType__ZLIB_LO:
-                    compressType = "ZLIB_LO";
-                    break;
-                case ECompressionType.ECompressionType__ZLIB_MED:
-                    compressType = "ZLIB_MED";
-                    break;
-                case ECompressionType.ECompressionType__ZLIB_HI:
-                    compressType = "ZLIB_HI";
-                    break;
-                case ECompressionType.ECompressionType__UNDEFINED:
-                    compressType = "Undefined";
-                    break;
-            }
-
-            return compressType;
         }
 
         public static ECompressionType StringToECompressionType(string compressionType)

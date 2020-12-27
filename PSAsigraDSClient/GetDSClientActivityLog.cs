@@ -107,7 +107,7 @@ namespace PSAsigraDSClient
             public DSClientAcivityLog(activity_log_info activityLogInfo)
             {
                 ActivityId = activityLogInfo.id;
-                ActivityType = BaseDSClientRunningActivity.EActivityTypeToString(activityLogInfo.type);
+                ActivityType = EnumToString(activityLogInfo.type);
                 BackupSetId = activityLogInfo.set_id;
                 Description = activityLogInfo.description;
                 StartTime = UnixEpochToDateTime(activityLogInfo.start_time);

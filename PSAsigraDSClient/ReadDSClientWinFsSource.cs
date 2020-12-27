@@ -56,7 +56,6 @@ namespace PSAsigraDSClient
                     sourceItems.Add(new SourceItemInfo(path, item));
 
             foreach (browse_item_info item in browseItems)
-                if (!item.isfile)
                     sourceItems.Add(new SourceItemInfo(path, item));
 
             if (Recursive)
@@ -67,7 +66,8 @@ namespace PSAsigraDSClient
                     path += "\\";
 
                 foreach (browse_item_info item in browseItems)
-                    newPaths.Add(new ItemPath(path + item.name, 0));
+                    if (!item.isfile)
+                        newPaths.Add(new ItemPath(path + item.name, 0));
 
                 while (newPaths.Count() > 0)
                 {

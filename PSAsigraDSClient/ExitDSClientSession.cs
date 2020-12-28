@@ -68,12 +68,12 @@ namespace PSAsigraDSClient
                 SessionState.PSVariable.Remove("ValidateView");
             }
 
-            WriteVerbose("Checking for existing DSClient Sessions...");
+            WriteVerbose("Checking for existing DS-Client Sessions...");
             ClientConnection previousSession = SessionState.PSVariable.GetValue("DSClientSession", null) as ClientConnection;
 
             if (previousSession != null)
             {
-                WriteVerbose("Previous DSClient Session found, attempting to dispose...");
+                WriteVerbose("Previous DS-Client Session found, attempting to dispose...");
                 try
                 {
                     previousSession.logout();
@@ -85,12 +85,12 @@ namespace PSAsigraDSClient
                 }
                 SessionState.PSVariable.Remove("DSClientSession");
                 SessionState.PSVariable.Remove("DSClientOSType");
-                WriteObject("DSClient Session removed.");
+                WriteObject("DS-Client Session removed.");
             }
             else
             {
                 WriteVerbose("No previous DSClient Session found");
-                WriteObject("DSClient Session does not exist.");
+                WriteObject("DS-Client Session does not exist.");
             }
         }
     }

@@ -91,12 +91,12 @@ namespace PSAsigraDSClient
                 SessionState.PSVariable.Remove("ValidateView");
             }
 
-            WriteVerbose("Checking for existing DSClient Sessions...");
+            WriteVerbose("Checking for existing DS-Client Sessions...");
             ClientConnection previousSession = SessionState.PSVariable.GetValue("DSClientSession", null) as ClientConnection;
 
             if (previousSession != null)
             {
-                WriteVerbose("Previous DSClient Session found, attempting to dispose...");
+                WriteVerbose("Previous DS-Client Session found, attempting to dispose...");
                 try
                 {
                     previousSession.logout();
@@ -108,10 +108,10 @@ namespace PSAsigraDSClient
                 }
                 SessionState.PSVariable.Remove("DSClientSession");
                 SessionState.PSVariable.Remove("DSClientOSType");
-                WriteObject("DSClient Session removed.");
+                WriteObject("DS-Client Session removed.");
             }
 
-            WriteVerbose("Establishing a new DSClient Session...");
+            WriteVerbose("Establishing a new DS-Client Session...");
             ClientConnection DSClientSession = ConnectSession(Host, Port, NoSSL, APIVersion, user, pwd);
 
             SessionState.PSVariable.Set("DSClientSession", DSClientSession);
@@ -124,7 +124,7 @@ namespace PSAsigraDSClient
 
             DSClientConfigMgr.Dispose();
 
-            WriteObject("DSClient Session Established.");
+            WriteObject("DS-Client Session Established.");
         }
 
         private ClientConnection ConnectSession(string Host, UInt16 Port, bool NoSSL, string APIVersion, string User, string Pass)

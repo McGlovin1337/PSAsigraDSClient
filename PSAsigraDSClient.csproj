@@ -68,6 +68,7 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetRestore.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSource.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientFileSystemRestore.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientInitializeBackupSetDataBrowser.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientMSSqlServerBackupSet.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientAdvancedConfig.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientBackupSetItem.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientNocSettings.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientOS.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSupportedDataType.cs" />
@@ -151,6 +153,7 @@
     <Compile Include="PSAsigraDSClient\RestoreDSClientOrphanedBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\SearchDSClientBackupSetData.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientAdvancedConfig.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMultiFactorAuthUser.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientMSSqlServerBackupSet.cs" />

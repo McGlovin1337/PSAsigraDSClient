@@ -81,7 +81,7 @@ namespace PSAsigraDSClient
             WildcardOptions wcOptions = WildcardOptions.IgnoreCase |
                                         WildcardOptions.Compiled;
 
-            if (MyInvocation.BoundParameters.ContainsKey("Id"))
+            if (MyInvocation.BoundParameters.ContainsKey("BackupSetId"))
                 dSClientBackupSetsInfo = dSClientBackupSetsInfo.Where(set => set.BackupSetId == BackupSetId);
 
             if (Computer != null)

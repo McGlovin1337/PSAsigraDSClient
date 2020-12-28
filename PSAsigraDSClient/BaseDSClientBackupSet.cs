@@ -317,6 +317,22 @@ namespace PSAsigraDSClient
             }
         }
 
+        protected class DSClientBackupSetBasicProps
+        {
+            public int BackupSetId { get; private set; }
+            public string Computer { get; private set; }
+            public string Name { get; private set; }
+            public bool Enabled { get; private set; }
+
+            public DSClientBackupSetBasicProps(BackupSet backupSet)
+            {
+                BackupSetId = backupSet.getID();
+                Computer = backupSet.getComputerName();
+                Name = backupSet.getName();
+                Enabled = backupSet.isActive();
+            }
+        }
+
         protected class DSClientBackupSet
         {
             public int BackupSetId { get; private set; }

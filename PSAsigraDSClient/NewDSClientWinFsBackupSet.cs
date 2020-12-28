@@ -6,6 +6,7 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.New, "DSClientWinFsBackupSet")]
+    [OutputType(typeof(DSClientBackupSetBasicProps))]
 
     public class NewDSClientWinFsBackupSet: BaseDSClientWinFsBackupSet
     {
@@ -114,7 +115,10 @@ namespace PSAsigraDSClient
             // Add the Backup Set to the DS-Client
             WriteVerbose("Adding the new Backup Set Object to DS-Client...");
             DSClientSession.addBackupSet(newWin32BackupSet);
-            WriteObject("Backup Set Created with BackupSetId: " + newWin32BackupSet.getID());
+            WriteVerbose("Backup Set Created with BackupSetId: " + newWin32BackupSet.getID());
+
+            if (PassThru)
+                WriteObject(new DSClientBackupSetBasicProps(newWin32BackupSet));
 
             newWin32BackupSet.Dispose();
             dataSourceBrowser.Dispose();

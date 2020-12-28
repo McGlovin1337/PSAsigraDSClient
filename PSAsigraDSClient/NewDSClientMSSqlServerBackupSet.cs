@@ -7,6 +7,7 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.New, "DSClientMSSqlServerBackupSet")]
+    [OutputType(typeof(DSClientBackupSetBasicProps))]
 
     public class NewDSClientMSSqlServerBackupSet: BaseDSClientMSSqlServerBackupSet
     {
@@ -166,7 +167,10 @@ namespace PSAsigraDSClient
             // Add the Backup Set to the DS-Client
             WriteVerbose("Adding the new Backup Set Object to DS-Client...");
             DSClientSession.addBackupSet(newSqlBackupSet);
-            WriteObject("Backup Set Created with BackupSetId: " + newSqlBackupSet.getID());
+            WriteVerbose("Backup Set Created with BackupSetId: " + newSqlBackupSet.getID());
+
+            if (PassThru)
+                WriteObject(new DSClientBackupSetBasicProps(newSqlBackupSet));
 
             newSqlBackupSet.Dispose();
             setCreation.Dispose();

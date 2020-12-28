@@ -69,5 +69,8 @@ namespace PSAsigraDSClient
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Completion Status to send SNMP Traps")]
         [ValidateSet("Incomplete", "CompletedWithErrors", "Successful", "CompletedWithWarnings")]
         public string[] SnmpTrapNotifications { get; set; }
+
+        [Parameter(HelpMessage = "Output Basic Backup Set Properties")]
+        public SwitchParameter PassThru { get; set; }
     }
 }

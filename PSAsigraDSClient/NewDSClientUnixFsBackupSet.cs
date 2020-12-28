@@ -6,6 +6,7 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.New, "DSClientUnixFsBackupSet")]
+    [OutputType(typeof(DSClientBackupSetBasicProps))]
 
     public class NewDSClientUnixFsBackupSet: BaseDSClientUnixFsBackupSet
     {
@@ -166,7 +167,10 @@ namespace PSAsigraDSClient
             // Add the Backup Set to the DS-Client
             WriteVerbose("Adding the new Backup Set Object to DS-Client...");
             DSClientSession.addBackupSet(newUnixBackupSet);
-            WriteObject("Backup Set Created with BackupSetId: " + newUnixBackupSet.getID());
+            WriteVerbose("Backup Set Created with BackupSetId: " + newUnixBackupSet.getID());
+
+            if (PassThru)
+                WriteObject(new DSClientBackupSetBasicProps(newUnixBackupSet));
 
             newUnixBackupSet.Dispose();
             dataSourceBrowser.Dispose();

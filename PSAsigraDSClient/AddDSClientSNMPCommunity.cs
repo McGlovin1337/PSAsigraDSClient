@@ -30,7 +30,7 @@ namespace PSAsigraDSClient
 
                 // If the Community Name already exists, get any duplicates between the Hosts we're trying to add and those that already exist
                 string[] hostExist = Hosts.Intersect(existingCommunity.Hosts).ToArray();
-                WriteVerbose("Notice: Yielded " + hostExist.Count() + " existing hosts");
+                WriteVerbose($"Notice: Yielded {hostExist.Count()} existing hosts");
 
                 // Update the list of Hosts to be added, excluding any duplicates
                 Hosts = Hosts.Except(hostExist).ToArray();

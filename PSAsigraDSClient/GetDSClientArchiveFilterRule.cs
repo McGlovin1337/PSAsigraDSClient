@@ -34,7 +34,7 @@ namespace PSAsigraDSClient
                 DSClientArchiveFilterRules.Add(dSClientArchiveFilterRule);
             }
 
-            WriteVerbose("Notice: Yielded " + DSClientArchiveFilterRules.Count() + " Archive Filter Rules");
+            WriteVerbose($"Notice: Yielded {DSClientArchiveFilterRules.Count()} Archive Filter Rules");
 
             DSClientArchiveFilterRules.ForEach(WriteObject);
         }

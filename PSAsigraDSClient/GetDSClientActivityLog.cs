@@ -81,7 +81,7 @@ namespace PSAsigraDSClient
             if (Status != null)
                 ActivityLogs = ActivityLogs.Where(log => Status.Contains(log.Status)).ToList();
 
-            WriteVerbose("Notice: Yielded " + ActivityLogs.Count() + " Activities");
+            WriteVerbose($"Notice: Yielded {ActivityLogs.Count()} Activities");
 
             ActivityLogs.ForEach(WriteObject);
         }

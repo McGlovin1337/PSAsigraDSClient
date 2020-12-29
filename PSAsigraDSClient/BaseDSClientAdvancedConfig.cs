@@ -12,7 +12,7 @@ namespace PSAsigraDSClient
         {
             ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
 
-            WriteVerbose("Retrieving DS-Client Advanced Configuration Parameters...");
+            WriteVerbose("Performing Action: Retrieve DS-Client Advanced Configuration Parameters");
             advanced_config_info[] advancedConfigInfo = DSClientConfigMgr.getAdvancedConfigurationParameters();
 
             DSClientConfigMgr.Dispose();

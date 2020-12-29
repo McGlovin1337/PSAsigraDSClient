@@ -15,10 +15,10 @@ namespace PSAsigraDSClient
         {
             ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
 
-            WriteVerbose("Getting Schedule with Id " + ScheduleId + "...");
+            WriteVerbose($"Performing Action: Retrieve Schedule with ScheduleId {ScheduleId}");
             Schedule removeSchedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
 
-            WriteVerbose("Attempting to remove Schedule with Id " + ScheduleId + "...");
+            WriteVerbose($"Performing Action: Remove Schedule with ScheduleId {ScheduleId}");
             DSClientScheduleMgr.removeSchedule(removeSchedule);
             WriteObject("Removed ScheduleId " + ScheduleId);
 

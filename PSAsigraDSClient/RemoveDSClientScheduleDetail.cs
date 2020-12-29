@@ -19,12 +19,12 @@ namespace PSAsigraDSClient
         {
             ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
 
-            WriteVerbose("Looking up DSClient for ScheduleId " + ScheduleId + "...");
+            WriteVerbose($"Performing Action: Retrieve Schedule with ScheduleId {ScheduleId}");
             Schedule Schedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
 
-            WriteVerbose("Getting Schedule Details for ScheduleId " + ScheduleId + "...");
+            WriteVerbose($"Performing Action: Retrieve Schedule Details for ScheduleId {ScheduleId}");
             ScheduleDetail[] ScheduleDetails = Schedule.getDetails();
-            WriteVerbose("Yielded " + ScheduleDetails.Count() + " Schedule Details");
+            WriteVerbose($"Notice: Yielded {ScheduleDetails.Count()} Schedule Details");
 
             // Create a Base ID for each Detail in the Schedule
             int DetailID = 0, RemoveCount = 0;
@@ -41,7 +41,7 @@ namespace PSAsigraDSClient
                 {
                     if (DetailID == targetId)
                     {
-                        WriteVerbose("Removing Schedule Detail...");
+                        WriteVerbose("Performing Action: Remove Schedule Detail");
                         try
                         {
                             Schedule.removeDetail(schedule);
@@ -49,7 +49,7 @@ namespace PSAsigraDSClient
                         }
                         catch
                         {
-                            WriteVerbose("Failed to remove Schedule Detail with Id " + targetId);
+                            WriteWarning($"Failed to remove Schedule Detail with Id {targetId}");
                             continue;
                         }
                     }

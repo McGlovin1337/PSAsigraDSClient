@@ -47,10 +47,10 @@ namespace PSAsigraDSClient
         protected override void ProcessMsSqlBackupSet()
         {
             // Get the Backup Set from DS-Client
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
-            WriteVerbose("Processing Changes to Backup Set...");
+            WriteVerbose("Performing Action: Process Changes to Backup Set");
             // Update Computer Credentials if Credentials specified
             if (Credential != null)
             {
@@ -183,7 +183,7 @@ namespace PSAsigraDSClient
                 incrementalPolicies.is_skip_full_on_weekdays = !DisableSkipWeekDays;
 
             sqlBackupSet.setIncrementalPolicies(incrementalPolicies);
-            WriteVerbose("Completed");
+            WriteVerbose("Notice: Completed");
 
             sqlBackupSet.Dispose();
         }

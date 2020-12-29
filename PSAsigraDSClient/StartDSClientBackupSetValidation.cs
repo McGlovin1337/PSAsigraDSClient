@@ -16,7 +16,7 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             // Check for a Backup Set Validation View stored in Session State
-            WriteVerbose("Checking for DS-Client Validation View Session...");
+            WriteVerbose("Performing Action: Check for DS-Client Validation View Session");
             BackupSetValidationView validationSession = SessionState.PSVariable.GetValue("ValidateView", null) as BackupSetValidationView;
 
             if (validationSession == null)

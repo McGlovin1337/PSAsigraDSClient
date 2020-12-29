@@ -16,7 +16,7 @@ namespace PSAsigraDSClient
         {
             GenericActivity syncActivity;
 
-            WriteVerbose("Starting Backup Synchronization Activity...");
+            WriteVerbose("Performing Action: Start Backup Synchronization Activity");
             if (MyInvocation.BoundParameters.ContainsKey("DSSystemBased"))
                 syncActivity = backupSet.start_sync(DSSystemBased);
             else
@@ -40,7 +40,7 @@ namespace PSAsigraDSClient
 
             foreach (BackupSet set in backupSets)
             {
-                WriteVerbose("Starting a Backup Set Synchronization Activity...");
+                WriteVerbose("Performing Action: Start Backup Set Synchronization Activity");
                 if (MyInvocation.BoundParameters.ContainsKey("DSSystemBased"))
                 {
                     try

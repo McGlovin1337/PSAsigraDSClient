@@ -58,7 +58,7 @@ namespace PSAsigraDSClient
 
             // Try to resolve the supplied Computer
             string computer = dataSourceBrowser.expandToFullPath(Computer);
-            WriteVerbose("Specified Computer resolved to: " + computer);
+            WriteVerbose($"Notice: Specified Computer resolved to: {computer}");
 
             // Change Data Source Browser to correct type
             dataSourceBrowser.Dispose();
@@ -75,13 +75,13 @@ namespace PSAsigraDSClient
             }
             else
             {
-                WriteVerbose("Credentials not specified, using DS-Client Credentials...");
+                WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
                 backupSetCredentials.setUsingClientCredentials(true);
             }
             dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
 
             // Create Backup Set Object
-            WriteVerbose("Creating a new Backup Set object...");
+            WriteVerbose("Performing Action: Create new Backup Set object");
             SQLDataBrowserWithSetCreation setCreation = SQLDataBrowserWithSetCreation.from(dataSourceBrowser);
             BackupSet newBackupSet = setCreation.createBackupSet(Computer);
 
@@ -165,9 +165,9 @@ namespace PSAsigraDSClient
             newSqlBackupSet.setIncrementalPolicies(incrementalPolicies);
 
             // Add the Backup Set to the DS-Client
-            WriteVerbose("Adding the new Backup Set Object to DS-Client...");
+            WriteVerbose("Performing Action: Add Backup Set Object to DS-Client");
             DSClientSession.addBackupSet(newSqlBackupSet);
-            WriteVerbose("Backup Set Created with BackupSetId: " + newSqlBackupSet.getID());
+            WriteVerbose($"Notice: Backup Set Created with BackupSetId: {newSqlBackupSet.getID()}");
 
             if (PassThru)
                 WriteObject(new DSClientBackupSetBasicProps(newSqlBackupSet));

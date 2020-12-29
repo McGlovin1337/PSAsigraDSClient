@@ -15,7 +15,7 @@ namespace PSAsigraDSClient
 
             List<DSClientQuota> DSClientQuotas = new List<DSClientQuota>();
 
-            WriteVerbose("Retreiving Quota Information...");
+            WriteVerbose("Performing Action: Retreive Quota Information");
             for (int i = 0; i < (int)EQuotaOn.EQuotaOn__UNDEFINED; i++)
             {
                 quota_information quotaInfo = DSClientConfigMgr.getQuota((EQuotaOn)i);

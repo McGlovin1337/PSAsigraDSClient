@@ -28,35 +28,37 @@ namespace PSAsigraDSClient
             else
                 deleteArchiveOption = DeleteArchiveOptions.DeleteArchiveOptions__Include;
 
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
-            WriteVerbose("Creating a new Backup Set Delete View...");
-            WriteVerbose("View Start Date: " + DateFrom);
-            WriteVerbose("View End Date: " + DateTo);
+            WriteVerbose("Performing Action: Create Backup Set Delete View");
+            WriteVerbose($"Notice: View Start Date: {DateFrom}");
+            WriteVerbose($"Notice: View End Date: {DateTo}");
             BackupSetDeleteView backupSetDeleteView = backupSet.prepare_delete(DateTimeToUnixEpoch(DateFrom), DateTimeToUnixEpoch(DateTo), DateTimeToUnixEpoch(DeletedDate), KeepGenerations, deleteArchiveOption);
 
             // Check for a previous Backup Set Validation View stored in Session State
-            WriteVerbose("Checking for previous DS-Client Delete View Sessions...");
+            WriteVerbose("Performing Action: Check for previous DS-Client Delete View Sessions");
             BackupSetDeleteView previousDeleteSession = SessionState.PSVariable.GetValue("DeleteView", null) as BackupSetDeleteView;
 
             // If a previous session is found, remove it
             if (previousDeleteSession != null)
             {
-                WriteVerbose("Previous Delete View found, attempting to Dispose...");
+                WriteVerbose("Notice: Previous Delete View found");
                 try
                 {
+                    WriteVerbose("Performing Action: Dispose Delete View");
                     previousDeleteSession.Dispose();
                 }
                 catch
                 {
-                    WriteVerbose("Previous Session failed to Dispose, deleting session...");
+                    WriteVerbose("Notice: Previous Session failed to Dispose");
                 }
+                WriteVerbose("Performing Action: Remove on Delete View Session");
                 SessionState.PSVariable.Remove("DeleteView");
             }
 
             // Add new Delete View to SessionState
-            WriteVerbose("Storing new Backup Set Delete View into SessionState...");
+            WriteVerbose("Performing Action: Store Backup Set Delete View into SessionState");
             SessionState.PSVariable.Set("DeleteView", backupSetDeleteView);
 
             backupSet.Dispose();

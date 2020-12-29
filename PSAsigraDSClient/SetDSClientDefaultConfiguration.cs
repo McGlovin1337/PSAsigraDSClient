@@ -86,7 +86,7 @@ namespace PSAsigraDSClient
             // Set Compression Type/Method
             if (CompressionType != null)
             {
-                WriteVerbose("Setting Default Compression Type...");
+                WriteVerbose("Performing Action: Set Default Compression Type");
                 ECompressionType eCompressionType = StringToECompressionType(CompressionType);
                 defaultConfiguration.setDefaultCompressionType(eCompressionType);
             }
@@ -94,21 +94,21 @@ namespace PSAsigraDSClient
             // Set DS-Client Buffer Path
             if (DSClientBuffer != null)
             {
-                WriteVerbose("Setting DS-Client Buffer...");
+                WriteVerbose("Performing Action: Set DS-Client Buffer");
                 defaultConfiguration.setDefaultDSClientBuffer(DSClientBuffer);
             }
 
             // Set DS-Client Local Storage Path
             if (LocalStoragePath != null)
             {
-                WriteVerbose("Setting DS-Client Local Storage Path...");
+                WriteVerbose("Performing Action: Set DS-Client Local Storage Path");
                 defaultConfiguration.setDefaultLocalStoragePath(LocalStoragePath);
             }
 
             // Set DS-Client Default Notification Method
             if (NotificationMethod != null)
             {
-                WriteVerbose("Setting Default Notification Method...");
+                WriteVerbose("Performing Action: Set Default Notification Method");
                 ENotificationMethod eNotificationMethod = StringToENotificationMethod(NotificationMethod);
                 notifyInfo[0].method = eNotificationMethod;
                 notifyInfoUpdated = true;
@@ -117,7 +117,7 @@ namespace PSAsigraDSClient
             // Set the Notification Recipient for the Default Notification Method
             if (NotificationRecipient != null)
             {
-                WriteVerbose("Setting Notification Recipient...");
+                WriteVerbose("Performing Action: Set Notification Recipient");
                 notifyInfo[0].recipient = NotificationRecipient;
                 notifyInfoUpdated = true;
             }
@@ -125,7 +125,7 @@ namespace PSAsigraDSClient
             // Set the Completion Status for Notifications
             if (NotificationCompletion != null)
             {
-                WriteVerbose("Setting Notification Completion Status...");
+                WriteVerbose("Performing Action: Set Notification Completion Status");
                 int notifyCompletion = ArrayToNotificationCompletionToInt(NotificationCompletion);
                 notifyInfo[0].completion = notifyCompletion;
                 notifyInfoUpdated = true;
@@ -134,7 +134,7 @@ namespace PSAsigraDSClient
             // Set the Email options
             if (notifyInfo[0].method == ENotificationMethod.ENotificationMethod__Email && NotificationEmailOptions != null )
             {
-                WriteVerbose("Setting Email Notification options...");
+                WriteVerbose("Performing Action: Set Email Notification options");
                 notifyInfo[0].email_option = ArrayToEmailOptionsInt(NotificationEmailOptions);
 
                 notifyInfoUpdated = true;
@@ -143,7 +143,7 @@ namespace PSAsigraDSClient
             // Apply the updated Notification Config
             if (notifyInfoUpdated == true)
             {
-                WriteVerbose("Applying updated default notification settings...");
+                WriteVerbose("Performing Action: Apply updated default notification settings");
                 backupSetNotification.addOrUpdateNotification(notifyInfo[0]);
                 defaultConfiguration.setDefaultNotification(backupSetNotification);
             }
@@ -151,7 +151,7 @@ namespace PSAsigraDSClient
             // Set Default Online Generations
             if (OnlineGenerations > 0)
             {
-                WriteVerbose("Setting Online Generations...");
+                WriteVerbose("Performing Action: Set Online Generations");
                 defaultConfiguration.setDefaultOnlineGenerations(OnlineGenerations);
             }
 
@@ -161,7 +161,7 @@ namespace PSAsigraDSClient
                 RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
                 RetentionRule[] retentionRules = DSClientRetentionRuleMgr.definedRules();
 
-                WriteVerbose("Setting Default Retention Rule...");
+                WriteVerbose("Performing Action: Set Default Retention Rule");
                 if (MyInvocation.BoundParameters.ContainsKey("RetentionRuleId"))
                 {
                     RetentionRule retentionRule = retentionRules.Single(rule => rule.getID() == RetentionRuleId);
@@ -184,7 +184,7 @@ namespace PSAsigraDSClient
             {
                 ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
 
-                WriteVerbose("Setting Default Schedule...");
+                WriteVerbose("Performing Action: Set Default Schedule");
                 if (MyInvocation.BoundParameters.ContainsKey("ScheduleId"))
                 {
                     Schedule schedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
@@ -211,7 +211,7 @@ namespace PSAsigraDSClient
                 // Set Open File Method
                 if (OpenFileOperation != null)
                 {
-                    WriteVerbose("Setting Open File Method...");
+                    WriteVerbose("Performing Action: Set Open File Method");
                     EOpenFileStrategy eOpenFileStrategy = StringToEOpenFileStrategy(OpenFileOperation);
 
                     defaultConfigurationWindows.setDefaultOpenFilesOperation(eOpenFileStrategy);
@@ -220,21 +220,21 @@ namespace PSAsigraDSClient
                 // Set the Open File Retry Interval
                 if (MyInvocation.BoundParameters.ContainsKey("OpenFileRetryInterval"))
                 {
-                    WriteVerbose("Setting Open File Retry Interval...");
+                    WriteVerbose("Performing Action: Set Open File Retry Interval");
                     defaultConfigurationWindows.setDefaultOpenFilesRetryInterval(OpenFileRetryInterval);
                 }
 
                 // Set the number of times to retry Open File Method
                 if (MyInvocation.BoundParameters.ContainsKey("OpenFileRetryTimes"))
                 {
-                    WriteVerbose("Setting the number of times to retry Open File Method...");
+                    WriteVerbose("Performing Action: Set the number of times to retry Open File Method");
                     defaultConfigurationWindows.setDefaultOpenFilesRetryTimes(OpenFileRetryTimes);
                 }
 
                 // Set the Backup File Permissions default
                 if (MyInvocation.BoundParameters.ContainsKey("BackupFilePermissions"))
                 {
-                    WriteVerbose("Setting Backup File Permissions...");
+                    WriteVerbose("Performing Action: Set Backup File Permissions");
                     defaultConfigurationWindows.setDefaultToBackupPermissions(BackupFilePermissions);
                 }
 

@@ -17,7 +17,7 @@ namespace PSAsigraDSClient
         {
             RetentionRuleManager DSClientRetentionMgr = DSClientSession.getRetentionRuleManager();
 
-            WriteVerbose("Getting defined Retention Rules from DS-Client...");
+            WriteVerbose("Performing Action: Retrieve defined Retention Rules");
             RetentionRule[] RetentionRules = DSClientRetentionMgr.definedRules();      
 
             ProcessRetentionRule(RetentionRules);

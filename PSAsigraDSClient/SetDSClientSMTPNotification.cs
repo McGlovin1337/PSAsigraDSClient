@@ -59,7 +59,7 @@ namespace PSAsigraDSClient
             smtp_server_info smtpServer = smtpInfo.smtp_server;
             if (SmtpServer != null)
             {
-                WriteVerbose("Validating SmtpServer is a valid hostname or IP Address...");
+                WriteVerbose("Performing Action: Validate SmtpServer is a valid hostname or IP Address");
                 bool validateSmtpHostname = DSClientCommon.ValidateHostname.ValidateHost(SmtpServer);
 
                 if (validateSmtpHostname == true)
@@ -141,7 +141,7 @@ namespace PSAsigraDSClient
 
             NotificationConfiguration DSClientNotifyConfigMgr = DSClientConfigMgr.getNotificationConfiguration();
 
-            WriteVerbose("Setting DS-Client SMTP Notification Configuration...");
+            WriteVerbose("Performing Action: Set DS-Client SMTP Notification Configuration");
             DSClientNotifyConfigMgr.setSMTPEmailNotification(smtpInfo);
             WriteObject("DS-Client SMTP Notification Configuration Updated");
 

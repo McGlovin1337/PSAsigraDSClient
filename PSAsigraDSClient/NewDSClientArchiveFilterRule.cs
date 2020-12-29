@@ -23,7 +23,7 @@ namespace PSAsigraDSClient
             NewArchiveFilterRule.addFilter(archiveFilter);
 
             // Add the Filter Rule to the DS-Client Database
-            WriteVerbose("Adding Archive Filter Rule to DS-Client Database...");
+            WriteVerbose("Performing Action: Add Archive Filter Rule to DS-Client Database");
             DSClientRetentionRuleMgr.addArchiveFilterRule(NewArchiveFilterRule);
 
             NewArchiveFilterRule.Dispose();

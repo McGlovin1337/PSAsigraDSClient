@@ -18,7 +18,7 @@ namespace PSAsigraDSClient
             // Try to resolve the supplied Computer
             string computer = dataSourceBrowser.expandToFullPath(Computer);
             computer = dataSourceBrowser.expandToFullPath(computer);
-            WriteVerbose("Specified Computer resolved to: " + computer);
+            WriteVerbose($"Notice: Specified Computer resolved to: {computer}");
 
             // Set the Credentials
             Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
@@ -31,7 +31,7 @@ namespace PSAsigraDSClient
             }
             else
             {
-                WriteVerbose("Credentials not specified, using DS-Client Credentials...");
+                WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
                 backupSetCredentials.setUsingClientCredentials(true);
             }
             dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
@@ -71,11 +71,11 @@ namespace PSAsigraDSClient
 
                 while (newPaths.Count() > 0)
                 {
-                    WriteVerbose("Items to enumerate: " + newPaths.Count());
+                    WriteVerbose($"Notice: Items to enumerate: {newPaths.Count()}");
                     // Select the first item in the list
                     ItemPath currentPath = newPaths.ElementAt(0);
 
-                    WriteVerbose("Enumerating Path: " + currentPath.Path + " (Depth: " + currentPath.Depth + ")");
+                    WriteVerbose($"Performing Action: Enumerate Path: {currentPath.Path} (Depth: {currentPath.Depth})");
 
                     // Retrieve all the sub-items for the current selected path
                     try

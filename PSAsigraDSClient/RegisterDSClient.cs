@@ -20,13 +20,13 @@ namespace PSAsigraDSClient
 
             if (Initial == true)
             {
-                WriteVerbose("Performing Initial DS-Client Registration with DS-System...");
+                WriteVerbose("Performing Action: Initial DS-Client Registration with DS-System");
                 DSClientConfigMgr.init_register();
                 WriteObject("DS-Client Initial Registration Complete");
             }
             else if (ReRegister == true)
             {
-                WriteVerbose("Performing Re-registration of DS-Client with DS-System...");
+                WriteVerbose("Performing Action: Re-registration of DS-Client with DS-System");
                 DSClientConfigMgr.re_register();
                 WriteObject("DS-Client Re-registration Complete");
             }

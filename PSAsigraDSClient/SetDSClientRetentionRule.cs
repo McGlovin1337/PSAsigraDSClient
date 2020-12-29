@@ -48,7 +48,7 @@ namespace PSAsigraDSClient
             // Set Cleanup of Deleted Files from Source
             if (CleanupDeletedFiles || retentionRule.getCleanupRemovedFiles())
             {
-                WriteVerbose("Setting Cleanup of Deleted Files...");
+                WriteVerbose("Performing Action: Set Cleanup of Deleted Files");
                 retentionRule.setCleanupRemovedFiles(CleanupDeletedFiles);
 
                 retention_time_span timeSpan = new retention_time_span
@@ -56,7 +56,7 @@ namespace PSAsigraDSClient
                     period = CleanupDeletedAfterValue,
                     unit = StringToRetentionTimeUnit(CleanupDeletedAfterUnit)                
                 };
-                WriteVerbose("Setting Time Span for Deleted File Cleanup...");
+                WriteVerbose("Performing Action: Set Time Span for Deleted File Cleanup");
                 retentionRule.setCleanupRemovedAfter(timeSpan);
 
                 retentionRule.setCleanupRemovedKeep(CleanupDeletedKeepGens);
@@ -106,7 +106,7 @@ namespace PSAsigraDSClient
             if (MyInvocation.BoundParameters.ContainsKey("DeleteIncompleteComponents"))
                 retentionRule.setDeleteIncompleteComponents(DeleteIncompleteComponents);
 
-            WriteVerbose("Retention Rule Settings applied");
+            WriteVerbose("Notice: Retention Rule Settings applied");
             // Done
 
             tFAManager.Dispose();

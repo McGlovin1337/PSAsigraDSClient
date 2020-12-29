@@ -68,15 +68,12 @@ namespace PSAsigraDSClient
         {
             ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
 
-            WriteVerbose("Retrieving Schedule from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Schedule with ScheduleId: {ScheduleId}");
             Schedule schedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
 
-            // Define a New Schedule
-            WriteVerbose("Building a new Schedule Detail...");
-            ScheduleDetail newScheduleDetail = new ScheduleDetail();
-
-            // Process Cmdlet specific detail
-            newScheduleDetail = ProcessScheduleDetail(DSClientScheduleMgr);
+            // Define and Process a New Schedule Detail
+            WriteVerbose("Performing Action: Build new Schedule Detail");
+            ScheduleDetail newScheduleDetail = ProcessScheduleDetail(DSClientScheduleMgr);
 
             // Format the StartTime and EndTime
             time_in_day startTime = StringTotime_in_day(StartTime);
@@ -141,7 +138,7 @@ namespace PSAsigraDSClient
             }
 
             // Add the Schedule Detail to the Schedule
-            WriteVerbose("Adding Schedule Detail to Schedule...");
+            WriteVerbose($"Performing Action: Add Schedule Detail to Schedule with ScheduleId: {ScheduleId}");
             schedule.addDetail(newScheduleDetail);
 
             schedule.Dispose();

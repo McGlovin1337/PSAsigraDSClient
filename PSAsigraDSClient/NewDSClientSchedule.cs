@@ -39,7 +39,7 @@ namespace PSAsigraDSClient
             ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
 
             // Build a new Schedule
-            WriteVerbose("Building new Schedule...");
+            WriteVerbose("Performing Action: Build new Schedule object");
             Schedule newSchedule = DSClientScheduleMgr.createSchedule();
 
             newSchedule.setName(Name);
@@ -63,7 +63,7 @@ namespace PSAsigraDSClient
                 newSchedule.setUsingNetworkDetection(UseNetworkDetection);
 
             // Apply the new Schedule
-            WriteVerbose("Adding the new Schedule...");
+            WriteVerbose("Performing Action: Add new Schedule to DS-Client");
             DSClientScheduleMgr.addSchedule(newSchedule);
 
             if (PassThru)

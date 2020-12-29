@@ -52,7 +52,7 @@ namespace PSAsigraDSClient
             }
             tFAManager.Dispose();
 
-            WriteVerbose("Building new Retention Rule...");
+            WriteVerbose("Performing Action: Build new Retention Rule object");
             RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
             RetentionRule NewRetentionRule = DSClientRetentionRuleMgr.createRule();
 
@@ -62,7 +62,7 @@ namespace PSAsigraDSClient
             // Set Cleanup of Deleted Files from Source
             if (CleanupDeletedFiles)
             {
-                WriteVerbose("Setting Cleanup of Deleted Files...");
+                WriteVerbose("Performing Action: Set Cleanup of Deleted Files");
                 NewRetentionRule.setCleanupRemovedFiles(CleanupDeletedFiles);
 
                 retention_time_span timeSpan = new retention_time_span
@@ -70,7 +70,7 @@ namespace PSAsigraDSClient
                     period = CleanupDeletedAfterValue,
                     unit = StringToRetentionTimeUnit(CleanupDeletedAfterUnit)
                 };
-                WriteVerbose("Setting Time Span for Deleted File Cleanup...");
+                WriteVerbose("Performing Action: Set Time Span for Deleted File Cleanup");
                 NewRetentionRule.setCleanupRemovedAfter(timeSpan);
 
                 NewRetentionRule.setCleanupRemovedKeep(CleanupDeletedKeepGens);
@@ -169,13 +169,13 @@ namespace PSAsigraDSClient
                 NewRetentionRule.setDeleteIncompleteComponents(DeleteIncompleteComponents);
 
             // Add the New Retention Rule to DS-Client
-            WriteVerbose("Adding new Retention Rule to DS-Client...");
+            WriteVerbose("Performing Action: Add Retention Rule to DS-Client");
             DSClientRetentionRuleMgr.addRule(NewRetentionRule);
 
             // Archive Rule Configuration (requires retention rule to be added to DS-Client Database first)
             if (MyInvocation.BoundParameters.ContainsKey("ArchiveTimeValue"))
             {
-                WriteVerbose("Setting Archive Rule...");
+                WriteVerbose("Performing Action: Set Archive Rule");
                 ArchiveRule NewArchiveRule = DSClientRetentionRuleMgr.createArchiveRule();
 
                 retention_time_span timeSpan = new retention_time_span

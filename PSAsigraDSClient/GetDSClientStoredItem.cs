@@ -30,7 +30,7 @@ namespace PSAsigraDSClient
             List<DSClientBackupSetItemInfo> ItemInfo = new List<DSClientBackupSetItemInfo>();
 
             // We always return info of the root/first item the user has specified, irrespective of other parameters
-            WriteVerbose("Retrieving Item Info...");
+            WriteVerbose($"Performing Action: Retrieve Item Info for Path: {Path}");
             SelectableItem item = DSClientBackedUpDataView.getItem(Path);
             long itemId = item.id;
 
@@ -58,7 +58,7 @@ namespace PSAsigraDSClient
                     // Select the first item in the list
                     ItemPath currentPath = newPaths.ElementAt(0);
 
-                    WriteVerbose("Enumerating Path: " + currentPath.Path + " (Depth: " + currentPath.Depth + ")");
+                    WriteVerbose($"Performing Action: Enumerate Path: {currentPath.Path} (Depth: {currentPath.Depth})");
 
                     item = DSClientBackedUpDataView.getItem(currentPath.Path);
                     itemId = item.id;

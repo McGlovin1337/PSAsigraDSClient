@@ -11,10 +11,10 @@ namespace PSAsigraDSClient
         {
             ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
 
-            WriteVerbose("Setting Encryption Key Forwarding to False...");
+            WriteVerbose("Performing Action: Set Encryption Key Forwarding to False");
             DSClientConfigMgr.setForwardingEncryptionKey(false);
 
-            WriteVerbose("Removing Encryption Keys from DS-System...");
+            WriteVerbose("Performing Action: Remove Encryption Keys from DS-System");
             DSClientConfigMgr.deleteEncryptionKeyFromDSSystem();
 
             DSClientConfigMgr.Dispose();

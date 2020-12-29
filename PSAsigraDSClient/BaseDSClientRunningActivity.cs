@@ -11,7 +11,7 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Retrieving current running activities...");
+            WriteVerbose("Performing Action: Retrieve Running Activities");
             running_activity_info[] runningActivities = DSClientSession.running_activities();
 
             List<DSClientRunningActivity> DSClientRunningActivities = new List<DSClientRunningActivity>();

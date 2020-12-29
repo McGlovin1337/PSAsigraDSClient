@@ -13,11 +13,11 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             // Get the Backup Set from DS-Client
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
             // Set the Backup Set to InActive
-            WriteVerbose("Performing action: Disable On Target: " + BackupSetId);
+            WriteVerbose($"Performing Action: Disable On Target: {BackupSetId}");
             backupSet.setActive(false);
 
             backupSet.Dispose();

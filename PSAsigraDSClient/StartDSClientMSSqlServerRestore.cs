@@ -54,7 +54,7 @@ namespace PSAsigraDSClient
                 throw new ParameterBindingException("DumpPath must be specified to Restore Dump only");
 
             // Check for a Backup Set Restore View stored in SessionState
-            WriteVerbose("Checking for DS-Client Restore View Session...");
+            WriteVerbose("Performing Action: Check for DS-Client Restore View Session");
             BackupSetRestoreView restoreSession = SessionState.PSVariable.GetValue("RestoreView", null) as BackupSetRestoreView;
 
             if (restoreSession == null)
@@ -95,8 +95,8 @@ namespace PSAsigraDSClient
             string computer = dataSourceBrowser.expandToFullPath(Computer);
             computer = dataSourceBrowser.expandToFullPath(computer);
             string sqlComputer = computer.Split('\\').Last();
-            WriteVerbose("Specified Computer resolved to: " + computer);
-            WriteVerbose("SQL Server Computer resolved to: " + sqlComputer);
+            WriteVerbose($"Notice: Specified Computer resolved to: {computer}");
+            WriteVerbose($"Notice: SQL Server Computer resolved to: {sqlComputer}");
 
             // Change Data Source Browser to correct type
             dataSourceBrowser.Dispose();
@@ -113,7 +113,7 @@ namespace PSAsigraDSClient
             }
             else
             {
-                WriteVerbose("Credentials not specified, using DS-Client Credentials...");
+                WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
                 computerCredentials.setUsingClientCredentials(true);
             }
             dataSourceBrowser.setCurrentCredentials(computerCredentials);
@@ -177,11 +177,11 @@ namespace PSAsigraDSClient
                     sqlDataSourceBrowser.setDBCredentials(computerCredentials);
 
                 // Get the Destination Instance Info
-                WriteVerbose("Retrieving SQL Instance Info from Destination Computer...");
+                WriteVerbose("Performing Action: Retrieve SQL Instance Info from Destination Computer");
                 mssql_instance_info[] dbInstances = sqlDataSourceBrowser.getInstancesInfo(sqlComputer);
 
                 // Get the Database Paths from the Computer we're restoring to
-                WriteVerbose("Retrieving Database Info from Destination SQL Instance...");
+                WriteVerbose("Performing Action: Retrieve Database Info from Destination SQL Instance");
                 mssql_db_path[] dbPaths = sqlDataSourceBrowser.getDatabasesPath(sqlComputer, Instance);
 
                 // Create a List of Selected Databases that need to be mapped

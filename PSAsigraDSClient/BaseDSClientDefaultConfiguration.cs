@@ -10,7 +10,7 @@ namespace PSAsigraDSClient
         {
             ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
 
-            WriteVerbose("Retrieving current DS-Client Default Configuration...");
+            WriteVerbose("Performing Action: Retrieve current DS-Client Default Configuration");
             DefaultConfiguration defaultConfiguration = DSClientConfigMgr.getDefaultConfiguration();
             DefaultConfigurationWindowsClient defaultConfigurationWindows;
 

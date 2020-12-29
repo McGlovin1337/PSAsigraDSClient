@@ -45,7 +45,7 @@ namespace PSAsigraDSClient
 
             List<DSClientBackupSetId> recoveredSetIds = new List<DSClientBackupSetId>();
 
-            WriteVerbose("Performing Recovery of Orphaned Backup Set(s)...");
+            WriteVerbose("Performing Action: Recover Orphaned Backup Set(s)");
             if (filteredSets != null)
                 foreach (var orphanedSet in filteredSets)
                 {

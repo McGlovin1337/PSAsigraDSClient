@@ -51,7 +51,7 @@ namespace PSAsigraDSClient
 
             // Try to resolve the supplied Computer
             string computer = dataSourceBrowser.expandToFullPath(Computer);
-            WriteVerbose("Specified Computer resolved to: " + computer);
+            WriteVerbose($"Notice: Specified Computer resolved to: {computer}");
 
             // Set the Credentials
             Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));            
@@ -64,7 +64,7 @@ namespace PSAsigraDSClient
             }
             else
             {
-                WriteVerbose("Credentials not specified, using DS-Client Credentials...");
+                WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
                 backupSetCredentials.setUsingClientCredentials(true);
             }
             dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
@@ -113,9 +113,9 @@ namespace PSAsigraDSClient
             Win32FS_BackupSet newWin32BackupSet = ProcessWinFsBackupSetParams(MyInvocation.BoundParameters, Win32FS_BackupSet.from(newBackupSet));
 
             // Add the Backup Set to the DS-Client
-            WriteVerbose("Adding the new Backup Set Object to DS-Client...");
+            WriteVerbose("Performing Action: Add Backup Set Object to DS-Client");
             DSClientSession.addBackupSet(newWin32BackupSet);
-            WriteVerbose("Backup Set Created with BackupSetId: " + newWin32BackupSet.getID());
+            WriteVerbose($"Notice: Backup Set Created with BackupSetId: {newWin32BackupSet.getID()}");
 
             if (PassThru)
                 WriteObject(new DSClientBackupSetBasicProps(newWin32BackupSet));

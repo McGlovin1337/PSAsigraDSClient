@@ -30,7 +30,7 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             // Check for a Backup Set Restore View stored in SessionState
-            WriteVerbose("Checking for DS-Client Restore View Session...");
+            WriteVerbose("Performing Action: Check for DS-Client Restore View Session");
             BackupSetRestoreView restoreSession = SessionState.PSVariable.GetValue("RestoreView", null) as BackupSetRestoreView;
 
             if (restoreSession == null)
@@ -71,7 +71,7 @@ namespace PSAsigraDSClient
             // Resolve the supplied Computer Name
             string computer = dataSourceBrowser.expandToFullPath(Computer);
             computer = dataSourceBrowser.expandToFullPath(computer);
-            WriteVerbose("Specified Computer resolved to: " + computer);
+            WriteVerbose("Notice: Specified Computer resolved to: " + computer);
 
             // Set the Destination Computer Credentials
             BackupSetCredentials backupSetCredentials = dataSourceBrowser.neededCredentials(computer);
@@ -88,7 +88,7 @@ namespace PSAsigraDSClient
                 }
                 else
                 {
-                    WriteVerbose("Credentials not specified, using DS-Client Credentials...");
+                    WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
                     win32FSBSCredentials.setUsingClientCredentials(true);
                 }
                 dataSourceBrowser.setCurrentCredentials(win32FSBSCredentials);
@@ -106,7 +106,7 @@ namespace PSAsigraDSClient
                 }
                 else
                 {
-                    WriteVerbose("Credentials not specified, using DS-Client Credentials...");
+                    WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
                     unixFSBackupSetCredentials.setUsingClientCredentials(true);
                 }
                 dataSourceBrowser.setCurrentCredentials(unixFSBackupSetCredentials);

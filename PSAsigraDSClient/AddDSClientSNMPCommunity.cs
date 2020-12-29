@@ -26,11 +26,11 @@ namespace PSAsigraDSClient
 
             if (existingCommunity != null && Hosts.Count() > 0)
             {
-                WriteVerbose("Specified SNMP Community Name already exists...");
+                WriteVerbose("Notice: Specified SNMP Community Name already exists");
 
                 // If the Community Name already exists, get any duplicates between the Hosts we're trying to add and those that already exist
                 string[] hostExist = Hosts.Intersect(existingCommunity.Hosts).ToArray();
-                WriteVerbose("Yielded " + hostExist.Count() + " existing hosts...");
+                WriteVerbose("Notice: Yielded " + hostExist.Count() + " existing hosts");
 
                 // Update the list of Hosts to be added, excluding any duplicates
                 Hosts = Hosts.Except(hostExist).ToArray();
@@ -49,7 +49,7 @@ namespace PSAsigraDSClient
             }
             else
             {
-                WriteVerbose("Creating a new SNMP Community...");
+                WriteVerbose("Performing Action: Create new SNMP Community");
                 // Create a new Community
                 SNMPCommunities.Add(new DSClientSNMPCommunities(Community, Hosts));
             }
@@ -66,7 +66,7 @@ namespace PSAsigraDSClient
             SNMPConfiguration DSClientSNMPCfg = DSClientConfigMgr.getSNMPConfiguration();
 
             DSClientSNMPCfg.setSNMPInfo(newSNMPInfo);
-            WriteObject("SNMP Community Configuration Added");
+            WriteObject("Notice: Added SNMP Community Configuration");
 
             DSClientSNMPCfg.Dispose();
             DSClientConfigMgr.Dispose();

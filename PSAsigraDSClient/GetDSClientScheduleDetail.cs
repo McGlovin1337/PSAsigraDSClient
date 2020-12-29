@@ -23,15 +23,15 @@ namespace PSAsigraDSClient
         {
             ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
 
-            WriteVerbose("Looking up DSClient for ScheduleId " + ScheduleId + "...");
+            WriteVerbose($"Performing Action: Retrieve Schedule with ScheduleId: {ScheduleId}");
             Schedule Schedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
 
-            WriteVerbose("Getting Schedule Info for ScheduleId " + ScheduleId + "...");
+            WriteVerbose($"Performing Action: Retrieve Schedule Info for ScheduleId: {ScheduleId}");
             schedule_info scheduleInfo = DSClientScheduleMgr.definedScheduleInfo(ScheduleId);
 
-            WriteVerbose("Getting Schedule Details for ScheduleId " + ScheduleId + "...");
+            WriteVerbose($"Performing Action: Retrieve Schedule Details for ScheduleId: {ScheduleId}");
             ScheduleDetail[] ScheduleDetails = Schedule.getDetails();
-            WriteVerbose("Yielded " + ScheduleDetails.Count() + " Schedule Details");
+            WriteVerbose($"Notice: Yielded {ScheduleDetails.Count()} Schedule Details");
 
             List<DSClientScheduleDetail> DSClientScheduleDetail = new List<DSClientScheduleDetail>();
 
@@ -41,7 +41,7 @@ namespace PSAsigraDSClient
             foreach (ScheduleDetail schedule in ScheduleDetails)
             {
                 DetailID += 1;
-                WriteVerbose("Processing DetailID " + DetailID + "...");
+                WriteVerbose($"Performing Action: Process DetailID {DetailID}");
 
                 ScheduleDetail scheduleDetail = schedule;
 

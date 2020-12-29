@@ -56,7 +56,7 @@ namespace PSAsigraDSClient
                 }
             }
 
-            WriteVerbose("Yielded " + DSClientRetentionRules.Count() + " Retention Rules");
+            WriteVerbose("Notice: Yielded " + DSClientRetentionRules.Count() + " Retention Rules");
 
             DSClientRetentionRules.ForEach(WriteObject);
         }

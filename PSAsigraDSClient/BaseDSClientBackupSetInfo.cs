@@ -12,7 +12,7 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Retrieving DSClient Backup Sets...");
+            WriteVerbose("Performing Action: Retrieve Backup Sets");
             backup_set_info[] backupSetsInfo = DSClientSession.backup_sets_info();
 
             List<DSClientBackupSetInfo> dSClientBackupSets = new List<DSClientBackupSetInfo>();

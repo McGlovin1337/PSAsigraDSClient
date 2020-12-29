@@ -44,7 +44,7 @@ namespace PSAsigraDSClient
             int epochStart = DateTimeToUnixEpoch(StartTime);
             int epochEnd = DateTimeToUnixEpoch(EndTime);
 
-            WriteVerbose("Retrieving Activity Log Info...");
+            WriteVerbose("Performing Action: Retrieve Activity Log Info");
             activity_log_info[] activityLogs = DSClientSession.activity_log(epochStart, epochEnd);
 
             if (MyInvocation.BoundParameters.ContainsKey("ActivityId"))
@@ -81,7 +81,7 @@ namespace PSAsigraDSClient
             if (Status != null)
                 ActivityLogs = ActivityLogs.Where(log => Status.Contains(log.Status)).ToList();
 
-            WriteVerbose("Yielded " + ActivityLogs.Count() + " Activities");
+            WriteVerbose("Notice: Yielded " + ActivityLogs.Count() + " Activities");
 
             ActivityLogs.ForEach(WriteObject);
         }

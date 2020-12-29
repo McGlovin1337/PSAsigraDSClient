@@ -18,10 +18,10 @@ namespace PSAsigraDSClient
         {
             List<DSClientBackupSessions> BackupSessions = new List<DSClientBackupSessions>();
 
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
-            WriteVerbose("Retrieving Backup Set Sessions...");
+            WriteVerbose("Performing Action: Retrieve Backup Set Sessions");
             backup_sessions[] backupSessions = backupSet.backup_times();
 
             foreach (backup_sessions session in backupSessions)

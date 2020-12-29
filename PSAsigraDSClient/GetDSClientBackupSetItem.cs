@@ -15,7 +15,7 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             // Get the specified Backup Set
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
             // Get the Data Type this Backup Set contains

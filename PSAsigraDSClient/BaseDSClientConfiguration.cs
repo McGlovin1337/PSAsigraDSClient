@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Retrieving DS-Client Configuration...");
+            WriteVerbose("Performing Action: Retrieve DS-Client Configuration");
             ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
 
             ProcessConfiguration(DSClientConfigMgr);

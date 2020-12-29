@@ -26,7 +26,7 @@ namespace PSAsigraDSClient
         protected override void ProcessWinFsBackupSet()
         {
             // Get the Backup Set from DS-Client
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
             // Process the Common Backup Set Parameters

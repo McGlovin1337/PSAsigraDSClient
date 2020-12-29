@@ -13,7 +13,7 @@ namespace PSAsigraDSClient.PSAsigraDSClient
         {
             ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
 
-            WriteVerbose("Retrieving DS-Client Operating System Type...");
+            WriteVerbose("Performing Action: Retrieve DS-Client Operating System Type");
             EOSFlavour osType = DSClientConfigMgr.getClientOSType();
 
             DSClientOperatingSystem dSclientOperatingSystem = new DSClientOperatingSystem(osType);

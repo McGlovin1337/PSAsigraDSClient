@@ -60,8 +60,8 @@ namespace PSAsigraDSClient
             {
                 BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
-                WriteVerbose("Preparing Backup Set Data view...");
-                WriteVerbose("From: " + DateFrom + " To: " + DateTo);
+                WriteVerbose("Performing Action: Prepare Backup Set Data view");
+                WriteVerbose("Notice: From: " + DateFrom + " To: " + DateTo);
                 BackupSetRestoreView backupSetRestoreView = backupSet.prepare_restore(DateTimeToUnixEpoch(DateFrom), DateTimeToUnixEpoch(DateTo), 0);
 
                 ProcessBackupSetData(backupSetRestoreView);

@@ -11,7 +11,7 @@ namespace PSAsigraDSClient
     {
         protected override void ProcessBackupSet(BackupSet backupSet)
         {
-            WriteVerbose("Starting Backup Set Retention Activity...");
+            WriteVerbose("Performing Action: Start Backup Set Retention Activity");
             GenericActivity retentionActivity = backupSet.enforceRetention();
 
             DSClientStartBackupSetActivity startActivity = new DSClientStartBackupSetActivity
@@ -34,7 +34,7 @@ namespace PSAsigraDSClient
             {
                 try
                 {
-                    WriteVerbose("Starting a Backup Set Retention Activity...");
+                    WriteVerbose("Performing Action: Start Backup Set Retention Activity");
                     GenericActivity retentionActivity = set.enforceRetention();
                     
                     startActivity.Add( new DSClientStartBackupSetActivity

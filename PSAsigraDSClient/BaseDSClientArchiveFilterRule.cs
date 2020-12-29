@@ -12,7 +12,7 @@ namespace PSAsigraDSClient
         {
             RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
 
-            WriteVerbose("Retrieving Archive Filter Rules from DS-Client...");
+            WriteVerbose("Performing Action: Retrieve Archive Filter Rules");
             ArchiveFilterRule[] archiveFilterRules = DSClientRetentionRuleMgr.definedArchiveFilterRules();
 
             ProcessArchiveFilterRules(archiveFilterRules);

@@ -29,7 +29,7 @@ namespace PSAsigraDSClient
         {
             if (MyInvocation.BoundParameters.ContainsKey("BackupSetId"))
             {
-                WriteVerbose("Retrieving Backup Set from DS-Client...");
+                WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
                 BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
                 ProcessBackupSet(backupSet);
@@ -48,7 +48,7 @@ namespace PSAsigraDSClient
                     IEnumerable<BackupSet> sets = DSClientSession.backup_sets().Where(set => wcPattern.IsMatch(set.getName()));
                     backupSets = backupSets.Concat(sets);
                 }
-                WriteVerbose("Yielded " + backupSets.Count() + " Backup Sets");
+                WriteVerbose("Notice: Yielded " + backupSets.Count() + " Backup Sets");
 
                 ProcessBackupSets(backupSets.ToArray());
 

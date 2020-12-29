@@ -18,15 +18,15 @@ namespace PSAsigraDSClient
             switch (Activity)
             {
                 case "DailyAdmin":
-                    WriteVerbose("Starting DSClient Daily Admin System Activity...");
+                    WriteVerbose("Performing Action: Start DS-Client Daily Admin System Activity");
                     DSClientConfig.start_daily_admin();
                     break;
                 case "StatisticsAdmin":
-                    WriteVerbose("Starting Statistics Update Admin System Activity...");
+                    WriteVerbose("Performing Action: Start Statistics Update Admin System Activity");
                     DSClientConfig.start_statistics_admin();
                     break;
                 case "WeeklyAdmin":
-                    WriteVerbose("Starting DSClient Weekly Admin System Activity...");
+                    WriteVerbose("Performing Action: Start DS-Client Weekly Admin System Activity");
                     DSClientConfig.start_weekly_admin();
                     break;
                 default:

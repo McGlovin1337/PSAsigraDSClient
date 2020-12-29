@@ -46,7 +46,7 @@ namespace PSAsigraDSClient
             if (MyInvocation.BoundParameters.ContainsKey("StartTime"))
                 startParams.setStartTime(DateTimeToUnixEpoch(StartTime));
 
-            WriteVerbose("Submitting Backup Start Activity...");
+            WriteVerbose("Performing Action: Submit Backup Start Activity");
             GenericActivity backupActivity = backupSet.start_backup(backupSetItems, startParams);
 
             DSClientStartBackupSetActivity startActivity = new DSClientStartBackupSetActivity

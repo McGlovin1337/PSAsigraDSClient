@@ -31,7 +31,7 @@ namespace PSAsigraDSClient
 
             foreach (string filter in Filter)
             {
-                WriteVerbose("Performing search for: " + filter + " ...");
+                WriteVerbose($"Performing Action: Search for: {filter}");
                 find_file_info[] findFileInfos = DSClientBackedUpDataView.FindFilesByFileName(filter);
 
                 foreach (find_file_info file in findFileInfos)

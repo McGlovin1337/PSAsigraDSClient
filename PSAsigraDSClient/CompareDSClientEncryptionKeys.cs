@@ -13,7 +13,7 @@ namespace PSAsigraDSClient
 
             dsc_reg_info regInfo = DSClientConfigMgr.getDSCRegistrationInfo();
 
-            WriteVerbose("Validating DS-Client Encryption Keys with DS-System...");
+            WriteVerbose("Performing Action: Validate DS-Client Encryption Keys with DS-System");
             bool KeyValidation = DSClientConfigMgr.validateEncryptionKeys(regInfo);
 
             WriteObject(KeyValidation);

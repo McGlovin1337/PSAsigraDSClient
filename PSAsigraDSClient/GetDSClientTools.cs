@@ -17,7 +17,7 @@ namespace PSAsigraDSClient
 
             List<DSClientTools> DSClientTools = new List<DSClientTools>();
 
-            WriteVerbose("Retrieving Status of DS-Tools...");
+            WriteVerbose("Performing Action: Retrieve Status of DS-Tools");
             foreach (EDSTools tool in Enum.GetValues(typeof(EDSTools)))
             {
                 if (tool == EDSTools.EDSTools__UNDEFINED)

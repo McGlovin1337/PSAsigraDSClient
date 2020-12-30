@@ -18,7 +18,7 @@ namespace PSAsigraDSClient
         public int ScheduleDay { get; set; } = 1;
 
         [Parameter(Position = 3, HelpMessage = "Set the Monthly Start Day")]
-        [ValidateSet("DayOfMonth", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Day", "WeekDay", "WeekEndDay")]
+        [ValidateSet("DayOfMonth", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Day", "WeekDay", "WeekEndDay")]
         public string MonthlyStartDay { get; set; }
 
         [Parameter(Position = 4, HelpMessage = "Set the Start Date for this Schedule Detail")]
@@ -42,7 +42,11 @@ namespace PSAsigraDSClient
 
             // Set the Week Day in Month if specified
             if (MonthlyStartDay != null)
-                newMonthlyDetail.setScheduleWhen(StringToEScheduleMonthlyStartDay(MonthlyStartDay));
+            {
+                if (MonthlyStartDay.ToLower() == "thursday")
+                    MonthlyStartDay = "Thrusday"; // Conversion required due to spelling mistake in Enum EScheduleMonthlyStartDay
+                newMonthlyDetail.setScheduleWhen((EScheduleMonthlyStartDay)Enum.Parse(typeof(EScheduleMonthlyStartDay), $"EScheduleMonthlyStartDay__{MonthlyStartDay}", true));
+            }
 
             // Set the Start Date
             newMonthlyDetail.setPeriodStartDate(DateTimeToUnixEpoch(StartDate));

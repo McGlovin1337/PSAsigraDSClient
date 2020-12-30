@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using System;
+using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -131,7 +132,7 @@ namespace PSAsigraDSClient
                 {
                     include_all_generations = IncludeAllGenerations,
                     use_back_reference = BackReference,
-                    package_close = StringToEActivePackageClosing(PackageClosing)
+                    package_close = (EActivePackageClosing)Enum.Parse(typeof(EActivePackageClosing), $"EActivePackageClosing__{PackageClosing}", true)
                 };
 
                 newScheduleDetail.setBLMOptions(blmOptions);

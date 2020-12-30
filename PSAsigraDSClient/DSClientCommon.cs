@@ -41,7 +41,11 @@ namespace PSAsigraDSClient
 
             public override string ToString()
             {
-                return Hour + ":" + Minute + ":" + Second;
+                string hour = (Hour < 10 && Hour >= 0) ? $"0{Hour}" : Hour.ToString();
+                string minute = (Minute < 10 && Minute >= 0) ? $"0{Minute}" : Minute.ToString();
+                string second = (Second < 10 && Second >= 0) ? $"0{Second}" : Second.ToString();
+
+                return $"{hour}:{minute}:{second}";
             }
         }
 
@@ -62,41 +66,14 @@ namespace PSAsigraDSClient
             if (splitTime.Count() > 2)
                 Second = Convert.ToInt32(splitTime[2]);
 
-            time_in_day TimeInDay = new time_in_day();
-            TimeInDay.hour = Hour;
-            TimeInDay.minute = Minute;
-            TimeInDay.second = Second;
-
-            if (TimeInDay.minute > 59)
-                TimeInDay.minute = 0;
-
-            if (TimeInDay.second > 59)
-                TimeInDay.second = 0;
+            time_in_day TimeInDay = new time_in_day
+            {
+                hour = Hour,
+                minute = (Minute > 59) ? 0 : Minute,
+                second = (Second > 59) ? 0 : Second
+            };
 
             return TimeInDay;
-        }
-
-        public static EWeekDay StringToEWeekDay(string weekDay)
-        {
-            switch (weekDay.ToLower())
-            {
-                case "monday":
-                    return EWeekDay.EWeekDay__Monday;
-                case "tuesday":
-                    return EWeekDay.EWeekDay__Tuesday;
-                case "wednesday":
-                    return EWeekDay.EWeekDay__Wednesday;
-                case "thursday":
-                    return EWeekDay.EWeekDay__Thursday;
-                case "friday":
-                    return EWeekDay.EWeekDay__Friday;
-                case "saturday":
-                    return EWeekDay.EWeekDay__Saturday;
-                case "sunday":
-                    return EWeekDay.EWeekDay__Sunday;
-                default:
-                    return EWeekDay.EWeekDay__UNDEFINED;
-            }
         }
 
         public static DateTime UnixEpochToDateTime(int epoch)
@@ -140,53 +117,7 @@ namespace PSAsigraDSClient
 
             public static bool ValidateHost(string Hostname)
             {
-                var Validated = Regex.Match(Hostname, @"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$");
-                if (Validated.Success) return true;
-                return false;
-            }
-        }
-
-        public static ECompressionType StringToECompressionType(string compressionType)
-        {
-            switch(compressionType.ToLower())
-            {
-                case "none":
-                    return ECompressionType.ECompressionType__NONE;
-                case "zlib":
-                    return ECompressionType.ECompressionType__ZLIB;
-                case "lzop":
-                    return ECompressionType.ECompressionType__LZOP;
-                case "zlib_lo":
-                    return ECompressionType.ECompressionType__ZLIB_LO;
-                case "zlib_med":
-                    return ECompressionType.ECompressionType__ZLIB_MED;
-                case "zlib_hi":
-                    return ECompressionType.ECompressionType__ZLIB_HI;
-                default:
-                    return ECompressionType.ECompressionType__UNDEFINED;
-            }
-        }
-
-        public static ETimeUnit StringToETimeUnit(string timeUnit)
-        {
-            switch(timeUnit.ToLower())
-            {
-                case "seconds":
-                    return ETimeUnit.ETimeUnit__Seconds;
-                case "minutes":
-                    return ETimeUnit.ETimeUnit__Minutes;
-                case "hours":
-                    return ETimeUnit.ETimeUnit__Hours;
-                case "days":
-                    return ETimeUnit.ETimeUnit__Days;
-                case "weeks":
-                    return ETimeUnit.ETimeUnit__Weeks;
-                case "months":
-                    return ETimeUnit.ETimeUnit__Months;
-                case "years":
-                    return ETimeUnit.ETimeUnit__Years;
-                default:
-                    return ETimeUnit.ETimeUnit__UNDEFINED;
+                return Regex.Match(Hostname, @"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$").Success;
             }
         }
     }

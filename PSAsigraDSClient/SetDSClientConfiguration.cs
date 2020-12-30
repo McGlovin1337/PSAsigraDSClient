@@ -79,9 +79,9 @@ namespace PSAsigraDSClient
                 });
             else if (MyInvocation.BoundParameters.ContainsKey("WeeklyAdminDay") &&
                     MyInvocation.BoundParameters.ContainsKey("WeeklyAdminTime"))
-                clientConfiguration.setWeeklyAdminRunTime(StringToEWeekDay(WeeklyAdminDay), StringTotime_in_day(WeeklyAdminTime));
+                clientConfiguration.setWeeklyAdminRunTime((EWeekDay)Enum.Parse(typeof(EWeekDay), $"EWeekDay__{WeeklyAdminDay}", true), StringTotime_in_day(WeeklyAdminTime));
             else if (MyInvocation.BoundParameters.ContainsKey("WeeklyAdminDay"))
-                clientConfiguration.setWeeklyAdminRunTime(StringToEWeekDay(WeeklyAdminDay), currentWeeklyAdminTime);
+                clientConfiguration.setWeeklyAdminRunTime((EWeekDay)Enum.Parse(typeof(EWeekDay), $"EWeekDay__{WeeklyAdminDay}", true), currentWeeklyAdminTime);
             else if (MyInvocation.BoundParameters.ContainsKey("WeeklyAdminTime"))
                 clientConfiguration.setWeeklyAdminRunTime(currentWeeklyAdminDay, StringTotime_in_day(WeeklyAdminTime));
 

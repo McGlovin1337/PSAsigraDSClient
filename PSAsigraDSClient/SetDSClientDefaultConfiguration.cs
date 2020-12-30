@@ -87,7 +87,7 @@ namespace PSAsigraDSClient
             if (CompressionType != null)
             {
                 WriteVerbose("Performing Action: Set Default Compression Type");
-                ECompressionType eCompressionType = StringToECompressionType(CompressionType);
+                ECompressionType eCompressionType = (ECompressionType)Enum.Parse(typeof(ECompressionType), $"ECompressionType__{CompressionType}", true);
                 defaultConfiguration.setDefaultCompressionType(eCompressionType);
             }
 

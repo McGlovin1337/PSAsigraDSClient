@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using System;
+using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -181,7 +182,7 @@ namespace PSAsigraDSClient
 
         protected static WeeklyTimeRetentionOption WeeklyTimeRetentionRule(WeeklyTimeRetentionOption weeklyTimeRetention, string weekDay, int retentionHour, int retentionMinute, int validForValue, string validForUnit)
         {
-            weeklyTimeRetention.setTriggerDay(StringToEWeekDay(weekDay));
+            weeklyTimeRetention.setTriggerDay((EWeekDay)Enum.Parse(typeof(EWeekDay), $"EWeekDay__{weekDay}", true));
 
             time_in_day weeklyTime = new time_in_day
             {

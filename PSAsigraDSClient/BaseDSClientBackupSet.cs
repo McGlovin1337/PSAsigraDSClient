@@ -43,7 +43,7 @@ namespace PSAsigraDSClient
 
             baseParams.TryGetValue("Compression", out object Compression);
             if (Compression != null)
-                backupSet.setCompressionType(StringToECompressionType(Compression as string));
+                backupSet.setCompressionType((ECompressionType)Enum.Parse(typeof(ECompressionType), $"ECompressionType__{Compression as string}", true));
 
             baseParams.TryGetValue("Disabled", out object Disabled);
             if (Disabled != null)

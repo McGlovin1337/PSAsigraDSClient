@@ -202,6 +202,7 @@
     <None Include="docs\Get-DSClientBackupSetInfo.md" />
     <None Include="docs\Get-DSClientBackupSetItem.md" />
     <None Include="docs\Get-DSClientBackupSetSessions.md" />
+    <None Include="docs\Get-DSClientConfiguration.md" />
     <None Include="docs\Get-DSClientDefaultConfiguration.md" />
     <None Include="docs\Get-DSClientEventLog.md" />
     <None Include="docs\Get-DSClientInfo.md" />
@@ -210,6 +211,7 @@
     <None Include="docs\Get-DSClientNocSettings.md" />
     <None Include="docs\Get-DSClientNotification.md" />
     <None Include="docs\Get-DSClientOrphanedBackupSet.md" />
+    <None Include="docs\Get-DSClientOS.md" />
     <None Include="docs\Get-DSClientQuota.md" />
     <None Include="docs\Get-DSClientRegistrationInfo.md" />
     <None Include="docs\Get-DSClientRetentionRule.md" />
@@ -246,6 +248,7 @@
     <None Include="docs\Restore-DSClientOrphanedBackupSet.md" />
     <None Include="docs\Search-DSClientBackupSetData.md" />
     <None Include="docs\Set-DSClientAdvancedConfig.md" />
+    <None Include="docs\Set-DSClientConfiguration.md" />
     <None Include="docs\Set-DSClientDefaultConfiguration.md" />
     <None Include="docs\Set-DSClientMSSqlServerBackupSet.md" />
     <None Include="docs\Set-DSClientRegistrationInfo.md" />

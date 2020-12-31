@@ -69,6 +69,12 @@ namespace PSAsigraDSClient
                     if (!item.isfile)
                         newPaths.Add(new ItemPath(path + item.name, 0));
 
+                int enumeratedCount = 0;
+                ProgressRecord progressRecord = new ProgressRecord(1, "Enumerate Paths", $"{enumeratedCount} Paths Enumerated")
+                {
+                    PercentComplete = -1,                    
+                };
+
                 while (newPaths.Count() > 0)
                 {
                     WriteVerbose($"Notice: Items to enumerate: {newPaths.Count()}");
@@ -76,6 +82,10 @@ namespace PSAsigraDSClient
                     ItemPath currentPath = newPaths.ElementAt(0);
 
                     WriteVerbose($"Performing Action: Enumerate Path: {currentPath.Path} (Depth: {currentPath.Depth})");
+
+                    progressRecord.StatusDescription = $"{enumeratedCount} Paths Enumerated";
+                    progressRecord.CurrentOperation = $"Enumerating Path: {currentPath.Path}";
+                    WriteProgress(progressRecord);
 
                     // Retrieve all the sub-items for the current selected path
                     try
@@ -102,6 +112,7 @@ namespace PSAsigraDSClient
 
                     // Remove the Path we've just completed enumerating from the list
                     newPaths.Remove(currentPath);
+                    enumeratedCount++;
                 }
             }
 

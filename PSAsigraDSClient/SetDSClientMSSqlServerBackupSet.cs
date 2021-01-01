@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
@@ -16,10 +15,6 @@ namespace PSAsigraDSClient
         [Parameter(Position = 1, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify a new Name for the Backup Set")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
-        [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
-        public new string SetType { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Compression Method to use")]
         [ValidateSet("None", "ZLIB", "LZOP", "ZLIB_LO", "ZLIB_MED", "ZLIB_HI")]

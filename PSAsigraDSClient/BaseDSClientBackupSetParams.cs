@@ -4,10 +4,6 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientBackupSetParams: BaseDSClientBackupSet
     {
-        [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
-        [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
-        public string SetType { get; set; }        
-
         [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Set the Compression Method to use")]
         [ValidateSet("None", "ZLIB", "LZOP", "ZLIB_LO", "ZLIB_MED", "ZLIB_HI")]
         public string Compression { get; set; }

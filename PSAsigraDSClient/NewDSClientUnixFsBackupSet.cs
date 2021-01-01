@@ -22,6 +22,10 @@ namespace PSAsigraDSClient
         [Parameter(Position = 2, HelpMessage = "Credentials to use")]
         public PSCredential Credential { get; set; }
 
+        [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
+        [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
+        public string SetType { get; set; }
+
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Include in Backup Set")]
         public string[] IncludeItem { get; set; }
 

@@ -2,6 +2,7 @@
 using System.Linq;
 using AsigraDSClientApi;
 using System.Management.Automation;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -32,7 +33,7 @@ namespace PSAsigraDSClient
 
                     if (SSHInterpreter != null)
                     {
-                        SSHAccesorType sshAccessType = BaseDSClientBackupSet.StringToSSHAccesorType(SSHInterpreter);
+                        SSHAccesorType sshAccessType = StringToEnum<SSHAccesorType>(SSHInterpreter);
 
                         unixFSSSHBackupSetCredentials.setSSHAccessType(sshAccessType, SSHInterpreterPath);
                     }

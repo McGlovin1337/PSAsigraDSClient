@@ -58,8 +58,6 @@ namespace PSAsigraDSClient
                     emailOpt.Add("CompressAttachment");
                 if ((notifyInfo.email_option & (int)ENotificationEmailOptions.ENotificationEmailOptions__HtmlFormat) > 0)
                     emailOpt.Add("HtmlFormat");
-                /*if ((notifyInfo.email_option & (int)ENotificationEmailOptions.ENotificationEmailOptions__UNDEFINED) > 0)
-                    emailOpt.Add("Undefined");*/
 
                 EmailOption = emailOpt.ToArray();
                 Recipient = notifyInfo.recipient;
@@ -87,45 +85,12 @@ namespace PSAsigraDSClient
             return BackupCompletion.ToArray();
         }
 
-        public static ENotificationMethod StringToENotificationMethod(string notifyMethod)
-        {
-            switch(notifyMethod.ToLower())
-            {
-                case "email":
-                    return ENotificationMethod.ENotificationMethod__Email;
-                case "pager":
-                    return ENotificationMethod.ENotificationMethod__Page;
-                case "broadcast":
-                    return ENotificationMethod.ENotificationMethod__Broadcast;
-                case "event":
-                    return ENotificationMethod.ENotificationMethod__Event;
-                default:
-                    return ENotificationMethod.ENotificationMethod__UNDEFINED;
-            }
-        }
-
         public static int ArrayToNotificationCompletionToInt(string[] notifyCompletion)
         {
             int NotifyValue = 0;
 
-            foreach (string notifyC in notifyCompletion)
-            {
-                switch(notifyC.ToLower())
-                {
-                    case "incomplete":
-                        NotifyValue += 1;
-                        break;
-                    case "completedwitherrors":
-                        NotifyValue += 2;
-                        break;
-                    case "successful":
-                        NotifyValue += 4;
-                        break;
-                    case "completedwithwarnings":
-                        NotifyValue += 1024;
-                        break;
-                }
-            }
+            foreach (string notifyState in notifyCompletion)
+                NotifyValue += (int)StringToEnum<EBackupCompletion>(notifyState);
 
             return NotifyValue;
         }
@@ -135,23 +100,7 @@ namespace PSAsigraDSClient
             int EmailOptions = 0;
 
             foreach (string option in emailOptions)
-            {
-                switch(option)
-                {
-                    case "DetailedInfo":
-                        EmailOptions += 1;
-                        break;
-                    case "AttachDetailedLog":
-                        EmailOptions += 16;
-                        break;
-                    case "CompressAttachment":
-                        EmailOptions += 32;
-                        break;
-                    case "HtmlFormat":
-                        EmailOptions += 128;
-                        break;
-                }
-            }
+                EmailOptions += (int)StringToEnum<ENotificationEmailOptions>(option);
 
             return EmailOptions;
         }

@@ -45,7 +45,7 @@ namespace PSAsigraDSClient
             {
                 if (MonthlyStartDay.ToLower() == "thursday")
                     MonthlyStartDay = "Thrusday"; // Conversion required due to spelling mistake in Enum EScheduleMonthlyStartDay
-                newMonthlyDetail.setScheduleWhen((EScheduleMonthlyStartDay)Enum.Parse(typeof(EScheduleMonthlyStartDay), $"EScheduleMonthlyStartDay__{MonthlyStartDay}", true));
+                newMonthlyDetail.setScheduleWhen(StringToEnum<EScheduleMonthlyStartDay>(MonthlyStartDay));
             }
 
             // Set the Start Date

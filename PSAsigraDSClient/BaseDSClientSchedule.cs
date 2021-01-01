@@ -17,7 +17,7 @@ namespace PSAsigraDSClient
                 if (day.ToLower() == "thursday")
                     day = "thrusday"; //Conversion required due to spelling mistake in enum
 
-                WeekDays += (int)Enum.Parse(typeof(EScheduleWeekDays), $"EScheduleWeekDays__{day}", true);
+                WeekDays += (int)StringToEnum<EScheduleWeekDays>(day);
             }
 
             return WeekDays;
@@ -280,20 +280,12 @@ namespace PSAsigraDSClient
         public static string[] EScheduleWeekDaysIntToArray(int weekDays)
         {
             List<string> schedDays = new List<string>();
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Monday) > 0)
-                schedDays.Add("Monday");
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Tuesday) > 0)
-                schedDays.Add("Tuesday");
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Wednesday) > 0)
-                schedDays.Add("Wednesday");
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Thrusday) > 0)
-                schedDays.Add("Thursday");
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Friday) > 0)
-                schedDays.Add("Friday");
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Saturday) > 0)
-                schedDays.Add("Saturday");
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Sunday) > 0)
-                schedDays.Add("Sunday");
+            foreach (EScheduleWeekDays weekday in Enum.GetValues(typeof(EScheduleWeekDays)))
+                if ((weekDays & (int)weekday) > 0)
+                {
+                    string strWeekday = (weekday == EScheduleWeekDays.EScheduleWeekDays__Thrusday) ? "Thursday" : EnumToString(weekday); // Required due to spelling mistake in enum
+                    schedDays.Add(EnumToString(strWeekday));
+                }
 
             return schedDays.ToArray();
         }

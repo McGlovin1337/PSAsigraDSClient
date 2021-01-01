@@ -39,11 +39,11 @@ namespace PSAsigraDSClient
 
             baseParams.TryGetValue("SetType", out object SetType);
             if (SetType != null)
-                backupSet.setSetType(StringToEBackupSetType(SetType as string));
+                backupSet.setSetType(StringToEnum<EBackupSetType>(SetType as string));
 
             baseParams.TryGetValue("Compression", out object Compression);
             if (Compression != null)
-                backupSet.setCompressionType((ECompressionType)Enum.Parse(typeof(ECompressionType), $"ECompressionType__{Compression as string}", true));
+                backupSet.setCompressionType(StringToEnum<ECompressionType>(Compression as string));
 
             baseParams.TryGetValue("Disabled", out object Disabled);
             if (Disabled != null)
@@ -104,7 +104,7 @@ namespace PSAsigraDSClient
                     completion = ArrayToNotificationCompletionToInt(NotificationCompletion as string[]),
                     email_option = (NotificationEmailOptions != null) ? ArrayToEmailOptionsInt(NotificationEmailOptions as string[]) : 0,
                     id = 0,
-                    method = StringToENotificationMethod(NotificationMethod as string),
+                    method = StringToEnum<ENotificationMethod>(NotificationMethod as string),
                     recipient = NotificationRecipient as string
                 };
                 BackupSetNotification backupSetNotification = backupSet.getNotification();
@@ -1537,32 +1537,6 @@ namespace PSAsigraDSClient
             }
         }
 
-        public static EBackupSetType StringToEBackupSetType(string setType)
-        {
-            EBackupSetType SetType;
-
-            switch (setType.ToLower())
-            {
-                case "offsite":
-                    SetType = EBackupSetType.EBackupSetType__OffSite;
-                    break;
-                case "statistical":
-                    SetType = EBackupSetType.EBackupSetType__Statistical;
-                    break;
-                case "selfcontained":
-                    SetType = EBackupSetType.EBackupSetType__SelfContained;
-                    break;
-                case "localonly":
-                    SetType = EBackupSetType.EBackupSetType__LocalOnly;
-                    break;
-                default:
-                    SetType = EBackupSetType.EBackupSetType__UNDEFINED;
-                    break;
-            }
-
-            return SetType;
-        }
-
         private static string EBackupPolicyToString(EBackupPolicy backupPolicy)
         {
             string BackupPolicy = null;
@@ -1583,33 +1557,18 @@ namespace PSAsigraDSClient
             return BackupPolicy;
         }
 
-        public static SSHAccesorType StringToSSHAccesorType(string accessType)
-        {
-            switch(accessType.ToLower())
-            {
-                case "perl":
-                    return SSHAccesorType.SSHAccesorType__Perl;
-                case "python":
-                    return SSHAccesorType.SSHAccesorType__Python;
-                case "direct":
-                    return SSHAccesorType.SSHAccesorType__Direct;
-                default:
-                    return SSHAccesorType.SSHAccesorType__UNDEFINED;
-            }
-        }
-
         protected static int SwitchParamsToECDPSuspendableScheduledActivityInt(bool retention, bool blm, bool validation)
         {
             int Suspendable = 0;
 
             if (retention)
-                Suspendable += 1;
+                Suspendable += (int)ECDPSuspendableScheduledActivity.ECDPSuspendableScheduledActivity__Retention;
 
             if (blm)
-                Suspendable += 2;
+                Suspendable += (int)ECDPSuspendableScheduledActivity.ECDPSuspendableScheduledActivity__BLM;
 
             if (validation)
-                Suspendable += 4;
+                Suspendable += (int)ECDPSuspendableScheduledActivity.ECDPSuspendableScheduledActivity__Validation;
 
             return Suspendable;
         }

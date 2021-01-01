@@ -92,22 +92,22 @@ namespace PSAsigraDSClient
 
                 // Get the Schedule Start Time
                 time_in_day startTime = scheduleDetail.getStartTime();
-                DSClientCommon.TimeInDay StartTime = new DSClientCommon.TimeInDay(startTime);
+                TimeInDay StartTime = new TimeInDay(startTime);
 
                 // Get the Schedule End Time
                 time_in_day endTime = scheduleDetail.getEndTime();
-                DSClientCommon.TimeInDay EndTime = new DSClientCommon.TimeInDay(endTime);
+                TimeInDay EndTime = new TimeInDay(endTime);
 
                 // Get End Time Enabled/Disabled Status
                 bool endTimeEnabled = scheduleDetail.hasEndTime();
 
                 // Get the Schedule Start Date
                 int startDate = scheduleDetail.getPeriodStartDate();
-                DateTime StartDate = DSClientCommon.UnixEpochToDateTime(startDate);
+                DateTime StartDate = UnixEpochToDateTime(startDate);
 
                 // Get the Schedule End Date
                 int endDate = scheduleDetail.getPeriodEndDate();
-                DateTime EndDate = DSClientCommon.UnixEpochToDateTime(endDate);
+                DateTime EndDate = UnixEpochToDateTime(endDate);
 
                 // Get the Exclusion Setting value
                 bool isExcluded = scheduleDetail.isExcluded();

@@ -136,7 +136,7 @@ namespace PSAsigraDSClient
             if (FullWeeklyDay != null || FullWeeklyTime != null)
             {
                 if (FullWeeklyDay != null)
-                    incrementalPolicies.force_full_weekly_day = (EWeekDay)Enum.Parse(typeof(EWeekDay), $"EWeekDay__{FullWeeklyDay}", true);
+                    incrementalPolicies.force_full_weekly_day = StringToEnum<EWeekDay>(FullWeeklyDay);
 
                 if (FullWeeklyTime != null)
                     incrementalPolicies.force_full_weekly_time = StringTotime_in_day(FullWeeklyTime);
@@ -147,7 +147,7 @@ namespace PSAsigraDSClient
             if (FullPeriod != null || MyInvocation.BoundParameters.ContainsKey("FullPeriodValue"))
             {
                 if (FullPeriod != null)
-                    incrementalPolicies.unit_type = (ETimeUnit)Enum.Parse(typeof(ETimeUnit), $"ETimeUnit__{FullPeriod}", true);
+                    incrementalPolicies.unit_type = StringToEnum<ETimeUnit>(FullPeriod);
 
                 if (MyInvocation.BoundParameters.ContainsKey("FullPeriodValue"))
                     incrementalPolicies.unit_value = FullPeriodValue;

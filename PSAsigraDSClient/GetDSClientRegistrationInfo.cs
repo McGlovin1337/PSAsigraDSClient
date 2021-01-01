@@ -49,9 +49,9 @@ namespace PSAsigraDSClient
                 ClientNumber = regInfo.client_num;
                 DsSystemAddress = regInfo.dssys_ip_addr;
                 AccountKey = regInfo.account_key;
-                AccountKeyEncryption = EEncryptionTypeToString(regInfo.account_key_enc);
+                AccountKeyEncryption = EnumToString(regInfo.account_key_enc);
                 PrivateKey = regInfo.private_key;
-                PrivateKeyEncryption = EEncryptionTypeToString(regInfo.private_key_enc);
+                PrivateKeyEncryption = EnumToString(regInfo.private_key_enc);
                 EscrowKeys = regInfo.escrow_enc_key;
                 CountryCode = userInfo.country_code;
                 Industry = EnumToString(userInfo.industry_code);
@@ -76,31 +76,6 @@ namespace PSAsigraDSClient
                         return "5001-10000";
                     case ENumberOfEmployees.ENumberOfEmployees__Size7:
                         return "10001+";
-                    default:
-                        return null;
-                }
-            }
-
-            private static string EEncryptionTypeToString(EEncryptionType encryptionType)
-            {
-                switch(encryptionType)
-                {
-                    case EEncryptionType.EEncryptionType__NONE:
-                        return "None";
-                    case EEncryptionType.EEncryptionType__DES:
-                        return "DES";
-                    case EEncryptionType.EEncryptionType__AES128:
-                        return "AES128";
-                    case EEncryptionType.EEncryptionType__AES192:
-                        return "AES192";
-                    case EEncryptionType.EEncryptionType__AES256:
-                        return "AES256";
-                    case EEncryptionType.EEncryptionType__AES128_IV:
-                        return "AES128IV";
-                    case EEncryptionType.EEncryptionType__AES192_IV:
-                        return "AES192IV";
-                    case EEncryptionType.EEncryptionType__AES256_IV:
-                        return "AES256IV";
                     default:
                         return null;
                 }

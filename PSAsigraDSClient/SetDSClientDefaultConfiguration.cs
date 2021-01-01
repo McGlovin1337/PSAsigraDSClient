@@ -22,7 +22,7 @@ namespace PSAsigraDSClient
         public string LocalStoragePath { get; set; }
 
         [Parameter(Position = 3, ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
-        [ValidateSet("Email", "Pager", "Broadcast", "Event")]
+        [ValidateSet("Email", "Page", "Broadcast", "Event")]
         public string NotificationMethod { get; set; }
 
         [Parameter(Position = 4, ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Recipient")]
@@ -87,8 +87,7 @@ namespace PSAsigraDSClient
             if (CompressionType != null)
             {
                 WriteVerbose("Performing Action: Set Default Compression Type");
-                ECompressionType eCompressionType = (ECompressionType)Enum.Parse(typeof(ECompressionType), $"ECompressionType__{CompressionType}", true);
-                defaultConfiguration.setDefaultCompressionType(eCompressionType);
+                defaultConfiguration.setDefaultCompressionType(StringToEnum<ECompressionType>(CompressionType));
             }
 
             // Set DS-Client Buffer Path
@@ -109,8 +108,7 @@ namespace PSAsigraDSClient
             if (NotificationMethod != null)
             {
                 WriteVerbose("Performing Action: Set Default Notification Method");
-                ENotificationMethod eNotificationMethod = StringToENotificationMethod(NotificationMethod);
-                notifyInfo[0].method = eNotificationMethod;
+                notifyInfo[0].method = StringToEnum<ENotificationMethod>(NotificationMethod);
                 notifyInfoUpdated = true;
             }
 
@@ -126,8 +124,7 @@ namespace PSAsigraDSClient
             if (NotificationCompletion != null)
             {
                 WriteVerbose("Performing Action: Set Notification Completion Status");
-                int notifyCompletion = ArrayToNotificationCompletionToInt(NotificationCompletion);
-                notifyInfo[0].completion = notifyCompletion;
+                notifyInfo[0].completion = ArrayToNotificationCompletionToInt(NotificationCompletion);
                 notifyInfoUpdated = true;
             }
 
@@ -212,9 +209,7 @@ namespace PSAsigraDSClient
                 if (OpenFileOperation != null)
                 {
                     WriteVerbose("Performing Action: Set Open File Method");
-                    EOpenFileStrategy eOpenFileStrategy = StringToEOpenFileStrategy(OpenFileOperation);
-
-                    defaultConfigurationWindows.setDefaultOpenFilesOperation(eOpenFileStrategy);
+                    defaultConfigurationWindows.setDefaultOpenFilesOperation(StringToEnum<EOpenFileStrategy>(OpenFileOperation));
                 }
 
                 // Set the Open File Retry Interval
@@ -246,32 +241,6 @@ namespace PSAsigraDSClient
             backupSetNotification.Dispose();
             defaultConfiguration.Dispose();
             DSClientConfigMgr.Dispose();
-        }
-
-        public static EOpenFileStrategy StringToEOpenFileStrategy(string openFileMethod)
-        {
-            EOpenFileStrategy strategy;
-
-            switch (openFileMethod.ToLower())
-            {
-                case "trydenywrite":
-                    strategy = EOpenFileStrategy.EOpenFileStrategy__TryDenyWrite;
-                    break;
-                case "denywrite":
-                    strategy = EOpenFileStrategy.EOpenFileStrategy__DenyWrite;
-                    break;
-                case "preventwrite":
-                    strategy = EOpenFileStrategy.EOpenFileStrategy__PreventWrite;
-                    break;
-                case "allowwrite":
-                    strategy = EOpenFileStrategy.EOpenFileStrategy__AllowWrite;
-                    break;
-                default:
-                    strategy = EOpenFileStrategy.EOpenFileStrategy__UNDEFINED;
-                    break;
-            }
-
-            return strategy;
         }
     }
 }

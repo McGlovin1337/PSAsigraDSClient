@@ -52,7 +52,7 @@ namespace PSAsigraDSClient
         public SwitchParameter UseTransmissionCache { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
-        [ValidateSet("Email", "Pager", "Broadcast", "Event")]
+        [ValidateSet("Email", "Page", "Broadcast", "Event")]
         public string NotificationMethod { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Recipient")]

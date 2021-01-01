@@ -1,5 +1,6 @@
 ﻿using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -28,7 +29,7 @@ namespace PSAsigraDSClient
         public string AccountKey { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Encryption for Account Key")]
-        [ValidateSet("DES", "AES128", "AES192", "AES256", "AES128IV", "AES192IV", "AES256IV")]
+        [ValidateSet("DES", "AES128", "AES192", "AES256", "AES128_IV", "AES192_IV", "AES256_IV")]
         public string AccountEncryption { get; set; } = "AES128";
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Private Key")]
@@ -64,7 +65,7 @@ namespace PSAsigraDSClient
                 regInfo.account_key = AccountKey;
 
             if (AccountEncryption != null)
-                regInfo.account_key_enc = StringToEEncryptionType(AccountEncryption);
+                regInfo.account_key_enc = StringToEnum<EEncryptionType>(AccountEncryption);
 
             if (AccountNumber != null)
                 regInfo.account_num = AccountNumber;
@@ -85,7 +86,7 @@ namespace PSAsigraDSClient
                 regInfo.private_key = PrivateKey;
 
             if (PrivateKeyEncryption != null)
-                regInfo.private_key_enc = StringToEEncryptionType(PrivateKeyEncryption);
+                regInfo.private_key_enc = StringToEnum<EEncryptionType>(PrivateKeyEncryption);
 
             // Retrieve the current 'End User' Info
             UserInfoConfiguration DSClientUserInfoConfig = DSClientConfgMgr.getUserInfoConfiguration();
@@ -97,7 +98,7 @@ namespace PSAsigraDSClient
                 userInfo.country_code = CountryCode;
 
             if (Industry != null)
-                userInfo.industry_code = StringToEIndustryVertical(Industry);
+                userInfo.industry_code = StringToEnum<EIndustryVertical>(Industry);
 
             if (MyInvocation.BoundParameters.ContainsKey("Employees"))
                 userInfo.num_of_employees = IntToENumberOfEmployees(Employees);
@@ -130,54 +131,6 @@ namespace PSAsigraDSClient
                 Employees = ENumberOfEmployees.ENumberOfEmployees__Size7;
 
             return Employees;
-        }
-
-        private static EIndustryVertical StringToEIndustryVertical(string industry)
-        {
-            switch(industry.ToLower())
-            {
-                case "manufacturingandenergy":
-                    return EIndustryVertical.EIndustryVertical__ManufacturingAndEnergy;
-                case "retailandwholesaletrade":
-                    return EIndustryVertical.EIndustryVertical__RetailAndWholesaleTrade;
-                case "utilitiesandtelecommunications":
-                    return EIndustryVertical.EIndustryVertical__UtilitiesAndTelecommunications;
-                case "computershardwaresoftware":
-                    return EIndustryVertical.EIndustryVertical__ComputersHardwareSoftware;
-                case "businessservicesandconstruction":
-                    return EIndustryVertical.EIndustryVertical__BusinessServicesAndConstruction;
-                case "mediaentertainmentandleisure":
-                    return EIndustryVertical.EIndustryVertical__MediaEntertainmentAndLeisure;
-                case "financialservicesandinsurance":
-                    return EIndustryVertical.EIndustryVertical__FinancialServicesAndInsurance;
-                case "publicsectorandhealthcare":
-                    return EIndustryVertical.EIndustryVertical__PublicSectorAndHealthcare;
-                default:
-                    return EIndustryVertical.EIndustryVertical__UNDEFINED;
-            }
-        }
-
-        private static EEncryptionType StringToEEncryptionType(string encryptionType)
-        {
-            switch(encryptionType.ToLower())
-            {
-                case "des":
-                    return EEncryptionType.EEncryptionType__DES;
-                case "aes128":
-                    return EEncryptionType.EEncryptionType__AES128;
-                case "aes192":
-                    return EEncryptionType.EEncryptionType__AES192;
-                case "aes256":
-                    return EEncryptionType.EEncryptionType__AES256;
-                case "aes128iv":
-                    return EEncryptionType.EEncryptionType__AES128_IV;
-                case "aes192iv":
-                    return EEncryptionType.EEncryptionType__AES192_IV;
-                case "aes256iv":
-                    return EEncryptionType.EEncryptionType__AES256_IV;
-                default:
-                    return EEncryptionType.EEncryptionType__UNDEFINED;
-            }
         }
     }
 }

@@ -23,8 +23,7 @@ namespace PSAsigraDSClient
                 if (tool == EDSTools.EDSTools__UNDEFINED)
                     continue;
 
-                DSClientTools dSClientTool = new DSClientTools(DSClientConfigMgr, tool);
-                DSClientTools.Add(dSClientTool);
+                DSClientTools.Add(new DSClientTools(DSClientConfigMgr, tool));
             }
 
             DSClientTools.ForEach(WriteObject);

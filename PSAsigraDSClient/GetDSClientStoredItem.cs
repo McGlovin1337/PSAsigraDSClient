@@ -36,8 +36,7 @@ namespace PSAsigraDSClient
 
             selectable_size itemSize = DSClientBackedUpDataView.getItemSize(itemId);
 
-            DSClientBackupSetItemInfo itemInfo = new DSClientBackupSetItemInfo(Path, item, itemSize);
-            ItemInfo.Add(itemInfo);
+            ItemInfo.Add(new DSClientBackupSetItemInfo(Path, item, itemSize));
 
             if (Recursive)
             {

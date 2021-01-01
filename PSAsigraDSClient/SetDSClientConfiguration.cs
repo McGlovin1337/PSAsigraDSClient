@@ -1,5 +1,4 @@
-﻿using System;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -79,9 +78,9 @@ namespace PSAsigraDSClient
                 });
             else if (MyInvocation.BoundParameters.ContainsKey("WeeklyAdminDay") &&
                     MyInvocation.BoundParameters.ContainsKey("WeeklyAdminTime"))
-                clientConfiguration.setWeeklyAdminRunTime((EWeekDay)Enum.Parse(typeof(EWeekDay), $"EWeekDay__{WeeklyAdminDay}", true), StringTotime_in_day(WeeklyAdminTime));
+                clientConfiguration.setWeeklyAdminRunTime(StringToEnum<EWeekDay>(WeeklyAdminDay), StringTotime_in_day(WeeklyAdminTime));
             else if (MyInvocation.BoundParameters.ContainsKey("WeeklyAdminDay"))
-                clientConfiguration.setWeeklyAdminRunTime((EWeekDay)Enum.Parse(typeof(EWeekDay), $"EWeekDay__{WeeklyAdminDay}", true), currentWeeklyAdminTime);
+                clientConfiguration.setWeeklyAdminRunTime(StringToEnum<EWeekDay>(WeeklyAdminDay), currentWeeklyAdminTime);
             else if (MyInvocation.BoundParameters.ContainsKey("WeeklyAdminTime"))
                 clientConfiguration.setWeeklyAdminRunTime(currentWeeklyAdminDay, StringTotime_in_day(WeeklyAdminTime));
 
@@ -89,20 +88,20 @@ namespace PSAsigraDSClient
                 clientConfiguration.setRebootAfterAdmin(RebootAfterAdmin);
 
             if (MyInvocation.BoundParameters.ContainsKey("CDPStrategy"))
-                clientConfiguration.setDefaultCDPStrategy((EParametersCDPStrategy)Enum.Parse(typeof(EParametersCDPStrategy), "EParametersCDPStrategy__" + CDPStrategy, true));
+                clientConfiguration.setDefaultCDPStrategy(StringToEnum<EParametersCDPStrategy>(CDPStrategy));
 
             if (MyInvocation.BoundParameters.ContainsKey("DatabaseBackup"))
-                clientConfiguration.setDSClientDatabaseBackupAdmin((EParametersBackupAdmin)Enum.Parse(typeof(EParametersBackupAdmin), "EParametersBackupAdmin__" + DatabaseBackup, true));
+                clientConfiguration.setDSClientDatabaseBackupAdmin(StringToEnum<EParametersBackupAdmin>(DatabaseBackup));
 
             if (MyInvocation.BoundParameters.ContainsKey("KeepDatabaseDump"))
             {
                 if (KeepDatabaseDump == "DeleteAfterSuccessfulBackup")
                     KeepDatabaseDump = "DeleteAtferSuccesfulBackup"; // Convert due to spelling mistake in the EParametersDSClientKeepDBDumpFile Enum
-                clientConfiguration.setKeepDBDumpFile((EParametersDSClientKeepDBDumpFile)Enum.Parse(typeof(EParametersDSClientKeepDBDumpFile), "EParametersDSClientKeepDBDumpFile__" + KeepDatabaseDump, true));
+                clientConfiguration.setKeepDBDumpFile(StringToEnum<EParametersDSClientKeepDBDumpFile>(KeepDatabaseDump));
             }
 
             if (MyInvocation.BoundParameters.ContainsKey("LogDuration"))
-                clientConfiguration.setDSClientLogDuration((EParametersDSClientLogDuration)Enum.Parse(typeof(EParametersDSClientLogDuration), "EParametersDSClientLogDuration__" + LogDuration, true));
+                clientConfiguration.setDSClientLogDuration(StringToEnum<EParametersDSClientLogDuration>(LogDuration));
 
             if (MyInvocation.BoundParameters.ContainsKey("ReconnectAttempts"))
                 clientConfiguration.setAttemptToReconnectTryNumber(ReconnectAttempts);

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -72,7 +73,7 @@ namespace PSAsigraDSClient
 
                     if (SSHInterpreter != null)
                     {
-                        SSHAccesorType sshAccessType = StringToSSHAccesorType(SSHInterpreter);
+                        SSHAccesorType sshAccessType = StringToEnum<SSHAccesorType>(SSHInterpreter);
 
                         sshBackupSetCredentials.setSSHAccessType(sshAccessType, SSHInterpreterPath);
                     }

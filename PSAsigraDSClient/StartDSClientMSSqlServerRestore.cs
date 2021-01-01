@@ -215,21 +215,20 @@ namespace PSAsigraDSClient
                             throw new Exception("Destination database: " + destDb + " does not exist!");
                         }
 
-                        List<mssql_path_item> filePaths = new List<mssql_path_item>();
-
-                        mssql_path_item restoreDataPath = new mssql_path_item
+                        List<mssql_path_item> filePaths = new List<mssql_path_item>
                         {
-                            is_data = true,
-                            path = dataPath
-                        };
-                        filePaths.Add(restoreDataPath);
+                            new mssql_path_item
+                            {
+                                is_data = true,
+                                path = dataPath
+                            },
 
-                        mssql_path_item restoreLogPath = new mssql_path_item
-                        {
-                            is_data = false,
-                            path = logPath
+                            new mssql_path_item
+                            {
+                                is_data = false,
+                                path = logPath
+                            }
                         };
-                        filePaths.Add(restoreLogPath);
 
                         restorePaths.Add(new mssql_restore_path
                         {

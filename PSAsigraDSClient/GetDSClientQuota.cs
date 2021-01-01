@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -39,44 +40,12 @@ namespace PSAsigraDSClient
 
             public DSClientQuota(EQuotaOn assigned, quota_information quotaInfo)
             {
-                QuotaType = EQuotaOnToString(assigned);
-                QuotaMeasure = EQuotaTypeToString(quotaInfo.type);
+                QuotaType = EnumToString(assigned);
+                QuotaMeasure = EnumToString(quotaInfo.type);
                 Used = quotaInfo.current_use;
                 Limit = quotaInfo.use_limit;
                 PercentUsed = (quotaInfo.use_limit > 0) ? decimal.Round(((decimal)quotaInfo.current_use / (decimal)quotaInfo.use_limit) * 100, 2) : 0;
                 GracePercentage = quotaInfo.grace_percentage;
-            }
-
-            private string EQuotaOnToString(EQuotaOn quotaOn)
-            {
-                switch(quotaOn)
-                {
-                    case EQuotaOn.EQuotaOn__OnlineClient:
-                        return "DSClientOnlineQuota";
-                    case EQuotaOn.EQuotaOn__OnlineCustomer:
-                        return "CustomerOnlineQuota";
-                    case EQuotaOn.EQuotaOn__LocalOnly:
-                        return "LocalOnlyQuota";
-                    default:
-                        return null;
-                }
-            }
-
-            private string EQuotaTypeToString(EQuotaType quotaType)
-            {
-                switch(quotaType)
-                {
-                    case EQuotaType.EQuotaType__None:
-                        return "None";
-                    case EQuotaType.EQuotaType__Protected:
-                        return "ProtectedSize";
-                    case EQuotaType.EQuotaType__Stored:
-                        return "StoredSize";
-                    case EQuotaType.EQuotaType__Native:
-                        return "NativeSize";
-                    default:
-                        return null;
-                }
             }
         }
     }

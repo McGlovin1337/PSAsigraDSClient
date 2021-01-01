@@ -132,7 +132,7 @@ namespace PSAsigraDSClient
                 {
                     include_all_generations = IncludeAllGenerations,
                     use_back_reference = BackReference,
-                    package_close = (EActivePackageClosing)Enum.Parse(typeof(EActivePackageClosing), $"EActivePackageClosing__{PackageClosing}", true)
+                    package_close = StringToEnum<EActivePackageClosing>(PackageClosing)
                 };
 
                 newScheduleDetail.setBLMOptions(blmOptions);

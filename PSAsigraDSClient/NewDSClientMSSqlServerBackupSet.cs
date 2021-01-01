@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
@@ -152,10 +151,10 @@ namespace PSAsigraDSClient
                 force_full_monthly_day = (MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay")) ? FullMonthlyDay : 1,
                 force_full_monthly_time = (FullMonthlyTime != null) ? StringTotime_in_day(FullMonthlyTime) : StringTotime_in_day("19:00:00"),
                 is_force_full_monthly = (MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay")) ? true : false,
-                force_full_weekly_day = (FullWeeklyDay != null) ? (EWeekDay)Enum.Parse(typeof(EWeekDay), $"EWeekDay__{FullWeeklyDay}", true) : EWeekDay.EWeekDay__UNDEFINED,
+                force_full_weekly_day = (FullWeeklyDay != null) ? StringToEnum<EWeekDay>(FullWeeklyDay) : EWeekDay.EWeekDay__UNDEFINED,
                 force_full_weekly_time = (FullWeeklyTime != null) ? StringTotime_in_day(FullWeeklyTime) : StringTotime_in_day("19:00:00"),
                 is_force_full_weekly = (FullWeeklyDay != null) ? true : false,
-                unit_type = (FullPeriod != null) ? (ETimeUnit)Enum.Parse(typeof(ETimeUnit), $"ETimeUnit__{FullPeriod}", true) : ETimeUnit.ETimeUnit__UNDEFINED,
+                unit_type = (FullPeriod != null) ? StringToEnum<ETimeUnit>(FullPeriod) : ETimeUnit.ETimeUnit__UNDEFINED,
                 unit_value = (MyInvocation.BoundParameters.ContainsKey("FullPeriodValue")) ? FullPeriodValue : 0,
                 is_force_full_periodically = (FullPeriod != null) ? true : false,
                 skip_full_on_weekdays = (SkipWeekDays != null) ? StringArrayEScheduleWeekDaysToInt(SkipWeekDays) : (int)EScheduleWeekDays.EScheduleWeekDays__UNDEFINED,

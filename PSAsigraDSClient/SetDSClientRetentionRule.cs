@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 using static PSAsigraDSClient.BaseDSClientTimeRetentionRule;
 
 namespace PSAsigraDSClient
@@ -54,7 +55,7 @@ namespace PSAsigraDSClient
                 retention_time_span timeSpan = new retention_time_span
                 {
                     period = CleanupDeletedAfterValue,
-                    unit = StringToRetentionTimeUnit(CleanupDeletedAfterUnit)                
+                    unit = StringToEnum<RetentionTimeUnit>(CleanupDeletedAfterUnit)                
                 };
                 WriteVerbose("Performing Action: Set Time Span for Deleted File Cleanup");
                 retentionRule.setCleanupRemovedAfter(timeSpan);
@@ -80,7 +81,7 @@ namespace PSAsigraDSClient
                 retention_time_span timeSpan = new retention_time_span
                 {
                     period = LSRetentionTimeValue,
-                    unit = StringToRetentionTimeUnit(LSRetentionTimeUnit)
+                    unit = StringToEnum<RetentionTimeUnit>(LSRetentionTimeUnit)
                 };
                 retentionRule.setLocalStorageRetention(timeSpan);
             }
@@ -94,7 +95,7 @@ namespace PSAsigraDSClient
                 retention_time_span timeSpan = new retention_time_span
                 {
                     period = LSCleanupDeletedAfterValue,
-                    unit = StringToRetentionTimeUnit(LSCleanupDeletedAfterUnit)
+                    unit = StringToEnum<RetentionTimeUnit>(LSCleanupDeletedAfterUnit)
                 };
                 retentionRule.setLSCleanupRemovedAfter(timeSpan);
             }

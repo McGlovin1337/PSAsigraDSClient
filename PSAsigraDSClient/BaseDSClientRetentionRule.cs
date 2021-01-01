@@ -209,7 +209,7 @@ namespace PSAsigraDSClient
 
             public override string ToString()
             {
-                return Period.ToString() + " " + Unit;
+                return $"{Period} {Unit}";
             }
         }
     }

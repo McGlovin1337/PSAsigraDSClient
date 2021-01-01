@@ -16,6 +16,16 @@ namespace PSAsigraDSClient
             return result;
         }
 
+        public static T StringToEnum<T>(string s)
+        {
+            string enumType = (typeof(T).ToString())
+                                        .Split('.')
+                                        .Last();
+            T result = (T)Enum.Parse(typeof(T), $"{enumType}__{s}", true);
+
+            return result;
+        }
+
         public class DSClientOSType
         {
             public string OsType { get; private set; }

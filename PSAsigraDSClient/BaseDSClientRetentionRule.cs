@@ -30,11 +30,10 @@ namespace PSAsigraDSClient
             public int RetentionRuleId { get; private set; }
             public string Name { get; private set; }
             public int[] BackupSets { get; private set; }
-            public DSClientTimeRetention[] TimeRetention { get; private set; }
-            public string IntervalTimeRetention { get; private set; }
-            public string WeeklyTimeRetention { get; private set; }
-            public string MonthlyTimeRetention { get; private set; }
-            public string YearlyTimeRetention { get; private set; }
+            public IntervalTimeRetention[] IntervalTimeRetention { get; private set; }
+            public WeeklyTimeRetention[] WeeklyTimeRetention { get; private set; }
+            public MonthlyTimeRetention[] MonthlyTimeRetention { get; private set; }
+            public YearlyTimeRetention[] YearlyTimeRetention { get; private set; }
             public DSClientArchiveRule[] ArchiveRule { get; private set; }
             public bool ArchiveSpecialFiles { get; private set; }
             public bool ArchiveLatestSpecialFiles { get; private set; }
@@ -60,12 +59,31 @@ namespace PSAsigraDSClient
             {
                 // Get the Time Retention Configuration
                 TimeRetentionOption[] timeRetentionOptions = retentionRule.getTimeRetentions();
-                List<DSClientTimeRetention> dSClientTimeRetentions = new List<DSClientTimeRetention>();
+
+                List<IntervalTimeRetention> intervalTimeRetentions = new List<IntervalTimeRetention>();
+                List<WeeklyTimeRetention> weeklyTimeRetentions = new List<WeeklyTimeRetention>();
+                List<MonthlyTimeRetention> monthlyTimeRetentions = new List<MonthlyTimeRetention>();
+                List<YearlyTimeRetention> yearlyTimeRetentions = new List<YearlyTimeRetention>();
 
                 foreach (var timeRetentionOption in timeRetentionOptions)
                 {
-                    DSClientTimeRetention timeRetention = new DSClientTimeRetention(timeRetentionOption);
-                    dSClientTimeRetentions.Add(timeRetention);
+                    ETimeRetentionType timeRetentionType = timeRetentionOption.getType();
+
+                    switch (timeRetentionType)
+                    {
+                        case ETimeRetentionType.ETimeRetentionType__Interval:
+                            intervalTimeRetentions.Add(new IntervalTimeRetention(IntervalTimeRetentionOption.from(timeRetentionOption)));
+                            break;
+                        case ETimeRetentionType.ETimeRetentionType__Weekly:
+                            weeklyTimeRetentions.Add(new WeeklyTimeRetention(WeeklyTimeRetentionOption.from(timeRetentionOption)));
+                            break;
+                        case ETimeRetentionType.ETimeRetentionType__Monthly:
+                            monthlyTimeRetentions.Add(new MonthlyTimeRetention(MonthlyTimeRetentionOption.from(timeRetentionOption)));
+                            break;
+                        case ETimeRetentionType.ETimeRetentionType__Yearly:
+                            yearlyTimeRetentions.Add(new YearlyTimeRetention(YearlyTimeRetentionOption.from(timeRetentionOption)));
+                            break;
+                    }
                 }
 
                 // Get the Archive Rules
@@ -85,7 +103,10 @@ namespace PSAsigraDSClient
                 RetentionRuleId = retentionRule.getID();
                 Name = retentionRule.getName();
                 BackupSets = retentionRule.getAssignedBackupSets();
-                TimeRetention = dSClientTimeRetentions.ToArray();
+                IntervalTimeRetention = intervalTimeRetentions.ToArray();
+                WeeklyTimeRetention = weeklyTimeRetentions.ToArray();
+                MonthlyTimeRetention = monthlyTimeRetentions.ToArray();
+                YearlyTimeRetention = yearlyTimeRetentions.ToArray();
                 ArchiveRule = dSClientArchiveRules.ToArray();
                 ArchiveSpecialFiles = retentionRule.getArchiveSpecialFiles();
                 ArchiveLatestSpecialFiles = retentionRule.getArchiveLatestSpecialFiles();
@@ -114,65 +135,79 @@ namespace PSAsigraDSClient
             }
         }
 
-        public class DSClientTimeRetention
+        public class IntervalTimeRetention
         {
-            public string Type { get; private set; }
+            public DSClientRetentionTimeSpan RepeatInterval { get; private set; }
             public DSClientRetentionTimeSpan ValidFor { get; private set; }
-            public DSClientRetentionTimeSpan IntervalRepeat { get; private set; }
-            public TimeInDay SnapshotTime { get; private set; }
-            public string WeeklyDay { get; private set; }            
-            public string MonthlyDay { get; private set; }
-            public string YearlyMonth { get; private set; }
 
-            public DSClientTimeRetention(TimeRetentionOption timeRetention)
+            public IntervalTimeRetention(IntervalTimeRetentionOption interval)
             {
-                ETimeRetentionType type = timeRetention.getType();
-                retention_time_span validFor = timeRetention.getValidFor();
-
-                Type = EnumToString(type);
-                ValidFor = new DSClientRetentionTimeSpan(validFor);
-
-                if (type == ETimeRetentionType.ETimeRetentionType__Interval)
-                {
-                    IntervalTimeRetentionOption intervalTimeRetention = IntervalTimeRetentionOption.from(timeRetention);
-                    IntervalRepeat = new DSClientRetentionTimeSpan(intervalTimeRetention.getRepeatTime());
-                }
-                else if (type == ETimeRetentionType.ETimeRetentionType__Weekly)
-                {
-                    WeeklyTimeRetentionOption weeklyTimeRetention = WeeklyTimeRetentionOption.from(timeRetention);
-                    SnapshotTime = new TimeInDay(weeklyTimeRetention.getSnapshotTime());
-                    WeeklyDay = EnumToString(weeklyTimeRetention.getTriggerDay());
-                }
-                else if (type == ETimeRetentionType.ETimeRetentionType__Monthly)
-                {
-                    MonthlyTimeRetentionOption monthlyTimeRetention = MonthlyTimeRetentionOption.from(timeRetention);
-                    SnapshotTime = new TimeInDay(monthlyTimeRetention.getSnapshotTime());
-                    MonthlyDay = MonthlyDayToString(monthlyTimeRetention.getDayOfMonth());
-                }
-                else if (type == ETimeRetentionType.ETimeRetentionType__Yearly)
-                {
-                    YearlyTimeRetentionOption yearlyTimeRetention = YearlyTimeRetentionOption.from(timeRetention);
-                    SnapshotTime = new TimeInDay(yearlyTimeRetention.getSnapshotTime());
-                    MonthlyDay = MonthlyDayToString(yearlyTimeRetention.getDayOfMonth());
-                    YearlyMonth = EnumToString(yearlyTimeRetention.getTriggerMonth());
-                }
-            }
-
-            private string MonthlyDayToString(int day)
-            {
-                string Day = null;
-
-                if (day >= 28)
-                    return "Last";
-                else if (day > 0)
-                    return day.ToString();
-
-                return Day;
+                RepeatInterval = new DSClientRetentionTimeSpan(interval.getRepeatTime());
+                ValidFor = new DSClientRetentionTimeSpan(interval.getValidFor());
             }
 
             public override string ToString()
             {
-                return Type;
+                return RepeatInterval.ToString();
+            }
+        }
+
+        public class WeeklyTimeRetention
+        {
+            public string Day { get; private set; }
+            public TimeInDay SnapshotTime { get; private set; }
+            public DSClientRetentionTimeSpan ValidFor { get; private set; }
+
+            public WeeklyTimeRetention(WeeklyTimeRetentionOption weekly)
+            {
+                Day = EnumToString(weekly.getTriggerDay());
+                SnapshotTime = new TimeInDay(weekly.getSnapshotTime());
+                ValidFor = new DSClientRetentionTimeSpan(weekly.getValidFor());
+            }
+
+            public override string ToString()
+            {
+                return Day;
+            }
+        }
+
+        public class MonthlyTimeRetention
+        {
+            public string DayOfMonth { get; private set; }
+            public TimeInDay SnapshotTime { get; private set; }
+            public DSClientRetentionTimeSpan ValidFor { get; private set; }
+
+            public MonthlyTimeRetention(MonthlyTimeRetentionOption monthly)
+            {
+                DayOfMonth = MonthlyDayToString(monthly.getDayOfMonth());
+                SnapshotTime = new TimeInDay(monthly.getSnapshotTime());
+                ValidFor = new DSClientRetentionTimeSpan(monthly.getValidFor());
+            }
+
+            public override string ToString()
+            {
+                return DayOfMonth;
+            }
+        }
+
+        public class YearlyTimeRetention
+        {
+            public string DayOfMonth { get; private set; }
+            public string Month { get; private set; }
+            public TimeInDay SnapshotTime { get; private set; }
+            public DSClientRetentionTimeSpan ValidFor { get; private set; }
+
+            public YearlyTimeRetention(YearlyTimeRetentionOption yearly)
+            {
+                DayOfMonth = MonthlyDayToString(yearly.getDayOfMonth());
+                Month = EnumToString(yearly.getTriggerMonth());
+                SnapshotTime = new TimeInDay(yearly.getSnapshotTime());
+                ValidFor = new DSClientRetentionTimeSpan(yearly.getValidFor());
+            }
+
+            public override string ToString()
+            {
+                return $"{DayOfMonth} of {Month}";
             }
         }
 
@@ -211,6 +246,18 @@ namespace PSAsigraDSClient
             {
                 return $"{Period} {Unit}";
             }
+        }
+
+        protected static string MonthlyDayToString(int day)
+        {
+            string Day = null;
+
+            if (day >= 28)
+                return "Last";
+            else if (day > 0)
+                return day.ToString();
+
+            return Day;
         }
     }
 }

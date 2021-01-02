@@ -382,10 +382,7 @@ namespace PSAsigraDSClient
                 notification_info[] notificationInfo = backupSetNotification.listNotification();
                 List<DSClientBackupSetNotification> dSClientBackupSetNotifications = new List<DSClientBackupSetNotification>();
                 foreach (var notification in notificationInfo)
-                {
-                    DSClientBackupSetNotification dSClientBackupSetNotification = new DSClientBackupSetNotification(notification);
-                    dSClientBackupSetNotifications.Add(dSClientBackupSetNotification);
-                }
+                    dSClientBackupSetNotifications.Add(new DSClientBackupSetNotification(notification));
                 backupSetNotification.Dispose();
 
                 // Get Backup Set Pre & Post Configuration
@@ -393,74 +390,42 @@ namespace PSAsigraDSClient
                 pre_post_info[] prePostInfo = prePost.listPrePost();
                 List<DSClientPrePost> dSClientPrePosts = new List<DSClientPrePost>();
                 foreach (var prepost in prePostInfo)
-                {
-                    DSClientPrePost dSClientPrePost = new DSClientPrePost(prepost);
-                    dSClientPrePosts.Add(dSClientPrePost);
-                }
+                    dSClientPrePosts.Add(new DSClientPrePost(prepost));
                 prePost.Dispose();
 
                 // Get Backup Set Share Information
                 shares_info[] sharesInfo = backupSet.getSharesInfo();
                 List<ShareInfo> shareInfo = new List<ShareInfo>();
                 foreach (var share in sharesInfo)
-                {
-                    ShareInfo info = new ShareInfo(share);
-                    shareInfo.Add(info);
-                }
+                    shareInfo.Add(new ShareInfo(share));
 
                 // Get the Backup Set Items
                 BackupSetItem[] backupSetItems = backupSet.items();
                 List<DSClientBackupSetItem> setItems = new List<DSClientBackupSetItem>();
                 foreach (var item in backupSetItems)
-                {
-                    DSClientBackupSetItem backupSetItem = new DSClientBackupSetItem(item, backupSetOverviewInfo.data_type, dSClientOSType);
-                    setItems.Add(backupSetItem);
-                }
+                    setItems.Add(new DSClientBackupSetItem(item, backupSetOverviewInfo.data_type, dSClientOSType));
 
                 // Set the DataType dynamic property based on the Backup Set Data type
                 if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__FileSystem)
                 {
                     if (dSClientOSType.OsType == "Windows")
-                    {
-                        Win32FSBackupSet win32FSBackupSet = new Win32FSBackupSet(backupSet);
-                        DataType = win32FSBackupSet;
-                    }
+                        DataType = new Win32FSBackupSet(backupSet);
 
                     if (dSClientOSType.OsType == "Linux")
-                    {
-                        UnixFSBackupSet unixFSBackupSet = new UnixFSBackupSet(backupSet);
-                        DataType = unixFSBackupSet;
-                    }
+                        DataType = new UnixFSBackupSet(backupSet);
                 }
                 else if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__SQLServer)
-                {
-                    MSSQLBackupSet mssqlBackupSet = new MSSQLBackupSet(backupSet);
-                    DataType = mssqlBackupSet;
-                }
+                    DataType = new MSSQLBackupSet(backupSet);
                 else if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__VSSSQLServer)
-                {
-                    VSSMSSQLBackupSet vssMSSQLBackupSet = new VSSMSSQLBackupSet(backupSet);
-                    DataType = vssMSSQLBackupSet;
-                }
+                    DataType = new VSSMSSQLBackupSet(backupSet);
                 else if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__VSSExchange)
-                {
-                    VSSExchangeBackupSet vssExchangeBackupSet = new VSSExchangeBackupSet(backupSet);
-                    DataType = vssExchangeBackupSet;
-                }
+                    DataType = new VSSExchangeBackupSet(backupSet);
                 else if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__VMwareVADP)
-                {
-                    VMWareVADPBackupSet vmwareVADPBackupSet = new VMWareVADPBackupSet(backupSet);
-                    DataType = vmwareVADPBackupSet;
-                }
+                    DataType = new VMWareVADPBackupSet(backupSet);
                 else if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__DB2)
-                {
-                    DB2BackupSet db2BackupSet = new DB2BackupSet(backupSet);
-                    DataType = db2BackupSet;
-                }
+                    DataType = new DB2BackupSet(backupSet);
                 else
-                {
                     DataType = EBackupDataTypeToString(backupSetOverviewInfo.data_type);
-                }
 
                 BackupSetId = backupSet.getID();
                 Computer = backupSet.getComputerName();
@@ -727,29 +692,39 @@ namespace PSAsigraDSClient
             {
                 Win32FS_BackupSet win32FSBackupSet = Win32FS_BackupSet.from(backupSet);
 
+                bool useVss = win32FSBackupSet.getUseVSS();
+                bool excludeVss = win32FSBackupSet.getExcludeVSSComponents();
+
                 List<VSSInfo> VssWriters = new List<VSSInfo>();
-                vss_exclusion_info[] vssWriters = win32FSBackupSet.getVSSWriters();
-                foreach (var writer in vssWriters)
+                if (useVss)
                 {
-                    VSSInfo vssInfo = new VSSInfo(writer);
-                    VssWriters.Add(vssInfo);
+                    try
+                    {
+                        vss_exclusion_info[] vssWriters = win32FSBackupSet.getVSSWriters();
+                        foreach (var writer in vssWriters)
+                            VssWriters.Add(new VSSInfo(writer));
+                    }
+                    catch
+                    {
+                        // Do nothing, just continue
+                    }
                 }
 
                 List<VSSInfo> VssExclusions = new List<VSSInfo>();
-                vss_exclusion_info[] vssExclusions = win32FSBackupSet.getVSSComponentExclusions();
-                foreach (var exclusion in vssExclusions)
+                if (excludeVss)
                 {
-                    VSSInfo vssInfo = new VSSInfo(exclusion);
-                    VssExclusions.Add(vssInfo);
+                    vss_exclusion_info[] vssExclusions = win32FSBackupSet.getVSSComponentExclusions();
+                    foreach (var exclusion in vssExclusions)
+                        VssExclusions.Add(new VSSInfo(exclusion));
                 }
 
                 BackupRemoteStorage = win32FSBackupSet.getBackupRemoteStorage();
                 BackupSingleInstanceStore = win32FSBackupSet.getBackupSingleInstanceStore();
                 IsCDP = win32FSBackupSet.isContinuousDataProtection();
                 CDPSettings = new DSClientCDPSettings(win32FSBackupSet.getCDPSettings());
-                UseVSS = win32FSBackupSet.getUseVSS();
+                UseVSS = useVss;
                 VSSWriters = VssWriters.ToArray();
-                ExcludeVSSComponents = win32FSBackupSet.getExcludeVSSComponents();
+                ExcludeVSSComponents = excludeVss;
                 VSSComponentExclusions = VssExclusions.ToArray();
                 IgnoreVSSComponents = win32FSBackupSet.getIgnoreVSSComponents();
                 IgnoreVSSWriters = win32FSBackupSet.getIgnoreVSSWriters();
@@ -785,12 +760,9 @@ namespace PSAsigraDSClient
                 EItemOption[] itemOptions = backupSetItem.getItemOptions();
                 List<string> ItemOptions = new List<string>();
                 foreach (var item in itemOptions)
-                {
-                    string Item = EItemOptionToString(item);
-                    ItemOptions.Add(Item);
-                }
+                    ItemOptions.Add(EItemOptionToString(item));
 
-                EBackupSetItemType itemType = backupSetItem.getType();                                
+                EBackupSetItemType itemType = backupSetItem.getType();
 
                 Type = EnumToString(itemType);
                 Folder = backupSetItem.getFolder();

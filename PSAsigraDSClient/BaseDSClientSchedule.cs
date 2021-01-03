@@ -68,28 +68,65 @@ namespace PSAsigraDSClient
 
         protected class DSClientScheduleDetail
         {
-            public int DetailId { get; set; }
-            public int ScheduleId { get; set; }            
-            public string ScheduleName { get; set; }
-            public dynamic Type { get; set; }
-            public TimeInDay StartTime { get; set; }
-            public TimeInDay EndTime { get; set; }
-            public DateTime StartDate { get; set; }
-            public DateTime EndDate { get; set; }
-            public bool EndTimeEnabled { get; set; }
-            public bool Excluded { get; set; }
-            public DSClientScheduleTasks EnabledTasks { get; set; }
-            public DSClientValidationScheduleOptions ValidationOptions { get; set; }
-            public DSClientBLMScheduleOptions BLMScheduleOptions { get; set; }
+            public int DetailId { get; private set; }
+            public int ScheduleId { get; private set; }            
+            public string ScheduleName { get; private set; }
+            public dynamic Type { get; private set; }
+            public TimeInDay StartTime { get; private set; }
+            public TimeInDay EndTime { get; private set; }
+            public DateTime StartDate { get; private set; }
+            public DateTime EndDate { get; private set; }
+            public bool EndTimeEnabled { get; private set; }
+            public bool Excluded { get; private set; }
+            public DSClientScheduleTasks EnabledTasks { get; private set; }
+            public DSClientValidationScheduleOptions ValidationOptions { get; private set; }
+            public DSClientBLMScheduleOptions BLMScheduleOptions { get; private set; }
+
+            public DSClientScheduleDetail(int detailId, schedule_info scheduleInfo, ScheduleDetail schedule)
+            {
+                EScheduleDetailType detailType = schedule.getType();
+
+                DetailId = detailId;
+                ScheduleId = scheduleInfo.id;
+                ScheduleName = scheduleInfo.name;
+                
+                switch (detailType)
+                {
+                    case EScheduleDetailType.EScheduleDetailType__OneTime:
+                        Type = new OneTimeScheduleType(schedule);
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Daily:
+                        Type = new DailyScheduleType(schedule);
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Weekly:
+                        Type = new WeeklyScheduleType(schedule);
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Monthly:
+                        Type = new MonthlyScheduleType(schedule);
+                        break;
+                }
+
+                StartTime = new TimeInDay(schedule.getStartTime());
+                EndTime = new TimeInDay(schedule.getEndTime());
+                StartDate = UnixEpochToDateTime(schedule.getPeriodStartDate());
+                EndDate = UnixEpochToDateTime(schedule.getPeriodEndDate());
+                EndTimeEnabled = schedule.hasEndTime();
+                Excluded = schedule.isExcluded();
+                EnabledTasks = new DSClientScheduleTasks(schedule.getTasks());
+                ValidationOptions = new DSClientValidationScheduleOptions(schedule.getValidationOptions());
+                BLMScheduleOptions = new DSClientBLMScheduleOptions(schedule.getBLMOptions());
+            }
         }
 
         protected class OneTimeScheduleType
         {
             public DateTime StartDate { get; private set; }
 
-            public OneTimeScheduleType(int startDate)
+            public OneTimeScheduleType(ScheduleDetail schedule)
             {
-                StartDate = UnixEpochToDateTime(startDate);
+                OneTimeScheduleDetail detail = OneTimeScheduleDetail.from(schedule);
+
+                StartDate = UnixEpochToDateTime(detail.get_start_date());
             }
 
             public override string ToString()
@@ -102,9 +139,11 @@ namespace PSAsigraDSClient
         {
             public int RepeatDays { get; private set; }
 
-            public DailyScheduleType(int days)
+            public DailyScheduleType(ScheduleDetail schedule)
             {
-                RepeatDays = days;
+                DailyScheduleDetail detail = DailyScheduleDetail.from(schedule);
+
+                RepeatDays = detail.getRepeatDays();
             }
 
             public override string ToString()
@@ -118,10 +157,12 @@ namespace PSAsigraDSClient
             public int RepeatWeeks { get; private set; }
             public string[] ScheduleDays { get; private set; }
 
-            public WeeklyScheduleType(int repeat, int days)
+            public WeeklyScheduleType(ScheduleDetail schedule)
             {
-                RepeatWeeks = repeat;
-                ScheduleDays = EScheduleWeekDaysIntToArray(days);
+                WeeklyScheduleDetail detail = WeeklyScheduleDetail.from(schedule);
+
+                RepeatWeeks = detail.getRepeatWeeks();
+                ScheduleDays = EScheduleWeekDaysIntToArray(detail.getScheduleDays());
             }
 
             public override string ToString()
@@ -136,11 +177,13 @@ namespace PSAsigraDSClient
             public int ScheduleDay { get; private set; }
             public string MonthlyStartDay { get; private set; }
 
-            public MonthlyScheduleType(int repeat, int schedDay, EScheduleMonthlyStartDay startDay)
+            public MonthlyScheduleType(ScheduleDetail schedule)
             {
-                RepeatMonths = repeat;
-                ScheduleDay = schedDay;
-                MonthlyStartDay = (startDay == EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Thrusday) ? "Thursday" : EnumToString(startDay);
+                MonthlyScheduleDetail detail = MonthlyScheduleDetail.from(schedule);
+
+                RepeatMonths = detail.getRepeatMonths();
+                ScheduleDay = detail.getScheduleDay();
+                MonthlyStartDay = (detail.getScheduleWhen() == EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Thrusday) ? "Thursday" : EnumToString(detail.getScheduleWhen());
             }
 
             public override string ToString()

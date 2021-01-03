@@ -32,7 +32,7 @@ namespace PSAsigraDSClient
 
                 ProgressRecord progressRecord = new ProgressRecord(activityInfo.activity_id, activityDescription, activityInfo.status_msg)
                 {
-                    CurrentOperation = activityInfo.process_dir,
+                    CurrentOperation = $"Processing: {activityInfo.process_dir}",
                     RecordType = (activityInfo.finished) ? ProgressRecordType.Completed : ProgressRecordType.Processing,
                     PercentComplete = (int)Math.Round((double)((double)activityInfo.files_processed / (double)(activityInfo.files_left + activityInfo.files_processed) * 100))
                 };

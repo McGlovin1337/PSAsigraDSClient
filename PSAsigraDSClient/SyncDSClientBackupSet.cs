@@ -22,12 +22,7 @@ namespace PSAsigraDSClient
             else
                 syncActivity = backupSet.start_sync(false);
 
-            DSClientStartBackupSetActivity startActivity = new DSClientStartBackupSetActivity
-            {
-                ActivityId = syncActivity.getID(),
-                BackupSetId = backupSet.getID(),
-                Name = backupSet.getName()
-            };
+            DSClientStartBackupSetActivity startActivity = new DSClientStartBackupSetActivity(syncActivity.getID(), backupSet.getID(), backupSet.getName());
 
             WriteObject(startActivity);
 
@@ -47,12 +42,7 @@ namespace PSAsigraDSClient
                     {
                         GenericActivity syncActivity = set.start_sync(DSSystemBased);
 
-                        startActivity.Add(new DSClientStartBackupSetActivity
-                        {
-                            ActivityId = syncActivity.getID(),
-                            BackupSetId = set.getID(),
-                            Name = set.getName()
-                        });
+                        startActivity.Add(new DSClientStartBackupSetActivity(syncActivity.getID(), set.getID(), set.getName()));
 
                         syncActivity.Dispose();
                     }
@@ -69,12 +59,7 @@ namespace PSAsigraDSClient
                     {
                         GenericActivity syncActivity = set.start_sync(false);
 
-                        startActivity.Add(new DSClientStartBackupSetActivity
-                        {
-                            ActivityId = syncActivity.getID(),
-                            BackupSetId = set.getID(),
-                            Name = set.getName()
-                        });
+                        startActivity.Add(new DSClientStartBackupSetActivity(syncActivity.getID(), set.getID(), set.getName()));
 
                         syncActivity.Dispose();
                     }

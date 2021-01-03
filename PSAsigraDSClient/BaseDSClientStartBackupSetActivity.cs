@@ -58,9 +58,16 @@ namespace PSAsigraDSClient
 
         protected class DSClientStartBackupSetActivity
         {
-            public int ActivityId { get; set; }
-            public int BackupSetId { get; set; }
-            public string Name { get; set; }
+            public int ActivityId { get; private set; }
+            public int BackupSetId { get; private set; }
+            public string Name { get; private set; }
+
+            public DSClientStartBackupSetActivity(int activityId, int backupSetId, string backupSetName)
+            {
+                ActivityId = activityId;
+                BackupSetId = backupSetId;
+                Name = backupSetName;
+            }
         }
     }
 }

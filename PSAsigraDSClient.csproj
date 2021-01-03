@@ -60,6 +60,7 @@
     <Compile Include="PSAsigraDSClient\AddDSClientUnixFsBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientWeeklySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientWinFsBackupSetItem.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientActivityLog.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientAdvancedConfig.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientArchiveFilter.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientArchiveFilterRule.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="PSAsigraDSClient\StartDSClientSystemActivity.cs" />
     <Compile Include="PSAsigraDSClient\StopDSClientActivity.cs" />
     <Compile Include="PSAsigraDSClient\UnpublishDSClientEncryptionKeys.cs" />
+    <Compile Include="PSAsigraDSClient\WatchDSClientActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\Add-DSClientArchiveFilter.md" />
@@ -268,6 +270,7 @@
     <None Include="docs\Stop-DSClientActivity.md" />
     <None Include="docs\Sync-DSClientBackupSet.md" />
     <None Include="docs\Unpublish-DSClientEncryptionKeys.md" />
+    <None Include="docs\Watch-DSClientActivity.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

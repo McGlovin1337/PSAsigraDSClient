@@ -19,12 +19,12 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
-            WriteVerbose("Creating a new Backup Set Validation View...");
-            WriteVerbose("View Start Date: " + DateFrom);
-            WriteVerbose("View End Date: " + DateTo);
+            WriteVerbose("Performing Action: Create Backup Set Restore View");
+            WriteVerbose($"Notice: View Start Date: {DateFrom}");
+            WriteVerbose($"Notice: View End Date: {DateTo}");
             BackupSetRestoreView backupSetRestoreView = backupSet.prepare_restore(DateTimeToUnixEpoch(DateFrom), DateTimeToUnixEpoch(DateTo), 0);
 
             // Set the Deleted Items View
@@ -54,21 +54,23 @@ namespace PSAsigraDSClient
             }
 
             // Check for a previous Backup Set Restore View stored in Session State
-            WriteVerbose("Checking for previous DS-Client Validation View Sessions...");
+            WriteVerbose("Performing Action: Check for previous DS-Client Restore View Sessions");
             BackupSetRestoreView previousRestoreSession = SessionState.PSVariable.GetValue("RestoreView", null) as BackupSetRestoreView;
 
             // If a previous session is found, remove it
             if (previousRestoreSession != null)
             {
-                WriteVerbose("Previous Restore View found, attempting to Dispose...");
+                WriteVerbose("Notice: Previous Restore View found");
                 try
                 {
+                    WriteVerbose("Performing Action: Dispose Restore View");
                     previousRestoreSession.Dispose();
                 }
                 catch
                 {
-                    WriteVerbose("Previous Session failed to Dispose, deleting session...");
+                    WriteVerbose("Previous Session failed to Dispose");
                 }
+                WriteVerbose("Performing Action: Remove on Restore View Session");
                 SessionState.PSVariable.Remove("RestoreView");
             }
 
@@ -77,7 +79,7 @@ namespace PSAsigraDSClient
             SessionState.PSVariable.Set("RestoreType", dataType);
 
             // Add new Restore View to SessionState
-            WriteVerbose("Storing new Backup Set Restore View into SessionState...");
+            WriteVerbose("Performing Action: Store Backup Set Restore View into SessionState");
             SessionState.PSVariable.Set("RestoreView", backupSetRestoreView);
 
             backupSet.Dispose();

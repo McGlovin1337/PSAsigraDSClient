@@ -27,8 +27,8 @@ namespace PSAsigraDSClient
             string computer = dataSourceBrowser.expandToFullPath(Computer);
             computer = dataSourceBrowser.expandToFullPath(computer);
             string sqlComputer = computer.Split('\\').Last();
-            WriteVerbose("Specified Computer resolved to: " + computer);
-            WriteVerbose("SQL Server Computer resolved to: " + sqlComputer);
+            WriteVerbose($"Notice: Specified Computer resolved to: {computer}");
+            WriteVerbose($"Notice: SQL Server Computer resolved to: {sqlComputer}");
 
             // Change Data Source Browser to correct type
             dataSourceBrowser.Dispose();
@@ -45,7 +45,7 @@ namespace PSAsigraDSClient
             }
             else
             {
-                WriteVerbose("Credentials not specified, using DS-Client Credentials...");
+                WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
                 computerCredentials.setUsingClientCredentials(true);
             }
             dataSourceBrowser.setCurrentCredentials(computerCredentials);
@@ -67,7 +67,7 @@ namespace PSAsigraDSClient
                 sqlDataSourceBrowser.setDBCredentials(computerCredentials);
 
             // Get the Instances Info
-            WriteVerbose("Retrieving SQL Instance Info from Source Computer...");
+            WriteVerbose("Performing Action: Retrieve SQL Instance Info from Source Computer");
             mssql_instance_info[] dbInstances = sqlDataSourceBrowser.getInstancesInfo(sqlComputer);
 
             // Get the Databases Info

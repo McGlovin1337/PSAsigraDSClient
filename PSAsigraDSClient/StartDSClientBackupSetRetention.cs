@@ -11,15 +11,10 @@ namespace PSAsigraDSClient
     {
         protected override void ProcessBackupSet(BackupSet backupSet)
         {
-            WriteVerbose("Starting Backup Set Retention Activity...");
+            WriteVerbose("Performing Action: Start Backup Set Retention Activity");
             GenericActivity retentionActivity = backupSet.enforceRetention();
 
-            DSClientStartBackupSetActivity startActivity = new DSClientStartBackupSetActivity
-            {
-                ActivityId = retentionActivity.getID(),
-                BackupSetId = backupSet.getID(),
-                Name = backupSet.getName()
-            };
+            DSClientStartBackupSetActivity startActivity = new DSClientStartBackupSetActivity(retentionActivity.getID(), backupSet.getID(), backupSet.getName());
 
             WriteObject(startActivity);
 
@@ -34,15 +29,10 @@ namespace PSAsigraDSClient
             {
                 try
                 {
-                    WriteVerbose("Starting a Backup Set Retention Activity...");
+                    WriteVerbose("Performing Action: Start Backup Set Retention Activity");
                     GenericActivity retentionActivity = set.enforceRetention();
-                    
-                    startActivity.Add( new DSClientStartBackupSetActivity
-                    {
-                        ActivityId = retentionActivity.getID(),
-                        BackupSetId = set.getID(),
-                        Name = set.getName()
-                    });
+
+                    startActivity.Add(new DSClientStartBackupSetActivity(retentionActivity.getID(), set.getID(), set.getName()));
 
                     retentionActivity.Dispose();
                 }

@@ -16,12 +16,12 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
-            WriteVerbose("Creating a new Backup Set Validation View...");
-            WriteVerbose("View Start Date: " + DateFrom);
-            WriteVerbose("View End Date: " + DateTo);
+            WriteVerbose("Performing Action: Create Backup Set Validation View");
+            WriteVerbose($"Notice: View Start Date: {DateFrom}");
+            WriteVerbose($"Notice: View End Date: {DateTo}");
             BackupSetValidationView backupSetValidationView = backupSet.prepare_validation(DateTimeToUnixEpoch(DateFrom), DateTimeToUnixEpoch(DateTo), 0);
 
             // Set the Deleted Items View
@@ -33,26 +33,28 @@ namespace PSAsigraDSClient
                 backupSetValidationView.setDeletedFileFilterType(EDeleteFilterType.EDeleteFilterType__ShowAll, 0);
 
             // Check for a previous Backup Set Validation View stored in Session State
-            WriteVerbose("Checking for previous DS-Client Validation View Sessions...");
+            WriteVerbose("Performing Action: Check for previous DS-Client Validation View Sessions");
             BackupSetValidationView previousValidationSession = SessionState.PSVariable.GetValue("ValidateView", null) as BackupSetValidationView;
 
             // If a previous session is found, remove it
             if (previousValidationSession != null)
             {
-                WriteVerbose("Previous Validation View found, attempting to Dispose...");
+                WriteVerbose("Notice: Previous Validation View found");
                 try
                 {
+                    WriteVerbose("Performing Action: Dispose Validation View");
                     previousValidationSession.Dispose();
                 }
                 catch
                 {
-                    WriteVerbose("Previous Session failed to Dispose, deleting session...");
+                    WriteVerbose("Notice: Previous Session failed to Dispose");
                 }
+                WriteVerbose("Performing Action: Remove on Validation View Session");
                 SessionState.PSVariable.Remove("ValidateView");
             }
 
             // Add new Validation View to SessionState
-            WriteVerbose("Storing new Backup Set Validation View into SessionState...");
+            WriteVerbose("Performing Action: Store Backup Set Validation View into SessionState");
             SessionState.PSVariable.Set("ValidateView", backupSetValidationView);
 
             backupSet.Dispose();

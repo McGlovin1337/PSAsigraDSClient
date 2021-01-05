@@ -154,7 +154,7 @@ namespace PSAsigraDSClient
                 old_file_exclusion_config exclusionConfig = new old_file_exclusion_config
                 {
                     type = EOldFileExclusionType.EOldFileExclusionType__TimeSpan,
-                    unit = StringToETimeUnit(ExcludeOldFilesTimeSpan.ToString()),
+                    unit = StringToEnum<ETimeUnit>(ExcludeOldFilesTimeSpan as string),
                     value = (ExcludeOldFilesTimeSpanValue as int?).GetValueOrDefault()
                 };
 

@@ -14,9 +14,9 @@ namespace PSAsigraDSClient
         public int RepeatWeeks { get; set; } = 1;
 
         [Parameter(Position = 2, HelpMessage = "Set the Days of Week the Schedule Executes on")]
-        [ValidateSet("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")]
+        [ValidateSet("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")]
         [ValidateNotNullOrEmpty]
-        public string[] ScheduleDays { get; set; } = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+        public string[] ScheduleDays { get; set; } = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
         [Parameter(Position = 3, HelpMessage = "Set the Start Date for this Schedule Detail")]
         [ValidateNotNullOrEmpty]

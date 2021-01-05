@@ -90,32 +90,7 @@ namespace PSAsigraDSClient
             int WeekDays = 0;
 
             foreach (string weekday in weekdays)
-            {
-                switch(weekday)
-                {
-                    case "Monday":
-                        WeekDays += (int)EScheduleWeekDays.EScheduleWeekDays__Monday;
-                        break;
-                    case "Tuesday":
-                        WeekDays += (int)EScheduleWeekDays.EScheduleWeekDays__Tuesday;
-                        break;
-                    case "Wednesday":
-                        WeekDays += (int)EScheduleWeekDays.EScheduleWeekDays__Wednesday;
-                        break;
-                    case "Thursday":
-                        WeekDays += (int)EScheduleWeekDays.EScheduleWeekDays__Thrusday;
-                        break;
-                    case "Friday":
-                        WeekDays += (int)EScheduleWeekDays.EScheduleWeekDays__Friday;
-                        break;
-                    case "Saturday":
-                        WeekDays += (int)EScheduleWeekDays.EScheduleWeekDays__Saturday;
-                        break;
-                    case "Sunday":
-                        WeekDays += (int)EScheduleWeekDays.EScheduleWeekDays__Sunday;
-                        break;
-                }
-            }
+                WeekDays += (int)StringToEnum<EScheduleWeekDays>(weekday);
 
             return WeekDays;
         }

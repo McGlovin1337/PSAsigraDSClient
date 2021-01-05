@@ -15,6 +15,7 @@ namespace PSAsigraDSClient
         {
             RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
 
+            WriteVerbose($"Performing Action: Retrieve Retention Rule with RetentionRuleId: {RetentionRuleId}");
             RetentionRule RetentionRule = DSClientRetentionRuleMgr.definedRules().Single(rule => rule.getID() == RetentionRuleId);
 
             // Recent Generations
@@ -26,7 +27,7 @@ namespace PSAsigraDSClient
             // Interval based Time Retention
             if (MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue"))
             {
-                WriteVerbose("Adding Interval Time Based Retention Rule...");
+                WriteVerbose("Performing Action: Add Interval Time Based Retention Rule");
                 IntervalTimeRetentionOption intervalTimeRetention = DSClientRetentionRuleMgr.createIntervalTimeRetention();
 
                 RetentionRule.addTimeRetentionOption(IntervalTimeRetentionRule(intervalTimeRetention, IntervalTimeValue, IntervalTimeUnit, IntervalValidForValue, IntervalValidForUnit));
@@ -35,7 +36,7 @@ namespace PSAsigraDSClient
             // Weekly based Time Retention
             if (WeeklyRetentionDay != null)
             {
-                WriteVerbose("Adding Weekly Time Based Retention Rule...");
+                WriteVerbose("Performing Action: Add Weekly Time Based Retention Rule");
                 WeeklyTimeRetentionOption weeklyTimeRetention = DSClientRetentionRuleMgr.createWeeklyTimeRetention();
 
                 RetentionRule.addTimeRetentionOption(WeeklyTimeRetentionRule(weeklyTimeRetention, WeeklyRetentionDay, WeeklyRetentionHour, WeeklyRetentionMinute, WeeklyValidForValue, WeeklyValidForUnit));
@@ -44,7 +45,7 @@ namespace PSAsigraDSClient
             // Monthly based Time Retention
             if (MyInvocation.BoundParameters.ContainsKey("MonthlyRetentionDay"))
             {
-                WriteVerbose("Adding Monthly Time Based Retention Rule...");
+                WriteVerbose("Performing Action: Add Monthly Time Based Retention Rule");
                 MonthlyTimeRetentionOption monthlyTimeRetention = DSClientRetentionRuleMgr.createMonthlyTimeRetention();
 
                 RetentionRule.addTimeRetentionOption(MonthlyTimeRetentionRule(monthlyTimeRetention, MonthlyRetentionDay, MonthlyRetentionHour, MonthlyRetentionMinute, MonthlyValidForValue, MonthlyValidForUnit));
@@ -53,7 +54,7 @@ namespace PSAsigraDSClient
             // Yearly based Time Retention
             if (MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay"))
             {
-                WriteVerbose("Adding Yearly Time Based Retention Rule...");
+                WriteVerbose("Performing Action: Add Yearly Time Based Retention Rule");
                 YearlyTimeRetentionOption yearlyTimeRetention = DSClientRetentionRuleMgr.createYearlyTimeRetention();
 
                 RetentionRule.addTimeRetentionOption(YearlyTimeRetentionRule(yearlyTimeRetention, YearlyRetentionMonthDay, YearlyRetentionMonth, YearlyRetentionHour, YearlyRetentionMinute, YearlyValidForValue, YearlyValidForUnit));

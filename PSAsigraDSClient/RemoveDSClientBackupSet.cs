@@ -15,16 +15,16 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Retrieving Backup Set...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId {BackupSetId}");
             BackupSet DSClientBackupSet = DSClientSession.backup_set(BackupSetId);
 
-            if (ShouldProcess("'" + DSClientBackupSet.getName() + "'" + " with ID: " + DSClientBackupSet.getID()))
+            if (ShouldProcess($"'{DSClientBackupSet.getName()}' with ID: {DSClientBackupSet.getID()}"))
             {
-                WriteVerbose("Initiating Backup Set Removal...");
+                WriteVerbose("Performing Action: Initiate Backup Set Removal");
                 GenericActivity removeActivity = DSClientSession.removeBackupSet(DSClientBackupSet);
 
                 int removeId = removeActivity.getID();
-                WriteVerbose("Removal Activity Id " + removeId + " created...");
+                WriteVerbose($"Notice: Removal Activity Id {removeId} created");
 
                 running_activity_info removalInfo = removeActivity.getCurrentStatus();
                 DSClientRunningActivity RemovalActivity = new DSClientRunningActivity(removalInfo);

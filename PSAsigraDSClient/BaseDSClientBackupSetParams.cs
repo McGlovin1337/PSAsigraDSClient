@@ -4,10 +4,6 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientBackupSetParams: BaseDSClientBackupSet
     {
-        [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
-        [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
-        public string SetType { get; set; }        
-
         [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Set the Compression Method to use")]
         [ValidateSet("None", "ZLIB", "LZOP", "ZLIB_LO", "ZLIB_MED", "ZLIB_HI")]
         public string Compression { get; set; }
@@ -52,7 +48,7 @@ namespace PSAsigraDSClient
         public SwitchParameter UseTransmissionCache { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
-        [ValidateSet("Email", "Pager", "Broadcast", "Event")]
+        [ValidateSet("Email", "Page", "Broadcast", "Event")]
         public string NotificationMethod { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Recipient")]
@@ -69,5 +65,8 @@ namespace PSAsigraDSClient
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Completion Status to send SNMP Traps")]
         [ValidateSet("Incomplete", "CompletedWithErrors", "Successful", "CompletedWithWarnings")]
         public string[] SnmpTrapNotifications { get; set; }
+
+        [Parameter(HelpMessage = "Output Basic Backup Set Properties")]
+        public SwitchParameter PassThru { get; set; }
     }
 }

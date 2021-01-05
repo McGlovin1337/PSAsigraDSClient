@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -11,7 +12,7 @@ namespace PSAsigraDSClient
         {
             RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
 
-            WriteVerbose("Retrieving Archive Filter Rules from DS-Client...");
+            WriteVerbose("Performing Action: Retrieve Archive Filter Rules");
             ArchiveFilterRule[] archiveFilterRules = DSClientRetentionRuleMgr.definedArchiveFilterRules();
 
             ProcessArchiveFilterRules(archiveFilterRules);
@@ -66,7 +67,7 @@ namespace PSAsigraDSClient
             {
                 EArchiveFilterRuleType filterType = archiveFilter.getType();
 
-                FilterType = ArchiveFilterTypeToString(filterType);
+                FilterType = EnumToString(filterType);
                 Type = (archiveFilter.isInclusion() == true) ? "Inclusion" : "Exclusion";
                 Pattern = archiveFilter.getPattern();
 
@@ -89,26 +90,6 @@ namespace PSAsigraDSClient
             public override string ToString()
             {
                 return Type;
-            }
-
-            private string ArchiveFilterTypeToString(EArchiveFilterRuleType filterRuleType)
-            {
-                string filterType = null;
-
-                switch (filterRuleType)
-                {
-                    case EArchiveFilterRuleType.EArchiveFilterRuleType__FileFilter:
-                        filterType = "FileFilter";
-                        break;
-                    case EArchiveFilterRuleType.EArchiveFilterRuleType__Regex:
-                        filterType = "Regex";
-                        break;
-                    case EArchiveFilterRuleType.EArchiveFilterRuleType__UNDEFINED:
-                        filterType = "Undefined";
-                        break;
-                }
-
-                return filterType;
             }
         }
     }

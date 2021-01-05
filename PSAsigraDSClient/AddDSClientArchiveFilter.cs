@@ -16,11 +16,11 @@ namespace PSAsigraDSClient
         {
             RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
 
-            WriteVerbose("Retrieving Archive filter Rule from DS-Client...");
+            WriteVerbose("Performing Action: Retrieve Archive filter Rule");
             ArchiveFilterRule filterRule = DSClientRetentionRuleMgr.definedArchiveFilterRules()
                                             .Single(rule => rule.getName() == ArchiveFilterRule);
 
-            WriteVerbose("Adding Archive Filter to Archive Filter Rule...");
+            WriteVerbose("Performing Action: Add Archive Filter to Archive Filter Rule");
             filterRule.addFilter(archiveFilter);
 
             filterRule.Dispose();

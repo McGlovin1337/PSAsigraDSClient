@@ -3,6 +3,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Data;
 using AsigraDSClientApi;
+using System;
 
 namespace PSAsigraDSClient
 {
@@ -49,14 +50,30 @@ namespace PSAsigraDSClient
             }
             else
             {
+                int totalRules = dSClientRetentionRules.Count();
+                int processed = 0;
+                ProgressRecord progressRecord = new ProgressRecord(1, "Process Retention Rules", $"{processed} of {totalRules} Processed")
+                {
+                    RecordType = ProgressRecordType.Processing,
+                    PercentComplete = 0
+                };
+                
                 foreach (RetentionRule rule in dSClientRetentionRules)
                 {
-                    DSClientRetentionRule dSClientRetentionRule = new DSClientRetentionRule(rule);
-                    DSClientRetentionRules.Add(dSClientRetentionRule);
+                    WriteVerbose($"Performing Action: Process Retention Rule with RetentionRuleId: {rule.getID()}");
+                    progressRecord.CurrentOperation = $"Processing RetentionRuleId: {rule.getID()}";
+                    progressRecord.PercentComplete = (int)Math.Round((double)((double)processed / (double)totalRules) * 100);
+                    progressRecord.StatusDescription = $"{processed} of {totalRules} Processed, {progressRecord.PercentComplete}%";
+                    WriteProgress(progressRecord);
+
+                    DSClientRetentionRules.Add(new DSClientRetentionRule(rule));
+
+                    processed++;
                 }
+                progressRecord.RecordType = ProgressRecordType.Completed;
             }
 
-            WriteVerbose("Yielded " + DSClientRetentionRules.Count() + " Retention Rules");
+            WriteVerbose($"Notice: Yielded {DSClientRetentionRules.Count()} Retention Rules");
 
             DSClientRetentionRules.ForEach(WriteObject);
         }

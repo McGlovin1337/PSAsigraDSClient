@@ -7,6 +7,7 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.New, "DSClientMSSqlServerBackupSet")]
+    [OutputType(typeof(DSClientBackupSetBasicProps))]
 
     public class NewDSClientMSSqlServerBackupSet: BaseDSClientMSSqlServerBackupSet
     {
@@ -17,6 +18,10 @@ namespace PSAsigraDSClient
         [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Computer the Backup Set will be Assigned To")]
         [ValidateNotNullOrEmpty]
         public string Computer { get; set; }
+
+        [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
+        [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
+        public string SetType { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Include in Backup Set")]
         public string[] IncludeItem { get; set; }
@@ -57,7 +62,7 @@ namespace PSAsigraDSClient
 
             // Try to resolve the supplied Computer
             string computer = dataSourceBrowser.expandToFullPath(Computer);
-            WriteVerbose("Specified Computer resolved to: " + computer);
+            WriteVerbose($"Notice: Specified Computer resolved to: {computer}");
 
             // Change Data Source Browser to correct type
             dataSourceBrowser.Dispose();
@@ -74,13 +79,13 @@ namespace PSAsigraDSClient
             }
             else
             {
-                WriteVerbose("Credentials not specified, using DS-Client Credentials...");
+                WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
                 backupSetCredentials.setUsingClientCredentials(true);
             }
             dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
 
             // Create Backup Set Object
-            WriteVerbose("Creating a new Backup Set object...");
+            WriteVerbose("Performing Action: Create new Backup Set object");
             SQLDataBrowserWithSetCreation setCreation = SQLDataBrowserWithSetCreation.from(dataSourceBrowser);
             BackupSet newBackupSet = setCreation.createBackupSet(Computer);
 
@@ -150,10 +155,10 @@ namespace PSAsigraDSClient
                 force_full_monthly_day = (MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay")) ? FullMonthlyDay : 1,
                 force_full_monthly_time = (FullMonthlyTime != null) ? StringTotime_in_day(FullMonthlyTime) : StringTotime_in_day("19:00:00"),
                 is_force_full_monthly = (MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay")) ? true : false,
-                force_full_weekly_day = (FullWeeklyDay != null) ? StringToEWeekDay(FullWeeklyDay) : EWeekDay.EWeekDay__UNDEFINED,
+                force_full_weekly_day = (FullWeeklyDay != null) ? StringToEnum<EWeekDay>(FullWeeklyDay) : EWeekDay.EWeekDay__UNDEFINED,
                 force_full_weekly_time = (FullWeeklyTime != null) ? StringTotime_in_day(FullWeeklyTime) : StringTotime_in_day("19:00:00"),
                 is_force_full_weekly = (FullWeeklyDay != null) ? true : false,
-                unit_type = (FullPeriod != null) ? StringToETimeUnit(FullPeriod) : ETimeUnit.ETimeUnit__UNDEFINED,
+                unit_type = (FullPeriod != null) ? StringToEnum<ETimeUnit>(FullPeriod) : ETimeUnit.ETimeUnit__UNDEFINED,
                 unit_value = (MyInvocation.BoundParameters.ContainsKey("FullPeriodValue")) ? FullPeriodValue : 0,
                 is_force_full_periodically = (FullPeriod != null) ? true : false,
                 skip_full_on_weekdays = (SkipWeekDays != null) ? StringArrayEScheduleWeekDaysToInt(SkipWeekDays) : (int)EScheduleWeekDays.EScheduleWeekDays__UNDEFINED,
@@ -164,9 +169,12 @@ namespace PSAsigraDSClient
             newSqlBackupSet.setIncrementalPolicies(incrementalPolicies);
 
             // Add the Backup Set to the DS-Client
-            WriteVerbose("Adding the new Backup Set Object to DS-Client...");
+            WriteVerbose("Performing Action: Add Backup Set Object to DS-Client");
             DSClientSession.addBackupSet(newSqlBackupSet);
-            WriteObject("Backup Set Created with BackupSetId: " + newSqlBackupSet.getID());
+            WriteVerbose($"Notice: Backup Set Created with BackupSetId: {newSqlBackupSet.getID()}");
+
+            if (PassThru)
+                WriteObject(new DSClientBackupSetBasicProps(newSqlBackupSet));
 
             newSqlBackupSet.Dispose();
             setCreation.Dispose();

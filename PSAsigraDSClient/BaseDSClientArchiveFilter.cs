@@ -34,7 +34,7 @@ namespace PSAsigraDSClient
             if (IncludeSubDirs)
             {
                 // Set File Archive Filter Properties
-                WriteVerbose("Creating a File Archive Filter...");
+                WriteVerbose("Performing Action: Create File Archive Filter");
                 FileArchiveFilter fileArchiveFilter = DSClientRetentionRuleMgr.createFileArchiveFilter();
 
                 fileArchiveFilter.setIncludeSubDirs(true);
@@ -46,7 +46,7 @@ namespace PSAsigraDSClient
                 MyInvocation.BoundParameters.ContainsKey("Negate"))
             {
                 //Set Regex Archive Filter Properties
-                WriteVerbose("Creating a Regex Archive Filter...");
+                WriteVerbose("Performing Action: Create Regex Archive Filter");
                 RegexArchiveFilter regexArchiveFilter = DSClientRetentionRuleMgr.createRegexArchiveFilter();
 
                 if (NotCaseSensitive)
@@ -63,7 +63,7 @@ namespace PSAsigraDSClient
             else
             {
                 // Otherwise just create a File Archive Filter by Default
-                WriteVerbose("Creating a File Archive Filter...");
+                WriteVerbose("Performing Action: Create File Archive Filter");
                 FileArchiveFilter fileArchiveFilter = DSClientRetentionRuleMgr.createFileArchiveFilter();
                 NewArchiveFilter = fileArchiveFilter;
             }

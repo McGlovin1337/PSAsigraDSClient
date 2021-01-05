@@ -29,7 +29,7 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             // Get the specified Backup Set
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
             // Get the Items from the Backup Set
@@ -58,7 +58,7 @@ namespace PSAsigraDSClient
 
             List<BackupSetItem> removalItems = new List<BackupSetItem>();
 
-            WriteVerbose("Removing matching items...");
+            WriteVerbose("Performing Action: Remove matching items");
             foreach(BackupSetItem item in selectedItems)
             {
                 EBackupSetItemType itemType = item.getType();
@@ -84,7 +84,7 @@ namespace PSAsigraDSClient
                 .ToArray();
 
             // Assign the updated list of items to the Backup Set
-            WriteVerbose("Updating Backup Set Items...");
+            WriteVerbose("Performing Action: Update Backup Set Items");
             backupSet.setItems(backupSetItems);
 
             backupSet.Dispose();

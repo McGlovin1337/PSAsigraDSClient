@@ -16,7 +16,7 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Retrieving DS-Client Current Load Summary...");
+            WriteVerbose("Performing Action: Retrieve DS-Client Current Load Summary");
             dsclient_load[] dsclientLoad = DSClientSession.getLoadSummaryCurrent(NodeId);
 
             List<DSClientLoadSummary> DSClientLoad = new List<DSClientLoadSummary>();

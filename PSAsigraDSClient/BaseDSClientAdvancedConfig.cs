@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -11,7 +12,7 @@ namespace PSAsigraDSClient
         {
             ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
 
-            WriteVerbose("Retrieving DS-Client Advanced Configuration Parameters...");
+            WriteVerbose("Performing Action: Retrieve DS-Client Advanced Configuration Parameters");
             advanced_config_info[] advancedConfigInfo = DSClientConfigMgr.getAdvancedConfigurationParameters();
 
             DSClientConfigMgr.Dispose();
@@ -35,7 +36,7 @@ namespace PSAsigraDSClient
 
             public DSClientAdvancedConfig(advanced_config_info advancedConfig)
             {
-                Category = EAdvConfigCategoryToString(advancedConfig.category);
+                Category = EnumToString(advancedConfig.category);
                 Name = advancedConfig.name;
                 Value = advancedConfig.value;
                 DefaultValue = advancedConfig.default_value;
@@ -46,38 +47,6 @@ namespace PSAsigraDSClient
                 LocalItem = ((advancedConfig.flags & (int)EDSClientConfigurationFlags.EDSClientConfigurationFlags__LocalItem) > 0) ? true : false;
                 GlobalItem = ((advancedConfig.flags & (int)EDSClientConfigurationFlags.EDSClientConfigurationFlags__GlobalItem) > 0) ? true : false;
                 NodeId = advancedConfig.ds_client_id;
-            }
-
-            private string EAdvConfigCategoryToString(EAdvConfigCategory category)
-            {
-                string Category = null;
-
-                switch (category)
-                {
-                    case EAdvConfigCategory.EAdvConfigCategory__APIConectivity:
-                        Category = "ApiConnectivity";
-                        break;
-                    case EAdvConfigCategory.EAdvConfigCategory__Admin:
-                        Category = "Admin";
-                        break;
-                    case EAdvConfigCategory.EAdvConfigCategory__Miscellaneous:
-                        Category = "Miscellaneous";
-                        break;
-                    case EAdvConfigCategory.EAdvConfigCategory__Notification:
-                        Category = "Notification";
-                        break;
-                    case EAdvConfigCategory.EAdvConfigCategory__Performance:
-                        Category = "Performance";
-                        break;
-                    case EAdvConfigCategory.EAdvConfigCategory__Communication:
-                        Category = "Communication";
-                        break;
-                    case EAdvConfigCategory.EAdvConfigCategory__Installation:
-                        Category = "Installation";
-                        break;
-                }
-
-                return Category;
             }
         }
     }

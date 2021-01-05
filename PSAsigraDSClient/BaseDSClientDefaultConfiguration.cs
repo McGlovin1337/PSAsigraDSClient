@@ -10,7 +10,7 @@ namespace PSAsigraDSClient
         {
             ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
 
-            WriteVerbose("Retrieving current DS-Client Default Configuration...");
+            WriteVerbose("Performing Action: Retrieve current DS-Client Default Configuration");
             DefaultConfiguration defaultConfiguration = DSClientConfigMgr.getDefaultConfiguration();
             DefaultConfigurationWindowsClient defaultConfigurationWindows;
 
@@ -59,7 +59,7 @@ namespace PSAsigraDSClient
                 RetentionRule retentionRule = defaultConfiguration.getDefaultRetentionRule();
                 Schedule schedule = defaultConfiguration.getDefaultSchedule();
 
-                CompressionType = ECompressionTypeToString(compressionType);
+                CompressionType = EnumToString(compressionType);
                 DSClientBuffer = defaultConfiguration.getDefaultDSClientBuffer();
                 LocalStoragePath = defaultConfiguration.getDefaultLocalStoragePath();
                 BackupSetNotification = new BaseDSClientNotification.DSClientBackupSetNotification(notifyInfo[0]);
@@ -79,7 +79,7 @@ namespace PSAsigraDSClient
                 Schedule schedule = defaultConfiguration.getDefaultSchedule();
                 EOpenFileStrategy openFileStrategy = defaultConfiguration.getDefaultOpenFilesOperation();
 
-                CompressionType = ECompressionTypeToString(compressionType);
+                CompressionType = EnumToString(compressionType);
                 DSClientBuffer = defaultConfiguration.getDefaultDSClientBuffer();
                 LocalStoragePath = defaultConfiguration.getDefaultLocalStoragePath();
                 BackupSetNotification = new BaseDSClientNotification.DSClientBackupSetNotification(notifyInfo[0]);
@@ -88,27 +88,10 @@ namespace PSAsigraDSClient
                     RetentionRule = new BaseDSClientRetentionRule.DSClientRetentionRule(retentionRule);
                 if (schedule != null)
                     Schedule = new BaseDSClientSchedule.DSClientScheduleInfo(schedule);
-                OpenFileOperation = OpenFileOperationToString(openFileStrategy);
+                OpenFileOperation = EnumToString(openFileStrategy);
                 OpenFileRetryInterval = defaultConfiguration.getDefaultOpenFilesRetryInterval();
                 OpenFileRetryTimes = defaultConfiguration.getDefaultOpenFilesRetryTimes();
                 BackupFilePermissions = defaultConfiguration.getDefaultToBackupPermissions();
-            }
-
-            private string OpenFileOperationToString(EOpenFileStrategy openFileStrategy)
-            {
-                switch(openFileStrategy)
-                {
-                    case EOpenFileStrategy.EOpenFileStrategy__TryDenyWrite:
-                        return "TryDenyWrite";
-                    case EOpenFileStrategy.EOpenFileStrategy__DenyWrite:
-                        return "DenyWrite";
-                    case EOpenFileStrategy.EOpenFileStrategy__PreventWrite:
-                        return "PreventWrite";
-                    case EOpenFileStrategy.EOpenFileStrategy__AllowWrite:
-                        return "AllowWrite";
-                    default:
-                        return null;
-                }
             }
         }        
     }

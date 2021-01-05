@@ -16,10 +16,6 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
-        [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
-        public new string SetType { get; set; }
-
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Compression Method to use")]
         [ValidateSet("None", "ZLIB", "LZOP", "ZLIB_LO", "ZLIB_MED", "ZLIB_HI")]
         public new string Compression { get; set; }
@@ -47,10 +43,10 @@ namespace PSAsigraDSClient
         protected override void ProcessMsSqlBackupSet()
         {
             // Get the Backup Set from DS-Client
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
-            WriteVerbose("Processing Changes to Backup Set...");
+            WriteVerbose("Performing Action: Process Changes to Backup Set");
             // Update Computer Credentials if Credentials specified
             if (Credential != null)
             {
@@ -135,7 +131,7 @@ namespace PSAsigraDSClient
             if (FullWeeklyDay != null || FullWeeklyTime != null)
             {
                 if (FullWeeklyDay != null)
-                    incrementalPolicies.force_full_weekly_day = StringToEWeekDay(FullWeeklyDay);
+                    incrementalPolicies.force_full_weekly_day = StringToEnum<EWeekDay>(FullWeeklyDay);
 
                 if (FullWeeklyTime != null)
                     incrementalPolicies.force_full_weekly_time = StringTotime_in_day(FullWeeklyTime);
@@ -146,7 +142,7 @@ namespace PSAsigraDSClient
             if (FullPeriod != null || MyInvocation.BoundParameters.ContainsKey("FullPeriodValue"))
             {
                 if (FullPeriod != null)
-                    incrementalPolicies.unit_type = StringToETimeUnit(FullPeriod);
+                    incrementalPolicies.unit_type = StringToEnum<ETimeUnit>(FullPeriod);
 
                 if (MyInvocation.BoundParameters.ContainsKey("FullPeriodValue"))
                     incrementalPolicies.unit_value = FullPeriodValue;
@@ -183,7 +179,7 @@ namespace PSAsigraDSClient
                 incrementalPolicies.is_skip_full_on_weekdays = !DisableSkipWeekDays;
 
             sqlBackupSet.setIncrementalPolicies(incrementalPolicies);
-            WriteVerbose("Completed");
+            WriteVerbose("Notice: Completed");
 
             sqlBackupSet.Dispose();
         }

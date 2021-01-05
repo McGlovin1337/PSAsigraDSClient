@@ -2,6 +2,7 @@
 using System.Linq;
 using AsigraDSClientApi;
 using System.Management.Automation;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -32,7 +33,7 @@ namespace PSAsigraDSClient
 
                     if (SSHInterpreter != null)
                     {
-                        SSHAccesorType sshAccessType = BaseDSClientBackupSet.StringToSSHAccesorType(SSHInterpreter);
+                        SSHAccesorType sshAccessType = StringToEnum<SSHAccesorType>(SSHInterpreter);
 
                         unixFSSSHBackupSetCredentials.setSSHAccessType(sshAccessType, SSHInterpreterPath);
                     }
@@ -54,10 +55,10 @@ namespace PSAsigraDSClient
             }
 
             // Initiate the restore
-            WriteVerbose("Initiating the Restore Request...");
+            WriteVerbose("Performing Action: Initiate Restore Request");
             GenericActivity restoreActivity = restoreActivityInitiator.startRestore(dataSourceBrowser, computer, shareMappings.ToArray());
 
-            WriteObject("Started Backup Set Restore Activity with ActivityId: " + restoreActivity.getID());
+            WriteObject($"Started Backup Set Restore Activity with ActivityId: {restoreActivity.getID()}");
 
             restoreActivity.Dispose();
         }

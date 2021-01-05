@@ -15,10 +15,6 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
-        [Parameter(Position = 3, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
-        [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
-        public new string SetType { get; set; }
-
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Compression Method to use")]
         [ValidateSet("None", "ZLIB", "LZOP", "ZLIB_LO", "ZLIB_MED", "ZLIB_HI")]
         public new string Compression { get; set; }
@@ -26,7 +22,7 @@ namespace PSAsigraDSClient
         protected override void ProcessUnixFsBackupSet()
         {
             // Get the Backup Set from DS-Client
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
             // Process the Common Backup Set Parameters

@@ -14,9 +14,10 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Retrieving Backup Set Configuration...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
+            WriteDebug("Parsing Backup Set details.");
             DSClientBackupSet dSClientBackupSet = new DSClientBackupSet(backupSet, DSClientOSType);
 
             WriteObject(dSClientBackupSet);

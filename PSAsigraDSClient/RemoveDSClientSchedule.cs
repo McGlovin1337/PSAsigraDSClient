@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
 
     public class RemoveDSClientSchedule: DSClientCmdlet
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, HelpMessage = "The ScheduleId to remove")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The ScheduleId to remove")]
         [ValidateNotNullOrEmpty]
         public int ScheduleId { get; set; }
 
@@ -15,10 +15,10 @@ namespace PSAsigraDSClient
         {
             ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
 
-            WriteVerbose("Getting Schedule with Id " + ScheduleId + "...");
+            WriteVerbose($"Performing Action: Retrieve Schedule with ScheduleId {ScheduleId}");
             Schedule removeSchedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
 
-            WriteVerbose("Attempting to remove Schedule with Id " + ScheduleId + "...");
+            WriteVerbose($"Performing Action: Remove Schedule with ScheduleId {ScheduleId}");
             DSClientScheduleMgr.removeSchedule(removeSchedule);
             WriteObject("Removed ScheduleId " + ScheduleId);
 

@@ -46,15 +46,10 @@ namespace PSAsigraDSClient
             if (MyInvocation.BoundParameters.ContainsKey("StartTime"))
                 startParams.setStartTime(DateTimeToUnixEpoch(StartTime));
 
-            WriteVerbose("Submitting Backup Start Activity...");
+            WriteVerbose("Performing Action: Submit Backup Start Activity");
             GenericActivity backupActivity = backupSet.start_backup(backupSetItems, startParams);
 
-            DSClientStartBackupSetActivity startActivity = new DSClientStartBackupSetActivity
-            {
-                ActivityId = backupActivity.getID(),
-                BackupSetId = backupSet.getID(),
-                Name = backupSet.getName()
-            };
+            DSClientStartBackupSetActivity startActivity = new DSClientStartBackupSetActivity(backupActivity.getID(), backupSet.getID(), backupSet.getName());
 
             WriteObject(startActivity);
 
@@ -91,12 +86,7 @@ namespace PSAsigraDSClient
                     WriteVerbose("Submitting Backup Start Activity...");
                     GenericActivity backupActivity = backupSet.start_backup(backupSetItems, startParams);
 
-                    startActivity.Add(new DSClientStartBackupSetActivity
-                    {
-                        ActivityId = backupActivity.getID(),
-                        BackupSetId = backupSet.getID(),
-                        Name = backupSet.getName()
-                    });
+                    startActivity.Add(new DSClientStartBackupSetActivity(backupActivity.getID(), backupSet.getID(), backupSet.getName()));
 
                     backupActivity.Dispose();
                     startParams.Dispose();

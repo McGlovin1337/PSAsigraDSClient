@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using System;
+using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -155,7 +156,7 @@ namespace PSAsigraDSClient
             retention_time_span timeSpan = new retention_time_span
             {
                 period = keepAllGensTimeValue,
-                unit = StringToRetentionTimeUnit(keepAllGensTimeUnit)
+                unit = StringToEnum<RetentionTimeUnit>(keepAllGensTimeUnit)
             };
             retentionRule.setKeepPeriodTimeSpan(timeSpan);
         }
@@ -165,14 +166,14 @@ namespace PSAsigraDSClient
             retention_time_span intTimeSpan = new retention_time_span
             {
                 period = timeValue,
-                unit = StringToRetentionTimeUnit(timeUnit)
+                unit = StringToEnum<RetentionTimeUnit>(timeUnit)
             };
             intervalTimeRetention.setRepeatTime(intTimeSpan);
 
             retention_time_span validTimeSpan = new retention_time_span
             {
                 period = validForValue,
-                unit = StringToRetentionTimeUnit(validForUnit)
+                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
             };
             intervalTimeRetention.setValidFor(validTimeSpan);
 
@@ -181,7 +182,7 @@ namespace PSAsigraDSClient
 
         protected static WeeklyTimeRetentionOption WeeklyTimeRetentionRule(WeeklyTimeRetentionOption weeklyTimeRetention, string weekDay, int retentionHour, int retentionMinute, int validForValue, string validForUnit)
         {
-            weeklyTimeRetention.setTriggerDay(StringToEWeekDay(weekDay));
+            weeklyTimeRetention.setTriggerDay(StringToEnum<EWeekDay>(weekDay));
 
             time_in_day weeklyTime = new time_in_day
             {
@@ -194,7 +195,7 @@ namespace PSAsigraDSClient
             retention_time_span validTimeSpan = new retention_time_span
             {
                 period = validForValue,
-                unit = StringToRetentionTimeUnit(validForUnit)
+                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
             };
             weeklyTimeRetention.setValidFor(validTimeSpan);
 
@@ -216,7 +217,7 @@ namespace PSAsigraDSClient
             retention_time_span validTimeSpan = new retention_time_span
             {
                 period = validForValue,
-                unit = StringToRetentionTimeUnit(validForUnit)
+                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
             };
             monthlyTimeRetention.setValidFor(validTimeSpan);
 
@@ -227,7 +228,7 @@ namespace PSAsigraDSClient
         {
             yearlyTimeRetention.setDayOfMonth(monthDay);
 
-            yearlyTimeRetention.setTriggerMonth(StringToEMonth(month));
+            yearlyTimeRetention.setTriggerMonth(StringToEnum<EMonth>(month));
 
             time_in_day yearlyTime = new time_in_day
             {
@@ -240,96 +241,11 @@ namespace PSAsigraDSClient
             retention_time_span validTimeSpan = new retention_time_span
             {
                 period = validForValue,
-                unit = StringToRetentionTimeUnit(validForUnit)
+                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
             };
             yearlyTimeRetention.setValidFor(validTimeSpan);
 
             return yearlyTimeRetention;
-        }
-
-        private static EMonth StringToEMonth(string month)
-        {
-            EMonth Month;
-
-            switch (month.ToLower())
-            {
-                case "january":
-                    Month = EMonth.EMonth__January;
-                    break;
-                case "february":
-                    Month = EMonth.EMonth__February;
-                    break;
-                case "march":
-                    Month = EMonth.EMonth__March;
-                    break;
-                case "april":
-                    Month = EMonth.EMonth__April;
-                    break;
-                case "may":
-                    Month = EMonth.EMonth__May;
-                    break;
-                case "june":
-                    Month = EMonth.EMonth__June;
-                    break;
-                case "july":
-                    Month = EMonth.EMonth__July;
-                    break;
-                case "august":
-                    Month = EMonth.EMonth__August;
-                    break;
-                case "september":
-                    Month = EMonth.EMonth__September;
-                    break;
-                case "october":
-                    Month = EMonth.EMonth__October;
-                    break;
-                case "november":
-                    Month = EMonth.EMonth__November;
-                    break;
-                case "december":
-                    Month = EMonth.EMonth__December;
-                    break;
-                default:
-                    Month = EMonth.EMonth__UNDEFINED;
-                    break;
-            }
-
-            return Month;
-        }
-
-        public static RetentionTimeUnit StringToRetentionTimeUnit(string timeUnit)
-        {
-            RetentionTimeUnit TimeUnit;
-
-            switch (timeUnit.ToLower())
-            {
-                case "seconds":
-                    TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Seconds;
-                    break;
-                case "minutes":
-                    TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Minutes;
-                    break;
-                case "hours":
-                    TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Hours;
-                    break;
-                case "days":
-                    TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Days;
-                    break;
-                case "weeks":
-                    TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Weeks;
-                    break;
-                case "months":
-                    TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Months;
-                    break;
-                case "years":
-                    TimeUnit = RetentionTimeUnit.RetentionTimeUnit__Years;
-                    break;
-                default:
-                    TimeUnit = RetentionTimeUnit.RetentionTimeUnit__UNDEFINED;
-                    break;
-            }
-
-            return TimeUnit;
         }
     }
 }

@@ -13,12 +13,12 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             // Get the Schedule from DS-Client
-            WriteVerbose("Retrieving Schedule from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Schedule with ScheduleId: {ScheduleId}");
             ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
             Schedule schedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
 
             // Set the Schedule to Active
-            WriteVerbose("Performing action: Enable On Target: " + ScheduleId);
+            WriteVerbose($"Performing Action: Enable On Target: {ScheduleId}");
             schedule.setActive(true);
 
             schedule.Dispose();

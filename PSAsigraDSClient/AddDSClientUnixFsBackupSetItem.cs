@@ -49,7 +49,7 @@ namespace PSAsigraDSClient
                 throw new Exception("Unix FileSystem Backup Sets can only be created on a Unix DS-Client");
 
             // Get the requested Backup Set from DS-Client
-            WriteVerbose("Retrieving Backup Set from DS-Client...");
+            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
             string computer = backupSet.getComputerName();
 
@@ -103,7 +103,7 @@ namespace PSAsigraDSClient
             backupSetItems = backupSetItems.Distinct(new BackupSetItemComparer()).ToList();
 
             // Add all the items to the Backup Set
-            WriteVerbose("Adding Items to Backup Set...");
+            WriteVerbose("Performing Action: Add Items to Backup Set");
             backupSet.setItems(backupSetItems.ToArray());
 
             dataSourceBrowser.Dispose();

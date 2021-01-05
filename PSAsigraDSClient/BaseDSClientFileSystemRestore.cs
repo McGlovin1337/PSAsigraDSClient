@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -30,7 +31,7 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             // Check for a Backup Set Restore View stored in SessionState
-            WriteVerbose("Checking for DS-Client Restore View Session...");
+            WriteVerbose("Performing Action: Check for DS-Client Restore View Session");
             BackupSetRestoreView restoreSession = SessionState.PSVariable.GetValue("RestoreView", null) as BackupSetRestoreView;
 
             if (restoreSession == null)
@@ -71,7 +72,7 @@ namespace PSAsigraDSClient
             // Resolve the supplied Computer Name
             string computer = dataSourceBrowser.expandToFullPath(Computer);
             computer = dataSourceBrowser.expandToFullPath(computer);
-            WriteVerbose("Specified Computer resolved to: " + computer);
+            WriteVerbose("Notice: Specified Computer resolved to: " + computer);
 
             // Set the Destination Computer Credentials
             BackupSetCredentials backupSetCredentials = dataSourceBrowser.neededCredentials(computer);
@@ -88,7 +89,7 @@ namespace PSAsigraDSClient
                 }
                 else
                 {
-                    WriteVerbose("Credentials not specified, using DS-Client Credentials...");
+                    WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
                     win32FSBSCredentials.setUsingClientCredentials(true);
                 }
                 dataSourceBrowser.setCurrentCredentials(win32FSBSCredentials);
@@ -106,7 +107,7 @@ namespace PSAsigraDSClient
                 }
                 else
                 {
-                    WriteVerbose("Credentials not specified, using DS-Client Credentials...");
+                    WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
                     unixFSBackupSetCredentials.setUsingClientCredentials(true);
                 }
                 dataSourceBrowser.setCurrentCredentials(unixFSBackupSetCredentials);
@@ -142,9 +143,9 @@ namespace PSAsigraDSClient
 
             FS_RestoreActivityInitiator fsRestoreActivityInitiator = FS_RestoreActivityInitiator.from(restoreActivityInitiator);
 
-            fsRestoreActivityInitiator.setFileOverwriteOption(StringToEFileOverwriteOption(OverwriteOption));
-            fsRestoreActivityInitiator.setRestoreMethod(StringToERestoreMethod(RestoreMethod));
-            fsRestoreActivityInitiator.setRestorePermission(StringToERestorePermission(RestorePermissions));
+            fsRestoreActivityInitiator.setFileOverwriteOption(StringToEnum<EFileOverwriteOption>(OverwriteOption));
+            fsRestoreActivityInitiator.setRestoreMethod(StringToEnum<ERestoreMethod>(RestoreMethod));
+            fsRestoreActivityInitiator.setRestorePermission(StringToEnum<ERestorePermission>(RestorePermissions));
 
             // Process Cmdlet specifics
             ProcessFileSystemRestore(computer, shareMappings, dataSourceBrowser, fsRestoreActivityInitiator);
@@ -152,81 +153,6 @@ namespace PSAsigraDSClient
             dataSourceBrowser.Dispose();
             restoreSession.Dispose();
             SessionState.PSVariable.Remove("RestoreView");
-        }
-
-        private static EFileOverwriteOption StringToEFileOverwriteOption(string overwriteOption)
-        {
-            EFileOverwriteOption OverwriteOption;
-
-            switch (overwriteOption.ToLower())
-            {
-                case "restoreall":
-                    OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__RestoreAll;
-                    break;
-                case "restorenewer":
-                    OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__RestoreNewer;
-                    break;
-                case "restoreolder":
-                    OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__RestoreOlder;
-                    break;
-                case "restoredifferent":
-                    OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__RestoreDifferent;
-                    break;
-                case "skipexisting":
-                    OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__SkipExisting;
-                    break;
-                default:
-                    OverwriteOption = EFileOverwriteOption.EFileOverwriteOption__UNDEFINED;
-                    break;
-            }
-
-            return OverwriteOption;
-        }
-
-        private static ERestoreMethod StringToERestoreMethod(string restoreMethod)
-        {
-            ERestoreMethod RestoreMethod;
-
-            switch (restoreMethod.ToLower())
-            {
-                case "save":
-                    RestoreMethod = ERestoreMethod.ERestoreMethod__Save;
-                    break;
-                case "fast":
-                    RestoreMethod = ERestoreMethod.ERestoreMethod__Fast;
-                    break;
-                case "usebuffer":
-                    RestoreMethod = ERestoreMethod.ERestoreMethod__UseBuffer;
-                    break;
-                default:
-                    RestoreMethod = ERestoreMethod.ERestoreMethod__UNDEFINED;
-                    break;
-            }
-
-            return RestoreMethod;
-        }
-
-        private static ERestorePermission StringToERestorePermission(string restorePermission)
-        {
-            ERestorePermission RestorePermission;
-
-            switch (restorePermission.ToLower())
-            {
-                case "yes":
-                    RestorePermission = ERestorePermission.ERestorePermission__Yes;
-                    break;
-                case "skip":
-                    RestorePermission = ERestorePermission.ERestorePermission__Skip;
-                    break;
-                case "only":
-                    RestorePermission = ERestorePermission.ERestorePermission__Only;
-                    break;
-                default:
-                    RestorePermission = ERestorePermission.ERestorePermission__UNDEFINED;
-                    break;
-            }
-
-            return RestorePermission;
         }
     }
 }

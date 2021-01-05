@@ -18,12 +18,12 @@ namespace PSAsigraDSClient
 
             if (ApiDataTypes)
             {
-                WriteVerbose("Retrieving API Supported Data Types...");
+                WriteVerbose("Performing Action: Retrieve API Supported Data Types");
                 dataTypes = DSClientSession.getAPIDataTypesSupport();
             }
             else
             {
-                WriteVerbose("Retrieving DS-Client Supported Data Types...");
+                WriteVerbose("Performing Action: Retrieve DS-Client Supported Data Types");
                 dataTypes = DSClientSession.getClientDataTypesSupport();
             }
 

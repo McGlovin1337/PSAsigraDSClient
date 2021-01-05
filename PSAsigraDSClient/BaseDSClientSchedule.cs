@@ -1,95 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientSchedule: DSClientCmdlet
     {
-        protected override void DSClientProcessRecord()
-        {
-            throw new NotImplementedException("DSClientProcessRecord Method should be overriden");
-        }
-
-        protected EActivePackageClosing StringToEActivePackageClosing(string packageClose)
-        {
-            switch(packageClose.ToLower())
-            {
-                case "donotclose":
-                    return EActivePackageClosing.EActivePackageClosing__DoNotClose;
-                case "closeatstart":
-                    return EActivePackageClosing.EActivePackageClosing__CloseAtStart;
-                case "closeatend":
-                    return EActivePackageClosing.EActivePackageClosing__CloseAtEnd;
-                default:
-                    return EActivePackageClosing.EActivePackageClosing__UNDEFINED;
-            }
-        }
-
         protected int ScheduleWeekDaysToInt(string[] weekDays)
         {
             int WeekDays = 0;
 
             foreach (string weekday in weekDays)
             {
-                switch(weekday.ToLower())
-                {
-                    case "mon":
-                        WeekDays += 1;
-                        break;
-                    case "tue":
-                        WeekDays += 2;
-                        break;
-                    case "wed":
-                        WeekDays += 4;
-                        break;
-                    case "thu":
-                        WeekDays += 8;
-                        break;
-                    case "fri":
-                        WeekDays += 16;
-                        break;
-                    case "sat":
-                        WeekDays += 32;
-                        break;
-                    case "sun":
-                        WeekDays += 64;
-                        break;
-                }
+                string day = weekday;
+                if (day.ToLower() == "thursday")
+                    day = "thrusday"; //Conversion required due to spelling mistake in enum
+
+                WeekDays += (int)StringToEnum<EScheduleWeekDays>(day);
             }
 
             return WeekDays;
-        }
-
-        protected EScheduleMonthlyStartDay StringToEScheduleMonthlyStartDay(string startWeekDay)
-        {
-            switch(startWeekDay.ToLower())
-            {
-                case "dayofmonth":
-                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__DayOfMonth;
-                case "mon":
-                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Monday;
-                case "tue":
-                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Tuesday;
-                case "wed":
-                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Wednesday;
-                case "thu":
-                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Thrusday;
-                case "fri":
-                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Friday;
-                case "sat":
-                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Saturday;
-                case "sun":
-                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Sunday;
-                case "day":
-                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Day;
-                case "weekday":
-                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__WeekDay;
-                case "weekendday":
-                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__WeekEndDay;
-                default:
-                    return EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__UNDEFINED;
-            }
         }
 
         public class DSClientScheduleInfo
@@ -137,28 +68,65 @@ namespace PSAsigraDSClient
 
         protected class DSClientScheduleDetail
         {
-            public int DetailId { get; set; }
-            public int ScheduleId { get; set; }            
-            public string ScheduleName { get; set; }
-            public dynamic Type { get; set; }
-            public DSClientCommon.TimeInDay StartTime { get; set; }
-            public DSClientCommon.TimeInDay EndTime { get; set; }
-            public DateTime StartDate { get; set; }
-            public DateTime EndDate { get; set; }
-            public bool EndTimeEnabled { get; set; }
-            public bool Excluded { get; set; }
-            public DSClientScheduleTasks EnabledTasks { get; set; }
-            public DSClientValidationScheduleOptions ValidationOptions { get; set; }
-            public DSClientBLMScheduleOptions BLMScheduleOptions { get; set; }
+            public int DetailId { get; private set; }
+            public int ScheduleId { get; private set; }            
+            public string ScheduleName { get; private set; }
+            public dynamic Type { get; private set; }
+            public TimeInDay StartTime { get; private set; }
+            public TimeInDay EndTime { get; private set; }
+            public DateTime StartDate { get; private set; }
+            public DateTime EndDate { get; private set; }
+            public bool EndTimeEnabled { get; private set; }
+            public bool Excluded { get; private set; }
+            public DSClientScheduleTasks EnabledTasks { get; private set; }
+            public DSClientValidationScheduleOptions ValidationOptions { get; private set; }
+            public DSClientBLMScheduleOptions BLMScheduleOptions { get; private set; }
+
+            public DSClientScheduleDetail(int detailId, schedule_info scheduleInfo, ScheduleDetail schedule)
+            {
+                EScheduleDetailType detailType = schedule.getType();
+
+                DetailId = detailId;
+                ScheduleId = scheduleInfo.id;
+                ScheduleName = scheduleInfo.name;
+                
+                switch (detailType)
+                {
+                    case EScheduleDetailType.EScheduleDetailType__OneTime:
+                        Type = new OneTimeScheduleType(schedule);
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Daily:
+                        Type = new DailyScheduleType(schedule);
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Weekly:
+                        Type = new WeeklyScheduleType(schedule);
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Monthly:
+                        Type = new MonthlyScheduleType(schedule);
+                        break;
+                }
+
+                StartTime = new TimeInDay(schedule.getStartTime());
+                EndTime = new TimeInDay(schedule.getEndTime());
+                StartDate = UnixEpochToDateTime(schedule.getPeriodStartDate());
+                EndDate = UnixEpochToDateTime(schedule.getPeriodEndDate());
+                EndTimeEnabled = schedule.hasEndTime();
+                Excluded = schedule.isExcluded();
+                EnabledTasks = new DSClientScheduleTasks(schedule.getTasks());
+                ValidationOptions = new DSClientValidationScheduleOptions(schedule.getValidationOptions());
+                BLMScheduleOptions = new DSClientBLMScheduleOptions(schedule.getBLMOptions());
+            }
         }
 
         protected class OneTimeScheduleType
         {
             public DateTime StartDate { get; private set; }
 
-            public OneTimeScheduleType(int startDate)
+            public OneTimeScheduleType(ScheduleDetail schedule)
             {
-                StartDate = DSClientCommon.UnixEpochToDateTime(startDate);
+                OneTimeScheduleDetail detail = OneTimeScheduleDetail.from(schedule);
+
+                StartDate = UnixEpochToDateTime(detail.get_start_date());
             }
 
             public override string ToString()
@@ -171,9 +139,11 @@ namespace PSAsigraDSClient
         {
             public int RepeatDays { get; private set; }
 
-            public DailyScheduleType(int days)
+            public DailyScheduleType(ScheduleDetail schedule)
             {
-                RepeatDays = days;
+                DailyScheduleDetail detail = DailyScheduleDetail.from(schedule);
+
+                RepeatDays = detail.getRepeatDays();
             }
 
             public override string ToString()
@@ -187,10 +157,12 @@ namespace PSAsigraDSClient
             public int RepeatWeeks { get; private set; }
             public string[] ScheduleDays { get; private set; }
 
-            public WeeklyScheduleType(int repeat, int days)
+            public WeeklyScheduleType(ScheduleDetail schedule)
             {
-                RepeatWeeks = repeat;
-                ScheduleDays = EScheduleWeekDaysIntToArray(days);
+                WeeklyScheduleDetail detail = WeeklyScheduleDetail.from(schedule);
+
+                RepeatWeeks = detail.getRepeatWeeks();
+                ScheduleDays = EScheduleWeekDaysIntToArray(detail.getScheduleDays());
             }
 
             public override string ToString()
@@ -205,47 +177,13 @@ namespace PSAsigraDSClient
             public int ScheduleDay { get; private set; }
             public string MonthlyStartDay { get; private set; }
 
-            public MonthlyScheduleType(int repeat, int schedDay, EScheduleMonthlyStartDay startDay)
+            public MonthlyScheduleType(ScheduleDetail schedule)
             {
-                RepeatMonths = repeat;
-                ScheduleDay = schedDay;
+                MonthlyScheduleDetail detail = MonthlyScheduleDetail.from(schedule);
 
-                switch (startDay)
-                {
-                    case EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__DayOfMonth:
-                        MonthlyStartDay = "DayOfMonth";
-                        break;
-                    case EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Monday:
-                        MonthlyStartDay = "Monday";
-                        break;
-                    case EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Tuesday:
-                        MonthlyStartDay = "Tuesday";
-                        break;
-                    case EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Wednesday:
-                        MonthlyStartDay = "Wednesday";
-                        break;
-                    case EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Thrusday:
-                        MonthlyStartDay = "Thursday";
-                        break;
-                    case EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Friday:
-                        MonthlyStartDay = "Friday";
-                        break;
-                    case EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Saturday:
-                        MonthlyStartDay = "Saturday";
-                        break;
-                    case EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Sunday:
-                        MonthlyStartDay = "Sunday";
-                        break;
-                    case EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Day:
-                        MonthlyStartDay = "Day";
-                        break;
-                    case EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__WeekDay:
-                        MonthlyStartDay = "WeekDay";
-                        break;
-                    case EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__WeekEndDay:
-                        MonthlyStartDay = "WeekEndDay";
-                        break;
-                }
+                RepeatMonths = detail.getRepeatMonths();
+                ScheduleDay = detail.getScheduleDay();
+                MonthlyStartDay = (detail.getScheduleWhen() == EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Thrusday) ? "Thursday" : EnumToString(detail.getScheduleWhen());
             }
 
             public override string ToString()
@@ -331,26 +269,10 @@ namespace PSAsigraDSClient
             {
                 IncludeAllGenerations = blmOptions.include_all_generations;
                 BackReference = blmOptions.use_back_reference;
-                PackageClosing = PackageCloseConvert(blmOptions.package_close);
+                PackageClosing = EnumToString(blmOptions.package_close);
 
                 if ((IncludeAllGenerations || BackReference) == true || PackageClosing != null || PackageClosing != "Undefined")
                     _optionsSet = true;
-            }
-
-            // Convert the EActivePackageClosing Enum to a Human Friendly String
-            private string PackageCloseConvert(EActivePackageClosing packageClose)
-            {
-                switch(packageClose)
-                {
-                    case EActivePackageClosing.EActivePackageClosing__DoNotClose:
-                        return "DoNotClose";
-                    case EActivePackageClosing.EActivePackageClosing__CloseAtStart:
-                        return "AtStart";
-                    case EActivePackageClosing.EActivePackageClosing__CloseAtEnd:
-                        return "AtEnd";
-                    default:
-                        return null;
-                }
             }
 
             public override string ToString()
@@ -401,20 +323,12 @@ namespace PSAsigraDSClient
         public static string[] EScheduleWeekDaysIntToArray(int weekDays)
         {
             List<string> schedDays = new List<string>();
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Monday) > 0)
-                schedDays.Add("Monday");
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Tuesday) > 0)
-                schedDays.Add("Tuesday");
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Wednesday) > 0)
-                schedDays.Add("Wednesday");
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Thrusday) > 0)
-                schedDays.Add("Thursday");
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Friday) > 0)
-                schedDays.Add("Friday");
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Saturday) > 0)
-                schedDays.Add("Saturday");
-            if ((weekDays & (int)EScheduleWeekDays.EScheduleWeekDays__Sunday) > 0)
-                schedDays.Add("Sunday");
+            foreach (EScheduleWeekDays weekday in Enum.GetValues(typeof(EScheduleWeekDays)))
+                if ((weekDays & (int)weekday) > 0)
+                {
+                    string strWeekday = (weekday == EScheduleWeekDays.EScheduleWeekDays__Thrusday) ? "Thursday" : EnumToString(weekday); // Required due to spelling mistake in enum
+                    schedDays.Add(EnumToString(strWeekday));
+                }
 
             return schedDays.ToArray();
         }

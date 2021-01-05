@@ -22,7 +22,7 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Retrieving current list of MFA Users...");
+            WriteVerbose("Performing Action: Retrieve current list of MFA Users");
             TFAManager DSClientTFAMgr = DSClientSession.getTFAManager();
 
             List<user_email> userEmails = DSClientTFAMgr.getUserEmails().ToList();
@@ -35,7 +35,7 @@ namespace PSAsigraDSClient
             };
             userEmails.Add(newUserEmail);
 
-            WriteVerbose("Adding MFA User...");
+            WriteVerbose("Performing Action: Add MFA User");
             DSClientTFAMgr.setUserEmails(userEmails.ToArray());
             WriteObject("Added new MFA User");
 

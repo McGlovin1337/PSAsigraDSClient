@@ -1,5 +1,4 @@
-﻿using System;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -16,10 +15,7 @@ namespace PSAsigraDSClient
         [Parameter(Mandatory = true, ParameterSetName = "RestoreSession", HelpMessage = "Specify to use Restore View stored in SessionState")]
         public SwitchParameter UseRestoreSession { get; set; }
 
-        protected virtual void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView)
-        {
-            throw new NotImplementedException("Method ProcessBackupSetData should be overridden");
-        }
+        protected abstract void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView);
 
         protected override void DSClientProcessRecord()
         {
@@ -60,8 +56,8 @@ namespace PSAsigraDSClient
             {
                 BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
-                WriteVerbose("Preparing Backup Set Data view...");
-                WriteVerbose("From: " + DateFrom + " To: " + DateTo);
+                WriteVerbose("Performing Action: Prepare Backup Set Data view");
+                WriteVerbose("Notice: From: " + DateFrom + " To: " + DateTo);
                 BackupSetRestoreView backupSetRestoreView = backupSet.prepare_restore(DateTimeToUnixEpoch(DateFrom), DateTimeToUnixEpoch(DateTo), 0);
 
                 ProcessBackupSetData(backupSetRestoreView);

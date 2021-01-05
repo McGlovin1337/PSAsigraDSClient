@@ -12,7 +12,7 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Retrieving DSClient Backup Sets...");
+            WriteVerbose("Performing Action: Retrieve Backup Sets");
             backup_set_info[] backupSetsInfo = DSClientSession.backup_sets_info();
 
             List<DSClientBackupSetInfo> dSClientBackupSets = new List<DSClientBackupSetInfo>();
@@ -74,7 +74,7 @@ namespace PSAsigraDSClient
                 CompressedSize = backupSetInfo.dssys_compressed_size;
                 LocalStorageDataSize = backupSetInfo.local_storage_data_size;
                 LocalStorageFileCount = backupSetInfo.local_storage_file_count;
-                SetType = EBackupSetTypeToString(backupSetInfo.set_type);
+                SetType = EnumToString(backupSetInfo.set_type);
                 UseLocalStorage = backupSetInfo.using_local_storage;
                 HasItems = backupSetInfo.has_items;
                 IsCDP = backupSetInfo.is_cdp;

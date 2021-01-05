@@ -10,7 +10,7 @@ namespace PSAsigraDSClient
         {
             SystemActivityManager DSClientSystemActivityMgr = DSClientSession.getSystemActivityManager();
 
-            WriteVerbose("Retrieving Orphaned Backup Sets...");
+            WriteVerbose("Performing Action: Retrieve Orphaned Backup Sets");
             OrphanedBackupSet[] orphanedSets = DSClientSystemActivityMgr.getOrphanedbackupSets();
 
             ProcessOrphanedBackupSet(DSClientSystemActivityMgr, orphanedSets);

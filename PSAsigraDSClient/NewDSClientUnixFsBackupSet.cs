@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.New, "DSClientUnixFsBackupSet")]
+    [OutputType(typeof(DSClientBackupSetBasicProps))]
 
     public class NewDSClientUnixFsBackupSet: BaseDSClientUnixFsBackupSet
     {
@@ -19,6 +21,10 @@ namespace PSAsigraDSClient
 
         [Parameter(Position = 2, HelpMessage = "Credentials to use")]
         public PSCredential Credential { get; set; }
+
+        [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
+        [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
+        public string SetType { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Include in Backup Set")]
         public string[] IncludeItem { get; set; }
@@ -50,7 +56,7 @@ namespace PSAsigraDSClient
 
             // Try to resolve the supplied Computer
             string computer = dataSourceBrowser.expandToFullPath(Computer);
-            WriteVerbose("Specified Computer resolved to: " + computer);
+            WriteVerbose($"Notice: Specified Computer resolved to: {computer}");
 
             // Set the Credentials
             UnixFS_Generic_BackupSetCredentials backupSetCredentials = UnixFS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
@@ -58,7 +64,7 @@ namespace PSAsigraDSClient
                 backupSetCredentials.setCredentials(Credential.UserName, Credential.GetNetworkCredential().Password);
             else
             {
-                WriteVerbose("Credentials not specified, using DS-Client Credentials...");
+                WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
                 backupSetCredentials.setUsingClientCredentials(true);
             }
             dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
@@ -71,7 +77,7 @@ namespace PSAsigraDSClient
 
                     if (SSHInterpreter != null)
                     {
-                        SSHAccesorType sshAccessType = StringToSSHAccesorType(SSHInterpreter);
+                        SSHAccesorType sshAccessType = StringToEnum<SSHAccesorType>(SSHInterpreter);
 
                         sshBackupSetCredentials.setSSHAccessType(sshAccessType, SSHInterpreterPath);
                     }
@@ -164,9 +170,12 @@ namespace PSAsigraDSClient
             UnixFS_Generic_BackupSet newUnixBackupSet = ProcessUnixFsBackupSetParams(MyInvocation.BoundParameters, UnixFS_Generic_BackupSet.from(newBackupSet));            
 
             // Add the Backup Set to the DS-Client
-            WriteVerbose("Adding the new Backup Set Object to DS-Client...");
+            WriteVerbose("Performing Action: Add Backup Set Object to DS-Client");
             DSClientSession.addBackupSet(newUnixBackupSet);
-            WriteObject("Backup Set Created with BackupSetId: " + newUnixBackupSet.getID());
+            WriteVerbose($"Notice: Backup Set Created with BackupSetId: {newUnixBackupSet.getID()}");
+
+            if (PassThru)
+                WriteObject(new DSClientBackupSetBasicProps(newUnixBackupSet));
 
             newUnixBackupSet.Dispose();
             dataSourceBrowser.Dispose();

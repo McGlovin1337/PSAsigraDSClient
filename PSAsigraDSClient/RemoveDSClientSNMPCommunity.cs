@@ -27,11 +27,11 @@ namespace PSAsigraDSClient
 
             if (existingCommunity != null)
             {
-                WriteVerbose("SNMP Community Name exists...");
+                WriteVerbose("Notice: SNMP Community Name exists");
 
                 if (Hosts != null)
                 {
-                    WriteVerbose("Removing specified Hosts from Community...");
+                    WriteVerbose("Performing Action: Remove specified Hosts from Community");
                     // Build a replacement Community
                     DSClientSNMPCommunities replacementCommunity = new DSClientSNMPCommunities(existingCommunity.Community, existingCommunity.Hosts.Except(Hosts).ToArray());
 
@@ -43,7 +43,7 @@ namespace PSAsigraDSClient
                 }
                 else
                 {
-                    WriteVerbose("Removing SNMP Community...");
+                    WriteVerbose("Performing Action: Remove SNMP Community");
                     SNMPCommunities.Remove(existingCommunity);
                 }
 

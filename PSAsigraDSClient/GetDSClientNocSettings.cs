@@ -17,7 +17,7 @@ namespace PSAsigraDSClient
 
             NOCSettingsConfiguration nocSettingsConfiguration = DSClientConfigMgr.getNOCSettings();
 
-            WriteVerbose("Retrieving DS-Client DS-NOC Settings...");
+            WriteVerbose("Performing Action: Retrieve DS-NOC Settings");
             noc_settings[] nocSettings = nocSettingsConfiguration.getSettings();
 
             List<DSClientNocSettings> dSClientNocSettings = new List<DSClientNocSettings>();

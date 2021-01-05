@@ -13,7 +13,7 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Getting Activity Details...");
+            WriteVerbose($"Performing Action: Retrieve Activity Details for ActivityId: {ActivityId}");
             GenericActivity GenericActivity = DSClientSession.activity(ActivityId);
 
             // Send Stop request to the activity

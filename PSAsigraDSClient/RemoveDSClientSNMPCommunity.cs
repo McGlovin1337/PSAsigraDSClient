@@ -6,7 +6,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Remove, "DSClientSNMPCommunity")]
+    [Cmdlet(VerbsCommon.Remove, "DSClientSNMPCommunity", SupportsShouldProcess = true)]
 
     public class RemoveDSClientSNMPCommunity: BaseDSClientSNMPConfig
     {
@@ -29,40 +29,43 @@ namespace PSAsigraDSClient
             {
                 WriteVerbose("Notice: SNMP Community Name exists");
 
-                if (Hosts != null)
+                if (ShouldProcess("Updating SNMP Community Configuration", "Are you sure you want to update the SNMP Community Configuration?", "Update SNMP Community Configuration"))
                 {
-                    WriteVerbose("Performing Action: Remove specified Hosts from Community");
-                    // Build a replacement Community
-                    DSClientSNMPCommunities replacementCommunity = new DSClientSNMPCommunities(existingCommunity.Community, existingCommunity.Hosts.Except(Hosts).ToArray());
+                    if (Hosts != null)
+                    {
+                        WriteVerbose("Performing Action: Remove specified Hosts from Community");
+                        // Build a replacement Community
+                        DSClientSNMPCommunities replacementCommunity = new DSClientSNMPCommunities(existingCommunity.Community, existingCommunity.Hosts.Except(Hosts).ToArray());
 
-                    // Remove the original Community
-                    SNMPCommunities.Remove(existingCommunity);
+                        // Remove the original Community
+                        SNMPCommunities.Remove(existingCommunity);
 
-                    // Add the replacement Community
-                    SNMPCommunities.Add(replacementCommunity);
+                        // Add the replacement Community
+                        SNMPCommunities.Add(replacementCommunity);
+                    }
+                    else
+                    {
+                        WriteVerbose("Performing Action: Remove SNMP Community");
+                        SNMPCommunities.Remove(existingCommunity);
+                    }
+
+                    // Create a new snmp_community_info object with all the updated and existing Communities
+                    List<snmp_community_info> snmpCommunityInfo = apiSNMPCommunityInfoBuilder(SNMPCommunities);
+
+                    // Create a new snmp_info object with the existing HeartbeatInterval setting and the new snmp_community_info object
+                    snmp_info newSNMPInfo = apiSNMPInfoBuilder(snmpCommunityInfo, DSClientSNMPInfo);
+
+                    // Set the new SNMP Configuration
+                    ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
+
+                    SNMPConfiguration DSClientSNMPCfg = DSClientConfigMgr.getSNMPConfiguration();
+
+                    DSClientSNMPCfg.setSNMPInfo(newSNMPInfo);
+                    WriteObject("SNMP Community Configuration Updated");
+
+                    DSClientSNMPCfg.Dispose();
+                    DSClientConfigMgr.Dispose();
                 }
-                else
-                {
-                    WriteVerbose("Performing Action: Remove SNMP Community");
-                    SNMPCommunities.Remove(existingCommunity);
-                }
-
-                // Create a new snmp_community_info object with all the updated and existing Communities
-                List<snmp_community_info> snmpCommunityInfo = apiSNMPCommunityInfoBuilder(SNMPCommunities);
-
-                // Create a new snmp_info object with the existing HeartbeatInterval setting and the new snmp_community_info object
-                snmp_info newSNMPInfo = apiSNMPInfoBuilder(snmpCommunityInfo, DSClientSNMPInfo);
-
-                // Set the new SNMP Configuration
-                ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
-
-                SNMPConfiguration DSClientSNMPCfg = DSClientConfigMgr.getSNMPConfiguration();
-
-                DSClientSNMPCfg.setSNMPInfo(newSNMPInfo);
-                WriteObject("SNMP Community Configuration Updated");
-
-                DSClientSNMPCfg.Dispose();
-                DSClientConfigMgr.Dispose();
             }
             else
             {

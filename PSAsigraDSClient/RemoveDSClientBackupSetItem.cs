@@ -5,7 +5,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Remove, "DSClientBackupSetItem")]
+    [Cmdlet(VerbsCommon.Remove, "DSClientBackupSetItem", SupportsShouldProcess = true)]
 
     public class RemoveDSClientBackupSetItem: DSClientCmdlet
     {
@@ -67,14 +67,16 @@ namespace PSAsigraDSClient
                     BackupSetFileItem backupSetFileItem = BackupSetFileItem.from(item);
 
                     if (wcPattern.IsMatch(backupSetFileItem.getFolder() + backupSetFileItem.getFilter()))
-                        removalItems.Add(item);
+                        if (ShouldProcess($"{item.getFolder()}"))
+                            removalItems.Add(item);
                 }
                 else if (itemType == EBackupSetItemType.EBackupSetItemType__RegExExclusion)
                 {
                     BackupSetRegexExclusion backupSetRegexExclusion = BackupSetRegexExclusion.from(item);
 
                     if (wcPattern.IsMatch(backupSetRegexExclusion.getFolder() + backupSetRegexExclusion.getExpression()))
-                        removalItems.Add(item);
+                        if (ShouldProcess($"{item.getFolder()} with Expression: {backupSetRegexExclusion.getExpression()}"))
+                            removalItems.Add(item);
                 }
             }
 
@@ -84,8 +86,15 @@ namespace PSAsigraDSClient
                 .ToArray();
 
             // Assign the updated list of items to the Backup Set
-            WriteVerbose("Performing Action: Update Backup Set Items");
-            backupSet.setItems(backupSetItems);
+            if (ShouldProcess(
+                $"Performing Operation Update Backup Set Items on target '{backupSet.getName()}'",
+                $"Are you sure you want to update the Backup Set Items belonging to '{backupSet.getName()}'?",
+                "Update Backup Set Items"
+            ))
+            {
+                WriteVerbose("Performing Action: Update Backup Set Items");
+                backupSet.setItems(backupSetItems);
+            }
 
             backupSet.Dispose();
         }

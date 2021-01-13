@@ -200,6 +200,7 @@
     <None Include="docs\Add-DSClientSNMPCommunity.md" />
     <None Include="docs\Add-DSClientTimeRetentionRule.md" />
     <None Include="docs\Add-DSClientUnixFsBackupSetItem.md" />
+    <None Include="docs\Add-DSClientUserGroupRole.md" />
     <None Include="docs\Add-DSClientWeeklySchedule.md" />
     <None Include="docs\Add-DSClientWinFsBackupSetItem.md" />
     <None Include="docs\Compare-DSClientEncryptionKeys.md" />
@@ -217,6 +218,7 @@
     <None Include="docs\Get-DSClientBackupSetItem.md" />
     <None Include="docs\Get-DSClientBackupSetSessions.md" />
     <None Include="docs\Get-DSClientConfiguration.md" />
+    <None Include="docs\Get-DSClientCurrentLoginRole.md" />
     <None Include="docs\Get-DSClientDefaultConfiguration.md" />
     <None Include="docs\Get-DSClientEventLog.md" />
     <None Include="docs\Get-DSClientInfo.md" />
@@ -238,6 +240,9 @@
     <None Include="docs\Get-DSClientStoredItem.md" />
     <None Include="docs\Get-DSClientSupportedDataType.md" />
     <None Include="docs\Get-DSClientTools.md" />
+    <None Include="docs\Get-DSClientUser.md" />
+    <None Include="docs\Get-DSClientUserGroup.md" />
+    <None Include="docs\Get-DSClientUserGroupRole.md" />
     <None Include="docs\Initialize-DSClientBackupSetDelete.md" />
     <None Include="docs\Initialize-DSClientBackupSetRestore.md" />
     <None Include="docs\Initialize-DSClientBackupSetValidation.md" />
@@ -258,6 +263,9 @@
     <None Include="docs\Remove-DSClientSchedule.md" />
     <None Include="docs\Remove-DSClientScheduleDetail.md" />
     <None Include="docs\Remove-DSClientSNMPCommunity.md" />
+    <None Include="docs\Remove-DSClientUser.md" />
+    <None Include="docs\Remove-DSClientUserGroup.md" />
+    <None Include="docs\Remove-DSClientUserGroupRole.md" />
     <None Include="docs\Restore-DSClientDatabase.md" />
     <None Include="docs\Restore-DSClientOrphanedBackupSet.md" />
     <None Include="docs\Search-DSClientBackupSetData.md" />
@@ -270,6 +278,9 @@
     <None Include="docs\Set-DSClientSMTPNotification.md" />
     <None Include="docs\Set-DSClientSNMPHeartbeat.md" />
     <None Include="docs\Set-DSClientUnixFsBackupSet.md" />
+    <None Include="docs\Set-DSClientUser.md" />
+    <None Include="docs\Set-DSClientUserGroup.md" />
+    <None Include="docs\Set-DSClientUserGroupRole.md" />
     <None Include="docs\Set-DSClientWinFsBackupSet.md" />
     <None Include="docs\Start-DSClientBackup.md" />
     <None Include="docs\Start-DSClientBackupSetDelete.md" />

@@ -13,6 +13,7 @@ namespace PSAsigraDSClient
     {
         [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Full Path to the Item")]
         [ValidateNotNullOrEmpty]
+        [Alias("Folder")]
         public string Path { get; set; }
 
         [Parameter(Position = 2, HelpMessage = "Filter returned items")]

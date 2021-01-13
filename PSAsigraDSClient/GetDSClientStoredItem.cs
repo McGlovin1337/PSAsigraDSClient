@@ -30,14 +30,17 @@ namespace PSAsigraDSClient
         {
             List<DSClientBackupSetItemInfo> ItemInfo = new List<DSClientBackupSetItemInfo>();
 
+            // Any trailing "\" is unnecessary, remove if any are specified to tidy up output
+            string path = Path.Trim('\\');
+
             // We always return info of the root/first item the user has specified, irrespective of other parameters
-            WriteVerbose($"Performing Action: Retrieve Item Info for Path: {Path}");
-            SelectableItem item = DSClientBackedUpDataView.getItem(Path);
+            WriteVerbose($"Performing Action: Retrieve Item Info for Path: {path}");
+            SelectableItem item = DSClientBackedUpDataView.getItem(path);
             long itemId = item.id;
 
             selectable_size itemSize = DSClientBackedUpDataView.getItemSize(itemId);
 
-            ItemInfo.Add(new DSClientBackupSetItemInfo(Path, item, itemSize));
+            ItemInfo.Add(new DSClientBackupSetItemInfo(path, item, itemSize));
 
             if (Recursive)
             {
@@ -51,11 +54,12 @@ namespace PSAsigraDSClient
 
                 List<ItemPath> newPaths = new List<ItemPath>
                 {
-                    new ItemPath(Path, 0)
+                    new ItemPath(path, 0)
                 };
 
                 int enumeratedCount = 0;
-                ProgressRecord progressRecord = new ProgressRecord(1, "Enumerate Paths", $"{enumeratedCount} Paths Enumerated")
+                int itemCount = 0;
+                ProgressRecord progressRecord = new ProgressRecord(1, "Enumerate Stored Backup Set Items", $"{enumeratedCount} Paths Enumerated, {itemCount} Items Discovered")
                 {
                     PercentComplete = -1,
                 };
@@ -67,7 +71,7 @@ namespace PSAsigraDSClient
 
                     WriteVerbose($"Performing Action: Enumerate Path: {currentPath.Path} (Depth: {currentPath.Depth})");
 
-                    progressRecord.StatusDescription = $"{enumeratedCount} Paths Enumerated";
+                    progressRecord.StatusDescription = $"{enumeratedCount} Paths Enumerated, {itemCount} Items Discovered";
                     progressRecord.CurrentOperation = $"Enumerating Path: {currentPath.Path}";
                     WriteProgress(progressRecord);
 
@@ -86,11 +90,15 @@ namespace PSAsigraDSClient
                         if (Filter != null)
                         {
                             if (wcPattern.IsMatch(subItem.name))
+                            {
                                 ItemInfo.Add(new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize));
+                                itemCount++;
+                            }
                         }
                         else
                         {
                             ItemInfo.Add(new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize));
+                            itemCount++;
                         }
 
                         

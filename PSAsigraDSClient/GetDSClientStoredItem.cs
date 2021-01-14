@@ -31,7 +31,7 @@ namespace PSAsigraDSClient
             List<DSClientBackupSetItemInfo> ItemInfo = new List<DSClientBackupSetItemInfo>();
 
             // Any trailing "\" is unnecessary, remove if any are specified to tidy up output
-            string path = Path.Trim('\\');
+            string path = Path.TrimEnd('\\');
 
             // We always return info of the root/first item the user has specified, irrespective of other parameters
             WriteVerbose($"Performing Action: Retrieve Item Info for Path: {path}");

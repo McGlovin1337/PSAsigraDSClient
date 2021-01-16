@@ -3,7 +3,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Set, "DSClientSNMPHeartbeat")]
+    [Cmdlet(VerbsCommon.Set, "DSClientSNMPHeartbeat", SupportsShouldProcess = true)]
     public class SetDSClientSNMPHeartbeat: DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, HelpMessage = "Set the SNMP Heartbeat Interval")]
@@ -18,7 +18,8 @@ namespace PSAsigraDSClient
 
             snmp_info SNMPInfo = DSClientSNMPCfg.getSNMPInfo();
 
-            SNMPInfo.heartbeat_interval = HeartbeatInterval;
+            if (ShouldProcess("DS-Client SNMP Configuration", $"Set Value '{HeartbeatInterval}'"))
+                SNMPInfo.heartbeat_interval = HeartbeatInterval;
 
             DSClientSNMPCfg.setSNMPInfo(SNMPInfo);
             WriteObject("SNMP Heartbeat Interval Set");

@@ -3,7 +3,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsData.Publish, "DSClientEncryptionKeys")]
+    [Cmdlet(VerbsData.Publish, "DSClientEncryptionKeys", SupportsShouldProcess = true)]
 
     public class PublishDSClientEncryptionKeys: DSClientCmdlet
     {
@@ -11,11 +11,14 @@ namespace PSAsigraDSClient
         {
             ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
 
-            WriteVerbose("Performing Action: Set Encryption Key Forwarding to True");
-            DSClientConfigMgr.setForwardingEncryptionKey(true);
+            if (ShouldProcess("DS-Client", "Forward Encryption Keys to DS-System"))
+            {
+                WriteVerbose("Performing Action: Set Encryption Key Forwarding to True");
+                DSClientConfigMgr.setForwardingEncryptionKey(true);
 
-            WriteVerbose("Performing Action: Forward DS-Client Encryption Keys to DS-System");
-            DSClientConfigMgr.forwardEncryptionKeyToDSSystem();
+                WriteVerbose("Performing Action: Forward DS-Client Encryption Keys to DS-System");
+                DSClientConfigMgr.forwardEncryptionKeyToDSSystem();
+            }
 
             DSClientConfigMgr.Dispose();
         }

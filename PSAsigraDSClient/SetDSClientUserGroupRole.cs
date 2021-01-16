@@ -32,20 +32,24 @@ namespace PSAsigraDSClient
             user_group_role role = userManager.listUserGroupRoles()
                                                 .Single(ugr => ugr.role_id == RoleId);
 
-            if (ShouldProcess($"{role.user_name} with Id: {role.role_id}"))
-            {
-                if (Name != null)
+            if (Name != null)
+                if (ShouldProcess($"Role User/Name '{role.user_name}'", $"Set User/Group Name to '{Name}'"))
                     role.user_name = Name;
 
-                if (From != null)
+            if (From != null)
+                if (ShouldProcess($"Role User/Group '{role.user_name}'", $"Set User/Group From to '{From}'"))
                     role.user_from = From;
 
-                if (Role != null)
+            if (Role != null)
+                if (ShouldProcess($"Role User/Group '{role.user_name}'", $"Set User/Group Role to '{Role}'"))
                     role.user_role = StringToEnum<EUserGroupRole>(Role);
 
-                if (MyInvocation.BoundParameters.ContainsKey("IsGroup"))
+            if (MyInvocation.BoundParameters.ContainsKey("IsGroup"))
+                if (ShouldProcess($"Role IsGroup for '{role.user_name}'", $"Set Value '{IsGroup}'"))
                     role.role_type = (IsGroup) ? EUserGroupRoleType.EUserGroupRoleType__Group : EUserGroupRoleType.EUserGroupRoleType__User;
 
+            if (ShouldProcess($"Role User/Group with Id '{RoleId}'", "Update User/Group Role"))
+            {
                 WriteVerbose("Performing Action: Update User Group Role");
                 userManager.updateUserGroupRole(role);
             }

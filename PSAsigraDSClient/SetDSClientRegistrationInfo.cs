@@ -4,7 +4,7 @@ using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Set, "DSClientRegistrationInfo")]
+    [Cmdlet(VerbsCommon.Set, "DSClientRegistrationInfo", SupportsShouldProcess = true)]
 
     public class SetDSClientRegistrationInfo: DSClientCmdlet
     {
@@ -62,31 +62,40 @@ namespace PSAsigraDSClient
 
             // Set the Registration Info
             if (AccountKey != null)
-                regInfo.account_key = AccountKey;
+                if (ShouldProcess("Customer Account Key", $"Set Value '{AccountKey}'"))
+                    regInfo.account_key = AccountKey;
 
             if (AccountEncryption != null)
-                regInfo.account_key_enc = StringToEnum<EEncryptionType>(AccountEncryption);
+                if (ShouldProcess("Customer Account Key Encryption", $"Set Value '{AccountEncryption}'"))
+                    regInfo.account_key_enc = StringToEnum<EEncryptionType>(AccountEncryption);
 
             if (AccountNumber != null)
-                regInfo.account_num = AccountNumber;
+                if (ShouldProcess("Customer Account Number", $"Set Value '{AccountNumber}'"))
+                    regInfo.account_num = AccountNumber;
 
             if (ClientNumber != null)
-                regInfo.client_num = ClientNumber;
+                if (ShouldProcess("DS-Client Number", $"Set Value '{ClientNumber}'"))
+                    regInfo.client_num = ClientNumber;
 
             if (CustomerName != null)
-                regInfo.customer_name = CustomerName;
+                if (ShouldProcess("Customer Name", $"Set Value '{CustomerName}'"))
+                    regInfo.customer_name = CustomerName;
 
             if (DsSystemAddress != null)
-                regInfo.dssys_ip_addr = DsSystemAddress;
+                if (ShouldProcess("DS-System Address", $"Set Value '{DsSystemAddress}'"))
+                    regInfo.dssys_ip_addr = DsSystemAddress;
 
             if (MyInvocation.BoundParameters.ContainsKey("EscrowKeys"))
-                regInfo.escrow_enc_key = EscrowKeys;
+                if (ShouldProcess("Encryption Key Forwarding", $"Set Value '{EscrowKeys}'"))
+                    regInfo.escrow_enc_key = EscrowKeys;
 
             if (PrivateKey != null)
-                regInfo.private_key = PrivateKey;
+                if (ShouldProcess("DS-Client Private Key", $"Set Value '{PrivateKey}'"))
+                    regInfo.private_key = PrivateKey;
 
             if (PrivateKeyEncryption != null)
-                regInfo.private_key_enc = StringToEnum<EEncryptionType>(PrivateKeyEncryption);
+                if (ShouldProcess("DS-Client Private Key Encryption", $"Set Value '{PrivateKeyEncryption}'"))
+                    regInfo.private_key_enc = StringToEnum<EEncryptionType>(PrivateKeyEncryption);
 
             // Retrieve the current 'End User' Info
             UserInfoConfiguration DSClientUserInfoConfig = DSClientConfgMgr.getUserInfoConfiguration();
@@ -95,17 +104,23 @@ namespace PSAsigraDSClient
 
             // Set the 'End User' Info
             if (MyInvocation.BoundParameters.ContainsKey("CountryCode"))
-                userInfo.country_code = CountryCode;
+                if (ShouldProcess("Customer Country Code", $"Set Value '{CountryCode}'"))
+                    userInfo.country_code = CountryCode;
 
             if (Industry != null)
-                userInfo.industry_code = StringToEnum<EIndustryVertical>(Industry);
+                if (ShouldProcess("Customer Industry Vertical", $"Set Value '{Industry}'"))
+                    userInfo.industry_code = StringToEnum<EIndustryVertical>(Industry);
 
             if (MyInvocation.BoundParameters.ContainsKey("Employees"))
-                userInfo.num_of_employees = IntToENumberOfEmployees(Employees);
+                if (ShouldProcess("Customer Number of Employees", $"Set Value '{Employees}'"))
+                    userInfo.num_of_employees = IntToENumberOfEmployees(Employees);
 
-            WriteVerbose("Setting DS-Client Registration...");
-            DSClientConfgMgr.setDSCRegistrationInfo(regInfo);
-            DSClientUserInfoConfig.setUserInfo(userInfo);
+            if (ShouldProcess("DS-Client", "Update DS-Client Registration"))
+            {
+                WriteVerbose("Setting DS-Client Registration...");
+                DSClientConfgMgr.setDSCRegistrationInfo(regInfo);
+                DSClientUserInfoConfig.setUserInfo(userInfo);
+            }
 
             DSClientUserInfoConfig.Dispose();
             DSClientConfgMgr.Dispose();

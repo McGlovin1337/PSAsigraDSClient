@@ -3,7 +3,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Set, "DSClientUser")]
+    [Cmdlet(VerbsCommon.Set, "DSClientUser", SupportsShouldProcess = true)]
 
     public class SetDSClientUser : BaseDSClientUserManager
     {
@@ -15,8 +15,13 @@ namespace PSAsigraDSClient
 
         protected override void ProcessUserManager(UserManager userManager)
         {
-            WriteVerbose($"Performing Action: Update User with Id: {UserId}");
-            userManager.setUserMaxOnline(UserId, MaxOnlineSize);
+            string userName = userManager.getUser(UserId).name;
+
+            if (ShouldProcess($"DS-Client User '{userName}'", $"Set Online Quota to '{MaxOnlineSize}'"))
+            {
+                WriteVerbose($"Performing Action: Update User '{userName}' with Id: {UserId}");
+                userManager.setUserMaxOnline(UserId, MaxOnlineSize);
+            }
         }
     }
 }

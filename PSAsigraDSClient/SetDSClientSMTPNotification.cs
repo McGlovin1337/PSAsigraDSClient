@@ -4,7 +4,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Set, "DSClientSMTPNotification")]
+    [Cmdlet(VerbsCommon.Set, "DSClientSMTPNotification", SupportsShouldProcess = true)]
 
     public class SetDSClientSMTPNotification: BaseDSClientSMTPNotification
     {
@@ -63,18 +63,25 @@ namespace PSAsigraDSClient
                 bool validateSmtpHostname = DSClientCommon.ValidateHostname.ValidateHost(SmtpServer);
 
                 if (validateSmtpHostname == true)
-                    smtpServer.address = SmtpServer;
+                {
+                    if (ShouldProcess("DS-Client SMTP Server", $"Set Server Address to '{SmtpServer}'"))
+                        smtpServer.address = SmtpServer;
+                }
                 else
                     throw new Exception("SmtpServer is not a valid IP Address or Hostname");
             }
 
             if (MyInvocation.BoundParameters.ContainsKey("SmtpPort"))
-                smtpServer.port = SmtpPort;
+                if (ShouldProcess("DS-Client SMTP Server", $"Set TCP Port to '{SmtpPort}'"))
+                    smtpServer.port = SmtpPort;
 
             if (MyInvocation.BoundParameters.ContainsKey("SmtpCredential"))
             {
-                smtpServer.account_name = SmtpCredential.UserName;
-                smtpServer.password = SmtpCredential.GetNetworkCredential().Password;
+                if (ShouldProcess("DS-Client SMTP Server", $"Set Credentials with Username: '{SmtpCredential.UserName}'"))
+                {
+                    smtpServer.account_name = SmtpCredential.UserName;
+                    smtpServer.password = SmtpCredential.GetNetworkCredential().Password;
+                }
             }
 
             if (RequireSsl == true && RequireTls == true)
@@ -82,68 +89,90 @@ namespace PSAsigraDSClient
 
             if (MyInvocation.BoundParameters.ContainsKey("RequireSsl"))
             {
-                smtpServer.require_ssl = RequireSsl;
-                if (RequireSsl == true)
-                    smtpServer.require_tls = false;
+                if (ShouldProcess("DS-Client SMTP Server", $"Set SMTP SSL Required Value '{RequireSsl}'"))
+                {
+                    smtpServer.require_ssl = RequireSsl;
+                    if (RequireSsl == true)
+                        smtpServer.require_tls = false;
+                }
             }
             else if (MyInvocation.BoundParameters.ContainsKey("RequireTls"))
             {
-                smtpServer.require_tls = RequireTls;
-                if (RequireTls == true)
-                    smtpServer.require_ssl = false;
+                if (ShouldProcess("DS-Client SMTP Server", $"Set SMTP TLS Required Value '{RequireTls}'"))
+                {
+                    smtpServer.require_tls = RequireTls;
+                    if (RequireTls == true)
+                        smtpServer.require_ssl = false;
+                }
             }
-            smtpInfo.smtp_server = smtpServer;
+            if (ShouldProcess("DS-Client SMTP Server", "Update SMTP Server Configuration"))
+                smtpInfo.smtp_server = smtpServer;
 
             // Set the From Details
             if (FromName != null)
-                smtpInfo.from_display_name = FromName;
+                if (ShouldProcess("DS-Client SMTP Server", $"Set E-Mail From Display Name to '{FromName}'"))
+                    smtpInfo.from_display_name = FromName;
 
             if (FromAddress != null)
-                smtpInfo.from_email_address = FromAddress;
+                if (ShouldProcess("DS-Client SMTP Server", $"Set E-Mail From Address to '{FromAddress}'"))
+                    smtpInfo.from_email_address = FromAddress;
 
             // Set the Recipient Details
             email_notification_info recipients = smtpInfo.notification_info;
             if (AdminEmail != null)
-                recipients.admin_email_addr = AdminEmail;
+                if (ShouldProcess("DS-Client Administrator Recipient", $"Set E-Mail Address to '{AdminEmail}'"))
+                    recipients.admin_email_addr = AdminEmail;
 
             if (PagerEmail != null)
-                recipients.pager_email_addr = PagerEmail;
+                if (ShouldProcess("DS-Client Pager Recipient", $"Set E-Mail Address to '{PagerEmail}'"))
+                    recipients.pager_email_addr = PagerEmail;
 
             if (MyInvocation.BoundParameters.ContainsKey("SendSummary"))
-                recipients.send_summary = SendSummary;
+                if (ShouldProcess("DS-Client Include Summary", $"Set Value '{SendSummary}'"))
+                    recipients.send_summary = SendSummary;
 
             if (MyInvocation.BoundParameters.ContainsKey("SendDetail"))
             {
-                if (SendDetail == true)
+                if (ShouldProcess("DS-Client Send Detail with Summary", $"Set Value '{SendDetail}'"))
                 {
-                    recipients.send_summary = true;
-                    recipients.send_backup_detail_with_summary = true;
-                }
-                else
-                {
-                    recipients.send_backup_detail_with_summary = false;
+                    if (SendDetail == true)
+                    {
+                        recipients.send_summary = true;
+                        recipients.send_backup_detail_with_summary = true;
+                    }
+                    else
+                    {
+                        recipients.send_backup_detail_with_summary = false;
+                    }
                 }
             }
 
             if (MyInvocation.BoundParameters.ContainsKey("SendHtmlSummary"))
-                recipients.send_summary_in_html_format = SendHtmlSummary;
+                if (ShouldProcess("DS-Client Send HTML Format Summary", $"Set Value '{SendHtmlSummary}'"))
+                    recipients.send_summary_in_html_format = SendHtmlSummary;
 
             if (SubjectAdmin != null)
-                recipients.subject_admin = SubjectAdmin;
+                if (ShouldProcess("DS-Client Administrator E-Mail", $"Set Subject to '{SubjectAdmin}'"))
+                    recipients.subject_admin = SubjectAdmin;
 
             if (SubjectBackup != null)
-                recipients.subject_backup = SubjectBackup;
+                if (ShouldProcess("DS-Client Backup E-Mail", $"Set Subject to '{SubjectBackup}'"))
+                    recipients.subject_backup = SubjectBackup;
 
-            smtpInfo.notification_info = recipients;
+            if (ShouldProcess("DS-Client Notification", "Update Recipient Configuration"))
+                smtpInfo.notification_info = recipients;
 
             // Assign the new SMTP configuration
             ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
 
             NotificationConfiguration DSClientNotifyConfigMgr = DSClientConfigMgr.getNotificationConfiguration();
 
-            WriteVerbose("Performing Action: Set DS-Client SMTP Notification Configuration");
-            DSClientNotifyConfigMgr.setSMTPEmailNotification(smtpInfo);
-            WriteObject("DS-Client SMTP Notification Configuration Updated");
+            if (ShouldProcess("DS-Client SMTP Notification", "Update SMTP Notification Configuration"))
+            {
+                WriteVerbose("Performing Action: Set DS-Client SMTP Notification Configuration");
+                DSClientNotifyConfigMgr.setSMTPEmailNotification(smtpInfo);
+                WriteObject("DS-Client SMTP Notification Configuration Updated");
+            }
 
             DSClientNotifyConfigMgr.Dispose();
             DSClientNotifyConfigMgr.Dispose();

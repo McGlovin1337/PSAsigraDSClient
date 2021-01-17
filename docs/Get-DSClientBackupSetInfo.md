@@ -39,7 +39,6 @@ Returns an overview of configured Backup Sets
 PS C:\> Get-DSClientBackupSetInfo
 ```
 
-
 ## PARAMETERS
 
 ### -BackupSetId

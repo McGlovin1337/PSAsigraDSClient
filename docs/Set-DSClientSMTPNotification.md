@@ -16,7 +16,7 @@ Configure the SMTP Notification Configuration
 Set-DSClientSMTPNotification [[-SmtpServer] <String>] [[-SmtpPort] <Int32>] [[-SmtpCredential] <PSCredential>]
  [-RequireSsl] [-RequireTls] [[-FromName] <String>] [[-FromAddress] <String>] [[-AdminEmail] <String>]
  [[-PagerEmail] <String>] [-SendSummary] [-SendDetail] [-SendHtmlSummary] [[-SubjectAdmin] <String>]
- [[-SubjectBackup] <String>] [<CommonParameters>]
+ [[-SubjectBackup] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -240,6 +240,36 @@ Required: False
 Position: 13
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs. The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

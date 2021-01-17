@@ -33,7 +33,6 @@ Start a Backup Set Delete Activity. The Initialize-DSClientBackupSetDelete Cmdle
 PS C:\> Start-DSClientBackupSetDelete
 ```
 
-
 ## PARAMETERS
 
 ### -BLMLabel

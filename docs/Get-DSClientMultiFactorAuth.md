@@ -26,7 +26,6 @@ Returns the DS-Client Multi-Factor Authentication Status
 PS C:\> Get-DSClientMultiFactorAuth
 ```
 
-
 ## PARAMETERS
 
 ### CommonParameters

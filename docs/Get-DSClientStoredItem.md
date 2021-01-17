@@ -141,7 +141,7 @@ Specify the Full Path to the Item
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases:
+Aliases: Folder
 
 Required: True
 Position: 1

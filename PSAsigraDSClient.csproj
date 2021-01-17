@@ -88,6 +88,7 @@
     <Compile Include="PSAsigraDSClient\EnableDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientAdvancedConfig.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientArchiveFilterRule.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientAuditTrail.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientCurrentLoginRole.cs" />
@@ -213,6 +214,7 @@
     <None Include="docs\Get-DSClientActivityLog.md" />
     <None Include="docs\Get-DSClientAdvancedConfig.md" />
     <None Include="docs\Get-DSClientArchiveFilterRule.md" />
+    <None Include="docs\Get-DSClientAuditTrail.md" />
     <None Include="docs\Get-DSClientBackupSet.md" />
     <None Include="docs\Get-DSClientBackupSetInfo.md" />
     <None Include="docs\Get-DSClientBackupSetItem.md" />

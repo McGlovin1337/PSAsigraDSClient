@@ -26,7 +26,6 @@ Get the DS-Client Notification Configuration
 PS C:\> Get-DSClientNotification
 ```
 
-
 ## PARAMETERS
 
 ### CommonParameters

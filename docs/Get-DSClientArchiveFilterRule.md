@@ -26,7 +26,6 @@ Get the configured Archive Filter Rules
 PS C:\>Get-DSClientArchiveFilterRule
 ```
 
-
 ## PARAMETERS
 
 ### -Name

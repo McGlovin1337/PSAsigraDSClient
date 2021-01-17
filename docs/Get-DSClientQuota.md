@@ -26,7 +26,6 @@ Provides Storage Quota Information for Local, Customer and DS-Client Quotas
 PS C:\> Get-DSClientQuota
 ```
 
-
 ## PARAMETERS
 
 ### CommonParameters

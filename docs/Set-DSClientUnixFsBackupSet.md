@@ -13,8 +13,8 @@ Changes the Configuration of a Unix File System Backup Set
 ## SYNTAX
 
 ```
-Set-DSClientUnixFsBackupSet [-BackupSetId] <Int32> [[-Name] <String>] [[-SetType] <String>]
- [-Compression <String>] [-SSHInterpreter <String>] [-SSHInterpreterPath <String>] [-SSHKeyFile <String>]
+Set-DSClientUnixFsBackupSet [-BackupSetId] <Int32> [[-Name] <String>] [-Compression <String>]
+ [-SSHInterpreter <String>] [-SSHInterpreterPath <String>] [-SSHKeyFile <String>]
  [-SudoCredential <PSCredential>] [-CheckCommonFiles] [-FollowMountPoints] [-BackupHardLinks]
  [-IgnoreSnapshotFailure] [-UseSnapDiff] [-ExcludeOldFilesByDate] [-ExcludeOldFilesDate <DateTime>]
  [-ExcludeOldFilesByTimeSpan] [-ExcludeOldFilesTimeSpan <String>] [-ExcludeOldFilesTimeSpanValue <Int32>]
@@ -24,7 +24,7 @@ Set-DSClientUnixFsBackupSet [-BackupSetId] <Int32> [[-Name] <String>] [[-SetType
  [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations]
  [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache] [-NotificationMethod <String>]
  [-NotificationRecipient <String>] [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>]
- [-SnmpTrapNotifications <String[]>] [<CommonParameters>]
+ [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -602,22 +602,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -SetType
-Set the Backup Set Type
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Offsite, Statistical, SelfContained, LocalOnly
-
-Required: False
-Position: 3
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -SnmpTrapNotifications
 Specify Completion Status to send SNMP Traps
 
@@ -711,6 +695,21 @@ Accept wildcard characters: False
 
 ### -UseTransmissionCache
 Set to use Local Transmission Cache for Offsite Backup Sets
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PassThru
+Output Basic Backup Set Properties
 
 ```yaml
 Type: SwitchParameter

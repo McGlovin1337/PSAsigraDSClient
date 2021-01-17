@@ -26,7 +26,6 @@ Returns details of configured retention rules
 PS C:\> Get-DSClientRetentionRule
 ```
 
-
 ## PARAMETERS
 
 ### -Name

@@ -13,9 +13,9 @@ Changes the Configuration of a Windows File System Backup Set
 ## SYNTAX
 
 ```
-Set-DSClientWinFsBackupSet [-BackupSetId] <Int32> [[-Name] <String>] [[-SetType] <String>]
- [-Compression <String>] [-BackupRemoteStorage] [-BackupSingleInstanceStore] [-CheckCommonFiles] [-UseVSS]
- [-ExcludeVSSComponents] [-IgnoreVSSComponents] [-IgnoreVSSWriters] [-FollowJunctionPoints] [-NoAutoFileFilter]
+Set-DSClientWinFsBackupSet [-BackupSetId] <Int32> [[-Name] <String>] [-Compression <String>]
+ [-BackupRemoteStorage] [-BackupSingleInstanceStore] [-CheckCommonFiles] [-UseVSS] [-ExcludeVSSComponents]
+ [-IgnoreVSSComponents] [-IgnoreVSSWriters] [-FollowJunctionPoints] [-NoAutoFileFilter]
  [-ExcludeOldFilesByDate] [-ExcludeOldFilesDate <DateTime>] [-ExcludeOldFilesByTimeSpan]
  [-ExcludeOldFilesTimeSpan <String>] [-ExcludeOldFilesTimeSpanValue <Int32>] [-UseBuffer]
  [-ExcludeAltDataStreams] [-ExcludePermissions] [-CDPInterval <Int32>] [-CDPStoppedChangingForInterval]
@@ -24,7 +24,7 @@ Set-DSClientWinFsBackupSet [-BackupSetId] <Int32> [[-Name] <String>] [[-SetType]
  [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage]
  [-LocalStoragePath <String>] [-UseTransmissionCache] [-NotificationMethod <String>]
  [-NotificationRecipient <String>] [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>]
- [-SnmpTrapNotifications <String[]>] [<CommonParameters>]
+ [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -601,22 +601,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -SetType
-Set the Backup Set Type
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Offsite, Statistical, SelfContained, LocalOnly
-
-Required: False
-Position: 3
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -SnmpTrapNotifications
 Specify Completion Status to send SNMP Traps
 
@@ -695,6 +679,21 @@ Accept wildcard characters: False
 
 ### -UseVSS
 Use Volume Shadow Copies (VSS)
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PassThru
+Output Basic Backup Set Properties
 
 ```yaml
 Type: SwitchParameter

@@ -26,7 +26,6 @@ Returns the DS-Client Default Configuration
 PS C:\> Get-DSClientDefaultConfiguration
 ```
 
-
 ## PARAMETERS
 
 ### CommonParameters

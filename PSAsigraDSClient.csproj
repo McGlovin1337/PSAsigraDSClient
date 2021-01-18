@@ -94,6 +94,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientCurrentLoginRole.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientGridInfo.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientGridLog.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientNocSettings.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientOS.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSupportedDataType.cs" />
@@ -227,6 +228,7 @@
     <None Include="docs\Get-DSClientDefaultConfiguration.md" />
     <None Include="docs\Get-DSClientEventLog.md" />
     <None Include="docs\Get-DSClientGridInfo.md" />
+    <None Include="docs\Get-DSClientGridLog.md" />
     <None Include="docs\Get-DSClientInfo.md" />
     <None Include="docs\Get-DSClientLoadSummary.md" />
     <None Include="docs\Get-DSClientMultiFactorAuth.md" />

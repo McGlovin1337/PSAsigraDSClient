@@ -3,7 +3,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsLifecycle.Disable, "DSClientBackupSet")]
+    [Cmdlet(VerbsLifecycle.Disable, "DSClientBackupSet", SupportsShouldProcess = true)]
 
     public class DisableDSClientBackupSet: DSClientCmdlet
     {
@@ -16,9 +16,12 @@ namespace PSAsigraDSClient
             WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
-            // Set the Backup Set to InActive
-            WriteVerbose($"Performing Action: Disable On Target: {BackupSetId}");
-            backupSet.setActive(false);
+            if (ShouldProcess($"Backup Set '{backupSet.getName()}'", "Disable"))
+            {
+                // Set the Backup Set to InActive
+                WriteVerbose($"Performing Action: Disable On Target: {BackupSetId}");
+                backupSet.setActive(false);
+            }
 
             backupSet.Dispose();
         }

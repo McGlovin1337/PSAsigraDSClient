@@ -185,6 +185,7 @@
     <Compile Include="PSAsigraDSClient\StartDSClientMSSqlServerRestore.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientUnixFsRestore.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientWinFsRestore.cs" />
+    <Compile Include="PSAsigraDSClient\StopDSClientGridNode.cs" />
     <Compile Include="PSAsigraDSClient\SyncDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetValidation.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientSystemActivity.cs" />
@@ -296,6 +297,7 @@
     <None Include="docs\Start-DSClientUnixFsRestore.md" />
     <None Include="docs\Start-DSClientWinFsRestore.md" />
     <None Include="docs\Stop-DSClientActivity.md" />
+    <None Include="docs\Stop-DSClientGridNode.md" />
     <None Include="docs\Sync-DSClientBackupSet.md" />
     <None Include="docs\Unpublish-DSClientEncryptionKeys.md" />
     <None Include="docs\Watch-DSClientActivity.md" />

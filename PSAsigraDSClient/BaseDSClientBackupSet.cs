@@ -421,7 +421,18 @@ namespace PSAsigraDSClient
                 else if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__VSSExchange)
                     DataType = new VSSExchangeBackupSet(backupSet);
                 else if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__VMwareVADP)
-                    DataType = new VMWareVADPBackupSet(backupSet);
+                    /* There is a bug in the API where VADP Sets on Linux DS-Clients cannot be Cast to a
+                     * VMwareVADP_BackupSet, therefore we only fetch the additional VMware Options
+                     * for Sets created on Windows DS-Clients
+                     */
+                    if (dSClientOSType.OsType == "Windows")
+                    {
+                        DataType = new VMWareVADPBackupSet(backupSet);
+                    }
+                    else
+                    {
+                        DataType = "VMwareVADP";
+                    }
                 else if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__DB2)
                     DataType = new DB2BackupSet(backupSet);
                 else

@@ -64,7 +64,7 @@ namespace PSAsigraDSClient
 
             // Process any Exclusion Items
             if (ExcludeItem != null)
-                backupSetItems.AddRange(ProcessMsSqlExclusionItems(dataSourceBrowser, computer, ExcludeItem));
+                backupSetItems.AddRange(ProcessBasicExclusionItems(dataSourceBrowser, computer, ExcludeItem));
 
             if (RegexExcludeItem != null)
                 backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));

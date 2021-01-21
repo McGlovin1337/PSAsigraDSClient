@@ -158,7 +158,7 @@ namespace PSAsigraDSClient
             return fileItems;
         }
 
-        protected static IEnumerable<BackupSetFileItem> ProcessMsSqlExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items)
+        protected static IEnumerable<BackupSetFileItem> ProcessBasicExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items)
         {
             List<BackupSetFileItem> sqlItems = new List<BackupSetFileItem>();
 
@@ -167,7 +167,7 @@ namespace PSAsigraDSClient
                 // Trim any whitespace from the end of the item
                 string trimmedItem = item.Trim();
 
-                BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, item);
+                BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, trimmedItem);
                 sqlItems.Add(exclusion);
             }
 
@@ -274,6 +274,34 @@ namespace PSAsigraDSClient
             }
 
             return sqlInclusionItems;
+        }
+
+        protected static IEnumerable<BackupSetInclusionItem> ProcessVMwareVADPInclusionItem(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens)
+        {
+            List<BackupSetInclusionItem> inclusionItems = new List<BackupSetInclusionItem>();
+
+            foreach (string item in items)
+            {
+                // Trim any whitespace from the end of the item
+                string trimmedItem = item.Trim();
+
+                // Set the item filter by extracting the chars after the last "\"
+                string filter = trimmedItem.Split('\\').Last();
+                int itemLength = filter.Length;
+                if (string.IsNullOrEmpty(filter))
+                    filter = "*";
+
+                // Set the path by removing the specified filter from the end of the item
+                string path = trimmedItem.Remove((trimmedItem.Length - itemLength), itemLength);
+
+                BackupSetInclusionItem inclusionItem = dataSourceBrowser.createInclusionItem(computer, path, maxGens);
+
+                inclusionItem.setFilter(filter);
+
+                inclusionItems.Add(inclusionItem);
+            }
+
+            return inclusionItems;
         }
 
         protected class BackupSetItemComparer : IEqualityComparer<BackupSetItem>

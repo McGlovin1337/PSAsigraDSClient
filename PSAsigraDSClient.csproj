@@ -81,6 +81,7 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientUnixFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientUserManager.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientVMwareVADPBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\CompareDSClientEncryptionKeys.cs" />
     <Compile Include="PSAsigraDSClient\DisableDSClientBackupSet.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSNMPInfo.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientUnixFsBackupSet.cs" />
+    <Compile Include="PSAsigraDSClient\NewDSClientVMwareVADPBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\PublishDSClientEncryptionKeys.cs" />
     <Compile Include="PSAsigraDSClient\ReadDSClientMSSqlServerSource.cs" />
@@ -259,6 +261,7 @@
     <None Include="docs\New-DSClientRetentionRule.md" />
     <None Include="docs\New-DSClientSchedule.md" />
     <None Include="docs\New-DSClientUnixFsBackupSet.md" />
+    <None Include="docs\New-DSClientVMwareVADPBackupSet.md" />
     <None Include="docs\New-DSClientWinFsBackupSet.md" />
     <None Include="docs\Publish-DSClientEncryptionKeys.md" />
     <None Include="docs\Read-DSClientMSSqlServerSource.md" />

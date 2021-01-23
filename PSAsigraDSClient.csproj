@@ -59,6 +59,7 @@
     <Compile Include="PSAsigraDSClient\AddDSClientTimeRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientUnixFsBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientUserGroupRole.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientVMwareVADPBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientWeeklySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientWinFsBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientActivityLog.cs" />
@@ -209,6 +210,7 @@
     <None Include="docs\Add-DSClientTimeRetentionRule.md" />
     <None Include="docs\Add-DSClientUnixFsBackupSetItem.md" />
     <None Include="docs\Add-DSClientUserGroupRole.md" />
+    <None Include="docs\Add-DSClientVMwareVADPBackupSetItem.md" />
     <None Include="docs\Add-DSClientWeeklySchedule.md" />
     <None Include="docs\Add-DSClientWinFsBackupSetItem.md" />
     <None Include="docs\Compare-DSClientEncryptionKeys.md" />

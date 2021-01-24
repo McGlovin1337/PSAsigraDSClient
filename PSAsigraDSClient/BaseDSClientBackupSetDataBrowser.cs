@@ -56,9 +56,14 @@ namespace PSAsigraDSClient
             {
                 BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
+                int deletedDate = 0;
+
+                if (MyInvocation.BoundParameters.ContainsKey("DeletedDate"))
+                    deletedDate = DateTimeToUnixEpoch(DeletedDate);
+
                 WriteVerbose("Performing Action: Prepare Backup Set Data view");
                 WriteVerbose("Notice: From: " + DateFrom + " To: " + DateTo);
-                BackupSetRestoreView backupSetRestoreView = backupSet.prepare_restore(DateTimeToUnixEpoch(DateFrom), DateTimeToUnixEpoch(DateTo), 0);
+                BackupSetRestoreView backupSetRestoreView = backupSet.prepare_restore(DateTimeToUnixEpoch(DateFrom), DateTimeToUnixEpoch(DateTo), deletedDate);
 
                 ProcessBackupSetData(backupSetRestoreView);
 

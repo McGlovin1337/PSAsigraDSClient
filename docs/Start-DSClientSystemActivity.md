@@ -12,8 +12,19 @@ Start a DS-Client System Activity
 
 ## SYNTAX
 
+### daily
 ```
-Start-DSClientSystemActivity [-Activity] <String> [<CommonParameters>]
+Start-DSClientSystemActivity [-DailyAdmin] [-PassThru] [<CommonParameters>]
+```
+
+### weekly
+```
+Start-DSClientSystemActivity [-WeeklyAdmin] [-PassThru] [<CommonParameters>]
+```
+
+### stats
+```
+Start-DSClientSystemActivity [-StatisticalAdmin] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,17 +41,61 @@ Start a Daily Admin task
 
 ## PARAMETERS
 
-### -Activity
-Sepcify the System Activity to Start
+### -DailyAdmin
+Start Daily Admin Activity
 
 ```yaml
-Type: String
-Parameter Sets: (All)
+Type: SwitchParameter
+Parameter Sets: daily
 Aliases:
-Accepted values: DailyAdmin, StatisticsAdmin, WeeklyAdmin
 
 Required: True
-Position: 0
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PassThru
+Specify to Output Basic Activity Details
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -StatisticalAdmin
+Start Statistical Admin Activity
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: stats
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WeeklyAdmin
+Start Weekly Admin Activity
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: weekly
+Aliases:
+
+Required: True
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

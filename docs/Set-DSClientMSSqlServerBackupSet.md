@@ -13,17 +13,17 @@ Changes the Configuration of an MS SQL Server Backup Set
 ## SYNTAX
 
 ```
-Set-DSClientMSSqlServerBackupSet [[-BackupSetId] <Int32>] [[-Name] <String>] [-SetType <String>]
- [-Compression <String>] [-DumpMethod <String>] [-BackupMethod <String>] [-DisableFullMonthly]
- [-DisableFullWeekly] [-DisableFullPeriod] [-DisableSkipWeekDays] [-Credential <PSCredential>]
- [-DbCredential <PSCredential>] [-DumpPath <String>] [-FullMonthlyDay <Int32>] [-FullMonthlyTime <String>]
- [-FullWeeklyDay <String>] [-FullWeeklyTime <String>] [-FullPeriod <String>] [-FullPeriodValue <Int32>]
- [-SkipWeekDays <String[]>] [-SkipWeekDaysFrom <String>] [-SkipWeekDaysTo <String>] [-Disabled]
- [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan]
- [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations]
- [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache] [-NotificationMethod <String>]
+Set-DSClientMSSqlServerBackupSet [[-BackupSetId] <Int32>] [[-Name] <String>] [-Compression <String>]
+ [-DumpMethod <String>] [-BackupMethod <String>] [-DisableFullMonthly] [-DisableFullWeekly]
+ [-DisableFullPeriod] [-DisableSkipWeekDays] [-Credential <PSCredential>] [-DbCredential <PSCredential>]
+ [-DumpPath <String>] [-FullMonthlyDay <Int32>] [-FullMonthlyTime <String>] [-FullWeeklyDay <String>]
+ [-FullWeeklyTime <String>] [-FullPeriod <String>] [-FullPeriodValue <Int32>] [-SkipWeekDays <String[]>]
+ [-SkipWeekDaysFrom <String>] [-SkipWeekDaysTo <String>] [-Disabled] [-ScheduleId <Int32>]
+ [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>]
+ [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage]
+ [-LocalStoragePath <String>] [-UseTransmissionCache] [-NotificationMethod <String>]
  [-NotificationRecipient <String>] [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>]
- [-SnmpTrapNotifications <String[]>] [<CommonParameters>]
+ [-SnmpTrapNotifications <String[]>] [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -528,22 +528,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -SetType
-Set the Backup Set Type
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Offsite, Statistical, SelfContained, LocalOnly
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -SkipWeekDays
 Specify Week Days to Skip Full Backups
 
@@ -643,6 +627,51 @@ Set to use Local Transmission Cache for Offsite Backup Sets
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PassThru
+Output Basic Backup Set Properties
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs. The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
 
 Required: False
 Position: Named

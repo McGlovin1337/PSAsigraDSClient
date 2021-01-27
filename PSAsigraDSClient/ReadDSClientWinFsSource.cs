@@ -41,6 +41,9 @@ namespace PSAsigraDSClient
             // Set the Starting path
             string path = Path ?? "";
 
+            // Any trailing "\" is unnecessary, remove if any are specified to tidy up output
+            path = path.TrimEnd('\\');
+
             // Get the items from the specified path
             browse_item_info[] browseItems = dataSourceBrowser.getSubItems(computer, path);
 
@@ -70,7 +73,8 @@ namespace PSAsigraDSClient
                         newPaths.Add(new ItemPath(path + item.name, 0));
 
                 int enumeratedCount = 0;
-                ProgressRecord progressRecord = new ProgressRecord(1, "Enumerate Paths", $"{enumeratedCount} Paths Enumerated")
+                int itemCount = 0;
+                ProgressRecord progressRecord = new ProgressRecord(1, $"Enumerate Items on: {computer}", $"{enumeratedCount} Paths Enumerated, {itemCount} Items Discovered")
                 {
                     PercentComplete = -1,                    
                 };
@@ -83,7 +87,7 @@ namespace PSAsigraDSClient
 
                     WriteVerbose($"Performing Action: Enumerate Path: {currentPath.Path} (Depth: {currentPath.Depth})");
 
-                    progressRecord.StatusDescription = $"{enumeratedCount} Paths Enumerated";
+                    progressRecord.StatusDescription = $"{enumeratedCount} Paths Enumerated, {itemCount} Items Discovered";
                     progressRecord.CurrentOperation = $"Enumerating Path: {currentPath.Path}";
                     WriteProgress(progressRecord);
 
@@ -97,6 +101,7 @@ namespace PSAsigraDSClient
                         foreach (browse_item_info item in subItems)
                         {
                             sourceItems.Add(new SourceItemInfo(currentPath.Path, item));
+                            itemCount++;
 
                             if (!item.isfile && subItemDepth <= RecursiveDepth)
                             {

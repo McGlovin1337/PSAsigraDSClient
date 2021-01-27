@@ -12,6 +12,25 @@ Return the Backed Up Items of a Backup Set
 
 ## SYNTAX
 
+### hidefiles
+```
+Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
+ [-HideFiles] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
+```
+
+### BackupSetId
+```
+Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
+ [-HideFiles] [-HideDirectories] [-BackupSetId] <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>]
+ [-DeletedDate <DateTime>] [<CommonParameters>]
+```
+
+### hidedirs
+```
+Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
+ [-HideDirectories] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
+```
+
 ### ValidationSession
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
@@ -29,13 +48,6 @@ Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-Recu
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
  [-UseRestoreSession] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>]
- [<CommonParameters>]
-```
-
-### BackupSetId
-```
-Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-BackupSetId] <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>]
  [<CommonParameters>]
 ```
 
@@ -141,7 +153,7 @@ Specify the Full Path to the Item
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases:
+Aliases: Folder
 
 Required: True
 Position: 1
@@ -219,6 +231,60 @@ Parameter Sets: ValidationSession
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -HideDirectories
+{{ Fill HideDirectories Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BackupSetId
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: hidedirs
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -HideFiles
+Specify to Hide Files
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: hidefiles
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BackupSetId
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

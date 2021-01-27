@@ -34,7 +34,7 @@ namespace PSAsigraDSClient
                 {
                     CurrentOperation = $"Processing: {activityInfo.process_dir}",
                     RecordType = (activityInfo.finished) ? ProgressRecordType.Completed : ProgressRecordType.Processing,
-                    PercentComplete = (int)Math.Round((double)((double)activityInfo.files_processed / (double)(activityInfo.files_left + activityInfo.files_processed) * 100))
+                    PercentComplete = (int)Math.Round((double)((double)activityInfo.size_processed / (double)(activityInfo.size_left + activityInfo.size_processed) * 100))
                 };
 
                 while (!activityInfo.finished)
@@ -48,7 +48,7 @@ namespace PSAsigraDSClient
                     activityInfo = activity.getCurrentStatus();
                     progressRecord.CurrentOperation = $"Processing: {activityInfo.process_dir}";
                     progressRecord.RecordType = (activityInfo.finished) ? ProgressRecordType.Completed : ProgressRecordType.Processing;
-                    progressRecord.PercentComplete = (int)Math.Round((double)((double)activityInfo.files_processed / (double)(activityInfo.files_left + activityInfo.files_processed) * 100));
+                    progressRecord.PercentComplete = (int)Math.Round((double)((double)activityInfo.size_processed / (double)(activityInfo.size_left + activityInfo.size_processed) * 100));
                     progressRecord.StatusDescription = activityInfo.status_msg;
                 }
 

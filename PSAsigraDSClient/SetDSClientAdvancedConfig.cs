@@ -6,7 +6,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Set, "DSClientAdvancedConfig")]
+    [Cmdlet(VerbsCommon.Set, "DSClientAdvancedConfig", SupportsShouldProcess = true)]
 
     public class SetDSClientAdvancedConfig: BaseDSClientAdvancedConfig
     {
@@ -25,11 +25,14 @@ namespace PSAsigraDSClient
 
             ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
 
-            // Set the config value
-            if (configItem.type == EAdvConfigType.EAdvConfigType__ConfigTypeString)
-                DSClientConfigMgr.setAdvancedConfigString(Name, Value);
-            else if (configItem.type == EAdvConfigType.EAdvConfigType__ConfigTypeNumber)
-                DSClientConfigMgr.setAdvancedConfigNumber(Name, Convert.ToInt32(Value));
+            if (ShouldProcess($"{Name}", $"Assign Value '{Value}'"))
+            {
+                // Set the config value
+                if (configItem.type == EAdvConfigType.EAdvConfigType__ConfigTypeString)
+                    DSClientConfigMgr.setAdvancedConfigString(Name, Value);
+                else if (configItem.type == EAdvConfigType.EAdvConfigType__ConfigTypeNumber)
+                    DSClientConfigMgr.setAdvancedConfigNumber(Name, Convert.ToInt32(Value));
+            }
 
             DSClientConfigMgr.Dispose();
         }

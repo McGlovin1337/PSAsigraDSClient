@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Remove, "DSClientScheduleDetail")]
+    [Cmdlet(VerbsCommon.Remove, "DSClientScheduleDetail", SupportsShouldProcess = true)]
     public class RemoveDSClientScheduleDetail: BaseDSClientSchedule
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, HelpMessage = "Specify the Schedule Id")]
@@ -41,16 +42,25 @@ namespace PSAsigraDSClient
                 {
                     if (DetailID == targetId)
                     {
-                        WriteVerbose("Performing Action: Remove Schedule Detail");
-                        try
+                        string scheduleType = EnumToString(schedule.getType());
+                        string scheduleStart = new TimeInDay(schedule.getStartTime()).ToString();
+                        if (ShouldProcess(
+                            $"Performing Operation Remove Schedule Detail on 'Type: {scheduleType}, StartTime: {scheduleStart}'",
+                            $"Are you sure you want to remove the {scheduleType} Schedule Detail (StartTime: {scheduleStart}) with Id {targetId}?",
+                            "Remove Schedule Detail")
+                        )
                         {
-                            Schedule.removeDetail(schedule);
-                            RemoveCount += 1;
-                        }
-                        catch
-                        {
-                            WriteWarning($"Failed to remove Schedule Detail with Id {targetId}");
-                            continue;
+                            WriteVerbose("Performing Action: Remove Schedule Detail");
+                            try
+                            {
+                                Schedule.removeDetail(schedule);
+                                RemoveCount += 1;
+                            }
+                            catch
+                            {
+                                WriteWarning($"Failed to remove Schedule Detail with Id {targetId}");
+                                continue;
+                            }
                         }
                     }
                 }

@@ -26,7 +26,6 @@ Checks the DS-System for any Orphaned Backup sets
 PS C:\> Get-DSClientOrphanedBackupSet
 ```
 
-
 ## PARAMETERS
 
 ### CommonParameters

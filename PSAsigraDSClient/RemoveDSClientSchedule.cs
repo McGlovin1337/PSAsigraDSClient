@@ -3,7 +3,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Remove, "DSClientSchedule")]
+    [Cmdlet(VerbsCommon.Remove, "DSClientSchedule", SupportsShouldProcess = true)]
 
     public class RemoveDSClientSchedule: DSClientCmdlet
     {
@@ -18,9 +18,12 @@ namespace PSAsigraDSClient
             WriteVerbose($"Performing Action: Retrieve Schedule with ScheduleId {ScheduleId}");
             Schedule removeSchedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
 
-            WriteVerbose($"Performing Action: Remove Schedule with ScheduleId {ScheduleId}");
-            DSClientScheduleMgr.removeSchedule(removeSchedule);
-            WriteObject("Removed ScheduleId " + ScheduleId);
+            if (ShouldProcess($"{removeSchedule.getName()}"))
+            {
+                WriteVerbose($"Performing Action: Remove Schedule with ScheduleId {ScheduleId}");
+                DSClientScheduleMgr.removeSchedule(removeSchedule);
+                WriteObject("Removed ScheduleId " + ScheduleId);
+            }
 
             DSClientScheduleMgr.Dispose();
         }

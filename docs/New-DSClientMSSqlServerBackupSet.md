@@ -13,18 +13,18 @@ Creates a New MS SQL Server Backup Set
 ## SYNTAX
 
 ```
-New-DSClientMSSqlServerBackupSet [-Name] <String> [-Computer] <String> [-IncludeItem <String[]>]
- [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>]
+New-DSClientMSSqlServerBackupSet [-Name] <String> [-Computer] <String> [-SetType] <String>
+ [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>]
  [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-RunDBCC] [-DBCCErrorStop]
  [-BackupLog] [-Credential <PSCredential>] [-DbCredential <PSCredential>] [-DumpMethod <String>]
  [-DumpPath <String>] -BackupMethod <String> [-FullMonthlyDay <Int32>] [-FullMonthlyTime <String>]
  [-FullWeeklyDay <String>] [-FullWeeklyTime <String>] [-FullPeriod <String>] [-FullPeriodValue <Int32>]
- [-SkipWeekDays <String[]>] [-SkipWeekDaysFrom <String>] [-SkipWeekDaysTo <String>] [-SetType] <String>
- -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>]
- [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog]
- [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache]
- [-NotificationMethod <String>] [-NotificationRecipient <String>] [-NotificationCompletion <String[]>]
- [-NotificationEmailOptions <String[]>] [-SnmpTrapNotifications <String[]>] [<CommonParameters>]
+ [-SkipWeekDays <String[]>] [-SkipWeekDaysFrom <String>] [-SkipWeekDaysTo <String>] -Compression <String>
+ [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup]
+ [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations]
+ [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache] [-NotificationMethod <String>]
+ [-NotificationRecipient <String>] [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>]
+ [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -738,6 +738,21 @@ Accept wildcard characters: False
 
 ### -UseTransmissionCache
 Set to use Local Transmission Cache for Offsite Backup Sets
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PassThru
+Output Basic Backup Set Properties
 
 ```yaml
 Type: SwitchParameter

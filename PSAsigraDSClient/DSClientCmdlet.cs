@@ -17,7 +17,7 @@ namespace PSAsigraDSClient
             DSClientOSType = SessionState.PSVariable.GetValue("DSClientOSType", null) as DSClientOSType;
 
             if (DSClientSession == null)
-                throw new Exception("There is currently no active DSClient Sessions.");
+                throw new Exception("There is currently no active DS-Client Sessions.");
 
             DSClientProcessRecord();
         }

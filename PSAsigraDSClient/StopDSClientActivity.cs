@@ -3,7 +3,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsLifecycle.Stop, "DSClientActivity")]
+    [Cmdlet(VerbsLifecycle.Stop, "DSClientActivity", SupportsShouldProcess = true)]
 
     public class StopDSClientActivity: DSClientCmdlet
     {
@@ -14,13 +14,16 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             WriteVerbose($"Performing Action: Retrieve Activity Details for ActivityId: {ActivityId}");
-            GenericActivity GenericActivity = DSClientSession.activity(ActivityId);
+            GenericActivity genericActivity = DSClientSession.activity(ActivityId);
 
-            // Send Stop request to the activity
-            WriteObject("Sending stop request to Activity...");
-            GenericActivity.Stop();
+            if (ShouldProcess($"Activity '{genericActivity.getID()}'", "Stop Running Activity"))
+            {
+                // Send Stop request to the activity
+                WriteObject("Sending stop request to Activity...");
+                genericActivity.Stop();
+            }
 
-            GenericActivity.Dispose();
+            genericActivity.Dispose();
         }
     }
 }

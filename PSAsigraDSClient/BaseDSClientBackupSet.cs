@@ -158,7 +158,7 @@ namespace PSAsigraDSClient
             return fileItems;
         }
 
-        protected static IEnumerable<BackupSetFileItem> ProcessMsSqlExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items)
+        protected static IEnumerable<BackupSetFileItem> ProcessBasicExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items)
         {
             List<BackupSetFileItem> sqlItems = new List<BackupSetFileItem>();
 
@@ -167,7 +167,7 @@ namespace PSAsigraDSClient
                 // Trim any whitespace from the end of the item
                 string trimmedItem = item.Trim();
 
-                BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, item);
+                BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, trimmedItem);
                 sqlItems.Add(exclusion);
             }
 
@@ -274,6 +274,34 @@ namespace PSAsigraDSClient
             }
 
             return sqlInclusionItems;
+        }
+
+        protected static IEnumerable<BackupSetInclusionItem> ProcessVMwareVADPInclusionItem(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens)
+        {
+            List<BackupSetInclusionItem> inclusionItems = new List<BackupSetInclusionItem>();
+
+            foreach (string item in items)
+            {
+                // Trim any whitespace from the end of the item
+                string trimmedItem = item.Trim();
+
+                // Set the item filter by extracting the chars after the last "\"
+                string filter = trimmedItem.Split('\\').Last();
+                int itemLength = filter.Length;
+                if (string.IsNullOrEmpty(filter))
+                    filter = "*";
+
+                // Set the path by removing the specified filter from the end of the item
+                string path = trimmedItem.Remove((trimmedItem.Length - itemLength), itemLength);
+
+                BackupSetInclusionItem inclusionItem = dataSourceBrowser.createInclusionItem(computer, path, maxGens);
+
+                inclusionItem.setFilter(filter);
+
+                inclusionItems.Add(inclusionItem);
+            }
+
+            return inclusionItems;
         }
 
         protected class BackupSetItemComparer : IEqualityComparer<BackupSetItem>
@@ -421,7 +449,18 @@ namespace PSAsigraDSClient
                 else if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__VSSExchange)
                     DataType = new VSSExchangeBackupSet(backupSet);
                 else if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__VMwareVADP)
-                    DataType = new VMWareVADPBackupSet(backupSet);
+                    /* There is a bug in the API where VADP Sets on Linux DS-Clients cannot be Cast to a
+                     * VMwareVADP_BackupSet, therefore we only fetch the additional VMware Options
+                     * for Sets created on Windows DS-Clients
+                     */
+                    if (dSClientOSType.OsType == "Windows")
+                    {
+                        DataType = new VMWareVADPBackupSet(backupSet);
+                    }
+                    else
+                    {
+                        DataType = "VMwareVADP";
+                    }
                 else if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__DB2)
                     DataType = new DB2BackupSet(backupSet);
                 else

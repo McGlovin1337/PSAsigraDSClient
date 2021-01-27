@@ -26,7 +26,6 @@ Get the DS-Client SMTP Notification Configuration
 PS C:\> Get-DSClientSMTPNotification
 ```
 
-
 ## PARAMETERS
 
 ### CommonParameters

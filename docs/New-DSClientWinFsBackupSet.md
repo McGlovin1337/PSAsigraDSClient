@@ -14,19 +14,19 @@ Creates a New Windows File System Backup Set
 
 ```
 New-DSClientWinFsBackupSet [-Name] <String> [-Computer] <String> [[-Credential] <PSCredential>]
- [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>]
- [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-BackupRemoteStorage]
- [-BackupSingleInstanceStore] [-CheckCommonFiles] [-UseVSS] [-ExcludeVSSComponents] [-IgnoreVSSComponents]
- [-IgnoreVSSWriters] [-FollowJunctionPoints] [-NoAutoFileFilter] [-ExcludeOldFilesByDate]
- [-ExcludeOldFilesDate <DateTime>] [-ExcludeOldFilesByTimeSpan] [-ExcludeOldFilesTimeSpan <String>]
- [-ExcludeOldFilesTimeSpanValue <Int32>] [-UseBuffer] [-ExcludeAltDataStreams] [-ExcludePermissions]
- [-CDPInterval <Int32>] [-CDPStoppedChangingForInterval] [-CDPStopForRetention] [-CDPStopForBLM]
- [-CDPStopForValidation] [-SetType] <String> -Compression <String> [-Disabled] [-ScheduleId <Int32>]
- [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>]
- [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage]
- [-LocalStoragePath <String>] [-UseTransmissionCache] [-NotificationMethod <String>]
+ [-SetType] <String> [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>]
+ [-RegexExcludeItem <String[]>] [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive]
+ [-BackupRemoteStorage] [-BackupSingleInstanceStore] [-CheckCommonFiles] [-UseVSS] [-ExcludeVSSComponents]
+ [-IgnoreVSSComponents] [-IgnoreVSSWriters] [-FollowJunctionPoints] [-NoAutoFileFilter]
+ [-ExcludeOldFilesByDate] [-ExcludeOldFilesDate <DateTime>] [-ExcludeOldFilesByTimeSpan]
+ [-ExcludeOldFilesTimeSpan <String>] [-ExcludeOldFilesTimeSpanValue <Int32>] [-UseBuffer]
+ [-ExcludeAltDataStreams] [-ExcludePermissions] [-CDPInterval <Int32>] [-CDPStoppedChangingForInterval]
+ [-CDPStopForRetention] [-CDPStopForBLM] [-CDPStopForValidation] -Compression <String> [-Disabled]
+ [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan]
+ [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations]
+ [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache] [-NotificationMethod <String>]
  [-NotificationRecipient <String>] [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>]
- [-SnmpTrapNotifications <String[]>] [<CommonParameters>]
+ [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -820,6 +820,21 @@ Accept wildcard characters: False
 
 ### -UseVSS
 Use Volume Shadow Copies (VSS)
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PassThru
+Output Basic Backup Set Properties
 
 ```yaml
 Type: SwitchParameter

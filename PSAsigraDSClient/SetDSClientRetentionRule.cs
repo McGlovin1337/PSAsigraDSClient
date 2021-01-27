@@ -6,7 +6,7 @@ using static PSAsigraDSClient.BaseDSClientTimeRetentionRule;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Set, "DSClientRetentionRule")]
+    [Cmdlet(VerbsCommon.Set, "DSClientRetentionRule", SupportsShouldProcess = true)]
 
     public class SetDSClientRetentionRule: BaseDSClientRetentionRuleParams
     {
@@ -41,71 +41,97 @@ namespace PSAsigraDSClient
 
             // Select the specific Retention Rule to modify
             RetentionRule retentionRule = retentionRules.Single(rule => rule.getID() == RetentionRuleId);
+            string retentionRuleName = retentionRule.getName();
 
             // Apply changes here
             if (NewName != null)
-                retentionRule.setName(NewName);
+                if (ShouldProcess($"Retention Rule '{retentionRuleName}'", $"Set Retention Rule Name '{NewName}'"))
+                    retentionRule.setName(NewName);
 
             // Set Cleanup of Deleted Files from Source
             if (CleanupDeletedFiles || retentionRule.getCleanupRemovedFiles())
             {
-                WriteVerbose("Performing Action: Set Cleanup of Deleted Files");
-                retentionRule.setCleanupRemovedFiles(CleanupDeletedFiles);
-
-                retention_time_span timeSpan = new retention_time_span
+                if (ShouldProcess($"{retentionRuleName}", "Enable Cleanup of Deleted Files"))
                 {
-                    period = CleanupDeletedAfterValue,
-                    unit = StringToEnum<RetentionTimeUnit>(CleanupDeletedAfterUnit)                
-                };
-                WriteVerbose("Performing Action: Set Time Span for Deleted File Cleanup");
-                retentionRule.setCleanupRemovedAfter(timeSpan);
+                    WriteVerbose("Performing Action: Set Cleanup of Deleted Files");
+                    retentionRule.setCleanupRemovedFiles(CleanupDeletedFiles);
+                }
 
-                retentionRule.setCleanupRemovedKeep(CleanupDeletedKeepGens);
+                if (ShouldProcess($"{retentionRuleName}", "Set Time Span for Cleanup of Deleted Files"))
+                {
+                    retention_time_span timeSpan = new retention_time_span
+                    {
+                        period = CleanupDeletedAfterValue,
+                        unit = StringToEnum<RetentionTimeUnit>(CleanupDeletedAfterUnit)
+                    };
+                    WriteVerbose("Performing Action: Set Time Span for Deleted File Cleanup");
+                    retentionRule.setCleanupRemovedAfter(timeSpan);
+                }
+
+                if (ShouldProcess($"{retentionRuleName}", "Set Number of Generations of Deleted Files to Keep"))
+                    retentionRule.setCleanupRemovedKeep(CleanupDeletedKeepGens);
             }
 
             // Set Stub Cleanup
             if (DeleteGensPriorToStub)
             {
-                retentionRule.setDeleteStub(true);
-                retentionRule.setDeleteStubAllGens(true);
+                if (ShouldProcess($"{retentionRuleName}", "Set Delete Generations prior to Stub File"))
+                {
+                    retentionRule.setDeleteStub(true);
+                    retentionRule.setDeleteStubAllGens(true);
+                }
             }
             else if (DeleteNonStubGens)
             {
-                retentionRule.setDeleteStub(true);
-                retentionRule.setDeleteStubAllGens(false);
+                if (ShouldProcess($"{retentionRuleName}", "Set Delete Non Stub File Generations"))
+                {
+                    retentionRule.setDeleteStub(true);
+                    retentionRule.setDeleteStubAllGens(false);
+                }
             }
 
             // Set Local Storage Time Retention
             if (MyInvocation.BoundParameters.ContainsKey("LSRetentionTimeValue"))
             {
-                retention_time_span timeSpan = new retention_time_span
+                if (ShouldProcess($"{retentionRuleName}", $"Set Local Storage Retention Time Span to '{LSRetentionTimeValue} {LSRetentionTimeUnit}'"))
                 {
-                    period = LSRetentionTimeValue,
-                    unit = StringToEnum<RetentionTimeUnit>(LSRetentionTimeUnit)
-                };
-                retentionRule.setLocalStorageRetention(timeSpan);
+                    retention_time_span timeSpan = new retention_time_span
+                    {
+                        period = LSRetentionTimeValue,
+                        unit = StringToEnum<RetentionTimeUnit>(LSRetentionTimeUnit)
+                    };
+                    retentionRule.setLocalStorageRetention(timeSpan);
+                }
             }
 
             // Set Local Storage Cleanup of Deleted Files from Source
             if (LSCleanupDeletedFiles)
             {
-                retentionRule.setLSCleanupRemovedFiles(true);
-                retentionRule.setLSCleanupRemovedKeep(LSCleanupDeletedKeepGens);
+                if (ShouldProcess($"{retentionRuleName}", "Set Cleanup of Deleted Files from Local Storage"))
+                    retentionRule.setLSCleanupRemovedFiles(true);
 
-                retention_time_span timeSpan = new retention_time_span
+                if (ShouldProcess($"{retentionRuleName}", "Set Generations to Keep for Deleted Files on Local Storage"))
+                    retentionRule.setLSCleanupRemovedKeep(LSCleanupDeletedKeepGens);
+
+                if (ShouldProcess($"{retentionRuleName}", $"Set Time Span for Cleanup of Deleted Files on Local Storage to '{LSCleanupDeletedAfterValue} {LSCleanupDeletedAfterUnit}'"))
                 {
-                    period = LSCleanupDeletedAfterValue,
-                    unit = StringToEnum<RetentionTimeUnit>(LSCleanupDeletedAfterUnit)
-                };
-                retentionRule.setLSCleanupRemovedAfter(timeSpan);
+                    retention_time_span timeSpan = new retention_time_span
+                    {
+                        period = LSCleanupDeletedAfterValue,
+                        unit = StringToEnum<RetentionTimeUnit>(LSCleanupDeletedAfterUnit)
+                    };
+                    retentionRule.setLSCleanupRemovedAfter(timeSpan);
+                }
             }
 
             // VSS Options
             if (MyInvocation.BoundParameters.ContainsKey("DeleteUnreferencedFiles"))
-                retentionRule.setDeleteUnreferencedFiles(DeleteUnreferencedFiles);
+                if (ShouldProcess($"{retentionRuleName}", $"Set Delete Unreferenced Files to '{DeleteUnreferencedFiles}'"))
+                    retentionRule.setDeleteUnreferencedFiles(DeleteUnreferencedFiles);
 
             if (MyInvocation.BoundParameters.ContainsKey("DeleteIncompleteComponents"))
-                retentionRule.setDeleteIncompleteComponents(DeleteIncompleteComponents);
+                if (ShouldProcess($"{retentionRuleName}", $"Set Delete Incomplete Components to '{DeleteIncompleteComponents}'"))
+                    retentionRule.setDeleteIncompleteComponents(DeleteIncompleteComponents);
 
             WriteVerbose("Notice: Retention Rule Settings applied");
             // Done

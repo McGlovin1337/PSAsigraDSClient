@@ -13,6 +13,7 @@ namespace PSAsigraDSClient
     {
         [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Full Path to the Item")]
         [ValidateNotNullOrEmpty]
+        [Alias("Folder")]
         public string Path { get; set; }
 
         [Parameter(Position = 2, HelpMessage = "Filter returned items")]
@@ -25,18 +26,39 @@ namespace PSAsigraDSClient
         [Parameter(HelpMessage = "Specify the rescursion depth")]
         public int RecursiveDepth { get; set; } = 0;
 
+        [Parameter(Position = 3, Mandatory = true, ParameterSetName = "hidefiles", HelpMessage = "Specify to Hide Files")]
+        [Parameter(ParameterSetName = "BackupSetId")]
+        public SwitchParameter HideFiles { get; set; }
+
+        [Parameter(Position = 3, Mandatory = true, ParameterSetName = "hidedirs", HelpMessage = "Specify to Hide Directories")]
+        [Parameter(ParameterSetName = "BackupSetId")]
+        public SwitchParameter HideDirectories { get; set; }
+
         protected override void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView)
         {
+            BackedUpDataViewWithFilters backedUpDataView = BackedUpDataViewWithFilters.from(DSClientBackedUpDataView);
+
+            // Apply File & Directory Visibility Filters
+            ESelectableItemCategory itemCategory = ESelectableItemCategory.ESelectableItemCategory__FilesAndDirectories;
+
+            if (HideFiles)
+                itemCategory = ESelectableItemCategory.ESelectableItemCategory__DirectoriesOnly;
+            else if (HideDirectories)
+                itemCategory = ESelectableItemCategory.ESelectableItemCategory__FilesOnly;
+
             List<DSClientBackupSetItemInfo> ItemInfo = new List<DSClientBackupSetItemInfo>();
 
+            // Any trailing "\" is unnecessary, remove if any are specified to tidy up output
+            string path = Path.TrimEnd('\\');
+
             // We always return info of the root/first item the user has specified, irrespective of other parameters
-            WriteVerbose($"Performing Action: Retrieve Item Info for Path: {Path}");
-            SelectableItem item = DSClientBackedUpDataView.getItem(Path);
+            WriteVerbose($"Performing Action: Retrieve Item Info for Path: {path}");
+            SelectableItem item = backedUpDataView.getItem(path);
             long itemId = item.id;
 
-            selectable_size itemSize = DSClientBackedUpDataView.getItemSize(itemId);
+            selectable_size itemSize = backedUpDataView.getItemSize(itemId);
 
-            ItemInfo.Add(new DSClientBackupSetItemInfo(Path, item, itemSize));
+            ItemInfo.Add(new DSClientBackupSetItemInfo(path, item, itemSize));
 
             if (Recursive)
             {
@@ -50,11 +72,12 @@ namespace PSAsigraDSClient
 
                 List<ItemPath> newPaths = new List<ItemPath>
                 {
-                    new ItemPath(Path, 0)
+                    new ItemPath(path, 0)
                 };
 
                 int enumeratedCount = 0;
-                ProgressRecord progressRecord = new ProgressRecord(1, "Enumerate Paths", $"{enumeratedCount} Paths Enumerated")
+                int itemCount = 0;
+                ProgressRecord progressRecord = new ProgressRecord(1, "Enumerate Stored Backup Set Items", $"{enumeratedCount} Paths Enumerated, {itemCount} Items Discovered")
                 {
                     PercentComplete = -1,
                 };
@@ -66,30 +89,34 @@ namespace PSAsigraDSClient
 
                     WriteVerbose($"Performing Action: Enumerate Path: {currentPath.Path} (Depth: {currentPath.Depth})");
 
-                    progressRecord.StatusDescription = $"{enumeratedCount} Paths Enumerated";
+                    progressRecord.StatusDescription = $"{enumeratedCount} Paths Enumerated, {itemCount} Items Discovered";
                     progressRecord.CurrentOperation = $"Enumerating Path: {currentPath.Path}";
                     WriteProgress(progressRecord);
 
-                    item = DSClientBackedUpDataView.getItem(currentPath.Path);
+                    item = backedUpDataView.getItem(currentPath.Path);
                     itemId = item.id;
 
                     // Fetch all the subitems of the current path
-                    SelectableItem[] subItems = DSClientBackedUpDataView.getSubItemsByCategory(itemId, ESelectableItemCategory.ESelectableItemCategory__FilesAndDirectories);
+                    SelectableItem[] subItems = backedUpDataView.getSubItemsByCategory(itemId, itemCategory);
 
                     int subItemDepth = currentPath.Depth + 1;
                     int index = 1;
                     foreach (SelectableItem subItem in subItems)
                     {
-                        selectable_size subItemSize = DSClientBackedUpDataView.getItemSize(subItem.id);
+                        selectable_size subItemSize = backedUpDataView.getItemSize(subItem.id);
 
                         if (Filter != null)
                         {
                             if (wcPattern.IsMatch(subItem.name))
+                            {
                                 ItemInfo.Add(new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize));
+                                itemCount++;
+                            }
                         }
                         else
                         {
                             ItemInfo.Add(new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize));
+                            itemCount++;
                         }
 
                         

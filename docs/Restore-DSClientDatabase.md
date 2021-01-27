@@ -26,7 +26,6 @@ Recovers the DS-Client Databases
 PS C:\> Restore-DSClientDatabase
 ```
 
-
 ## PARAMETERS
 
 ### -Confirm

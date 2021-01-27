@@ -14,19 +14,19 @@ Creates a new Unix based File System Backup Set
 
 ```
 New-DSClientUnixFsBackupSet [-Name] <String> [-Computer] <String> [[-Credential] <PSCredential>]
- [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>]
- [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-SSHInterpreter <String>]
- [-SSHInterpreterPath <String>] [-SSHKeyFile <String>] [-SudoCredential <PSCredential>] [-CheckCommonFiles]
- [-FollowMountPoints] [-BackupHardLinks] [-IgnoreSnapshotFailure] [-UseSnapDiff] [-ExcludeOldFilesByDate]
- [-ExcludeOldFilesDate <DateTime>] [-ExcludeOldFilesByTimeSpan] [-ExcludeOldFilesTimeSpan <String>]
- [-ExcludeOldFilesTimeSpanValue <Int32>] [-UseBuffer] [-ExcludeACLs] [-ExcludePosixACLs] [-CDPInterval <Int32>]
- [-CDPStoppedChangingForInterval] [-CDPStopForRetention] [-CDPStopForBLM] [-CDPStopForValidation]
- [-CDPUseFileAlterationMonitor] [-SetType] <String> -Compression <String> [-Disabled] [-ScheduleId <Int32>]
- [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>]
- [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage]
- [-LocalStoragePath <String>] [-UseTransmissionCache] [-NotificationMethod <String>]
- [-NotificationRecipient <String>] [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>]
- [-SnmpTrapNotifications <String[]>] [<CommonParameters>]
+ [-SetType] <String> [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>]
+ [-RegexExcludeItem <String[]>] [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive]
+ [-SSHInterpreter <String>] [-SSHInterpreterPath <String>] [-SSHKeyFile <String>]
+ [-SudoCredential <PSCredential>] [-CheckCommonFiles] [-FollowMountPoints] [-BackupHardLinks]
+ [-IgnoreSnapshotFailure] [-UseSnapDiff] [-ExcludeOldFilesByDate] [-ExcludeOldFilesDate <DateTime>]
+ [-ExcludeOldFilesByTimeSpan] [-ExcludeOldFilesTimeSpan <String>] [-ExcludeOldFilesTimeSpanValue <Int32>]
+ [-UseBuffer] [-ExcludeACLs] [-ExcludePosixACLs] [-CDPInterval <Int32>] [-CDPStoppedChangingForInterval]
+ [-CDPStopForRetention] [-CDPStopForBLM] [-CDPStopForValidation] [-CDPUseFileAlterationMonitor]
+ -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>]
+ [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog]
+ [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache]
+ [-NotificationMethod <String>] [-NotificationRecipient <String>] [-NotificationCompletion <String[]>]
+ [-NotificationEmailOptions <String[]>] [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -839,6 +839,21 @@ Accept wildcard characters: False
 
 ### -UseTransmissionCache
 Set to use Local Transmission Cache for Offsite Backup Sets
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PassThru
+Output Basic Backup Set Properties
 
 ```yaml
 Type: SwitchParameter

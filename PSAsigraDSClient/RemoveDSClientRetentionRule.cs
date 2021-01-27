@@ -4,7 +4,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Remove, "DSClientRetentionRule")]
+    [Cmdlet(VerbsCommon.Remove, "DSClientRetentionRule", SupportsShouldProcess = true)]
 
     public class RemoveDSClientRetentionRule: DSClientCmdlet
     {
@@ -20,8 +20,11 @@ namespace PSAsigraDSClient
 
             RetentionRule retentionRule = retentionRules.Single(rule => rule.getID() == RetentionRuleId);
 
-            DSClientRetentionRuleMgr.removeRule(retentionRule);
-            WriteObject("Retention Rule removed");
+            if (ShouldProcess($"{retentionRule.getName()}"))
+            {
+                DSClientRetentionRuleMgr.removeRule(retentionRule);
+                WriteObject("Retention Rule removed");
+            }
 
             DSClientRetentionRuleMgr.Dispose();
         }

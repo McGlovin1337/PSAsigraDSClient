@@ -3,7 +3,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsLifecycle.Disable, "DSClientSchedule")]
+    [Cmdlet(VerbsLifecycle.Disable, "DSClientSchedule", SupportsShouldProcess = true)]
 
     public class DisableDSClientSchedule: DSClientCmdlet
     {
@@ -17,9 +17,12 @@ namespace PSAsigraDSClient
             ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
             Schedule schedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
 
-            // Set the Schedule to InActive
-            WriteVerbose($"Performing Action: Disable On Target: {ScheduleId}");
-            schedule.setActive(false);
+            if (ShouldProcess($"Schedule '{schedule.getName()}'", "Disable"))
+            {
+                // Set the Schedule to InActive
+                WriteVerbose($"Performing Action: Disable On Target: {ScheduleId}");
+                schedule.setActive(false);
+            }
 
             schedule.Dispose();
             DSClientScheduleMgr.Dispose();

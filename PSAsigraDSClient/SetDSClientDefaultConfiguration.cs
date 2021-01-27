@@ -7,7 +7,7 @@ using static PSAsigraDSClient.BaseDSClientNotification;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Set, "DSClientDefaultConfiguration")]
+    [Cmdlet(VerbsCommon.Set, "DSClientDefaultConfiguration", SupportsShouldProcess = true)]
 
     public class SetDSClientDefaultConfiguration: BaseDSClientDefaultConfiguration
     {
@@ -86,70 +86,97 @@ namespace PSAsigraDSClient
             // Set Compression Type/Method
             if (CompressionType != null)
             {
-                WriteVerbose("Performing Action: Set Default Compression Type");
-                defaultConfiguration.setDefaultCompressionType(StringToEnum<ECompressionType>(CompressionType));
+                if (ShouldProcess("Default Compression Type", $"Set Value '{CompressionType}'"))
+                {
+                    WriteVerbose("Performing Action: Set Default Compression Type");
+                    defaultConfiguration.setDefaultCompressionType(StringToEnum<ECompressionType>(CompressionType));
+                }
             }
 
             // Set DS-Client Buffer Path
             if (DSClientBuffer != null)
             {
-                WriteVerbose("Performing Action: Set DS-Client Buffer");
-                defaultConfiguration.setDefaultDSClientBuffer(DSClientBuffer);
+                if (ShouldProcess("DS-Client Buffer Path", $"Set Value '{DSClientBuffer}'"))
+                {
+                    WriteVerbose("Performing Action: Set DS-Client Buffer");
+                    defaultConfiguration.setDefaultDSClientBuffer(DSClientBuffer);
+                }
             }
 
             // Set DS-Client Local Storage Path
             if (LocalStoragePath != null)
             {
-                WriteVerbose("Performing Action: Set DS-Client Local Storage Path");
-                defaultConfiguration.setDefaultLocalStoragePath(LocalStoragePath);
+                if (ShouldProcess("DS-Client Local Storage Path", $"Set Value '{LocalStoragePath}'"))
+                {
+                    WriteVerbose("Performing Action: Set DS-Client Local Storage Path");
+                    defaultConfiguration.setDefaultLocalStoragePath(LocalStoragePath);
+                }
             }
 
             // Set DS-Client Default Notification Method
             if (NotificationMethod != null)
             {
-                WriteVerbose("Performing Action: Set Default Notification Method");
-                notifyInfo[0].method = StringToEnum<ENotificationMethod>(NotificationMethod);
-                notifyInfoUpdated = true;
+                if (ShouldProcess("DS-Client Default Notification Method", $"Set Value '{NotificationMethod}'"))
+                {
+                    WriteVerbose("Performing Action: Set Default Notification Method");
+                    notifyInfo[0].method = StringToEnum<ENotificationMethod>(NotificationMethod);
+                    notifyInfoUpdated = true;
+                }
             }
 
             // Set the Notification Recipient for the Default Notification Method
             if (NotificationRecipient != null)
             {
-                WriteVerbose("Performing Action: Set Notification Recipient");
-                notifyInfo[0].recipient = NotificationRecipient;
-                notifyInfoUpdated = true;
+                if (ShouldProcess("DS-Client Default Notification Recipient", $"Set Value '{NotificationRecipient}'"))
+                {
+                    WriteVerbose("Performing Action: Set Notification Recipient");
+                    notifyInfo[0].recipient = NotificationRecipient;
+                    notifyInfoUpdated = true;
+                }
             }
 
             // Set the Completion Status for Notifications
             if (NotificationCompletion != null)
             {
-                WriteVerbose("Performing Action: Set Notification Completion Status");
-                notifyInfo[0].completion = ArrayToNotificationCompletionToInt(NotificationCompletion);
-                notifyInfoUpdated = true;
+                if (ShouldProcess("DS-Client Default Notification Completion Options", $"Set Value '{NotificationCompletion}"))
+                {
+                    WriteVerbose("Performing Action: Set Notification Completion Status");
+                    notifyInfo[0].completion = ArrayToNotificationCompletionToInt(NotificationCompletion);
+                    notifyInfoUpdated = true;
+                }
             }
 
             // Set the Email options
             if (notifyInfo[0].method == ENotificationMethod.ENotificationMethod__Email && NotificationEmailOptions != null )
             {
-                WriteVerbose("Performing Action: Set Email Notification options");
-                notifyInfo[0].email_option = ArrayToEmailOptionsInt(NotificationEmailOptions);
+                if (ShouldProcess("DS-Client Default Email Notification Options", $"Set Value '{NotificationEmailOptions}'"))
+                {
+                    WriteVerbose("Performing Action: Set Email Notification options");
+                    notifyInfo[0].email_option = ArrayToEmailOptionsInt(NotificationEmailOptions);
 
-                notifyInfoUpdated = true;
+                    notifyInfoUpdated = true;
+                }
             }
 
             // Apply the updated Notification Config
             if (notifyInfoUpdated == true)
             {
-                WriteVerbose("Performing Action: Apply updated default notification settings");
-                backupSetNotification.addOrUpdateNotification(notifyInfo[0]);
-                defaultConfiguration.setDefaultNotification(backupSetNotification);
+                if (ShouldProcess("DS-Client Default Notification Configuration", "Update Notification Configuration"))
+                {
+                    WriteVerbose("Performing Action: Apply updated default notification settings");
+                    backupSetNotification.addOrUpdateNotification(notifyInfo[0]);
+                    defaultConfiguration.setDefaultNotification(backupSetNotification);
+                }
             }
 
             // Set Default Online Generations
             if (OnlineGenerations > 0)
             {
-                WriteVerbose("Performing Action: Set Online Generations");
-                defaultConfiguration.setDefaultOnlineGenerations(OnlineGenerations);
+                if (ShouldProcess("Backup Set Default Online Generations", $"Set Value '{OnlineGenerations}'"))
+                {
+                    WriteVerbose("Performing Action: Set Online Generations");
+                    defaultConfiguration.setDefaultOnlineGenerations(OnlineGenerations);
+                }
             }
 
             // Set the Default Retention Rule
@@ -158,19 +185,25 @@ namespace PSAsigraDSClient
                 RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
                 RetentionRule[] retentionRules = DSClientRetentionRuleMgr.definedRules();
 
-                WriteVerbose("Performing Action: Set Default Retention Rule");
                 if (MyInvocation.BoundParameters.ContainsKey("RetentionRuleId"))
-                {
+                {                    
                     RetentionRule retentionRule = retentionRules.Single(rule => rule.getID() == RetentionRuleId);
-                    defaultConfiguration.setDefaultRetentionRule(retentionRule);
+                    if (ShouldProcess("Default Retention Rule for Backup Sets", $"Set Retention Rule '{retentionRule.getName()}'"))
+                    {
+                        WriteVerbose("Performing Action: Set Default Retention Rule");
+                        defaultConfiguration.setDefaultRetentionRule(retentionRule);
+                    }
                 }
-
-                if (MyInvocation.BoundParameters.ContainsKey("RetentionRule"))
-                {
+                else if (MyInvocation.BoundParameters.ContainsKey("RetentionRule"))
+                {                    
                     RetentionRule retentionRule = null;
                     if (!string.IsNullOrEmpty(RetentionRule))
                         retentionRule = retentionRules.Single(rule => rule.getName() == RetentionRule);
-                    defaultConfiguration.setDefaultRetentionRule(retentionRule);
+                    if (ShouldProcess("Default Retention Rule for Backup Sets", $"Set Retention Rule '{retentionRule.getName()}'"))
+                    {
+                        WriteVerbose("Performing Action: Set Default Retention Rule");
+                        defaultConfiguration.setDefaultRetentionRule(retentionRule);
+                    }
                 }
 
                 DSClientRetentionRuleMgr.Dispose();
@@ -180,21 +213,27 @@ namespace PSAsigraDSClient
             if (MyInvocation.BoundParameters.ContainsKey("ScheduleId") || MyInvocation.BoundParameters.ContainsKey("Schedule"))
             {
                 ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
-
-                WriteVerbose("Performing Action: Set Default Schedule");
+                                
                 if (MyInvocation.BoundParameters.ContainsKey("ScheduleId"))
                 {
                     Schedule schedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
-                    defaultConfiguration.setDefaultSchedule(schedule);
+                    if (ShouldProcess("Default Schedule for Backup Sets", $"Set Schedule '{schedule.getName()}'"))
+                    {
+                        WriteVerbose("Performing Action: Set Default Schedule");
+                        defaultConfiguration.setDefaultSchedule(schedule);
+                    }
                 }
-
-                if (MyInvocation.BoundParameters.ContainsKey("Schedule"))
+                else if (MyInvocation.BoundParameters.ContainsKey("Schedule"))
                 {
                     Schedule[] schedules = DSClientScheduleMgr.definedSchedules();
                     Schedule schedule = null;
                     if (!string.IsNullOrEmpty(Schedule))
                         schedule = schedules.Single(sched => sched.getName() == Schedule);
-                    defaultConfiguration.setDefaultSchedule(schedule);
+                    if (ShouldProcess("Default Schedule for Backup Sets", $"Set Schedule '{schedule.getName()}'"))
+                    {
+                        WriteVerbose("Performing Action: Set Default Schedule");
+                        defaultConfiguration.setDefaultSchedule(schedule);
+                    }
                 }
 
                 DSClientScheduleMgr.Dispose();
@@ -208,29 +247,41 @@ namespace PSAsigraDSClient
                 // Set Open File Method
                 if (OpenFileOperation != null)
                 {
-                    WriteVerbose("Performing Action: Set Open File Method");
-                    defaultConfigurationWindows.setDefaultOpenFilesOperation(StringToEnum<EOpenFileStrategy>(OpenFileOperation));
+                    if (ShouldProcess("Default Open File Operation", $"Set Value '{OpenFileOperation}'"))
+                    {
+                        WriteVerbose("Performing Action: Set Open File Method");
+                        defaultConfigurationWindows.setDefaultOpenFilesOperation(StringToEnum<EOpenFileStrategy>(OpenFileOperation));
+                    }
                 }
 
                 // Set the Open File Retry Interval
                 if (MyInvocation.BoundParameters.ContainsKey("OpenFileRetryInterval"))
                 {
-                    WriteVerbose("Performing Action: Set Open File Retry Interval");
-                    defaultConfigurationWindows.setDefaultOpenFilesRetryInterval(OpenFileRetryInterval);
+                    if (ShouldProcess("Default Open File Retry Interval", $"Set Value '{OpenFileRetryInterval}'"))
+                    {
+                        WriteVerbose("Performing Action: Set Open File Retry Interval");
+                        defaultConfigurationWindows.setDefaultOpenFilesRetryInterval(OpenFileRetryInterval);
+                    }
                 }
 
                 // Set the number of times to retry Open File Method
                 if (MyInvocation.BoundParameters.ContainsKey("OpenFileRetryTimes"))
                 {
-                    WriteVerbose("Performing Action: Set the number of times to retry Open File Method");
-                    defaultConfigurationWindows.setDefaultOpenFilesRetryTimes(OpenFileRetryTimes);
+                    if (ShouldProcess("Default Open File Retry Attempts", $"Set Value '{OpenFileRetryTimes}'"))
+                    {
+                        WriteVerbose("Performing Action: Set the number of times to retry Open File Method");
+                        defaultConfigurationWindows.setDefaultOpenFilesRetryTimes(OpenFileRetryTimes);
+                    }
                 }
 
                 // Set the Backup File Permissions default
                 if (MyInvocation.BoundParameters.ContainsKey("BackupFilePermissions"))
                 {
-                    WriteVerbose("Performing Action: Set Backup File Permissions");
-                    defaultConfigurationWindows.setDefaultToBackupPermissions(BackupFilePermissions);
+                    if (ShouldProcess("Backup File Permissions", $"Set Value '{BackupFilePermissions}'"))
+                    {
+                        WriteVerbose("Performing Action: Set Backup File Permissions");
+                        defaultConfigurationWindows.setDefaultToBackupPermissions(BackupFilePermissions);
+                    }
                 }
 
                 defaultConfigurationWindows.Dispose();

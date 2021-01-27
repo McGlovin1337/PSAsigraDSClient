@@ -26,7 +26,6 @@ Provides DS-Client System Utilisation Information such as CPU, Memory and Networ
 PS C:\> Get-DSClientLoadSummary
 ```
 
-
 ## PARAMETERS
 
 ### -NodeId

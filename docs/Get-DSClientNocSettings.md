@@ -26,7 +26,6 @@ Provides an overview of any connected DS-NOC
 PS C:\> Get-DSClientNocSettings
 ```
 
-
 ## PARAMETERS
 
 ### CommonParameters

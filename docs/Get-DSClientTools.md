@@ -26,7 +26,6 @@ List the Enabled DS-Client Tools
 PS C:\> Get-DSClientTools
 ```
 
-
 ## PARAMETERS
 
 ### CommonParameters

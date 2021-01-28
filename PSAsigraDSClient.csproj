@@ -206,7 +206,6 @@
     <None Include="docs\Add-DSClientMSSqlServerBackupSetItem.md" />
     <None Include="docs\Add-DSClientMultiFactorAuthUser.md" />
     <None Include="docs\Add-DSClientOneTimeSchedule.md" />
-    <None Include="docs\Add-DSClientSchedule.md" />
     <None Include="docs\Add-DSClientSNMPCommunity.md" />
     <None Include="docs\Add-DSClientTimeRetentionRule.md" />
     <None Include="docs\Add-DSClientUnixFsBackupSetItem.md" />

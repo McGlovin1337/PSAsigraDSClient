@@ -15,7 +15,7 @@ namespace PSAsigraDSClient
         [Parameter(Position = 0, ParameterSetName = "General", ValueFromPipelineByPropertyName = true, HelpMessage = "Backup Sets configured for specified Computer")]
         public string Computer { get; set; }
 
-        [Parameter(Position = 0, ParameterSetName = "General", Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Backup Sets with the given Name")]
+        [Parameter(Position = 0, ParameterSetName = "General", ValueFromPipelineByPropertyName = true, HelpMessage = "Backup Sets with the given Name")]
         public string Name { get; set; }
 
         [Parameter(Position = 1, ParameterSetName = "General", ValueFromPipelineByPropertyName = true, HelpMessage = "List Backup Sets of a specific Data Type")]

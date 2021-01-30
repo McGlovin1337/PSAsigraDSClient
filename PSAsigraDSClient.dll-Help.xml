@@ -13698,7 +13698,7 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-DSClientRetentionRule -Name "7 Day Retention" -KeepLastGens 1 -KeepAllGensTimeValue 1 -KeepAllGensTimeUnit "Days" -IntervalTimeValue 1 -IntervalTimeUnit "Days" -IntervalValidForValue 7 -IntervalValidForUnit "Days" -DeleteObsoleteData -DeleteUnreferenceFiles -DeleteIncompleteComponents</dev:code>
+        <dev:code>PS C:\&gt; New-DSClientRetentionRule -Name "7 Day Retention" -KeepLastGens 1 -KeepAllGensTimeValue 1 -KeepAllGensTimeUnit "Days" -IntervalTimeValue 1 -IntervalTimeUnit "Days" -IntervalValidForValue 7 -IntervalValidForUnit "Days" -DeleteObsoleteData -DeleteUnreferencedFiles -DeleteIncompleteComponents</dev:code>
         <dev:remarks>
           <maml:para>Creates a New Retention Rule Named "7 Day Retention Rule" Keeps the latest 1 Generation Keeps 1 Generation Every Day for 7 Days Deletes Obsolete Data Deletes Unreferenced Files Deletes Incomplete Components</maml:para>
         </dev:remarks>

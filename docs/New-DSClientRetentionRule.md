@@ -37,7 +37,7 @@ Creates a New Retention Rule, additional time based rules can be added using Add
 
 ### Example 1
 ```powershell
-PS C:\> New-DSClientRetentionRule -Name "7 Day Retention" -KeepLastGens 1 -KeepAllGensTimeValue 1 -KeepAllGensTimeUnit "Days" -IntervalTimeValue 1 -IntervalTimeUnit "Days" -IntervalValidForValue 7 -IntervalValidForUnit "Days" -DeleteObsoleteData -DeleteUnreferenceFiles -DeleteIncompleteComponents
+PS C:\> New-DSClientRetentionRule -Name "7 Day Retention" -KeepLastGens 1 -KeepAllGensTimeValue 1 -KeepAllGensTimeUnit "Days" -IntervalTimeValue 1 -IntervalTimeUnit "Days" -IntervalValidForValue 7 -IntervalValidForUnit "Days" -DeleteObsoleteData -DeleteUnreferencedFiles -DeleteIncompleteComponents
 ```
 
 Creates a New Retention Rule Named "7 Day Retention Rule"

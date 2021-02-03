@@ -14,6 +14,7 @@ namespace PSAsigraDSClient
         {
             InitialBackupManager initialBackupManager = DSClientSession.getInitialBackupManager();
 
+            WriteVerbose("Performing Action: Retrieve Initial Backup Status");
             init_backup_status[] initBackupStatuses = initialBackupManager.statusList();
 
             initialBackupManager.Dispose();
@@ -28,11 +29,11 @@ namespace PSAsigraDSClient
 
         private class DSClientInitialBackupStatus
         {
-            public string Path { get; private set; }
-            public string Status { get; private set; }
             public int BackupSetId { get; private set; }
+            public string Computer { get; private set; }
             public string BackupSet { get; private set; }
-            public string ComputerName { get; private set; }
+            public string Status { get; private set; }
+            public string Path { get; private set; }
 
             public DSClientInitialBackupStatus(init_backup_status backupStatus)
             {
@@ -40,7 +41,7 @@ namespace PSAsigraDSClient
                 Status = EnumToString(backupStatus.status);
                 BackupSetId = backupStatus.setID;
                 BackupSet = backupStatus.setName;
-                ComputerName = backupStatus.serverName;
+                Computer = backupStatus.serverName;
             }
         }
     }

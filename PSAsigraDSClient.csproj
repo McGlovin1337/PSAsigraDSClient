@@ -163,6 +163,7 @@
     <Compile Include="PSAsigraDSClient\RegisterDSClient.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetItem.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientInitialBackupPath.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientScheduleDetail.cs" />
@@ -280,6 +281,7 @@
     <None Include="docs\Register-DSClient.md" />
     <None Include="docs\Remove-DSClientBackupSet.md" />
     <None Include="docs\Remove-DSClientBackupSetItem.md" />
+    <None Include="docs\Remove-DSClientInitialBackupPath.md" />
     <None Include="docs\Remove-DSClientRetentionRule.md" />
     <None Include="docs\Remove-DSClientSchedule.md" />
     <None Include="docs\Remove-DSClientScheduleDetail.md" />

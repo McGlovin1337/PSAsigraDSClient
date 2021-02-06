@@ -26,6 +26,9 @@ namespace PSAsigraDSClient
         [Parameter(HelpMessage = "Specify the rescursion depth")]
         public int RecursiveDepth { get; set; } = 0;
 
+        [Parameter(HelpMessage = "Specify Paths to Exclude during Recursion")]
+        public string[] ExcludePath { get; set; }
+
         [Parameter(Position = 3, Mandatory = true, ParameterSetName = "hidefiles", HelpMessage = "Specify to Hide Files")]
         [Parameter(ParameterSetName = "BackupSetId")]
         public SwitchParameter HideFiles { get; set; }
@@ -65,10 +68,17 @@ namespace PSAsigraDSClient
                 // Set the Wildcard Options
                 WildcardOptions wcOptions = WildcardOptions.IgnoreCase |
                                 WildcardOptions.Compiled;
-                WildcardPattern wcPattern = null;
 
+                // Set the Filter Wildcard Pattern
+                WildcardPattern wcPattern = null;
                 if (Filter != null)
                     wcPattern = new WildcardPattern(Filter, wcOptions);
+
+                // Set the Path Exclusion Wildcard Patterns
+                List<WildcardPattern> exclusionPatterns = new List<WildcardPattern>();
+                if (ExcludePath?.Count() > 0)
+                    foreach (string exclusionPath in ExcludePath)
+                        exclusionPatterns.Add(new WildcardPattern(exclusionPath, wcOptions));
 
                 List<ItemPath> newPaths = new List<ItemPath>
                 {
@@ -119,11 +129,15 @@ namespace PSAsigraDSClient
                             itemCount++;
                         }
 
-                        
                         if (!subItem.is_file && subItemDepth <= RecursiveDepth)
-                            newPaths.Insert(index, new ItemPath(currentPath.Path + "\\" + subItem.name, subItemDepth));
-
-                        index++;
+                        {
+                            string fullPath = $"{currentPath.Path}\\{subItem.name}";
+                            if (!exclusionPatterns.Any(match => match.IsMatch(fullPath)))
+                            {
+                                newPaths.Insert(index, new ItemPath(fullPath, subItemDepth));
+                                index++;
+                            }
+                        }
                     }
 
                     // Remove the Path we've just completed enumerating from the list

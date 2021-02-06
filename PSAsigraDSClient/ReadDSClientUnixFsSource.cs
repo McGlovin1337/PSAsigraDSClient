@@ -77,10 +77,10 @@ namespace PSAsigraDSClient
                 backupSetCredentials.Dispose();
 
             // Set the Starting path
-            string path = Path ?? "";
+            string path = Path ?? "/";
 
             // Any trailing "\" or "/" is unnecessary, remove if any are specified to tidy up output
-            while (path.Last() == '/' || path.Last() == '\\')
+            while ((path.Last() == '/' || path.Last() == '\\') && path.Length > 1)
                 path = (path.Last() == '/') ? path.TrimEnd('/') : path.TrimEnd('\\');
             WriteDebug($"Path: {path}");
 

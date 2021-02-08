@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PSAsigraDSClient\AddDSClientArchiveFilter.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientBackupSetNotification.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientDailySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMonthlySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMSSqlServerBackupSetItem.cs" />
@@ -206,6 +207,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\Add-DSClientArchiveFilter.md" />
+    <None Include="docs\Add-DSClientBackupSetNotification.md" />
     <None Include="docs\Add-DSClientDailySchedule.md" />
     <None Include="docs\Add-DSClientMonthlySchedule.md" />
     <None Include="docs\Add-DSClientMSSqlServerBackupSetItem.md" />

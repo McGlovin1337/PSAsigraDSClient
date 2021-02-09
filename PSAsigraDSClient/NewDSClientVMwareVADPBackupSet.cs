@@ -31,6 +31,21 @@ namespace PSAsigraDSClient
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Exclude from Backup Set")]
         public string[] ExcludeItem { get; set; }
 
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
+        [ValidateSet("Email", "Page", "Broadcast", "Event")]
+        public string NotificationMethod { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Recipient")]
+        public string NotificationRecipient { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Completion Status to Notify on")]
+        [ValidateSet("Incomplete", "CompletedWithErrors", "Successful", "CompletedWithWarnings")]
+        public string[] NotificationCompletion { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Email Notification Options")]
+        [ValidateSet("DetailedInfo", "AttachDetailedLog", "CompressAttachment", "HtmlFormat")]
+        public string[] NotificationEmailOptions { get; set; }
+
         protected override void ProcessVADPSet()
         {
             // Create a DataSourceBrowser

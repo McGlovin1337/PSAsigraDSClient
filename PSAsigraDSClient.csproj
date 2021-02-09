@@ -178,6 +178,7 @@
     <Compile Include="PSAsigraDSClient\RestoreDSClientOrphanedBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\SearchDSClientBackupSetData.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientAdvancedConfig.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientBackupSetNotification.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMultiFactorAuthUser.cs" />
@@ -300,6 +301,7 @@
     <None Include="docs\Restore-DSClientOrphanedBackupSet.md" />
     <None Include="docs\Search-DSClientBackupSetData.md" />
     <None Include="docs\Set-DSClientAdvancedConfig.md" />
+    <None Include="docs\Set-DSClientBackupSetNotification.md" />
     <None Include="docs\Set-DSClientConfiguration.md" />
     <None Include="docs\Set-DSClientDefaultConfiguration.md" />
     <None Include="docs\Set-DSClientInitialBackupStatus.md" />

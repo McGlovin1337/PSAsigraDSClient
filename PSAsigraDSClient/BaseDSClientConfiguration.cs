@@ -37,9 +37,17 @@ namespace PSAsigraDSClient
             {
                 TimeInDay dailyAdmin = new TimeInDay(clientConfiguration.getDailyAdminRunTime());
                 TimeInDay weeklyAdmin = new TimeInDay(clientConfiguration.getWeeklyAdminRunTime());
-                string keepDatabaseDump = EnumToString(clientConfiguration.getKeepDBDumpFile());
-                if (keepDatabaseDump == "DeleteAtferSuccesfulBackup")
-                    keepDatabaseDump = "DeleteAfterSuccessfulBackup"; // Convert due to spelling mistake in the EParametersDSClientKeepDBDumpFile Enum
+                string keepDatabaseDump;
+                try
+                {
+                    keepDatabaseDump = EnumToString(clientConfiguration.getKeepDBDumpFile());
+                    if (keepDatabaseDump == "DeleteAtferSuccesfulBackup")
+                        keepDatabaseDump = "DeleteAfterSuccessfulBackup"; // Convert due to spelling mistake in the EParametersDSClientKeepDBDumpFile Enum
+                }
+                catch (APIException e)
+                {
+                    keepDatabaseDump = e.Message; // Linux DS-Clients Do Not Support the getKeepDBDumpFile() Method, so we catch the Exception and set it as the Property Value
+                }
 
                 DailyAdminEnabled = dailyAdmin.Hour >= 0 && dailyAdmin.Hour <= 23;
                 DailyAdminTime = dailyAdmin;

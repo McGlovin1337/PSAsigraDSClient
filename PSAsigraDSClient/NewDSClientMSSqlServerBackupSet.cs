@@ -112,9 +112,13 @@ namespace PSAsigraDSClient
                 string dbPass = DbCredential.GetNetworkCredential().Password;
                 databaseCredentials.setCredentials(dbUser, dbPass);
                 setCreation.setDBCredentials(databaseCredentials);
+                databaseCredentials.Dispose();
             }
             else
                 setCreation.setDBCredentials(backupSetCredentials);
+
+            backupSetCredentials.Dispose();
+            setCreation.Dispose();
 
             // Process Common Backup Set Parameters
             newBackupSet = ProcessBaseBackupSetParams(MyInvocation.BoundParameters, newBackupSet);
@@ -137,6 +141,7 @@ namespace PSAsigraDSClient
 
                 newSqlBackupSet.setItems(backupSetItems.ToArray());
             }
+            dataSourceBrowser.Dispose();
 
             // Set the Schedule and Retention Rules
             if (MyInvocation.BoundParameters.ContainsKey("ScheduleId"))
@@ -192,8 +197,6 @@ namespace PSAsigraDSClient
                 WriteObject(new DSClientBackupSetBasicProps(newSqlBackupSet));
 
             newSqlBackupSet.Dispose();
-            setCreation.Dispose();
-            dataSourceBrowser.Dispose();
         }
     }
 }

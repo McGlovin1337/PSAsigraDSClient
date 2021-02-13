@@ -33,10 +33,6 @@ namespace PSAsigraDSClient
             if (Name != null)
                 backupSet.setName(Name as string);
 
-            baseParams.TryGetValue("Computer", out object Computer);
-            if (Computer != null)
-                backupSet.setComputerName(Computer as string);
-
             baseParams.TryGetValue("SetType", out object SetType);
             if (SetType != null)
                 backupSet.setSetType(StringToEnum<EBackupSetType>(SetType as string));

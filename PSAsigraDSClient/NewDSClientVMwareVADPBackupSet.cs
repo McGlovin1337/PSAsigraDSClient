@@ -71,9 +71,12 @@ namespace PSAsigraDSClient
             }
             dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
 
+            backupSetCredentials.Dispose();
+
             // Create Backup Set Object
             DataBrowserWithSetCreation setCreation = DataBrowserWithSetCreation.from(dataSourceBrowser);
             BackupSet newBackupSet = setCreation.createBackupSet(computer);
+            setCreation.Dispose();
 
             // Process Common Backup Set Parameters
             newBackupSet = ProcessBaseBackupSetParams(MyInvocation.BoundParameters, newBackupSet);
@@ -93,6 +96,7 @@ namespace PSAsigraDSClient
 
                 newVMwareVADPBackupSet.setItems(backupSetItems.ToArray());
             }
+            dataSourceBrowser.Dispose();
 
             // Set the Schedule and Retention Rules
             if (MyInvocation.BoundParameters.ContainsKey("ScheduleId"))
@@ -134,9 +138,7 @@ namespace PSAsigraDSClient
             if (PassThru)
                 WriteObject(new DSClientBackupSetBasicProps(newVMwareVADPBackupSet));
 
-            backupSetCredentials.Dispose();
             newVMwareVADPBackupSet.Dispose();
-            dataSourceBrowser.Dispose();
         }
     }
 }

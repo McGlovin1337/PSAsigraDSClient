@@ -103,6 +103,27 @@ namespace PSAsigraDSClient
             return epoch;
         }
 
+        public static string ResolveWinComputer(string computer)
+        {
+            string result = computer.Split('\\').Last();
+
+            result = result.Trim('\\');
+
+            if (result.ToLower() == "ds-client computer" ||
+                computer.Split('\\').First().ToLower() == "ds-client computer")
+            {
+                return "DS-Client Computer";
+            }
+            else
+            {
+                if (ValidateHostname.ValidateHost(result))
+                    return $@"Microsoft Windows Network\{result}";
+            }
+
+            Console.WriteLine($"Returning computer: {computer}");
+            return computer; // If all fails, just return the original string
+        }
+
         public class ValidateHostname
         {
             public string ValidHostnames { get; set; }

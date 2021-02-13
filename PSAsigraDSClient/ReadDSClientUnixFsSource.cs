@@ -73,8 +73,7 @@ namespace PSAsigraDSClient
                     WriteWarning("Unable to set SSH Credential Options");
                 }
             }
-            else
-                backupSetCredentials.Dispose();
+            backupSetCredentials.Dispose();
 
             // Set the Starting path
             string path = Path ?? "/";

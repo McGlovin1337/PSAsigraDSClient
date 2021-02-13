@@ -112,12 +112,12 @@ namespace PSAsigraDSClient
                     WriteWarning("Unable to set SSH Credential Options");
                 }
             }
-            else
-                backupSetCredentials.Dispose();
+            backupSetCredentials.Dispose();
 
             // Create the Backup Set Object
             DataBrowserWithSetCreation setCreation = DataBrowserWithSetCreation.from(dataSourceBrowser);
             BackupSet newBackupSet = setCreation.createBackupSet(computer);
+            setCreation.Dispose();
 
             // Process the Common Backup Set Parameters
             newBackupSet = ProcessBaseBackupSetParams(MyInvocation.BoundParameters, newBackupSet);
@@ -164,6 +164,7 @@ namespace PSAsigraDSClient
 
                 newBackupSet.setItems(backupSetItems.ToArray());
             }
+            dataSourceBrowser.Dispose();
 
             // Set the Schedule and Retention Rules
             if (MyInvocation.BoundParameters.ContainsKey("ScheduleId"))
@@ -193,7 +194,6 @@ namespace PSAsigraDSClient
                 WriteObject(new DSClientBackupSetBasicProps(newUnixBackupSet));
 
             newUnixBackupSet.Dispose();
-            dataSourceBrowser.Dispose();
         }
     }
 }

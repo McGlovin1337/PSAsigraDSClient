@@ -104,6 +104,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientNocSettings.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientOS.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSupportedDataType.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientTimeRetentionOption.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientTools.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientUser.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientUserGroup.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="PSAsigraDSClient\RemoveDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSNMPCommunity.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientTimeRetentionOption.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientUser.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientUserGroup.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientUserGroupRole.cs" />
@@ -265,6 +267,7 @@
     <None Include="docs\Get-DSClientSNMPInfo.md" />
     <None Include="docs\Get-DSClientStoredItem.md" />
     <None Include="docs\Get-DSClientSupportedDataType.md" />
+    <None Include="docs\Get-DSClientTimeRetentionOption.md" />
     <None Include="docs\Get-DSClientTools.md" />
     <None Include="docs\Get-DSClientUser.md" />
     <None Include="docs\Get-DSClientUserGroup.md" />
@@ -294,6 +297,7 @@
     <None Include="docs\Remove-DSClientSchedule.md" />
     <None Include="docs\Remove-DSClientScheduleDetail.md" />
     <None Include="docs\Remove-DSClientSNMPCommunity.md" />
+    <None Include="docs\Remove-DSClientTimeRetentionOption.md" />
     <None Include="docs\Remove-DSClientUser.md" />
     <None Include="docs\Remove-DSClientUserGroup.md" />
     <None Include="docs\Remove-DSClientUserGroupRole.md" />

@@ -211,6 +211,80 @@ namespace PSAsigraDSClient
             }
         }
 
+        protected class TimeRetentionOverview
+        {
+            private readonly retention_time_span _validFor;
+            private readonly ETimeRetentionType _type;
+            public int TimeRetentionId { get; private set; }
+            public string Type { get; private set; }
+            public IntervalTimeRetention Interval { get; private set; }
+            public WeeklyTimeRetention Weekly { get; private set; }
+            public MonthlyTimeRetention Monthly { get; private set; }
+            public YearlyTimeRetention Yearly { get; private set; }
+
+            public TimeRetentionOverview(TimeRetentionOption timeRetention)
+            {
+                _validFor = timeRetention.getValidFor();
+                _type = timeRetention.getType();
+
+                Type = EnumToString(_type);
+                Interval = (_type == ETimeRetentionType.ETimeRetentionType__Interval) ? new IntervalTimeRetention(IntervalTimeRetentionOption.from(timeRetention)) : null;
+                Weekly = (_type == ETimeRetentionType.ETimeRetentionType__Weekly) ? new WeeklyTimeRetention(WeeklyTimeRetentionOption.from(timeRetention)) : null;
+                Monthly = (_type == ETimeRetentionType.ETimeRetentionType__Monthly) ? new MonthlyTimeRetention(MonthlyTimeRetentionOption.from(timeRetention)) : null;
+                Yearly = (_type == ETimeRetentionType.ETimeRetentionType__Yearly) ? new YearlyTimeRetention(YearlyTimeRetentionOption.from(timeRetention)) : null;
+            }
+
+            public TimeRetentionOverview(int id, TimeRetentionOption timeRetention)
+            {
+                _validFor = timeRetention.getValidFor();
+                _type = timeRetention.getType();            
+
+                TimeRetentionId = id;
+                Type = EnumToString(_type);
+                Interval = (_type == ETimeRetentionType.ETimeRetentionType__Interval) ? new IntervalTimeRetention(IntervalTimeRetentionOption.from(timeRetention)) : null;
+                Weekly = (_type == ETimeRetentionType.ETimeRetentionType__Weekly) ? new WeeklyTimeRetention(WeeklyTimeRetentionOption.from(timeRetention)) : null;
+                Monthly = (_type == ETimeRetentionType.ETimeRetentionType__Monthly) ? new MonthlyTimeRetention(MonthlyTimeRetentionOption.from(timeRetention)) : null;
+                Yearly = (_type == ETimeRetentionType.ETimeRetentionType__Yearly) ? new YearlyTimeRetention(YearlyTimeRetentionOption.from(timeRetention)) : null;
+            }
+
+            public override int GetHashCode()
+            {
+                int multiply = 7;
+                int typeHash = _type.GetHashCode();
+                int periodHash = _validFor.period.GetHashCode();
+                int unitHash = _validFor.unit.GetHashCode();
+                int finalHash = (multiply * (typeHash + periodHash + unitHash)).GetHashCode();
+
+                return finalHash;
+            }
+        }
+
+        protected class RetentionPSSession
+        {
+            public Dictionary<int, int> HashSet { get; private set; }
+            public RetentionRule RetentionRule { get; private set; }
+
+            public RetentionPSSession(RetentionRule retentionRule)
+            {
+                int id = 1;
+                Dictionary<int, int> keyValues = new Dictionary<int, int>();
+                TimeRetentionOption[] timeRetentions = retentionRule.getTimeRetentions();
+                int ruleHash = retentionRule.getName().GetHashCode();
+                foreach (TimeRetentionOption timeRetention in timeRetentions)
+                {
+                    retention_time_span validFor = timeRetention.getValidFor();
+                    int typeHash = timeRetention.getType().ToString().GetHashCode();
+                    int validForHash = validFor.period.GetHashCode() + validFor.unit.GetHashCode();
+                    int finalHash = (typeHash + validForHash + ruleHash).GetHashCode();
+                    keyValues.Add(finalHash, id);
+                    id++;
+                }
+
+                HashSet = keyValues;
+                RetentionRule = retentionRule;
+            }
+        }
+
         public class DSClientArchiveRule
         {
             public DSClientRetentionTimeSpan TimeSpan { get; private set; }

@@ -57,7 +57,7 @@
     <Compile Include="PSAsigraDSClient\AddDSClientMonthlySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMSSqlServerBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientOneTimeSchedule.cs" />
-    <Compile Include="PSAsigraDSClient\AddDSClientTimeRetentionRule.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientTimeRetentionOption.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientUnixFsBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientUserGroupRole.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientVMwareVADPBackupSetItem.cs" />
@@ -219,7 +219,7 @@
     <None Include="docs\Add-DSClientMultiFactorAuthUser.md" />
     <None Include="docs\Add-DSClientOneTimeSchedule.md" />
     <None Include="docs\Add-DSClientSNMPCommunity.md" />
-    <None Include="docs\Add-DSClientTimeRetentionRule.md" />
+    <None Include="docs\Add-DSClientTimeRetentionOption.md" />
     <None Include="docs\Add-DSClientUnixFsBackupSetItem.md" />
     <None Include="docs\Add-DSClientUserGroupRole.md" />
     <None Include="docs\Add-DSClientVMwareVADPBackupSetItem.md" />

@@ -2717,19 +2717,19 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Add-DSClientTimeRetentionRule</command:name>
+      <command:name>Add-DSClientTimeRetentionOption</command:name>
       <command:verb>Add</command:verb>
-      <command:noun>DSClientTimeRetentionRule</command:noun>
+      <command:noun>DSClientTimeRetentionOption</command:noun>
       <maml:description>
-        <maml:para>Add a Time Based Retention Rule</maml:para>
+        <maml:para>Add a Time Based Retention Option</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Adds a Time Based Retention Rule to an Existing Retention Rule</maml:para>
+      <maml:para>Adds a Time Based Retention Option to an Existing Retention Rule</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Add-DSClientTimeRetentionRule</maml:name>
+        <maml:name>Add-DSClientTimeRetentionOption</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
           <maml:name>RetentionRuleId</maml:name>
           <maml:Description>
@@ -3841,9 +3841,9 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Add-DSClientTimeRetentionRule -RetentionRuleId 5 -KeepLastGens 1 -KeepAllGensTimeValue 1 -KeepAllGensTimeUnit "Days" -IntervalTimeValue 1 -IntervalTimeUnit "Days" -IntervalValidForValue 7 -IntervalValidForUnit "Days" -DeleteObsoleteData -DeleteUnreferencedFiles -DeleteIncompleteComponents</dev:code>
+        <dev:code>PS C:\&gt; Add-DSClientTimeRetentionOption -RetentionRuleId 5 -KeepLastGens 1 -KeepAllGensTimeValue 1 -KeepAllGensTimeUnit "Days" -IntervalTimeValue 1 -IntervalTimeUnit "Days" -IntervalValidForValue 7 -IntervalValidForUnit "Days" -DeleteObsoleteData -DeleteUnreferencedFiles -DeleteIncompleteComponents</dev:code>
         <dev:remarks>
-          <maml:para>Adds a Time Based Retention Rule to Retention Rule with Id 5 and specifies to keep the last 1 Generations, Keep All Generations for 1 Day, and Keep 1 Generation Every Day for 7 Days, Delete Obsolete Data, Delete Unreferenced Files and Delete Incomplete Components</maml:para>
+          <maml:para>Adds a Time Based Retention Option to Retention Rule with Id 5 and specifies to keep the last 1 Generations, Keep All Generations for 1 Day, and Keep 1 Generation Every Day for 7 Days, Delete Obsolete Data, Delete Unreferenced Files and Delete Incomplete Components</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

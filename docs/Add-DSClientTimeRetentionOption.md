@@ -5,15 +5,15 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-DSClientTimeRetentionRule
+# Add-DSClientTimeRetentionOption
 
 ## SYNOPSIS
-Add a Time Based Retention Rule
+Add a Time Based Retention Option
 
 ## SYNTAX
 
 ```
-Add-DSClientTimeRetentionRule [-RetentionRuleId] <Int32> [-KeepLastGens <Int32>]
+Add-DSClientTimeRetentionOption [-RetentionRuleId] <Int32> [-KeepLastGens <Int32>]
  [-KeepAllGensTimeValue <Int32>] [-KeepAllGensTimeUnit <String>] [-IntervalTimeValue <Int32>]
  [-IntervalTimeUnit <String>] [-IntervalValidForValue <Int32>] [-IntervalValidForUnit <String>]
  [-WeeklyRetentionDay <String>] [-WeeklyRetentionHour <Int32>] [-WeeklyRetentionMinute <Int32>]
@@ -31,16 +31,16 @@ Add-DSClientTimeRetentionRule [-RetentionRuleId] <Int32> [-KeepLastGens <Int32>]
 ```
 
 ## DESCRIPTION
-Adds a Time Based Retention Rule to an Existing Retention Rule
+Adds a Time Based Retention Option to an Existing Retention Rule
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Add-DSClientTimeRetentionRule -RetentionRuleId 5 -KeepLastGens 1 -KeepAllGensTimeValue 1 -KeepAllGensTimeUnit "Days" -IntervalTimeValue 1 -IntervalTimeUnit "Days" -IntervalValidForValue 7 -IntervalValidForUnit "Days" -DeleteObsoleteData -DeleteUnreferencedFiles -DeleteIncompleteComponents
+PS C:\> Add-DSClientTimeRetentionOption -RetentionRuleId 5 -KeepLastGens 1 -KeepAllGensTimeValue 1 -KeepAllGensTimeUnit "Days" -IntervalTimeValue 1 -IntervalTimeUnit "Days" -IntervalValidForValue 7 -IntervalValidForUnit "Days" -DeleteObsoleteData -DeleteUnreferencedFiles -DeleteIncompleteComponents
 ```
 
-Adds a Time Based Retention Rule to Retention Rule with Id 5 and specifies to keep the last 1 Generations, Keep All Generations for 1 Day, and Keep 1 Generation Every Day for 7 Days, Delete Obsolete Data, Delete Unreferenced Files and Delete Incomplete Components
+Adds a Time Based Retention Option to Retention Rule with Id 5 and specifies to keep the last 1 Generations, Keep All Generations for 1 Day, and Keep 1 Generation Every Day for 7 Days, Delete Obsolete Data, Delete Unreferenced Files and Delete Incomplete Components
 
 ## PARAMETERS
 

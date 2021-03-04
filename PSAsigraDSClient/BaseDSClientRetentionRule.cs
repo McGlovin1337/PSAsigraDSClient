@@ -433,5 +433,17 @@ namespace PSAsigraDSClient
 
             return yearlyTimeRetention;
         }
+
+        protected static void KeepAllGenerationsRule(RetentionRule retentionRule, int keepAllGensTimeValue, string keepAllGensTimeUnit)
+        {
+            retentionRule.setKeepGenerationsByPeriod(true);
+
+            retention_time_span timeSpan = new retention_time_span
+            {
+                period = keepAllGensTimeValue,
+                unit = StringToEnum<RetentionTimeUnit>(keepAllGensTimeUnit)
+            };
+            retentionRule.setKeepPeriodTimeSpan(timeSpan);
+        }
     }
 }

@@ -6,16 +6,6 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientTimeRetentionRule: BaseDSClientRetentionRuleParams
     {
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the number of most recent Generations to keep")]
-        public int KeepLastGens { get; set; } = 1;
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Period to keep ALL Generations")]
-        public int KeepAllGensTimeValue { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Period Unit for keeping ALL Generations")]
-        [ValidateSet("Minutes", "Hours", "Days")]
-        public string KeepAllGensTimeUnit { get; set; }
-
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Interval Retention Time Value")]
         public int IntervalTimeValue { get; set; }
 
@@ -91,15 +81,6 @@ namespace PSAsigraDSClient
         [ValidateSet("Hours", "Days", "Weeks", "Months", "Years")]
         public string YearlyValidForUnit { get; set; }
 
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Obsolete Data")]
-        public SwitchParameter DeleteObsoleteData { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Move Obsolete Data to BLM")]
-        public SwitchParameter MoveObsoleteData { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to create new BLM Packages when moving to BLM")]
-        public SwitchParameter CreateNewBLMPackage { get; set; }
-
         protected abstract void ProcessRetentionRule();
 
         protected override void DSClientProcessRecord()
@@ -148,16 +129,6 @@ namespace PSAsigraDSClient
             ProcessRetentionRule();
         }
 
-        protected static void KeepAllGenerationsRule(RetentionRule retentionRule, int keepAllGensTimeValue, string keepAllGensTimeUnit)
-        {
-            retentionRule.setKeepGenerationsByPeriod(true);
 
-            retention_time_span timeSpan = new retention_time_span
-            {
-                period = keepAllGensTimeValue,
-                unit = StringToEnum<RetentionTimeUnit>(keepAllGensTimeUnit)
-            };
-            retentionRule.setKeepPeriodTimeSpan(timeSpan);
-        }
     }
 }

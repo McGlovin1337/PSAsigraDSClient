@@ -50,5 +50,24 @@ namespace PSAsigraDSClient
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Incomplete Components")]
         public SwitchParameter DeleteIncompleteComponents { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the number of most recent Generations to keep")]
+        public int KeepLastGens { get; set; } = 1;
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Period to keep ALL Generations")]
+        public int KeepAllGensTimeValue { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Period Unit for keeping ALL Generations")]
+        [ValidateSet("Minutes", "Hours", "Days")]
+        public string KeepAllGensTimeUnit { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Obsolete Data")]
+        public SwitchParameter DeleteObsoleteData { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Move Obsolete Data to BLM")]
+        public SwitchParameter MoveObsoleteData { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to create new BLM Packages when moving to BLM")]
+        public SwitchParameter CreateNewBLMPackage { get; set; }
     }
 }

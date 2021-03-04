@@ -1,21 +1,9 @@
 ﻿using System.Management.Automation;
-using AsigraDSClientApi;
-using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
-    public abstract class BaseDSClientTimeRetentionRule: BaseDSClientRetentionRuleParams
+    public class BaseDSClientTimeRetentionOption: BaseDSClientRetentionRule
     {
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the number of most recent Generations to keep")]
-        public int KeepLastGens { get; set; } = 1;
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Period to keep ALL Generations")]
-        public int KeepAllGensTimeValue { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Period Unit for keeping ALL Generations")]
-        [ValidateSet("Minutes", "Hours", "Days")]
-        public string KeepAllGensTimeUnit { get; set; }
-
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Interval Retention Time Value")]
         public int IntervalTimeValue { get; set; }
 
@@ -91,23 +79,8 @@ namespace PSAsigraDSClient
         [ValidateSet("Hours", "Days", "Weeks", "Months", "Years")]
         public string YearlyValidForUnit { get; set; }
 
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Delete Obsolete Data")]
-        public SwitchParameter DeleteObsoleteData { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to Move Obsolete Data to BLM")]
-        public SwitchParameter MoveObsoleteData { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to create new BLM Packages when moving to BLM")]
-        public SwitchParameter CreateNewBLMPackage { get; set; }
-
-        protected abstract void ProcessRetentionRule();
-
         protected override void DSClientProcessRecord()
         {
-            // Parameter Validation
-            if ((MyInvocation.BoundParameters.ContainsKey("KeepAllGensTimeValue") && KeepAllGensTimeUnit == null) || (!MyInvocation.BoundParameters.ContainsKey("KeepAllGensTimeValue") && KeepAllGensTimeUnit != null))
-                throw new ParameterBindingException("KeepAllGensTimeValue and KeepAllGensTimeUnit must be specified together");
-
             if ((MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && IntervalTimeUnit == null) || (!MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && IntervalTimeUnit != null))
                 throw new ParameterBindingException("IntervalTimeValue and IntervalTimeUnit must be specified together");
 
@@ -129,35 +102,7 @@ namespace PSAsigraDSClient
             if (MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay") && (!MyInvocation.BoundParameters.ContainsKey("YearlyValidForValue") || YearlyValidForUnit == null))
                 throw new ParameterBindingException("YearlyValidForValue and YearlyValidForUnit must be specified with YearlyRetentionMonthDay and YearlyRetentionMonth");
 
-            if (MyInvocation.BoundParameters.ContainsKey("MoveObsoleteData") && MyInvocation.BoundParameters.ContainsKey("DeleteObsoleteData"))
-                throw new ParameterBindingException("MoveObsoleteData cannot be specified with DeleteObsoleteData");
-
-            /* API appears to error when creating or editing most Retention Rule settings unless a 2FA Verification code has been set
-             * So we send a Dummy validation code, after which we can successfully add and change Retention Rule configuration */
-            TFAManager tFAManager = DSClientSession.getTFAManager();
-            try
-            {
-                tFAManager.validateCode("bleh", ERequestCodeEmailType.ERequestCodeEmailType__UNDEFINED);
-            }
-            catch
-            {
-                //Do nothing
-            }
-            tFAManager.Dispose();
-
-            ProcessRetentionRule();
-        }
-
-        protected static void KeepAllGenerationsRule(RetentionRule retentionRule, int keepAllGensTimeValue, string keepAllGensTimeUnit)
-        {
-            retentionRule.setKeepGenerationsByPeriod(true);
-
-            retention_time_span timeSpan = new retention_time_span
-            {
-                period = keepAllGensTimeValue,
-                unit = StringToEnum<RetentionTimeUnit>(keepAllGensTimeUnit)
-            };
-            retentionRule.setKeepPeriodTimeSpan(timeSpan);
+            base.DSClientProcessRecord();
         }
     }
 }

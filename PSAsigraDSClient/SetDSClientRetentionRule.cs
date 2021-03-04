@@ -2,7 +2,6 @@
 using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
-using static PSAsigraDSClient.BaseDSClientTimeRetentionRule;
 
 namespace PSAsigraDSClient
 {

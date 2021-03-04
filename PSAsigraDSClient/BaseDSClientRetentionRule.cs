@@ -15,6 +15,19 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
+            /* API appears to error when creating or editing most Retention Rule settings unless a 2FA Verification code has been set
+             * So we send a Dummy validation code, after which we can successfully add and change Retention Rule configuration */
+            TFAManager tFAManager = DSClientSession.getTFAManager();
+            try
+            {
+                tFAManager.validateCode("bleh", ERequestCodeEmailType.ERequestCodeEmailType__UNDEFINED);
+            }
+            catch
+            {
+                //Do nothing
+            }
+            tFAManager.Dispose();
+
             RetentionRuleManager DSClientRetentionMgr = DSClientSession.getRetentionRuleManager();
 
             WriteVerbose("Performing Action: Retrieve defined Retention Rules");
@@ -332,6 +345,93 @@ namespace PSAsigraDSClient
                 return day.ToString();
 
             return Day;
+        }
+
+        protected static IntervalTimeRetentionOption IntervalTimeRetentionRule(IntervalTimeRetentionOption intervalTimeRetention, int timeValue, string timeUnit, int validForValue, string validForUnit)
+        {
+            retention_time_span intTimeSpan = new retention_time_span
+            {
+                period = timeValue,
+                unit = StringToEnum<RetentionTimeUnit>(timeUnit)
+            };
+            intervalTimeRetention.setRepeatTime(intTimeSpan);
+
+            retention_time_span validTimeSpan = new retention_time_span
+            {
+                period = validForValue,
+                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
+            };
+            intervalTimeRetention.setValidFor(validTimeSpan);
+
+            return intervalTimeRetention;
+        }
+
+        protected static WeeklyTimeRetentionOption WeeklyTimeRetentionRule(WeeklyTimeRetentionOption weeklyTimeRetention, string weekDay, int retentionHour, int retentionMinute, int validForValue, string validForUnit)
+        {
+            weeklyTimeRetention.setTriggerDay(StringToEnum<EWeekDay>(weekDay));
+
+            time_in_day weeklyTime = new time_in_day
+            {
+                hour = retentionHour,
+                minute = retentionMinute,
+                second = 0
+            };
+            weeklyTimeRetention.setSnapshotTime(weeklyTime);
+
+            retention_time_span validTimeSpan = new retention_time_span
+            {
+                period = validForValue,
+                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
+            };
+            weeklyTimeRetention.setValidFor(validTimeSpan);
+
+            return weeklyTimeRetention;
+        }
+
+        protected static MonthlyTimeRetentionOption MonthlyTimeRetentionRule(MonthlyTimeRetentionOption monthlyTimeRetention, int retentionDay, int retentionHour, int retentionMinute, int validForValue, string validForUnit)
+        {
+            monthlyTimeRetention.setDayOfMonth(retentionDay);
+
+            time_in_day monthlyTime = new time_in_day
+            {
+                hour = retentionHour,
+                minute = retentionMinute,
+                second = 0
+            };
+            monthlyTimeRetention.setSnapshotTime(monthlyTime);
+
+            retention_time_span validTimeSpan = new retention_time_span
+            {
+                period = validForValue,
+                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
+            };
+            monthlyTimeRetention.setValidFor(validTimeSpan);
+
+            return monthlyTimeRetention;
+        }
+
+        protected static YearlyTimeRetentionOption YearlyTimeRetentionRule(YearlyTimeRetentionOption yearlyTimeRetention, int monthDay, string month, int retentionHour, int retentionMinute, int validForValue, string validForUnit)
+        {
+            yearlyTimeRetention.setDayOfMonth(monthDay);
+
+            yearlyTimeRetention.setTriggerMonth(StringToEnum<EMonth>(month));
+
+            time_in_day yearlyTime = new time_in_day
+            {
+                hour = retentionHour,
+                minute = retentionMinute,
+                second = 0
+            };
+            yearlyTimeRetention.setSnapshotTime(yearlyTime);
+
+            retention_time_span validTimeSpan = new retention_time_span
+            {
+                period = validForValue,
+                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
+            };
+            yearlyTimeRetention.setValidFor(validTimeSpan);
+
+            return yearlyTimeRetention;
         }
     }
 }

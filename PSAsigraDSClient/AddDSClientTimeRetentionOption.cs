@@ -6,23 +6,17 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientTimeRetentionOption")]
 
-    public class AddDSClientTimeRetentionOption: BaseDSClientTimeRetentionRule
+    public class AddDSClientTimeRetentionOption: BaseDSClientTimeRetentionOption
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify RetentionRuleId to Apply Time Retention to")]
         public int RetentionRuleId { get; set; }
 
-        protected override void ProcessRetentionRule()
+        protected override void ProcessRetentionRule(RetentionRule[] retentionRules)
         {
             RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
 
             WriteVerbose($"Performing Action: Retrieve Retention Rule with RetentionRuleId: {RetentionRuleId}");
-            RetentionRule RetentionRule = DSClientRetentionRuleMgr.definedRules().Single(rule => rule.getID() == RetentionRuleId);
-
-            // Recent Generations
-            RetentionRule.setKeepLastGenerations(KeepLastGens);
-
-            if (MyInvocation.BoundParameters.ContainsKey("KeepAllGensTimeValue"))
-                KeepAllGenerationsRule(RetentionRule, KeepAllGensTimeValue, KeepAllGensTimeUnit);
+            RetentionRule RetentionRule = retentionRules.Single(rule => rule.getID() == RetentionRuleId);
 
             // Interval based Time Retention
             if (MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue"))
@@ -59,16 +53,6 @@ namespace PSAsigraDSClient
 
                 RetentionRule.addTimeRetentionOption(YearlyTimeRetentionRule(yearlyTimeRetention, YearlyRetentionMonthDay, YearlyRetentionMonth, YearlyRetentionHour, YearlyRetentionMinute, YearlyValidForValue, YearlyValidForUnit));
             }
-
-            // Move or Delete Obsolete Data
-            if (DeleteObsoleteData == true)
-                RetentionRule.setMoveObsoleteDataToBLM(false);
-
-            if (MoveObsoleteData == true)
-                RetentionRule.setMoveObsoleteDataToBLM(true);
-
-            if (MyInvocation.BoundParameters.ContainsKey("CreateNewBLMPackage"))
-                RetentionRule.setCreateNewBLMPackage(CreateNewBLMPackage);
 
             RetentionRule.Dispose();
             DSClientRetentionRuleMgr.Dispose();

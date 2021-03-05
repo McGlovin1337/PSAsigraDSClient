@@ -65,6 +65,7 @@ namespace PSAsigraDSClient
             public bool LSCleanupRemovedFiles { get; private set; }
             public DSClientRetentionTimeSpan LSCleanupRemovedafter { get; private set; }
             public int LSCleanupRemovedKeep { get; private set; }
+            public bool DeleteObsoleteData { get; private set; }
             public bool MoveObsoleteToBLM { get; private set; }
             public bool OnlyCompareBackupTime { get; private set; }
 
@@ -112,6 +113,9 @@ namespace PSAsigraDSClient
                     }
                 }
 
+                // Delete or Move Obsolete Data
+                bool obsoleteData = retentionRule.getMoveObsoleteDataToBLM();
+
                 // Assign Property Values
                 RetentionRuleId = retentionRule.getID();
                 Name = retentionRule.getName();
@@ -138,7 +142,8 @@ namespace PSAsigraDSClient
                 LSCleanupRemovedFiles = retentionRule.getLSCleanupRemovedFiles();
                 LSCleanupRemovedafter = new DSClientRetentionTimeSpan(retentionRule.getLSCleanupRemovedAfter());
                 LSCleanupRemovedKeep = retentionRule.getLSCleanupRemovedKeep();
-                MoveObsoleteToBLM = retentionRule.getMoveObsoleteDataToBLM();
+                DeleteObsoleteData = !obsoleteData;
+                MoveObsoleteToBLM = obsoleteData;
                 OnlyCompareBackupTime = retentionRule.getOnlyCompareBackupTime();
             }
 

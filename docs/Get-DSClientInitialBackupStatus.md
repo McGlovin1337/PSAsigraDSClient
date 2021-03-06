@@ -26,7 +26,6 @@ Return a List of Status for Initial Backups
 PS C:\> Get-DSClientInitialBackup
 ```
 
-
 ## PARAMETERS
 
 ### CommonParameters

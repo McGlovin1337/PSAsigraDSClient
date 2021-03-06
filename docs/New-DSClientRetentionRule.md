@@ -14,20 +14,20 @@ Creates a New Retention Rule
 
 ```
 New-DSClientRetentionRule [-Name] <String> [-ArchiveTimeValue <Int32>] [-ArchiveTimeUnit <String>]
- [-ArchiveFilterRule <String>] [-PassThru] [-KeepLastGens <Int32>] [-KeepAllGensTimeValue <Int32>]
- [-KeepAllGensTimeUnit <String>] [-IntervalTimeValue <Int32>] [-IntervalTimeUnit <String>]
+ [-ArchiveFilterRule <String>] [-PassThru] [-IntervalTimeValue <Int32>] [-IntervalTimeUnit <String>]
  [-IntervalValidForValue <Int32>] [-IntervalValidForUnit <String>] [-WeeklyRetentionDay <String>]
  [-WeeklyRetentionHour <Int32>] [-WeeklyRetentionMinute <Int32>] [-WeeklyValidForValue <Int32>]
  [-WeeklyValidForUnit <String>] [-MonthlyRetentionDay <Int32>] [-MonthlyRetentionHour <Int32>]
  [-MonthlyRetentionMinute <Int32>] [-MonthlyValidForValue <Int32>] [-MonthlyValidForUnit <String>]
  [-YearlyRetentionMonthDay <Int32>] [-YearlyRetentionMonth <String>] [-YearlyRetentionHour <Int32>]
  [-YearlyRetentionMinute <Int32>] [-YearlyValidForValue <Int32>] [-YearlyValidForUnit <String>]
- [-DeleteObsoleteData] [-MoveObsoleteData] [-CreateNewBLMPackage] [-CleanupDeletedFiles]
- [-CleanupDeletedAfterValue <Int32>] [-CleanupDeletedAfterUnit <String>] [-CleanupDeletedKeepGens <Int32>]
- [-DeleteGensPriorToStub] [-DeleteNonStubGens] [-LSRetentionTimeValue <Int32>] [-LSRetentionTimeUnit <String>]
- [-LSCleanupDeletedFiles] [-LSCleanupDeletedAfterValue <Int32>] [-LSCleanupDeletedAfterUnit <String>]
+ [-CleanupDeletedFiles] [-CleanupDeletedAfterValue <Int32>] [-CleanupDeletedAfterUnit <String>]
+ [-CleanupDeletedKeepGens <Int32>] [-DeleteGensPriorToStub] [-DeleteNonStubGens]
+ [-LSRetentionTimeValue <Int32>] [-LSRetentionTimeUnit <String>] [-LSCleanupDeletedFiles]
+ [-LSCleanupDeletedAfterValue <Int32>] [-LSCleanupDeletedAfterUnit <String>]
  [-LSCleanupDeletedKeepGens <Int32>] [-DeleteUnreferencedFiles] [-DeleteIncompleteComponents]
- [<CommonParameters>]
+ [-KeepLastGens <Int32>] [-KeepAllGensTimeValue <Int32>] [-KeepAllGensTimeUnit <String>] [-DeleteObsoleteData]
+ [-MoveObsoleteData] [-CreateNewBLMPackage] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

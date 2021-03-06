@@ -21,9 +21,8 @@ Set-DSClientMSSqlServerBackupSet [[-BackupSetId] <Int32>] [[-Name] <String>] [-C
  [-SkipWeekDaysFrom <String>] [-SkipWeekDaysTo <String>] [-Disabled] [-ScheduleId <Int32>]
  [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>]
  [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage]
- [-LocalStoragePath <String>] [-UseTransmissionCache] [-NotificationMethod <String>]
- [-NotificationRecipient <String>] [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>]
- [-SnmpTrapNotifications <String[]>] [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-LocalStoragePath <String>] [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -385,69 +384,6 @@ Aliases:
 
 Required: False
 Position: 1
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -NotificationCompletion
-Completion Status to Notify on
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-Accepted values: Incomplete, CompletedWithErrors, Successful, CompletedWithWarnings
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -NotificationEmailOptions
-Email Notification Options
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-Accepted values: DetailedInfo, AttachDetailedLog, CompressAttachment, HtmlFormat
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -NotificationMethod
-Notification Method
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Email, Pager, Broadcast, Event
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -NotificationRecipient
-Notification Recipient
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False

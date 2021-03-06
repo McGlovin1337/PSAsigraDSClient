@@ -14,7 +14,7 @@ Returns an overview of configured Backup Sets
 
 ### General (Default)
 ```
-Get-DSClientBackupSetInfo [[-Computer] <String>] [-Name] <String> [[-DataType] <String>] [-Enabled]
+Get-DSClientBackupSetInfo [[-Computer] <String>] [[-Name] <String>] [[-DataType] <String>] [-Enabled]
  [-Synchronized] [[-ScheduleId] <Int32>] [[-RetentionRuleId] <Int32>] [[-SetType] <String>] [-UseLocalStorage]
  [-IsCDP] [-CreatedByPolicy] [<CommonParameters>]
 ```
@@ -135,7 +135,7 @@ Type: String
 Parameter Sets: General
 Aliases:
 
-Required: True
+Required: False
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName)

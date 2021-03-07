@@ -450,5 +450,33 @@ namespace PSAsigraDSClient
             };
             retentionRule.setKeepPeriodTimeSpan(timeSpan);
         }
+
+        protected static TimeRetentionOption SelectTimeRetentionOption(RetentionRule retentionRule, int timeRetentionId, Dictionary<int, int> optionHashes)
+        {
+            TimeRetentionOption timeRetentionOption = null;
+
+            // Determine the Hash Codes for the Rule Name and Id
+            int ruleNameHash = retentionRule.getName().GetHashCode();
+            int ruleIdHash = retentionRule.getID().GetHashCode();
+
+            // Get all the Time Retention Options in this Retention Rule
+            TimeRetentionOption[] timeRetentions = retentionRule.getTimeRetentions();
+
+            foreach (TimeRetentionOption timeRetention in timeRetentions)
+            {
+                TimeRetentionOverview timeRetentionOverview = new TimeRetentionOverview(timeRetention);
+
+                int optionHash = timeRetentionOverview.GetHashCode();
+
+                int completeHash = optionHash * ruleNameHash * ruleIdHash;
+
+                optionHashes.TryGetValue(completeHash, out int optionId);
+
+                if (optionId == timeRetentionId)
+                    timeRetentionOption = timeRetention;
+            }
+
+            return timeRetentionOption;
+        }
     }
 }

@@ -81,26 +81,7 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            if ((MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && IntervalTimeUnit == null) || (!MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && IntervalTimeUnit != null))
-                throw new ParameterBindingException("IntervalTimeValue and IntervalTimeUnit must be specified together");
 
-            if ((MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue") && IntervalValidForUnit == null) || (!MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue") && IntervalValidForUnit != null))
-                throw new ParameterBindingException("IntervalValidForValue and IntervalValidForUnit must be specified together");
-
-            if ((MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && !MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue")) || (!MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue")))
-                throw new ParameterBindingException("IntervalTimeValue and IntervalTimeUnit must be specified with IntervalValidForValue and IntervalValidForUnit");
-
-            if (WeeklyRetentionDay != null && (!MyInvocation.BoundParameters.ContainsKey("WeeklyValidForValue") || WeeklyValidForUnit == null))
-                throw new ParameterBindingException("WeeklyValidForValue and WeeklyValidForUnit must be specified with WeeklyRetentionDay");
-
-            if (MyInvocation.BoundParameters.ContainsKey("MonthlyRetentionDay") && (!MyInvocation.BoundParameters.ContainsKey("MonthlyValidForValue") || MonthlyValidForUnit == null))
-                throw new ParameterBindingException("MonthlyValidForValue and MonthlyValidForUnit must be specified with MonthlyRetentionDay");
-
-            if ((MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay") && YearlyRetentionMonth == null) || (!MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay") && YearlyRetentionMonth != null))
-                throw new ParameterBindingException("YearlyRetentionMonthDay and YearlyRetentionMonth must both be specified together");
-
-            if (MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay") && (!MyInvocation.BoundParameters.ContainsKey("YearlyValidForValue") || YearlyValidForUnit == null))
-                throw new ParameterBindingException("YearlyValidForValue and YearlyValidForUnit must be specified with YearlyRetentionMonthDay and YearlyRetentionMonth");
 
             base.DSClientProcessRecord();
         }

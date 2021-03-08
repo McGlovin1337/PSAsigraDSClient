@@ -34,7 +34,7 @@ namespace PSAsigraDSClient
             public int FilesProcessed { get; private set; }
             public bool Finished { get; private set; }
             public string ProcessDir { get; private set; }
-            public int SetId { get; private set; }
+            public int BackupSetId { get; private set; }
             public long SizeLeft { get; private set; }
             public long SizeProcessed { get; private set; }
             public DateTime StartTime { get; private set; }
@@ -50,7 +50,7 @@ namespace PSAsigraDSClient
                 FilesProcessed = activityInfo.files_processed;
                 Finished = activityInfo.finished;
                 ProcessDir = activityInfo.process_dir;
-                SetId = activityInfo.set_id;
+                BackupSetId = activityInfo.set_id;
                 SizeLeft = activityInfo.size_left;
                 SizeProcessed = activityInfo.size_processed;
                 StartTime = UnixEpochToDateTime(activityInfo.start_time);

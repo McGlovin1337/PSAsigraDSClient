@@ -68,6 +68,8 @@ namespace PSAsigraDSClient
 
         protected class DSClientScheduleDetail
         {
+            private readonly EScheduleDetailType _detailType;
+            private readonly int _tasks;
             public int DetailId { get; private set; }
             public int ScheduleId { get; private set; }            
             public string ScheduleName { get; private set; }
@@ -82,15 +84,15 @@ namespace PSAsigraDSClient
             public DSClientValidationScheduleOptions ValidationOptions { get; private set; }
             public DSClientBLMScheduleOptions BLMScheduleOptions { get; private set; }
 
-            public DSClientScheduleDetail(int detailId, schedule_info scheduleInfo, ScheduleDetail schedule)
+            public DSClientScheduleDetail(schedule_info scheduleInfo, ScheduleDetail schedule)
             {
-                EScheduleDetailType detailType = schedule.getType();
+                _detailType = schedule.getType();
+                _tasks = schedule.getTasks();
 
-                DetailId = detailId;
                 ScheduleId = scheduleInfo.id;
                 ScheduleName = scheduleInfo.name;
-                
-                switch (detailType)
+
+                switch (_detailType)
                 {
                     case EScheduleDetailType.EScheduleDetailType__OneTime:
                         Type = new OneTimeScheduleType(schedule);
@@ -112,9 +114,50 @@ namespace PSAsigraDSClient
                 EndDate = UnixEpochToDateTime(schedule.getPeriodEndDate());
                 EndTimeEnabled = schedule.hasEndTime();
                 Excluded = schedule.isExcluded();
-                EnabledTasks = new DSClientScheduleTasks(schedule.getTasks());
+                EnabledTasks = new DSClientScheduleTasks(_tasks);
                 ValidationOptions = new DSClientValidationScheduleOptions(schedule.getValidationOptions());
                 BLMScheduleOptions = new DSClientBLMScheduleOptions(schedule.getBLMOptions());
+            }
+
+            public DSClientScheduleDetail(int detailId, schedule_info scheduleInfo, ScheduleDetail schedule)
+            {
+                _detailType = schedule.getType();
+                _tasks = schedule.getTasks();
+
+                DetailId = detailId;
+                ScheduleId = scheduleInfo.id;
+                ScheduleName = scheduleInfo.name;
+                
+                switch (_detailType)
+                {
+                    case EScheduleDetailType.EScheduleDetailType__OneTime:
+                        Type = new OneTimeScheduleType(schedule);
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Daily:
+                        Type = new DailyScheduleType(schedule);
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Weekly:
+                        Type = new WeeklyScheduleType(schedule);
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Monthly:
+                        Type = new MonthlyScheduleType(schedule);
+                        break;
+                }
+
+                StartTime = new TimeInDay(schedule.getStartTime());
+                EndTime = new TimeInDay(schedule.getEndTime());
+                StartDate = UnixEpochToDateTime(schedule.getPeriodStartDate());
+                EndDate = UnixEpochToDateTime(schedule.getPeriodEndDate());
+                EndTimeEnabled = schedule.hasEndTime();
+                Excluded = schedule.isExcluded();
+                EnabledTasks = new DSClientScheduleTasks(_tasks);
+                ValidationOptions = new DSClientValidationScheduleOptions(schedule.getValidationOptions());
+                BLMScheduleOptions = new DSClientBLMScheduleOptions(schedule.getBLMOptions());
+            }
+
+            public override int GetHashCode()
+            {
+                return ((_detailType.GetHashCode() + _tasks.GetHashCode() + ScheduleId.GetHashCode() + ScheduleName.GetHashCode() + StartDate.GetHashCode()) * 7).GetHashCode();
             }
         }
 

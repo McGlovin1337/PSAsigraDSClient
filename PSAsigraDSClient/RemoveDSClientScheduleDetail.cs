@@ -1,7 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
-using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -27,46 +28,28 @@ namespace PSAsigraDSClient
             ScheduleDetail[] ScheduleDetails = Schedule.getDetails();
             WriteVerbose($"Notice: Yielded {ScheduleDetails.Count()} Schedule Details");
 
-            // Create a Base ID for each Detail in the Schedule
-            int DetailID = 0, RemoveCount = 0;
-
-            foreach (ScheduleDetail schedule in ScheduleDetails)
+            foreach (ScheduleDetail scheduleDetail in ScheduleDetails)
             {
-                DetailID += 1;
+                Dictionary<int, int> detailHash = SessionState.PSVariable.GetValue("ScheduleDetail", null) as Dictionary<int, int>;
+                if (detailHash == null)
+                    throw new Exception("No Schedule Details found in Session State, use Get-DSClientScheduleDetail Cmdlet");
 
-                /* Remove DetailId's that match the DetailID assigned to the current schedule
-                 * IMPORTANT: The AsigraApi doesn't provide a unique id for each Schedule Detail, so we're trusting the DSClient/Api is providing the
-                 * schedule details in the same order everytime.
-                 * If the order is not the same, then the wrong Schedule Detail may be removed!!! */
-                foreach (int targetId in DetailId)
-                {
-                    if (DetailID == targetId)
-                    {
-                        string scheduleType = EnumToString(schedule.getType());
-                        string scheduleStart = new TimeInDay(schedule.getStartTime()).ToString();
+                DSClientScheduleDetail detail = new DSClientScheduleDetail(DSClientScheduleMgr.definedScheduleInfo(ScheduleId), scheduleDetail);
+                int detailHashCode = detail.GetHashCode();
+
+                if (detailHash.TryGetValue(detailHashCode, out int detailId))
+                    if (DetailId.Contains(detailId))
                         if (ShouldProcess(
-                            $"Performing Operation Remove Schedule Detail on 'Type: {scheduleType}, StartTime: {scheduleStart}'",
-                            $"Are you sure you want to remove the {scheduleType} Schedule Detail (StartTime: {scheduleStart}) with Id {targetId}?",
+                            $"Performing Operation Remove Schedule Detail on 'Type: {detail.Type}, StartTime: {detail.StartTime}'",
+                            $"Are you sure you want to remove the {detail.Type} Schedule Detail (StartTime: {detail.StartTime}) with Id {detailId}?",
                             "Remove Schedule Detail")
-                        )
-                        {
-                            WriteVerbose("Performing Action: Remove Schedule Detail");
-                            try
-                            {
-                                Schedule.removeDetail(schedule);
-                                RemoveCount += 1;
-                            }
-                            catch
-                            {
-                                WriteWarning($"Failed to remove Schedule Detail with Id {targetId}");
-                                continue;
-                            }
-                        }
-                    }
-                }
-            }
+                            )
+                            Schedule.removeDetail(scheduleDetail);
 
-            WriteObject("Removed " + RemoveCount + " Schedule Details");
+                detailHash.Remove(detailHashCode);
+                SessionState.PSVariable.Remove("ScheduleDetail");
+                SessionState.PSVariable.Set("ScheduleDetail", detailHash);
+            }
 
             Schedule.Dispose();
         }

@@ -81,7 +81,6 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientSessionCleanup.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientStartBackupSetActivity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionOption.cs" />
-    <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientUnixFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientUserManager.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientVMwareVADPBackupSet.cs" />

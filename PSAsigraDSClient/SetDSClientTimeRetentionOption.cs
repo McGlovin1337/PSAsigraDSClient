@@ -57,20 +57,6 @@ namespace PSAsigraDSClient
                             timeSpan.unit = StringToEnum<RetentionTimeUnit>(IntervalTimeUnit);
                             intervalTimeRetention.setRepeatTime(timeSpan);
                         }
-
-                        if (MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue"))
-                        {
-                            retention_time_span timeSpan = intervalTimeRetention.getValidFor();
-                            timeSpan.period = IntervalValidForValue;
-                            intervalTimeRetention.setValidFor(timeSpan);
-                        }
-
-                        if (MyInvocation.BoundParameters.ContainsKey("IntervalValidForUnit"))
-                        {
-                            retention_time_span timeSpan = intervalTimeRetention.getValidFor();
-                            timeSpan.unit = StringToEnum<RetentionTimeUnit>(IntervalValidForUnit);
-                            intervalTimeRetention.setValidFor(timeSpan);
-                        }
                     }                    
                     else if (timeRetentionType == ETimeRetentionType.ETimeRetentionType__Weekly)
                     {
@@ -81,33 +67,8 @@ namespace PSAsigraDSClient
                         if (MyInvocation.BoundParameters.ContainsKey("WeeklyRetentionDay"))
                             weeklyTimeRetention.setTriggerDay(StringToEnum<EWeekDay>(WeeklyRetentionDay));
 
-                        if (MyInvocation.BoundParameters.ContainsKey("WeeklyRetentionHour") ||
-                            MyInvocation.BoundParameters.ContainsKey("WeeklyRetentionMinute"))
-                        {
-                            time_in_day time = weeklyTimeRetention.getSnapshotTime();
-
-                            if (MyInvocation.BoundParameters.ContainsKey("WeeklyRetentionHour"))
-                                time.hour = WeeklyRetentionHour;
-
-                            if (MyInvocation.BoundParameters.ContainsKey("WeeklyRetentionMinute"))
-                                time.minute = WeeklyRetentionMinute;
-
-                            weeklyTimeRetention.setSnapshotTime(time);
-                        }
-
-                        if (MyInvocation.BoundParameters.ContainsKey("WeeklyValidForValue"))
-                        {
-                            retention_time_span timeSpan = weeklyTimeRetention.getValidFor();
-                            timeSpan.period = WeeklyValidForValue;
-                            weeklyTimeRetention.setValidFor(timeSpan);
-                        }
-
-                        if (MyInvocation.BoundParameters.ContainsKey("WeeklyValidForUnit"))
-                        {
-                            retention_time_span timeSpan = weeklyTimeRetention.getValidFor();
-                            timeSpan.unit = StringToEnum<RetentionTimeUnit>(WeeklyValidForUnit);
-                            weeklyTimeRetention.setValidFor(timeSpan);
-                        }
+                        if (MyInvocation.BoundParameters.ContainsKey("RetentionTime"))
+                            weeklyTimeRetention.setSnapshotTime(StringTotime_in_day(RetentionTime));
                     }                    
                     else if (timeRetentionType == ETimeRetentionType.ETimeRetentionType__Monthly)
                     {
@@ -116,35 +77,10 @@ namespace PSAsigraDSClient
                         MonthlyTimeRetentionOption monthlyTimeRetention = MonthlyTimeRetentionOption.from(timeRetentionOption);
 
                         if (MyInvocation.BoundParameters.ContainsKey("MonthlyRetentionDay"))
-                            monthlyTimeRetention.setDayOfMonth(MonthlyRetentionDay);
+                            monthlyTimeRetention.setDayOfMonth(RetentionDayOfMonth);
 
-                        if (MyInvocation.BoundParameters.ContainsKey("MonthlyRetentionHour") ||
-                            MyInvocation.BoundParameters.ContainsKey("MonthlyRetentionMinute"))
-                        {
-                            time_in_day time = monthlyTimeRetention.getSnapshotTime();
-
-                            if (MyInvocation.BoundParameters.ContainsKey("MonthlyRetentionHour"))
-                                time.hour = MonthlyRetentionHour;
-
-                            if (MyInvocation.BoundParameters.ContainsKey("MonthlyRetentionMinute"))
-                                time.minute = MonthlyRetentionMinute;
-
-                            monthlyTimeRetention.setSnapshotTime(time);
-                        }
-
-                        if (MyInvocation.BoundParameters.ContainsKey("MonthlyValidForValue"))
-                        {
-                            retention_time_span timeSpan = monthlyTimeRetention.getValidFor();
-                            timeSpan.period = MonthlyValidForValue;
-                            monthlyTimeRetention.setValidFor(timeSpan);
-                        }
-
-                        if (MyInvocation.BoundParameters.ContainsKey("MonthlyValidForUnit"))
-                        {
-                            retention_time_span timeSpan = monthlyTimeRetention.getValidFor();
-                            timeSpan.unit = StringToEnum<RetentionTimeUnit>(MonthlyValidForUnit);
-                            monthlyTimeRetention.setValidFor(timeSpan);
-                        }
+                        if (MyInvocation.BoundParameters.ContainsKey("RetentionTime"))
+                            monthlyTimeRetention.setSnapshotTime(StringTotime_in_day(RetentionTime));
                     }                    
                     else if (timeRetentionType == ETimeRetentionType.ETimeRetentionType__Yearly)
                     {
@@ -156,35 +92,24 @@ namespace PSAsigraDSClient
                             yearlyTimeRetention.setTriggerMonth(StringToEnum<EMonth>(YearlyRetentionMonth));
 
                         if (MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay"))
-                            yearlyTimeRetention.setDayOfMonth(YearlyRetentionMonthDay);
+                            yearlyTimeRetention.setDayOfMonth(RetentionDayOfMonth);
 
-                        if (MyInvocation.BoundParameters.ContainsKey("YearlyRetentionHour"))
-                        {
-                            time_in_day time = yearlyTimeRetention.getSnapshotTime();
-                            time.hour = YearlyRetentionHour;
-                            yearlyTimeRetention.setSnapshotTime(time);
-                        }
+                        if (MyInvocation.BoundParameters.ContainsKey("RetentionTime"))
+                            yearlyTimeRetention.setSnapshotTime(StringTotime_in_day(RetentionTime));
+                    }
 
-                        if (MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMinute"))
-                        {
-                            time_in_day time = yearlyTimeRetention.getSnapshotTime();
-                            time.minute = YearlyRetentionMinute;
-                            yearlyTimeRetention.setSnapshotTime(time);
-                        }
+                    if (MyInvocation.BoundParameters.ContainsKey("ValidForValue"))
+                    {
+                        retention_time_span timeSpan = timeRetentionOption.getValidFor();
+                        timeSpan.period = ValidForValue;
+                        timeRetentionOption.setValidFor(timeSpan);
+                    }
 
-                        if (MyInvocation.BoundParameters.ContainsKey("YearlyValidForValue"))
-                        {
-                            retention_time_span timeSpan = yearlyTimeRetention.getValidFor();
-                            timeSpan.period = YearlyValidForValue;
-                            yearlyTimeRetention.setValidFor(timeSpan);
-                        }
-
-                        if (MyInvocation.BoundParameters.ContainsKey("YearlyValidForUnit"))
-                        {
-                            retention_time_span timeSpan = yearlyTimeRetention.getValidFor();
-                            timeSpan.unit = StringToEnum<RetentionTimeUnit>(YearlyValidForUnit);
-                            yearlyTimeRetention.setValidFor(timeSpan);
-                        }
+                    if (MyInvocation.BoundParameters.ContainsKey("ValidForUnit"))
+                    {
+                        retention_time_span timeSpan = timeRetentionOption.getValidFor();
+                        timeSpan.unit = StringToEnum<RetentionTimeUnit>(ValidForUnit);
+                        timeRetentionOption.setValidFor(timeSpan);
                     }
 
                     DSClientRetentionRuleMgr.Dispose();

@@ -2774,18 +2774,11 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>IntervalValidForUnit</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForUnit</maml:name>
           <maml:Description>
-            <maml:para>Specify Time Unit Interval is Valid For</maml:para>
+            <maml:para>Specify the Time Unit this Time Retention Option is Valid For</maml:para>
           </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
@@ -2793,10 +2786,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>IntervalValidForValue</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForValue</maml:name>
           <maml:Description>
-            <maml:para>Specify Time Value Interval is Valid For</maml:para>
+            <maml:para>Specify the Time Value this Time Retention Option is Valid For</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2805,65 +2798,13 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyRetentionDay</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Add-DSClientTimeRetentionOption</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>RetentionRuleId</maml:name>
           <maml:Description>
-            <maml:para>Specify Day of Month for Monthly Time Retention</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyRetentionHour</maml:name>
-          <maml:Description>
-            <maml:para>Specify Monthly Retention Time Hour</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyRetentionMinute</maml:name>
-          <maml:Description>
-            <maml:para>Specify Monthly Retention Time Minute</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyValidForUnit</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Unit Monthly Time Retention is Valid for</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyValidForValue</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Value Monthly Time Retention is Valid for</maml:para>
+            <maml:para>Specify RetentionRuleId to Apply Time Retention to</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2894,41 +2835,10 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyRetentionHour</maml:name>
+          <maml:name>RetentionTime</maml:name>
           <maml:Description>
-            <maml:para>Specify Weekly Retention Time Hour</maml:para>
+            <maml:para>Specify the Time of Day to Keep One Generation on or before</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyRetentionMinute</maml:name>
-          <maml:Description>
-            <maml:para>Specify Weekly Retention Time Minute</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyValidForUnit</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Unit Weekly Time Retention is Valid for</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
@@ -2936,10 +2846,22 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyValidForValue</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForUnit</maml:name>
           <maml:Description>
-            <maml:para>Specify Time Value Weekly Time Retention is Valid for</maml:para>
+            <maml:para>Specify the Time Unit this Time Retention Option is Valid For</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForValue</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time Value this Time Retention Option is Valid For</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2948,10 +2870,13 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyRetentionHour</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Add-DSClientTimeRetentionOption</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>RetentionRuleId</maml:name>
           <maml:Description>
-            <maml:para>Specify Yearly Retention Time Hour</maml:para>
+            <maml:para>Specify RetentionRuleId to Apply Time Retention to</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2960,19 +2885,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyRetentionMinute</maml:name>
-          <maml:Description>
-            <maml:para>Specify Yearly Retention Time Minute</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>YearlyRetentionMonth</maml:name>
           <maml:Description>
             <maml:para>Specify Month for Yearly Time Retention</maml:para>
@@ -2999,9 +2912,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyRetentionMonthDay</maml:name>
+          <maml:name>RetentionDayOfMonth</maml:name>
           <maml:Description>
-            <maml:para>Specify Day of Month for Yearly Time Retention</maml:para>
+            <maml:para>Specify Day of Month to Keep One Generation on or before</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -3011,17 +2924,10 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyValidForUnit</maml:name>
+          <maml:name>RetentionTime</maml:name>
           <maml:Description>
-            <maml:para>Specify Time Unit Yearly Time Retention is Valid for</maml:para>
+            <maml:para>Specify the Time of Day to Keep One Generation on or before</maml:para>
           </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
@@ -3029,10 +2935,85 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyValidForValue</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForUnit</maml:name>
           <maml:Description>
-            <maml:para>Specify Time Value Yearly Time Retention is Valid for</maml:para>
+            <maml:para>Specify the Time Unit this Time Retention Option is Valid For</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForValue</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time Value this Time Retention Option is Valid For</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Add-DSClientTimeRetentionOption</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>RetentionRuleId</maml:name>
+          <maml:Description>
+            <maml:para>Specify RetentionRuleId to Apply Time Retention to</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>RetentionDayOfMonth</maml:name>
+          <maml:Description>
+            <maml:para>Specify Day of Month to Keep One Generation on or before</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>RetentionTime</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time of Day to Keep One Generation on or before</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForUnit</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time Unit this Time Retention Option is Valid For</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForValue</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time Value this Time Retention Option is Valid For</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -3068,90 +3049,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>IntervalValidForUnit</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Unit Interval is Valid For</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>IntervalValidForValue</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Value Interval is Valid For</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyRetentionDay</maml:name>
-        <maml:Description>
-          <maml:para>Specify Day of Month for Monthly Time Retention</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyRetentionHour</maml:name>
-        <maml:Description>
-          <maml:para>Specify Monthly Retention Time Hour</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyRetentionMinute</maml:name>
-        <maml:Description>
-          <maml:para>Specify Monthly Retention Time Minute</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyValidForUnit</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Unit Monthly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyValidForValue</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Value Monthly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
         <maml:name>RetentionRuleId</maml:name>
         <maml:Description>
@@ -3176,79 +3073,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyRetentionHour</maml:name>
-        <maml:Description>
-          <maml:para>Specify Weekly Retention Time Hour</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyRetentionMinute</maml:name>
-        <maml:Description>
-          <maml:para>Specify Weekly Retention Time Minute</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyValidForUnit</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Unit Weekly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyValidForValue</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Value Weekly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyRetentionHour</maml:name>
-        <maml:Description>
-          <maml:para>Specify Yearly Retention Time Hour</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyRetentionMinute</maml:name>
-        <maml:Description>
-          <maml:para>Specify Yearly Retention Time Minute</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>YearlyRetentionMonth</maml:name>
         <maml:Description>
           <maml:para>Specify Month for Yearly Time Retention</maml:para>
@@ -3261,9 +3086,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyRetentionMonthDay</maml:name>
+        <maml:name>RetentionDayOfMonth</maml:name>
         <maml:Description>
-          <maml:para>Specify Day of Month for Yearly Time Retention</maml:para>
+          <maml:para>Specify Day of Month to Keep One Generation on or before</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -3273,9 +3098,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyValidForUnit</maml:name>
+        <maml:name>RetentionTime</maml:name>
         <maml:Description>
-          <maml:para>Specify Time Unit Yearly Time Retention is Valid for</maml:para>
+          <maml:para>Specify the Time of Day to Keep One Generation on or before</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3284,10 +3109,22 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyValidForValue</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>ValidForUnit</maml:name>
         <maml:Description>
-          <maml:para>Specify Time Value Yearly Time Retention is Valid for</maml:para>
+          <maml:para>Specify the Time Unit this Time Retention Option is Valid For</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>ValidForValue</maml:name>
+        <maml:Description>
+          <maml:para>Specify the Time Value this Time Retention Option is Valid For</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -3341,9 +3178,30 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Add-DSClientTimeRetentionOption -RetentionRuleId 5 -IntervalTimeValue 1 -IntervalTimeUnit "Days" -IntervalValidForValue 7 -IntervalValidForUnit "Days"</dev:code>
+        <dev:code>PS C:\&gt; Add-DSClientTimeRetentionOption -RetentionRuleId 5 -IntervalTimeValue 1 -IntervalTimeUnit "Days" -ValidForValue 7 -ValidForUnit "Days"</dev:code>
         <dev:remarks>
-          <maml:para>Adds a Time Based Retention Option to Retention Rule with Id 5 specifying to keep 1 Generation Every Day for 7 Days</maml:para>
+          <maml:para>Adds a Time Based Retention Option to Retention Rule with Id 5 specifying to Keep 1 Generation Every Day for 7 Days</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Add-DSClientTimeRetentionOption -RetentionRuleId 10 -WeeklyRetentionDay "Saturday" -RetentionTime "23:59:59" -ValidForValue 1 -ValidForUnit "Months"</dev:code>
+        <dev:remarks>
+          <maml:para>Adds a Time Based Retention Option to Retention Rule with Id 10 specifying to Keep 1 Generation Every Week On or Before Saturday at 23:59:59 for 1 Month</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 3 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Add-DSClientTimeRetentionOption -RetentionRuleId 15 -MonthlyRetentionDay 28 -RetentionTime "23:59:59" -ValidForValue 1 -ValidForUnit "Years"</dev:code>
+        <dev:remarks>
+          <maml:para>Adds a Time Based Retention Option to Retention Rule with Id 15 specifying to Keep 1 Generation Every Month On or Before the Last Day of the Month at 23:59:59 for 1 Year</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 4 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Add-DSClientTimeRetentionOption -RetentionRuleId 20 -YearlyRetentionMonth "December" -MonthlyRetentionDay 28 -RetentionTime "23:59:59" -ValidForValue 7 -ValidForUnit "Years"</dev:code>
+        <dev:remarks>
+          <maml:para>Adds a Time Based Retention Option to Retention Rule with Id 20 specifying to Keep 1 Generation Every Year On or Before the Last Day of December at 23:59:59 for 7 Years</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -12994,69 +12852,6 @@
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>IntervalTimeUnit</maml:name>
-          <maml:Description>
-            <maml:para>Specify Interval Retention Time Unit</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Minutes</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>IntervalTimeValue</maml:name>
-          <maml:Description>
-            <maml:para>Specify Interval Retention Time Value</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>IntervalValidForUnit</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Unit Interval is Valid For</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>IntervalValidForValue</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Value Interval is Valid For</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>KeepAllGensTimeUnit</maml:name>
           <maml:Description>
             <maml:para>Specify Time Period Unit for keeping ALL Generations</maml:para>
@@ -13185,73 +12980,6 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyRetentionDay</maml:name>
-          <maml:Description>
-            <maml:para>Specify Day of Month for Monthly Time Retention</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyRetentionHour</maml:name>
-          <maml:Description>
-            <maml:para>Specify Monthly Retention Time Hour</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyRetentionMinute</maml:name>
-          <maml:Description>
-            <maml:para>Specify Monthly Retention Time Minute</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyValidForUnit</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Unit Monthly Time Retention is Valid for</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyValidForValue</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Value Monthly Time Retention is Valid for</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>MoveObsoleteData</maml:name>
           <maml:Description>
             <maml:para>Specify to Move Obsolete Data to BLM</maml:para>
@@ -13272,175 +13000,6 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyRetentionDay</maml:name>
-          <maml:Description>
-            <maml:para>Specify Weekday for Weekly Time Retention</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Monday</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Tuesday</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Wednesday</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Thursday</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Friday</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Saturday</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Sunday</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyRetentionHour</maml:name>
-          <maml:Description>
-            <maml:para>Specify Weekly Retention Time Hour</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyRetentionMinute</maml:name>
-          <maml:Description>
-            <maml:para>Specify Weekly Retention Time Minute</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyValidForUnit</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Unit Weekly Time Retention is Valid for</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyValidForValue</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Value Weekly Time Retention is Valid for</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyRetentionHour</maml:name>
-          <maml:Description>
-            <maml:para>Specify Yearly Retention Time Hour</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyRetentionMinute</maml:name>
-          <maml:Description>
-            <maml:para>Specify Yearly Retention Time Minute</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyRetentionMonth</maml:name>
-          <maml:Description>
-            <maml:para>Specify Month for Yearly Time Retention</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">January</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">February</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">March</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">April</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">May</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">June</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">July</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">August</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">September</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">October</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">November</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">December</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyRetentionMonthDay</maml:name>
-          <maml:Description>
-            <maml:para>Specify Day of Month for Yearly Time Retention</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyValidForUnit</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Unit Yearly Time Retention is Valid for</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyValidForValue</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Value Yearly Time Retention is Valid for</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -13602,54 +13161,6 @@
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>IntervalTimeUnit</maml:name>
-        <maml:Description>
-          <maml:para>Specify Interval Retention Time Unit</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>IntervalTimeValue</maml:name>
-        <maml:Description>
-          <maml:para>Specify Interval Retention Time Value</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>IntervalValidForUnit</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Unit Interval is Valid For</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>IntervalValidForValue</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Value Interval is Valid For</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>KeepAllGensTimeUnit</maml:name>
         <maml:Description>
           <maml:para>Specify Time Period Unit for keeping ALL Generations</maml:para>
@@ -13758,66 +13269,6 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyRetentionDay</maml:name>
-        <maml:Description>
-          <maml:para>Specify Day of Month for Monthly Time Retention</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyRetentionHour</maml:name>
-        <maml:Description>
-          <maml:para>Specify Monthly Retention Time Hour</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyRetentionMinute</maml:name>
-        <maml:Description>
-          <maml:para>Specify Monthly Retention Time Minute</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyValidForUnit</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Unit Monthly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyValidForValue</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Value Monthly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>MoveObsoleteData</maml:name>
         <maml:Description>
           <maml:para>Specify to Move Obsolete Data to BLM</maml:para>
@@ -13852,138 +13303,6 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyRetentionDay</maml:name>
-        <maml:Description>
-          <maml:para>Specify Weekday for Weekly Time Retention</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyRetentionHour</maml:name>
-        <maml:Description>
-          <maml:para>Specify Weekly Retention Time Hour</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyRetentionMinute</maml:name>
-        <maml:Description>
-          <maml:para>Specify Weekly Retention Time Minute</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyValidForUnit</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Unit Weekly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyValidForValue</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Value Weekly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyRetentionHour</maml:name>
-        <maml:Description>
-          <maml:para>Specify Yearly Retention Time Hour</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyRetentionMinute</maml:name>
-        <maml:Description>
-          <maml:para>Specify Yearly Retention Time Minute</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyRetentionMonth</maml:name>
-        <maml:Description>
-          <maml:para>Specify Month for Yearly Time Retention</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyRetentionMonthDay</maml:name>
-        <maml:Description>
-          <maml:para>Specify Day of Month for Yearly Time Retention</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyValidForUnit</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Unit Yearly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyValidForValue</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Value Yearly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
@@ -14030,9 +13349,9 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-DSClientRetentionRule -Name "7 Day Retention" -KeepLastGens 1 -KeepAllGensTimeValue 1 -KeepAllGensTimeUnit "Days" -IntervalTimeValue 1 -IntervalTimeUnit "Days" -IntervalValidForValue 7 -IntervalValidForUnit "Days" -DeleteObsoleteData -DeleteUnreferencedFiles -DeleteIncompleteComponents</dev:code>
+        <dev:code>PS C:\&gt; New-DSClientRetentionRule -Name "7 Day Retention" -KeepLastGens 1 -KeepAllGensTimeValue 12 -KeepAllGensTimeUnit "Hours" -DeleteObsoleteData -DeleteUnreferencedFiles -DeleteIncompleteComponents</dev:code>
         <dev:remarks>
-          <maml:para>Creates a New Retention Rule Named "7 Day Retention Rule" Keeps the latest 1 Generation Keeps 1 Generation Every Day for 7 Days Deletes Obsolete Data Deletes Unreferenced Files Deletes Incomplete Components</maml:para>
+          <maml:para>Creates a New Retention Rule Named "7 Day Retention Rule" Keeps the latest 1 Generation Keeps All Generations for the last 12 Hours Deletes Obsolete Data Deletes Unreferenced Files Deletes Incomplete Components</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -26080,11 +25399,11 @@
       <command:verb>Set</command:verb>
       <command:noun>DSClientTimeRetentionOption</command:noun>
       <maml:description>
-        <maml:para>Updates and existing Time Retention Option</maml:para>
+        <maml:para>Updates an existing Time Retention Option</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates and existing Time Retention Option for a given Retention Rule. Use Get-DSClientTimeRetentionOption to identify the Time Retention Option to modify.</maml:para>
+      <maml:para>Updates an existing Time Retention Option for a given Retention Rule. Use Get-DSClientTimeRetentionOption to identify the Time Retention Option to modify. This Cmdlet CANNOT change the Type of the Retention Option, e.g. an Interval Retention Option cannot be changed to a Weekly Retention Option. Instead Remove the Retention Option and Add a new one.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -26156,18 +25475,22 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>IntervalValidForUnit</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
           <maml:Description>
-            <maml:para>Specify Time Unit Interval is Valid For</maml:para>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
           </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForUnit</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time Unit this Time Retention Option is Valid For</maml:para>
+          </maml:Description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
@@ -26176,9 +25499,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>IntervalValidForValue</maml:name>
+          <maml:name>ValidForValue</maml:name>
           <maml:Description>
-            <maml:para>Specify Time Value Interval is Valid For</maml:para>
+            <maml:para>Specify the Time Value this Time Retention Option is Valid For</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -26187,10 +25510,13 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyRetentionDay</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Set-DSClientTimeRetentionOption</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>RetentionRuleId</maml:name>
           <maml:Description>
-            <maml:para>Specify Day of Month for Monthly Time Retention</maml:para>
+            <maml:para>Specify RetentionRuleId to Apply Time Retention to</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -26199,10 +25525,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyRetentionHour</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
+          <maml:name>TimeRetentionId</maml:name>
           <maml:Description>
-            <maml:para>Specify Monthly Retention Time Hour</maml:para>
+            <maml:para>Specify the Time Retention Option Id to Remove</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -26211,48 +25537,16 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyRetentionMinute</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
           <maml:Description>
-            <maml:para>Specify Monthly Retention Time Minute</maml:para>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>Int32</maml:name>
+            <maml:name>SwitchParameter</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyValidForUnit</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Unit Monthly Time Retention is Valid for</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MonthlyValidForValue</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Value Monthly Time Retention is Valid for</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
+          <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>WeeklyRetentionDay</maml:name>
@@ -26275,61 +25569,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyRetentionHour</maml:name>
-          <maml:Description>
-            <maml:para>Specify Weekly Retention Time Hour</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyRetentionMinute</maml:name>
-          <maml:Description>
-            <maml:para>Specify Weekly Retention Time Minute</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyValidForUnit</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Unit Weekly Time Retention is Valid for</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>WeeklyValidForValue</maml:name>
-          <maml:Description>
-            <maml:para>Specify Time Value Weekly Time Retention is Valid for</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
           <maml:name>WhatIf</maml:name>
           <maml:Description>
@@ -26342,9 +25581,33 @@
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyRetentionHour</maml:name>
+          <maml:name>RetentionTime</maml:name>
           <maml:Description>
-            <maml:para>Specify Yearly Retention Time Hour</maml:para>
+            <maml:para>Specify the Time of Day to Keep One Generation on or before</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForUnit</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time Unit this Time Retention Option is Valid For</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForValue</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time Value this Time Retention Option is Valid For</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -26353,10 +25616,13 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyRetentionMinute</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Set-DSClientTimeRetentionOption</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>RetentionRuleId</maml:name>
           <maml:Description>
-            <maml:para>Specify Yearly Retention Time Minute</maml:para>
+            <maml:para>Specify RetentionRuleId to Apply Time Retention to</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -26365,7 +25631,41 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
+          <maml:name>TimeRetentionId</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time Retention Option Id to Remove</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:Description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:Description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>YearlyRetentionMonth</maml:name>
           <maml:Description>
             <maml:para>Specify Month for Yearly Time Retention</maml:para>
@@ -26392,9 +25692,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyRetentionMonthDay</maml:name>
+          <maml:name>RetentionDayOfMonth</maml:name>
           <maml:Description>
-            <maml:para>Specify Day of Month for Yearly Time Retention</maml:para>
+            <maml:para>Specify Day of Month to Keep One Generation on or before</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -26404,17 +25704,10 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyValidForUnit</maml:name>
+          <maml:name>RetentionTime</maml:name>
           <maml:Description>
-            <maml:para>Specify Time Unit Yearly Time Retention is Valid for</maml:para>
+            <maml:para>Specify the Time of Day to Keep One Generation on or before</maml:para>
           </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Hours</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Days</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Weeks</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Months</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Years</command:parameterValue>
-          </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
@@ -26423,9 +25716,118 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>YearlyValidForValue</maml:name>
+          <maml:name>ValidForUnit</maml:name>
           <maml:Description>
-            <maml:para>Specify Time Value Yearly Time Retention is Valid for</maml:para>
+            <maml:para>Specify the Time Unit this Time Retention Option is Valid For</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForValue</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time Value this Time Retention Option is Valid For</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Set-DSClientTimeRetentionOption</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>RetentionRuleId</maml:name>
+          <maml:Description>
+            <maml:para>Specify RetentionRuleId to Apply Time Retention to</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
+          <maml:name>TimeRetentionId</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time Retention Option Id to Remove</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:Description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:Description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>RetentionDayOfMonth</maml:name>
+          <maml:Description>
+            <maml:para>Specify Day of Month to Keep One Generation on or before</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>RetentionTime</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time of Day to Keep One Generation on or before</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForUnit</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time Unit this Time Retention Option is Valid For</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ValidForValue</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Time Value this Time Retention Option is Valid For</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -26473,90 +25875,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>IntervalValidForUnit</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Unit Interval is Valid For</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>IntervalValidForValue</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Value Interval is Valid For</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyRetentionDay</maml:name>
-        <maml:Description>
-          <maml:para>Specify Day of Month for Monthly Time Retention</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyRetentionHour</maml:name>
-        <maml:Description>
-          <maml:para>Specify Monthly Retention Time Hour</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyRetentionMinute</maml:name>
-        <maml:Description>
-          <maml:para>Specify Monthly Retention Time Minute</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyValidForUnit</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Unit Monthly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>MonthlyValidForValue</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Value Monthly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
         <maml:name>RetentionRuleId</maml:name>
         <maml:Description>
@@ -26593,54 +25911,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyRetentionHour</maml:name>
-        <maml:Description>
-          <maml:para>Specify Weekly Retention Time Hour</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyRetentionMinute</maml:name>
-        <maml:Description>
-          <maml:para>Specify Weekly Retention Time Minute</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyValidForUnit</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Unit Weekly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>WeeklyValidForValue</maml:name>
-        <maml:Description>
-          <maml:para>Specify Time Value Weekly Time Retention is Valid for</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
         <maml:name>WhatIf</maml:name>
         <maml:Description>
@@ -26653,31 +25923,7 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyRetentionHour</maml:name>
-        <maml:Description>
-          <maml:para>Specify Yearly Retention Time Hour</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyRetentionMinute</maml:name>
-        <maml:Description>
-          <maml:para>Specify Yearly Retention Time Minute</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>YearlyRetentionMonth</maml:name>
         <maml:Description>
           <maml:para>Specify Month for Yearly Time Retention</maml:para>
@@ -26690,9 +25936,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyRetentionMonthDay</maml:name>
+        <maml:name>RetentionDayOfMonth</maml:name>
         <maml:Description>
-          <maml:para>Specify Day of Month for Yearly Time Retention</maml:para>
+          <maml:para>Specify Day of Month to Keep One Generation on or before</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -26702,9 +25948,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyValidForUnit</maml:name>
+        <maml:name>RetentionTime</maml:name>
         <maml:Description>
-          <maml:para>Specify Time Unit Yearly Time Retention is Valid for</maml:para>
+          <maml:para>Specify the Time of Day to Keep One Generation on or before</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -26714,9 +25960,21 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>YearlyValidForValue</maml:name>
+        <maml:name>ValidForUnit</maml:name>
         <maml:Description>
-          <maml:para>Specify Time Value Yearly Time Retention is Valid for</maml:para>
+          <maml:para>Specify the Time Unit this Time Retention Option is Valid For</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>ValidForValue</maml:name>
+        <maml:Description>
+          <maml:para>Specify the Time Value this Time Retention Option is Valid For</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>

@@ -52,7 +52,7 @@ namespace PSAsigraDSClient
         public SwitchParameter DeleteIncompleteComponents { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the number of most recent Generations to keep")]
-        public int KeepLastGens { get; set; } = 1;
+        public int KeepLastGens { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Time Period to keep ALL Generations")]
         public int KeepAllGensTimeValue { get; set; }

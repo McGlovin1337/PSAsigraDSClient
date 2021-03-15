@@ -11,6 +11,13 @@ namespace PSAsigraDSClient
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify RetentionRuleId to Apply Time Retention to")]
         public int RetentionRuleId { get; set; }
 
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Time Value this Time Retention Option is Valid For")]
+        public new int ValidForValue { get; set; }
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Time Unit this Time Retention Option is Valid For")]
+        [ValidateSet("Hours", "Days", "Weeks", "Months", "Years")]
+        public new string ValidForUnit { get; set; }
+
         protected override void ProcessRetentionRule(RetentionRule[] retentionRules)
         {
             RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
@@ -24,7 +31,7 @@ namespace PSAsigraDSClient
                 WriteVerbose("Performing Action: Add Interval Time Based Retention Rule");
                 IntervalTimeRetentionOption intervalTimeRetention = DSClientRetentionRuleMgr.createIntervalTimeRetention();
 
-                RetentionRule.addTimeRetentionOption(IntervalTimeRetentionRule(intervalTimeRetention, IntervalTimeValue, IntervalTimeUnit, IntervalValidForValue, IntervalValidForUnit));
+                RetentionRule.addTimeRetentionOption(IntervalTimeRetentionRule(intervalTimeRetention, IntervalTimeValue, IntervalTimeUnit, ValidForValue, ValidForUnit));
             }
 
             // Weekly based Time Retention
@@ -33,25 +40,25 @@ namespace PSAsigraDSClient
                 WriteVerbose("Performing Action: Add Weekly Time Based Retention Rule");
                 WeeklyTimeRetentionOption weeklyTimeRetention = DSClientRetentionRuleMgr.createWeeklyTimeRetention();
 
-                RetentionRule.addTimeRetentionOption(WeeklyTimeRetentionRule(weeklyTimeRetention, WeeklyRetentionDay, WeeklyRetentionHour, WeeklyRetentionMinute, WeeklyValidForValue, WeeklyValidForUnit));
+                RetentionRule.addTimeRetentionOption(WeeklyTimeRetentionRule(weeklyTimeRetention, WeeklyRetentionDay, RetentionTime, ValidForValue, ValidForUnit));
             }
 
             // Monthly based Time Retention
-            if (MyInvocation.BoundParameters.ContainsKey("MonthlyRetentionDay"))
+            if (MyInvocation.BoundParameters.ContainsKey("RetentionDayOfMonth"))
             {
                 WriteVerbose("Performing Action: Add Monthly Time Based Retention Rule");
                 MonthlyTimeRetentionOption monthlyTimeRetention = DSClientRetentionRuleMgr.createMonthlyTimeRetention();
 
-                RetentionRule.addTimeRetentionOption(MonthlyTimeRetentionRule(monthlyTimeRetention, MonthlyRetentionDay, MonthlyRetentionHour, MonthlyRetentionMinute, MonthlyValidForValue, MonthlyValidForUnit));
+                RetentionRule.addTimeRetentionOption(MonthlyTimeRetentionRule(monthlyTimeRetention, RetentionDayOfMonth, RetentionTime, ValidForValue, ValidForUnit));
             }
 
             // Yearly based Time Retention
-            if (MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay"))
+            if (MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonth"))
             {
                 WriteVerbose("Performing Action: Add Yearly Time Based Retention Rule");
                 YearlyTimeRetentionOption yearlyTimeRetention = DSClientRetentionRuleMgr.createYearlyTimeRetention();
 
-                RetentionRule.addTimeRetentionOption(YearlyTimeRetentionRule(yearlyTimeRetention, YearlyRetentionMonthDay, YearlyRetentionMonth, YearlyRetentionHour, YearlyRetentionMinute, YearlyValidForValue, YearlyValidForUnit));
+                RetentionRule.addTimeRetentionOption(YearlyTimeRetentionRule(yearlyTimeRetention, RetentionDayOfMonth, YearlyRetentionMonth, RetentionTime, ValidForValue, ValidForUnit));
             }
 
             RetentionRule.Dispose();
@@ -62,24 +69,6 @@ namespace PSAsigraDSClient
         {
             if ((MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && IntervalTimeUnit == null) || (!MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && IntervalTimeUnit != null))
                 throw new ParameterBindingException("IntervalTimeValue and IntervalTimeUnit must be specified together");
-
-            if ((MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue") && IntervalValidForUnit == null) || (!MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue") && IntervalValidForUnit != null))
-                throw new ParameterBindingException("IntervalValidForValue and IntervalValidForUnit must be specified together");
-
-            if ((MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && !MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue")) || (!MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue") && MyInvocation.BoundParameters.ContainsKey("IntervalValidForValue")))
-                throw new ParameterBindingException("IntervalTimeValue and IntervalTimeUnit must be specified with IntervalValidForValue and IntervalValidForUnit");
-
-            if (WeeklyRetentionDay != null && (!MyInvocation.BoundParameters.ContainsKey("WeeklyValidForValue") || WeeklyValidForUnit == null))
-                throw new ParameterBindingException("WeeklyValidForValue and WeeklyValidForUnit must be specified with WeeklyRetentionDay");
-
-            if (MyInvocation.BoundParameters.ContainsKey("MonthlyRetentionDay") && (!MyInvocation.BoundParameters.ContainsKey("MonthlyValidForValue") || MonthlyValidForUnit == null))
-                throw new ParameterBindingException("MonthlyValidForValue and MonthlyValidForUnit must be specified with MonthlyRetentionDay");
-
-            if (MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay") && (!MyInvocation.BoundParameters.ContainsKey("YearlyValidForValue") || YearlyValidForUnit == null))
-                throw new ParameterBindingException("YearlyValidForValue and YearlyValidForUnit must be specified with YearlyRetentionMonthDay and YearlyRetentionMonth");
-
-            if ((MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay") && YearlyRetentionMonth == null) || (!MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay") && YearlyRetentionMonth != null))
-                throw new ParameterBindingException("YearlyRetentionMonthDay and YearlyRetentionMonth must both be specified together");
 
             base.DSClientProcessRecord();
         }

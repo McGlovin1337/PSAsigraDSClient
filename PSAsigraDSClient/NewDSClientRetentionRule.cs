@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.New, "DSClientRetentionRule")]
     [OutputType(typeof(DSClientNewRetentionRule))]
 
-    public class NewDSClientRetentionRule: BaseDSClientTimeRetentionRule
+    public class NewDSClientRetentionRule: BaseDSClientRetentionRuleParams
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Retention Rule Name")]
         [ValidateNotNullOrEmpty]
@@ -27,7 +27,7 @@ namespace PSAsigraDSClient
         [Parameter(HelpMessage = "Specify to Output Retention Rule Overview")]
         public SwitchParameter PassThru { get; set; }
 
-        protected override void ProcessRetentionRule()
+        protected override void DSClientProcessRecord()
         {
             // Perform Parameter Validation
             if (CleanupDeletedFiles)
@@ -90,48 +90,17 @@ namespace PSAsigraDSClient
             }
 
             // Set Time Based Retention
-            NewRetentionRule.setKeepLastGenerations(KeepLastGens);
+            if (MyInvocation.BoundParameters.ContainsKey("KeepLastGens"))
+                NewRetentionRule.setKeepLastGenerations(KeepLastGens);
 
             if (MyInvocation.BoundParameters.ContainsKey("KeepAllGensTimeValue"))
                 KeepAllGenerationsRule(NewRetentionRule, KeepAllGensTimeValue, KeepAllGensTimeUnit);
 
-            // Interval based Time Retention
-            if (MyInvocation.BoundParameters.ContainsKey("IntervalTimeValue"))
-            {
-                IntervalTimeRetentionOption intervalTimeRetention = DSClientRetentionRuleMgr.createIntervalTimeRetention();
-
-                NewRetentionRule.addTimeRetentionOption(IntervalTimeRetentionRule(intervalTimeRetention, IntervalTimeValue, IntervalTimeUnit, IntervalValidForValue, IntervalValidForUnit));
-            }
-
-            // Weekly based Time Retention
-            if (WeeklyRetentionDay != null)
-            {
-                WeeklyTimeRetentionOption weeklyTimeRetention = DSClientRetentionRuleMgr.createWeeklyTimeRetention();
-
-                NewRetentionRule.addTimeRetentionOption(WeeklyTimeRetentionRule(weeklyTimeRetention, WeeklyRetentionDay, WeeklyRetentionHour, WeeklyRetentionMinute, WeeklyValidForValue, WeeklyValidForUnit));
-            }
-
-            // Monthly based Time Retention
-            if (MyInvocation.BoundParameters.ContainsKey("MonthlyRetentionDay"))
-            {
-                MonthlyTimeRetentionOption monthlyTimeRetention = DSClientRetentionRuleMgr.createMonthlyTimeRetention();
-
-                NewRetentionRule.addTimeRetentionOption(MonthlyTimeRetentionRule(monthlyTimeRetention, MonthlyRetentionDay, MonthlyRetentionHour, MonthlyRetentionMinute, MonthlyValidForValue, MonthlyValidForUnit));
-            }
-
-            // Yearly based Time Retention
-            if (MyInvocation.BoundParameters.ContainsKey("YearlyRetentionMonthDay"))
-            {
-                YearlyTimeRetentionOption yearlyTimeRetention = DSClientRetentionRuleMgr.createYearlyTimeRetention();
-
-                NewRetentionRule.addTimeRetentionOption(YearlyTimeRetentionRule(yearlyTimeRetention, YearlyRetentionMonthDay, YearlyRetentionMonth, YearlyRetentionHour, YearlyRetentionMinute, YearlyValidForValue, YearlyValidForUnit));
-            }
-
             // Move or Delete Obsolete Data
-            if (DeleteObsoleteData)
+            if (MyInvocation.BoundParameters.ContainsKey("DeleteObsoleteData"))
                 NewRetentionRule.setMoveObsoleteDataToBLM(false);
 
-            if (MoveObsoleteData)
+            if (MyInvocation.BoundParameters.ContainsKey("MoveObsoleteData"))
                 NewRetentionRule.setMoveObsoleteDataToBLM(true);
 
             if (MyInvocation.BoundParameters.ContainsKey("CreateNewBLMPackage"))
@@ -200,10 +169,7 @@ namespace PSAsigraDSClient
             }
 
             if (PassThru)
-            {
-                DSClientNewRetentionRule retentionRule = new DSClientNewRetentionRule(NewRetentionRule);
-                WriteObject(retentionRule);
-            }
+                WriteObject(new DSClientNewRetentionRule(NewRetentionRule));
 
             NewRetentionRule.Dispose();
             DSClientRetentionRuleMgr.Dispose();

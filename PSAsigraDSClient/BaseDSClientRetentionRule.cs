@@ -271,7 +271,7 @@ namespace PSAsigraDSClient
                 int typeHash = _type.GetHashCode();
                 int periodHash = _validFor.period.GetHashCode();
                 int unitHash = _validFor.unit.GetHashCode();
-                int finalHash = (multiply * (typeHash + periodHash + unitHash)).GetHashCode();
+                int finalHash = (multiply * (typeHash + periodHash + unitHash * Type.GetHashCode())).GetHashCode();
 
                 return finalHash;
             }
@@ -371,16 +371,17 @@ namespace PSAsigraDSClient
             return intervalTimeRetention;
         }
 
-        protected static WeeklyTimeRetentionOption WeeklyTimeRetentionRule(WeeklyTimeRetentionOption weeklyTimeRetention, string weekDay, int retentionHour, int retentionMinute, int validForValue, string validForUnit)
+        protected static WeeklyTimeRetentionOption WeeklyTimeRetentionRule(WeeklyTimeRetentionOption weeklyTimeRetention, string weekDay, string time, int validForValue, string validForUnit)
         {
             weeklyTimeRetention.setTriggerDay(StringToEnum<EWeekDay>(weekDay));
 
-            time_in_day weeklyTime = new time_in_day
-            {
-                hour = retentionHour,
-                minute = retentionMinute,
-                second = 0
-            };
+            time_in_day weeklyTime = StringTotime_in_day(time);
+            //time_in_day weeklyTime = new time_in_day
+            //{
+            //    hour = retentionHour,
+            //    minute = retentionMinute,
+            //    second = 0
+            //};
             weeklyTimeRetention.setSnapshotTime(weeklyTime);
 
             retention_time_span validTimeSpan = new retention_time_span
@@ -393,17 +394,10 @@ namespace PSAsigraDSClient
             return weeklyTimeRetention;
         }
 
-        protected static MonthlyTimeRetentionOption MonthlyTimeRetentionRule(MonthlyTimeRetentionOption monthlyTimeRetention, int retentionDay, int retentionHour, int retentionMinute, int validForValue, string validForUnit)
+        protected static MonthlyTimeRetentionOption MonthlyTimeRetentionRule(MonthlyTimeRetentionOption monthlyTimeRetention, int retentionDay, string time, int validForValue, string validForUnit)
         {
             monthlyTimeRetention.setDayOfMonth(retentionDay);
-
-            time_in_day monthlyTime = new time_in_day
-            {
-                hour = retentionHour,
-                minute = retentionMinute,
-                second = 0
-            };
-            monthlyTimeRetention.setSnapshotTime(monthlyTime);
+            monthlyTimeRetention.setSnapshotTime(StringTotime_in_day(time));
 
             retention_time_span validTimeSpan = new retention_time_span
             {
@@ -415,18 +409,20 @@ namespace PSAsigraDSClient
             return monthlyTimeRetention;
         }
 
-        protected static YearlyTimeRetentionOption YearlyTimeRetentionRule(YearlyTimeRetentionOption yearlyTimeRetention, int monthDay, string month, int retentionHour, int retentionMinute, int validForValue, string validForUnit)
+        protected static YearlyTimeRetentionOption YearlyTimeRetentionRule(YearlyTimeRetentionOption yearlyTimeRetention, int monthDay, string month, string time, int validForValue, string validForUnit)
         {
             yearlyTimeRetention.setDayOfMonth(monthDay);
 
             yearlyTimeRetention.setTriggerMonth(StringToEnum<EMonth>(month));
 
-            time_in_day yearlyTime = new time_in_day
-            {
-                hour = retentionHour,
-                minute = retentionMinute,
-                second = 0
-            };
+            time_in_day yearlyTime = StringTotime_in_day(time);
+
+            //time_in_day yearlyTime = new time_in_day
+            //{
+            //    hour = retentionHour,
+            //    minute = retentionMinute,
+            //    second = 0
+            //};
             yearlyTimeRetention.setSnapshotTime(yearlyTime);
 
             retention_time_span validTimeSpan = new retention_time_span

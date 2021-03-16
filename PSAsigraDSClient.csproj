@@ -338,7 +338,7 @@
     <None Include="docs\Unpublish-DSClientEncryptionKeys.md" />
     <None Include="docs\Watch-DSClientActivity.md" />
     <None Include="packages.config" />
-    <None Include="PSAsigraDSClient\CHANGELOG.md" />
+    <None Include="CHANGELOG.md" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>

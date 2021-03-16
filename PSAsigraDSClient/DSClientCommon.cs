@@ -59,6 +59,24 @@ namespace PSAsigraDSClient
             }
         }
 
+        public class GenericBackupSetActivity
+        {
+            public int ActivityId { get; private set; }
+            public string Type { get; private set; }
+            public int BackupSetId { get; private set; }
+            public DateTime StartTime { get; private set; }
+
+            public GenericBackupSetActivity(GenericActivity genericActivity)
+            {
+                running_activity_info activityInfo = genericActivity.getCurrentStatus();
+
+                ActivityId = activityInfo.activity_id;
+                Type = EnumToString(activityInfo.type);
+                BackupSetId = activityInfo.set_id;
+                StartTime = UnixEpochToDateTime(activityInfo.start_time);
+            }
+        }
+
         public static time_in_day StringTotime_in_day(string timeInDay)
         {
             string[] splitTime = timeInDay.Split(':');

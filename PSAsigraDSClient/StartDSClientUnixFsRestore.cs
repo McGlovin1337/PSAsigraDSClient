@@ -7,6 +7,7 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Start, "DSClientUnixFsRestore")]
+    [OutputType(typeof(GenericBackupSetActivity))]
 
     public class StartDSClientUnixFsRestore: BaseDSClientFileSystemRestore
     {
@@ -58,7 +59,8 @@ namespace PSAsigraDSClient
             WriteVerbose("Performing Action: Initiate Restore Request");
             GenericActivity restoreActivity = restoreActivityInitiator.startRestore(dataSourceBrowser, computer, shareMappings.ToArray());
 
-            WriteObject($"Started Backup Set Restore Activity with ActivityId: {restoreActivity.getID()}");
+            if (PassThru)
+                WriteObject(new GenericBackupSetActivity(restoreActivity));
 
             restoreActivity.Dispose();
         }

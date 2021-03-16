@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Start, "DSClientBackupSetDelete")]
+    [OutputType(typeof(GenericBackupSetActivity))]
 
     public class StartDSClientBackupSetDelete: BaseDSClientBackupSetDelResVal
     {
@@ -65,7 +67,8 @@ namespace PSAsigraDSClient
 
             GenericActivity deleteActivity = deleteActivityInitiator.start();
 
-            WriteObject("Started Backup Set Item Delete with ActivityId " + deleteActivity.getID());
+            if (PassThru)
+                WriteObject(new GenericBackupSetActivity(deleteActivity));
 
             deleteActivity.Dispose();
             deleteActivityInitiator.Dispose();

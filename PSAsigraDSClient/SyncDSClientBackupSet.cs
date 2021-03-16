@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsData.Sync, "DSClientBackupSet")]
-    [OutputType(typeof(DSClientStartBackupSetActivity))]
+    [OutputType(typeof(GenericBackupSetActivity))]
 
     public class StartDSClientBackupSetSync: BaseDSClientStartBackupSetActivity
     {
@@ -22,16 +23,15 @@ namespace PSAsigraDSClient
             else
                 syncActivity = backupSet.start_sync(false);
 
-            DSClientStartBackupSetActivity startActivity = new DSClientStartBackupSetActivity(syncActivity.getID(), backupSet.getID(), backupSet.getName());
-
-            WriteObject(startActivity);
+            if (PassThru)
+                WriteObject(new GenericBackupSetActivity(syncActivity));
 
             syncActivity.Dispose();
         }
 
         protected override void ProcessBackupSets(BackupSet[] backupSets)
         {
-            List<DSClientStartBackupSetActivity> startActivity = new List<DSClientStartBackupSetActivity>();
+            List<GenericBackupSetActivity> startActivity = new List<GenericBackupSetActivity>();
 
             foreach (BackupSet set in backupSets)
             {
@@ -42,7 +42,7 @@ namespace PSAsigraDSClient
                     {
                         GenericActivity syncActivity = set.start_sync(DSSystemBased);
 
-                        startActivity.Add(new DSClientStartBackupSetActivity(syncActivity.getID(), set.getID(), set.getName()));
+                        startActivity.Add(new GenericBackupSetActivity(syncActivity));
 
                         syncActivity.Dispose();
                     }
@@ -59,7 +59,7 @@ namespace PSAsigraDSClient
                     {
                         GenericActivity syncActivity = set.start_sync(false);
 
-                        startActivity.Add(new DSClientStartBackupSetActivity(syncActivity.getID(), set.getID(), set.getName()));
+                        startActivity.Add(new GenericBackupSetActivity(syncActivity));
 
                         syncActivity.Dispose();
                     }
@@ -72,7 +72,8 @@ namespace PSAsigraDSClient
                 }
             }
 
-            startActivity.ForEach(WriteObject);
+            if (PassThru)
+                startActivity.ForEach(WriteObject);
         }
     }
 }

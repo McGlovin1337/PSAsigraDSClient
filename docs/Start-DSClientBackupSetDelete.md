@@ -14,13 +14,13 @@ Start a Backup Set Delete Activity
 
 ### BLM
 ```
-Start-DSClientBackupSetDelete [-MoveToBLM] -BLMLabel <String> [-NewPackage] [<CommonParameters>]
+Start-DSClientBackupSetDelete [-MoveToBLM] -BLMLabel <String> [-NewPackage] [-PassThru] [<CommonParameters>]
 ```
 
 ### Selective
 ```
 Start-DSClientBackupSetDelete [-MoveToBLM] [-BLMLabel <String>] [-NewPackage] [[-Items] <String[]>]
- [[-ItemId] <Int64[]>] [<CommonParameters>]
+ [[-ItemId] <Int64[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -121,6 +121,21 @@ Accept wildcard characters: False
 
 ### -NewPackage
 Specify to Create a new BLM Archive Package
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PassThru
+specify to output basic Activity Details
 
 ```yaml
 Type: SwitchParameter

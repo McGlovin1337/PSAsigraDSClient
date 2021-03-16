@@ -14,12 +14,12 @@ Force a Synchronization of a Backup Set
 
 ### Id
 ```
-Sync-DSClientBackupSet [-DSSystemBased] [-BackupSetId] <Int32> [<CommonParameters>]
+Sync-DSClientBackupSet [-DSSystemBased] [-BackupSetId] <Int32> [-PassThru] [<CommonParameters>]
 ```
 
 ### Name
 ```
-Sync-DSClientBackupSet [-DSSystemBased] [-Name] <String[]> [<CommonParameters>]
+Sync-DSClientBackupSet [-DSSystemBased] [-Name] <String[]> [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -78,6 +78,21 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
+### -PassThru
+Specify to output basic Activity Info
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

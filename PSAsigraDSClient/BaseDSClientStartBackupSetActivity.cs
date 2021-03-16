@@ -15,6 +15,9 @@ namespace PSAsigraDSClient
         [SupportsWildcards]
         public string[] Name { get; set; }
 
+        [Parameter(HelpMessage = "Specify to output basic Activity Info")]
+        public SwitchParameter PassThru { get; set; }
+
         protected virtual void ProcessBackupSet(BackupSet backupSet)
         {
             throw new NotImplementedException("ProcessBackupSet Method should be overriden");
@@ -53,20 +56,6 @@ namespace PSAsigraDSClient
                 ProcessBackupSets(backupSets.ToArray());
 
                 backupSets.ToList().ForEach(set => set.Dispose());
-            }
-        }
-
-        protected class DSClientStartBackupSetActivity
-        {
-            public int ActivityId { get; private set; }
-            public int BackupSetId { get; private set; }
-            public string Name { get; private set; }
-
-            public DSClientStartBackupSetActivity(int activityId, int backupSetId, string backupSetName)
-            {
-                ActivityId = activityId;
-                BackupSetId = backupSetId;
-                Name = backupSetName;
             }
         }
     }

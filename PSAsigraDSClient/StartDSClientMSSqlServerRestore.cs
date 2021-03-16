@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Start, "DSClientMSSqlServerRestore")]
+    [OutputType(typeof(GenericBackupSetActivity))]
 
     public class StartDSClientMSSqlServerRestore: BaseDSClientBackupSetRestore
     {
@@ -259,8 +261,12 @@ namespace PSAsigraDSClient
                 sqlRestoreActivityInitiator.setPreserveOriginalLocation(PreserveFileLocation);
                 sqlRestoreActivityInitiator.setLeaveRestoringMode(LeaveDatabaseRestoring);
 
-                sqlRestoreActivityInitiator.startRestore(sqlDataSourceBrowser, computer, shareMapping.ToArray());
+                GenericActivity restoreActivity = sqlRestoreActivityInitiator.startRestore(sqlDataSourceBrowser, computer, shareMapping.ToArray());
 
+                if (PassThru)
+                    WriteObject(new GenericBackupSetActivity(restoreActivity));
+
+                restoreActivity.Dispose();
                 sqlDataSourceBrowser.Dispose();
             }
 

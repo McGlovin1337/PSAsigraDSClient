@@ -11,5 +11,8 @@ namespace PSAsigraDSClient
 
         [Parameter(Position = 1, ParameterSetName = "Selective", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the items to validate by ItemId")]
         public long[] ItemId { get; set; }
+
+        [Parameter(HelpMessage = "specify to output basic Activity Details")]
+        public SwitchParameter PassThru { get; set; }
     }
 }

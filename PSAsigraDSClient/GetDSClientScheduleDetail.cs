@@ -43,6 +43,7 @@ namespace PSAsigraDSClient
                 RecordType = ProgressRecordType.Processing
             };
 
+            Dictionary<int, int> scheduleHash = new Dictionary<int, int>();
             foreach (ScheduleDetail schedule in ScheduleDetails)
             {
                 DetailId++;
@@ -52,11 +53,18 @@ namespace PSAsigraDSClient
                 progressRecord.StatusDescription = $"{DetailId - 1} of {detailCount} processed, {progressRecord.PercentComplete}%";
                 WriteProgress(progressRecord);
 
-                DSClientScheduleDetail.Add(new DSClientScheduleDetail(DetailId, scheduleInfo, schedule));
+                DSClientScheduleDetail scheduleDetail = new DSClientScheduleDetail(DetailId, scheduleInfo, schedule);
+                int detailHash = scheduleDetail.GetHashCode();
+                WriteDebug($"Hash Code for {DetailId}: {detailHash}");
+                scheduleHash.Add(detailHash, DetailId);
+                DSClientScheduleDetail.Add(scheduleDetail);
             }
             progressRecord.RecordType = ProgressRecordType.Completed;
             progressRecord.PercentComplete = (int)Math.Round((double)(((double)DetailId - 1) / (double)detailCount) * 100);
             WriteProgress(progressRecord);
+
+            SessionState.PSVariable.Remove("ScheduleDetail");
+            SessionState.PSVariable.Set("ScheduleDetail", scheduleHash);
 
             DSClientScheduleDetail.ForEach(WriteObject);
 

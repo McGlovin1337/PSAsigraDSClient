@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Start, "DSClientBackupSetValidation")]
     [CmdletBinding(DefaultParameterSetName = "Selective")]
+    [OutputType(typeof(GenericBackupSetActivity))]
 
     public class StartDSClientBackupSetValidation: BaseDSClientBackupSetDelResVal
     {
@@ -55,7 +57,8 @@ namespace PSAsigraDSClient
             else
                 validationActivity = validationActivityInitiator.start(false);
 
-            WriteObject("Started Backup Set Validation Activity with ActivityId " + validationActivity.getID());
+            if (PassThru)
+                WriteObject(new GenericBackupSetActivity(validationActivity));
 
             validationActivity.Dispose();
             validationActivityInitiator.Dispose();

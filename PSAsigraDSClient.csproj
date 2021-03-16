@@ -52,11 +52,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PSAsigraDSClient\AddDSClientArchiveFilter.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientBackupSetNotification.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientDailySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMonthlySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMSSqlServerBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientOneTimeSchedule.cs" />
-    <Compile Include="PSAsigraDSClient\AddDSClientTimeRetentionRule.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientTimeRetentionOption.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientUnixFsBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientUserGroupRole.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientVMwareVADPBackupSetItem.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientSessionCleanup.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientStartBackupSetActivity.cs" />
-    <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionRule.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionOption.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientUnixFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientUserManager.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientVMwareVADPBackupSet.cs" />
@@ -93,13 +94,18 @@
     <Compile Include="PSAsigraDSClient\GetDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientAuditTrail.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientBackupSetItem.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientBackupSetLockStatus.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientBackupSetNotification.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientCurrentLoginRole.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientGridInfo.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientGridLog.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientInitialBackupPath.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientInitialBackupStatus.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientNocSettings.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientOS.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSupportedDataType.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientTimeRetentionOption.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientTools.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientUser.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientUserGroup.cs" />
@@ -108,6 +114,7 @@
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetRestore.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetValidation.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientArchiveFilterRule.cs" />
+    <Compile Include="PSAsigraDSClient\NewDSClientInitialBackupPath.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientMSSqlServerBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientSchedule.cs" />
@@ -160,10 +167,13 @@
     <Compile Include="PSAsigraDSClient\RegisterDSClient.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetItem.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetNotification.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientInitialBackupPath.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSNMPCommunity.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientTimeRetentionOption.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientUser.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientUserGroup.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientUserGroupRole.cs" />
@@ -171,14 +181,17 @@
     <Compile Include="PSAsigraDSClient\RestoreDSClientOrphanedBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\SearchDSClientBackupSetData.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientAdvancedConfig.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientBackupSetNotification.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMultiFactorAuthUser.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientInitialBackupStatus.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientMSSqlServerBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRegistrationInfo.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSMTPNotification.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSNMPHeartbeat.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientTimeRetentionOption.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientUnixFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientUser.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientUserGroup.cs" />
@@ -201,14 +214,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\Add-DSClientArchiveFilter.md" />
+    <None Include="docs\Add-DSClientBackupSetNotification.md" />
     <None Include="docs\Add-DSClientDailySchedule.md" />
     <None Include="docs\Add-DSClientMonthlySchedule.md" />
     <None Include="docs\Add-DSClientMSSqlServerBackupSetItem.md" />
     <None Include="docs\Add-DSClientMultiFactorAuthUser.md" />
     <None Include="docs\Add-DSClientOneTimeSchedule.md" />
-    <None Include="docs\Add-DSClientSchedule.md" />
     <None Include="docs\Add-DSClientSNMPCommunity.md" />
-    <None Include="docs\Add-DSClientTimeRetentionRule.md" />
+    <None Include="docs\Add-DSClientTimeRetentionOption.md" />
     <None Include="docs\Add-DSClientUnixFsBackupSetItem.md" />
     <None Include="docs\Add-DSClientUserGroupRole.md" />
     <None Include="docs\Add-DSClientVMwareVADPBackupSetItem.md" />
@@ -228,6 +241,8 @@
     <None Include="docs\Get-DSClientBackupSet.md" />
     <None Include="docs\Get-DSClientBackupSetInfo.md" />
     <None Include="docs\Get-DSClientBackupSetItem.md" />
+    <None Include="docs\Get-DSClientBackupSetLockStatus.md" />
+    <None Include="docs\Get-DSClientBackupSetNotification.md" />
     <None Include="docs\Get-DSClientBackupSetSessions.md" />
     <None Include="docs\Get-DSClientConfiguration.md" />
     <None Include="docs\Get-DSClientCurrentLoginRole.md" />
@@ -236,6 +251,8 @@
     <None Include="docs\Get-DSClientGridInfo.md" />
     <None Include="docs\Get-DSClientGridLog.md" />
     <None Include="docs\Get-DSClientInfo.md" />
+    <None Include="docs\Get-DSClientInitialBackupPath.md" />
+    <None Include="docs\Get-DSClientInitialBackupStatus.md" />
     <None Include="docs\Get-DSClientLoadSummary.md" />
     <None Include="docs\Get-DSClientMultiFactorAuth.md" />
     <None Include="docs\Get-DSClientNocSettings.md" />
@@ -253,6 +270,7 @@
     <None Include="docs\Get-DSClientSNMPInfo.md" />
     <None Include="docs\Get-DSClientStoredItem.md" />
     <None Include="docs\Get-DSClientSupportedDataType.md" />
+    <None Include="docs\Get-DSClientTimeRetentionOption.md" />
     <None Include="docs\Get-DSClientTools.md" />
     <None Include="docs\Get-DSClientUser.md" />
     <None Include="docs\Get-DSClientUserGroup.md" />
@@ -261,6 +279,7 @@
     <None Include="docs\Initialize-DSClientBackupSetRestore.md" />
     <None Include="docs\Initialize-DSClientBackupSetValidation.md" />
     <None Include="docs\New-DSClientArchiveFilterRule.md" />
+    <None Include="docs\New-DSClientInitialBackupPath.md" />
     <None Include="docs\New-DSClientMSSqlServerBackupSet.md" />
     <None Include="docs\New-DSClientRetentionRule.md" />
     <None Include="docs\New-DSClientSchedule.md" />
@@ -275,10 +294,13 @@
     <None Include="docs\Register-DSClient.md" />
     <None Include="docs\Remove-DSClientBackupSet.md" />
     <None Include="docs\Remove-DSClientBackupSetItem.md" />
+    <None Include="docs\Remove-DSClientBackupSetNotification.md" />
+    <None Include="docs\Remove-DSClientInitialBackupPath.md" />
     <None Include="docs\Remove-DSClientRetentionRule.md" />
     <None Include="docs\Remove-DSClientSchedule.md" />
     <None Include="docs\Remove-DSClientScheduleDetail.md" />
     <None Include="docs\Remove-DSClientSNMPCommunity.md" />
+    <None Include="docs\Remove-DSClientTimeRetentionOption.md" />
     <None Include="docs\Remove-DSClientUser.md" />
     <None Include="docs\Remove-DSClientUserGroup.md" />
     <None Include="docs\Remove-DSClientUserGroupRole.md" />
@@ -286,13 +308,16 @@
     <None Include="docs\Restore-DSClientOrphanedBackupSet.md" />
     <None Include="docs\Search-DSClientBackupSetData.md" />
     <None Include="docs\Set-DSClientAdvancedConfig.md" />
+    <None Include="docs\Set-DSClientBackupSetNotification.md" />
     <None Include="docs\Set-DSClientConfiguration.md" />
     <None Include="docs\Set-DSClientDefaultConfiguration.md" />
+    <None Include="docs\Set-DSClientInitialBackupStatus.md" />
     <None Include="docs\Set-DSClientMSSqlServerBackupSet.md" />
     <None Include="docs\Set-DSClientRegistrationInfo.md" />
     <None Include="docs\Set-DSClientRetentionRule.md" />
     <None Include="docs\Set-DSClientSMTPNotification.md" />
     <None Include="docs\Set-DSClientSNMPHeartbeat.md" />
+    <None Include="docs\Set-DSClientTimeRetentionOption.md" />
     <None Include="docs\Set-DSClientUnixFsBackupSet.md" />
     <None Include="docs\Set-DSClientUser.md" />
     <None Include="docs\Set-DSClientUserGroup.md" />
@@ -313,6 +338,8 @@
     <None Include="docs\Unpublish-DSClientEncryptionKeys.md" />
     <None Include="docs\Watch-DSClientActivity.md" />
     <None Include="packages.config" />
+    <None Include="CHANGELOG.md" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PSAsigraDSClient.psd1">

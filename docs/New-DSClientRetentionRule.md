@@ -14,20 +14,13 @@ Creates a New Retention Rule
 
 ```
 New-DSClientRetentionRule [-Name] <String> [-ArchiveTimeValue <Int32>] [-ArchiveTimeUnit <String>]
- [-ArchiveFilterRule <String>] [-PassThru] [-KeepLastGens <Int32>] [-KeepAllGensTimeValue <Int32>]
- [-KeepAllGensTimeUnit <String>] [-IntervalTimeValue <Int32>] [-IntervalTimeUnit <String>]
- [-IntervalValidForValue <Int32>] [-IntervalValidForUnit <String>] [-WeeklyRetentionDay <String>]
- [-WeeklyRetentionHour <Int32>] [-WeeklyRetentionMinute <Int32>] [-WeeklyValidForValue <Int32>]
- [-WeeklyValidForUnit <String>] [-MonthlyRetentionDay <Int32>] [-MonthlyRetentionHour <Int32>]
- [-MonthlyRetentionMinute <Int32>] [-MonthlyValidForValue <Int32>] [-MonthlyValidForUnit <String>]
- [-YearlyRetentionMonthDay <Int32>] [-YearlyRetentionMonth <String>] [-YearlyRetentionHour <Int32>]
- [-YearlyRetentionMinute <Int32>] [-YearlyValidForValue <Int32>] [-YearlyValidForUnit <String>]
- [-DeleteObsoleteData] [-MoveObsoleteData] [-CreateNewBLMPackage] [-CleanupDeletedFiles]
- [-CleanupDeletedAfterValue <Int32>] [-CleanupDeletedAfterUnit <String>] [-CleanupDeletedKeepGens <Int32>]
- [-DeleteGensPriorToStub] [-DeleteNonStubGens] [-LSRetentionTimeValue <Int32>] [-LSRetentionTimeUnit <String>]
- [-LSCleanupDeletedFiles] [-LSCleanupDeletedAfterValue <Int32>] [-LSCleanupDeletedAfterUnit <String>]
+ [-ArchiveFilterRule <String>] [-PassThru] [-CleanupDeletedFiles] [-CleanupDeletedAfterValue <Int32>]
+ [-CleanupDeletedAfterUnit <String>] [-CleanupDeletedKeepGens <Int32>] [-DeleteGensPriorToStub]
+ [-DeleteNonStubGens] [-LSRetentionTimeValue <Int32>] [-LSRetentionTimeUnit <String>] [-LSCleanupDeletedFiles]
+ [-LSCleanupDeletedAfterValue <Int32>] [-LSCleanupDeletedAfterUnit <String>]
  [-LSCleanupDeletedKeepGens <Int32>] [-DeleteUnreferencedFiles] [-DeleteIncompleteComponents]
- [<CommonParameters>]
+ [-KeepLastGens <Int32>] [-KeepAllGensTimeValue <Int32>] [-KeepAllGensTimeUnit <String>] [-DeleteObsoleteData]
+ [-MoveObsoleteData] [-CreateNewBLMPackage] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -37,12 +30,12 @@ Creates a New Retention Rule, additional time based rules can be added using Add
 
 ### Example 1
 ```powershell
-PS C:\> New-DSClientRetentionRule -Name "7 Day Retention" -KeepLastGens 1 -KeepAllGensTimeValue 1 -KeepAllGensTimeUnit "Days" -IntervalTimeValue 1 -IntervalTimeUnit "Days" -IntervalValidForValue 7 -IntervalValidForUnit "Days" -DeleteObsoleteData -DeleteUnreferenceFiles -DeleteIncompleteComponents
+PS C:\> New-DSClientRetentionRule -Name "7 Day Retention" -KeepLastGens 1 -KeepAllGensTimeValue 12 -KeepAllGensTimeUnit "Hours" -DeleteObsoleteData -DeleteUnreferencedFiles -DeleteIncompleteComponents
 ```
 
 Creates a New Retention Rule Named "7 Day Retention Rule"
 Keeps the latest 1 Generation
-Keeps 1 Generation Every Day for 7 Days
+Keeps All Generations for the last 12 Hours
 Deletes Obsolete Data
 Deletes Unreferenced Files
 Deletes Incomplete Components
@@ -246,68 +239,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -IntervalTimeUnit
-Specify Interval Retention Time Unit
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Minutes, Hours, Days, Weeks, Months, Years
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -IntervalTimeValue
-Specify Interval Retention Time Value
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -IntervalValidForUnit
-Specify Time Unit Interval is Valid For
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Hours, Days, Weeks, Months, Years
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -IntervalValidForValue
-Specify Time Value Interval is Valid For
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -KeepAllGensTimeUnit
 Specify Time Period Unit for keeping ALL Generations
 
@@ -446,82 +377,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -MonthlyRetentionDay
-Specify Day of Month for Monthly Time Retention
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -MonthlyRetentionHour
-Specify Monthly Retention Time Hour
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -MonthlyRetentionMinute
-Specify Monthly Retention Time Minute
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -MonthlyValidForUnit
-Specify Time Unit Monthly Time Retention is Valid for
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Hours, Days, Weeks, Months, Years
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -MonthlyValidForValue
-Specify Time Value Monthly Time Retention is Valid for
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -MoveObsoleteData
 Specify to Move Obsolete Data to BLM
 
@@ -564,175 +419,6 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -WeeklyRetentionDay
-Specify Weekday for Weekly Time Retention
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -WeeklyRetentionHour
-Specify Weekly Retention Time Hour
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -WeeklyRetentionMinute
-Specify Weekly Retention Time Minute
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -WeeklyValidForUnit
-Specify Time Unit Weekly Time Retention is Valid for
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Hours, Days, Weeks, Months, Years
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -WeeklyValidForValue
-Specify Time Value Weekly Time Retention is Valid for
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -YearlyRetentionHour
-Specify Yearly Retention Time Hour
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -YearlyRetentionMinute
-Specify Yearly Retention Time Minute
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -YearlyRetentionMonth
-Specify Month for Yearly Time Retention
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: January, February, March, April, May, June, July, August, September, October, November, December
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -YearlyRetentionMonthDay
-Specify Day of Month for Yearly Time Retention
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -YearlyValidForUnit
-Specify Time Unit Yearly Time Retention is Valid for
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Hours, Days, Weeks, Months, Years
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -YearlyValidForValue
-Specify Time Value Yearly Time Retention is Valid for
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

@@ -13,12 +13,14 @@ Changes the configuration of a Retention Rule
 ## SYNTAX
 
 ```
-Set-DSClientRetentionRule [-RetentionRuleId] <Int32> [-NewName <String>] [-CleanupDeletedFiles]
- [-CleanupDeletedAfterValue <Int32>] [-CleanupDeletedAfterUnit <String>] [-CleanupDeletedKeepGens <Int32>]
- [-DeleteGensPriorToStub] [-DeleteNonStubGens] [-LSRetentionTimeValue <Int32>] [-LSRetentionTimeUnit <String>]
- [-LSCleanupDeletedFiles] [-LSCleanupDeletedAfterValue <Int32>] [-LSCleanupDeletedAfterUnit <String>]
- [-LSCleanupDeletedKeepGens <Int32>] [-DeleteUnreferencedFiles] [-DeleteIncompleteComponents] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Set-DSClientRetentionRule [-RetentionRuleId] <Int32> [-NewName <String>] [-KeepGensByPeriod]
+ [-CleanupDeletedFiles] [-CleanupDeletedAfterValue <Int32>] [-CleanupDeletedAfterUnit <String>]
+ [-CleanupDeletedKeepGens <Int32>] [-DeleteGensPriorToStub] [-DeleteNonStubGens]
+ [-LSRetentionTimeValue <Int32>] [-LSRetentionTimeUnit <String>] [-LSCleanupDeletedFiles]
+ [-LSCleanupDeletedAfterValue <Int32>] [-LSCleanupDeletedAfterUnit <String>]
+ [-LSCleanupDeletedKeepGens <Int32>] [-DeleteUnreferencedFiles] [-DeleteIncompleteComponents]
+ [-KeepLastGens <Int32>] [-KeepAllGensTimeValue <Int32>] [-KeepAllGensTimeUnit <String>] [-DeleteObsoleteData]
+ [-MoveObsoleteData] [-CreateNewBLMPackage] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,6 +34,13 @@ PS C:\> Set-DSClientRetentionRule -RetentionRuleId 5 -NewName "New Retention"
 ```
 
 Renames the Retention Rule with Id 5
+
+### Example 2
+```powershell
+PS C:\> Set-DSClientRetentionRule -RetentionRuleId 5 -KeepLastGens 5 -KeepAllGensTimeValue 2 -KeepAllGensTimeUnit Days
+```
+
+Specifies the Retention Rule with Id 5 to Keep the 5 Most Recent Generations, and to Keep All Generations within the last 2 Days
 
 ## PARAMETERS
 
@@ -305,6 +314,111 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CreateNewBLMPackage
+Specify to create new BLM Packages when moving to BLM
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -DeleteObsoleteData
+Specify to Delete Obsolete Data
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -KeepAllGensTimeUnit
+Specify Time Period Unit for keeping ALL Generations
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -KeepAllGensTimeValue
+Specify Time Period to keep ALL Generations
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -KeepGensByPeriod
+Enable Keeping All Generations by Period
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -KeepLastGens
+Specify the number of most recent Generations to keep
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -MoveObsoleteData
+Specify to Move Obsolete Data to BLM
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

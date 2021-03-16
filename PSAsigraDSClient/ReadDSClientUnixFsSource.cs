@@ -73,8 +73,7 @@ namespace PSAsigraDSClient
                     WriteWarning("Unable to set SSH Credential Options");
                 }
             }
-            else
-                backupSetCredentials.Dispose();
+            backupSetCredentials.Dispose();
 
             // Set the Starting path
             string path = Path ?? "/";
@@ -85,21 +84,20 @@ namespace PSAsigraDSClient
             WriteDebug($"Path: {path}");
 
             // Get the items from the specified path
-            browse_item_info[] browseItems = dataSourceBrowser.getSubItems(computer, path);
-
-            // If this is a Top Level path, get the Special Items i.e. System State, Service Database etc
-            browse_item_info[] specialItems = null;
-            if (path == "")
-                specialItems = dataSourceBrowser.getSpecialSubItems(computer, path);
-
             List<SourceItemInfo> sourceItems = new List<SourceItemInfo>();
-
-            if (specialItems != null)
-                foreach (browse_item_info item in specialItems)
+            browse_item_info singleItem = null;
+            browse_item_info[] browseItems = null;
+            if (string.IsNullOrEmpty(Path))
+            {
+                singleItem = dataSourceBrowser.getItemInfo(computer, path);
+                sourceItems.Add(new SourceItemInfo(Path, singleItem));
+            }
+            else
+            {
+                browseItems = dataSourceBrowser.getSubItems(computer, path);
+                foreach (browse_item_info item in browseItems)
                     sourceItems.Add(new SourceItemInfo(path, item));
-
-            foreach (browse_item_info item in browseItems)
-                sourceItems.Add(new SourceItemInfo(path, item));
+            }
 
             if (Recursive)
             {
@@ -108,9 +106,17 @@ namespace PSAsigraDSClient
                 if (!string.IsNullOrEmpty(path) && path.Last() != '/')
                     path += "/";
 
-                foreach (browse_item_info item in browseItems)
-                    if (!item.isfile)
-                        newPaths.Add(new ItemPath(path + item.name, 0));
+                if (singleItem != null)
+                {
+                    if (!singleItem.isfile)
+                        newPaths.Add(new ItemPath(path, 0));
+                }
+                else if (browseItems != null)
+                {
+                    foreach (browse_item_info item in browseItems)
+                        if (!item.isfile)
+                            newPaths.Add(new ItemPath(path + item.name, 0));
+                }
 
                 int enumeratedCount = 0;
                 int itemCount = 0;
@@ -145,7 +151,8 @@ namespace PSAsigraDSClient
 
                             if (!item.isfile && subItemDepth <= RecursiveDepth)
                             {
-                                newPaths.Insert(index, new ItemPath(currentPath.Path + "/" + item.name, subItemDepth));
+                                string itemPath = (currentPath.Path != item.name) ? $"/{item.name}" : $"{currentPath.Path}/{item.name}";
+                                newPaths.Insert(index, new ItemPath(itemPath, subItemDepth));
                                 index++;
                             }
                         }

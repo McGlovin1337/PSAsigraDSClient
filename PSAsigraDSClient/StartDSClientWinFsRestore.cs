@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -42,7 +43,8 @@ namespace PSAsigraDSClient
             WriteVerbose("Performing Action: Initiate Restore Request");
             GenericActivity restoreActivity = win32FSRestoreActivityInitiator.startRestore(dataSourceBrowser, computer, shareMappings.ToArray());
 
-            WriteObject($"Started Backup Set Restore Activity with ActivityId: {restoreActivity.getID()}");
+            if (PassThru)
+                WriteObject(new GenericBackupSetActivity(restoreActivity));
 
             restoreActivity.Dispose();
             win32FSRestoreActivityInitiator.Dispose();

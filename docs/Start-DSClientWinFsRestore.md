@@ -17,7 +17,8 @@ Start-DSClientWinFsRestore [-MaxPendingAsyncIO <Int32>] [-ReadThreads <Int32>] [
  [-OverwriteJunctionPoint] [-SkipOfflineFiles] [[-ItemId] <Int64[]>] [-DestinationPath <String>]
  -OverwriteOption <String> [-RestoreMethod <String>] [-RestorePermissions <String>] [[-Items] <String[]>]
  -Computer <String> [-Credential <PSCredential>] [-TruncateSource <Int32>] -RestoreReason <String>
- [-RestoreClassification <String>] [-UseDetailedLog] [-LocalStorageMethod <String>] [<CommonParameters>]
+ [-RestoreClassification <String>] [-UseDetailedLog] [-LocalStorageMethod <String>] [-PassThru]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -297,6 +298,21 @@ Accept wildcard characters: False
 
 ### -UseDetailedLog
 Specify to use Detailed Log
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PassThru
+Specify to output basic Activity Info
 
 ```yaml
 Type: SwitchParameter

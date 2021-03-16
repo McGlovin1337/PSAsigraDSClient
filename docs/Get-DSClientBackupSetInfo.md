@@ -14,19 +14,14 @@ Returns an overview of configured Backup Sets
 
 ### General (Default)
 ```
-Get-DSClientBackupSetInfo [[-Computer] <String>] [[-DataType] <String>] [-Enabled] [-Synchronized]
- [[-ScheduleId] <Int32>] [[-RetentionRuleId] <Int32>] [[-SetType] <String>] [-UseLocalStorage] [-IsCDP]
- [-CreatedByPolicy] [<CommonParameters>]
+Get-DSClientBackupSetInfo [[-Computer] <String>] [[-Name] <String>] [[-DataType] <String>] [-Enabled]
+ [-Synchronized] [[-ScheduleId] <Int32>] [[-RetentionRuleId] <Int32>] [[-SetType] <String>] [-UseLocalStorage]
+ [-IsCDP] [-CreatedByPolicy] [<CommonParameters>]
 ```
 
 ### Id
 ```
 Get-DSClientBackupSetInfo [-BackupSetId] <Int32> [<CommonParameters>]
-```
-
-### Name
-```
-Get-DSClientBackupSetInfo [-Name] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -137,10 +132,10 @@ Backup Sets with the given Name
 
 ```yaml
 Type: String
-Parameter Sets: Name
+Parameter Sets: General
 Aliases:
 
-Required: True
+Required: False
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName)

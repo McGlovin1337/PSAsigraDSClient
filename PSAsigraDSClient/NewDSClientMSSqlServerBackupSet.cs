@@ -55,6 +55,21 @@ namespace PSAsigraDSClient
         [Parameter(HelpMessage = "Specify to Backup Transaction Log")]
         public SwitchParameter BackupLog { get; set; }
 
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
+        [ValidateSet("Email", "Page", "Broadcast", "Event")]
+        public string NotificationMethod { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Recipient")]
+        public string NotificationRecipient { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Completion Status to Notify on")]
+        [ValidateSet("Incomplete", "CompletedWithErrors", "Successful", "CompletedWithWarnings")]
+        public string[] NotificationCompletion { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Email Notification Options")]
+        [ValidateSet("DetailedInfo", "AttachDetailedLog", "CompressAttachment", "HtmlFormat")]
+        public string[] NotificationEmailOptions { get; set; }
+
         protected override void ProcessMsSqlBackupSet()
         {
             // Create Data Source Browser to Resolve Computer (expandToFullPath method doesn't work when data browser is SQLServer)
@@ -97,9 +112,13 @@ namespace PSAsigraDSClient
                 string dbPass = DbCredential.GetNetworkCredential().Password;
                 databaseCredentials.setCredentials(dbUser, dbPass);
                 setCreation.setDBCredentials(databaseCredentials);
+                databaseCredentials.Dispose();
             }
             else
                 setCreation.setDBCredentials(backupSetCredentials);
+
+            backupSetCredentials.Dispose();
+            setCreation.Dispose();
 
             // Process Common Backup Set Parameters
             newBackupSet = ProcessBaseBackupSetParams(MyInvocation.BoundParameters, newBackupSet);
@@ -122,6 +141,7 @@ namespace PSAsigraDSClient
 
                 newSqlBackupSet.setItems(backupSetItems.ToArray());
             }
+            dataSourceBrowser.Dispose();
 
             // Set the Schedule and Retention Rules
             if (MyInvocation.BoundParameters.ContainsKey("ScheduleId"))
@@ -177,8 +197,6 @@ namespace PSAsigraDSClient
                 WriteObject(new DSClientBackupSetBasicProps(newSqlBackupSet));
 
             newSqlBackupSet.Dispose();
-            setCreation.Dispose();
-            dataSourceBrowser.Dispose();
         }
     }
 }

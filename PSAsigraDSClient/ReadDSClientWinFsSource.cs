@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -16,7 +17,7 @@ namespace PSAsigraDSClient
             DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__FileSystem);
 
             // Try to resolve the supplied Computer
-            string computer = dataSourceBrowser.expandToFullPath(Computer);
+            string computer = ResolveWinComputer(Computer);
             computer = dataSourceBrowser.expandToFullPath(computer);
             WriteVerbose($"Notice: Specified Computer resolved to: {computer}");
 

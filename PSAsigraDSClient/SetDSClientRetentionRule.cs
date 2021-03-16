@@ -2,7 +2,6 @@
 using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
-using static PSAsigraDSClient.BaseDSClientTimeRetentionRule;
 
 namespace PSAsigraDSClient
 {
@@ -17,6 +16,9 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty]
         public string NewName { get; set; }
 
+        [Parameter(HelpMessage = "Enable Keeping All Generations by Period")]
+        public SwitchParameter KeepGensByPeriod { get; set; }
+
         protected override void ProcessRetentionRule(RetentionRule[] retentionRules)
         {
             // Perform Parameter Validation
@@ -26,6 +28,15 @@ namespace PSAsigraDSClient
 
             if (MyInvocation.BoundParameters.ContainsKey("DeleteGensPriorToStub") && MyInvocation.BoundParameters.ContainsKey("DeleteNonStubGens"))
                 throw new ParameterBindingException("DeleteGensPriorToStub cannot be specified with DeleteNonStubGens");
+
+            if ((MyInvocation.BoundParameters.ContainsKey("KeepAllGensTimeValue") && KeepAllGensTimeUnit == null) || (!MyInvocation.BoundParameters.ContainsKey("KeepAllGensTimeValue") && KeepAllGensTimeUnit != null))
+                throw new ParameterBindingException("KeepAllGensTimeValue and KeepAllGensTimeUnit must be specified together");
+
+            if ((MyInvocation.BoundParameters.ContainsKey("KeepGensByPeriod") && !KeepGensByPeriod) && MyInvocation.BoundParameters.ContainsKey("KeepAllGensTimeValue"))
+                throw new ParameterBindingException("Specifying KeepAllGensTimeValue implies KeepGensByPeriod as True, but KeepGensByPeriod is False");
+
+            if (MyInvocation.BoundParameters.ContainsKey("MoveObsoleteData") && MyInvocation.BoundParameters.ContainsKey("DeleteObsoleteData"))
+            throw new ParameterBindingException("MoveObsoleteData cannot be specified with DeleteObsoleteData");
 
             /* API appears to error when creating or editing most Retention Rule settings unless a 2FA Verification code has been set
              * So we send a Dummy validation code, after which we can successfully add and change Retention Rule configuration */
@@ -132,6 +143,32 @@ namespace PSAsigraDSClient
             if (MyInvocation.BoundParameters.ContainsKey("DeleteIncompleteComponents"))
                 if (ShouldProcess($"{retentionRuleName}", $"Set Delete Incomplete Components to '{DeleteIncompleteComponents}'"))
                     retentionRule.setDeleteIncompleteComponents(DeleteIncompleteComponents);
+
+            // Time Retention Config
+            if (MyInvocation.BoundParameters.ContainsKey("KeepGensByPeriod"))
+                if (ShouldProcess($"{retentionRuleName}", $"Set Keep All Generations within Period to '{KeepGensByPeriod}'"))
+                    retentionRule.setKeepGenerationsByPeriod(KeepGensByPeriod);
+
+            if (MyInvocation.BoundParameters.ContainsKey("KeepLastGens"))
+                if (ShouldProcess($"{retentionRuleName}", $"Set Keep Number of Most Recent Generations to '{KeepLastGens}'"))
+                    retentionRule.setKeepLastGenerations(KeepLastGens);
+
+            if (MyInvocation.BoundParameters.ContainsKey("KeepAllGensTimeValue"))
+                if (ShouldProcess($"{retentionRuleName}", $"Set Keeping All Generations for Period of '{KeepAllGensTimeValue} {KeepAllGensTimeUnit}'"))
+                    KeepAllGenerationsRule(retentionRule, KeepAllGensTimeValue, KeepAllGensTimeUnit);
+
+            // Move or Delete Obsolete Data
+            if (DeleteObsoleteData)
+                if (ShouldProcess($"{retentionRuleName}", $"Set Deletion of Obsolete Data to '{DeleteObsoleteData}'"))
+                    retentionRule.setMoveObsoleteDataToBLM(false);
+
+            if (MoveObsoleteData)
+                if (ShouldProcess($"{retentionRuleName}", $"Set Move Obsolete Data to BLM to '{MoveObsoleteData}'"))
+                    retentionRule.setMoveObsoleteDataToBLM(true);
+
+            if (MyInvocation.BoundParameters.ContainsKey("CreateNewBLMPackage"))
+                if (ShouldProcess($"{retentionRuleName}", $"Set Create New BLM Package to '{CreateNewBLMPackage}'"))
+                    retentionRule.setCreateNewBLMPackage(CreateNewBLMPackage);
 
             WriteVerbose("Notice: Retention Rule Settings applied");
             // Done

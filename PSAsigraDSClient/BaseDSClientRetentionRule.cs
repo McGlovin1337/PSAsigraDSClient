@@ -15,6 +15,19 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
+            /* API appears to error when creating or editing most Retention Rule settings unless a 2FA Verification code has been set
+             * So we send a Dummy validation code, after which we can successfully add and change Retention Rule configuration */
+            TFAManager tFAManager = DSClientSession.getTFAManager();
+            try
+            {
+                tFAManager.validateCode("bleh", ERequestCodeEmailType.ERequestCodeEmailType__UNDEFINED);
+            }
+            catch
+            {
+                //Do nothing
+            }
+            tFAManager.Dispose();
+
             RetentionRuleManager DSClientRetentionMgr = DSClientSession.getRetentionRuleManager();
 
             WriteVerbose("Performing Action: Retrieve defined Retention Rules");
@@ -52,6 +65,7 @@ namespace PSAsigraDSClient
             public bool LSCleanupRemovedFiles { get; private set; }
             public DSClientRetentionTimeSpan LSCleanupRemovedafter { get; private set; }
             public int LSCleanupRemovedKeep { get; private set; }
+            public bool DeleteObsoleteData { get; private set; }
             public bool MoveObsoleteToBLM { get; private set; }
             public bool OnlyCompareBackupTime { get; private set; }
 
@@ -99,6 +113,9 @@ namespace PSAsigraDSClient
                     }
                 }
 
+                // Delete or Move Obsolete Data
+                bool obsoleteData = retentionRule.getMoveObsoleteDataToBLM();
+
                 // Assign Property Values
                 RetentionRuleId = retentionRule.getID();
                 Name = retentionRule.getName();
@@ -125,7 +142,8 @@ namespace PSAsigraDSClient
                 LSCleanupRemovedFiles = retentionRule.getLSCleanupRemovedFiles();
                 LSCleanupRemovedafter = new DSClientRetentionTimeSpan(retentionRule.getLSCleanupRemovedAfter());
                 LSCleanupRemovedKeep = retentionRule.getLSCleanupRemovedKeep();
-                MoveObsoleteToBLM = retentionRule.getMoveObsoleteDataToBLM();
+                DeleteObsoleteData = !obsoleteData;
+                MoveObsoleteToBLM = obsoleteData;
                 OnlyCompareBackupTime = retentionRule.getOnlyCompareBackupTime();
             }
 
@@ -211,6 +229,80 @@ namespace PSAsigraDSClient
             }
         }
 
+        protected class TimeRetentionOverview
+        {
+            private readonly retention_time_span _validFor;
+            private readonly ETimeRetentionType _type;
+            public int TimeRetentionId { get; private set; }
+            public string Type { get; private set; }
+            public IntervalTimeRetention Interval { get; private set; }
+            public WeeklyTimeRetention Weekly { get; private set; }
+            public MonthlyTimeRetention Monthly { get; private set; }
+            public YearlyTimeRetention Yearly { get; private set; }
+
+            public TimeRetentionOverview(TimeRetentionOption timeRetention)
+            {
+                _validFor = timeRetention.getValidFor();
+                _type = timeRetention.getType();
+
+                Type = EnumToString(_type);
+                Interval = (_type == ETimeRetentionType.ETimeRetentionType__Interval) ? new IntervalTimeRetention(IntervalTimeRetentionOption.from(timeRetention)) : null;
+                Weekly = (_type == ETimeRetentionType.ETimeRetentionType__Weekly) ? new WeeklyTimeRetention(WeeklyTimeRetentionOption.from(timeRetention)) : null;
+                Monthly = (_type == ETimeRetentionType.ETimeRetentionType__Monthly) ? new MonthlyTimeRetention(MonthlyTimeRetentionOption.from(timeRetention)) : null;
+                Yearly = (_type == ETimeRetentionType.ETimeRetentionType__Yearly) ? new YearlyTimeRetention(YearlyTimeRetentionOption.from(timeRetention)) : null;
+            }
+
+            public TimeRetentionOverview(int id, TimeRetentionOption timeRetention)
+            {
+                _validFor = timeRetention.getValidFor();
+                _type = timeRetention.getType();            
+
+                TimeRetentionId = id;
+                Type = EnumToString(_type);
+                Interval = (_type == ETimeRetentionType.ETimeRetentionType__Interval) ? new IntervalTimeRetention(IntervalTimeRetentionOption.from(timeRetention)) : null;
+                Weekly = (_type == ETimeRetentionType.ETimeRetentionType__Weekly) ? new WeeklyTimeRetention(WeeklyTimeRetentionOption.from(timeRetention)) : null;
+                Monthly = (_type == ETimeRetentionType.ETimeRetentionType__Monthly) ? new MonthlyTimeRetention(MonthlyTimeRetentionOption.from(timeRetention)) : null;
+                Yearly = (_type == ETimeRetentionType.ETimeRetentionType__Yearly) ? new YearlyTimeRetention(YearlyTimeRetentionOption.from(timeRetention)) : null;
+            }
+
+            public override int GetHashCode()
+            {
+                int multiply = 7;
+                int typeHash = _type.GetHashCode();
+                int periodHash = _validFor.period.GetHashCode();
+                int unitHash = _validFor.unit.GetHashCode();
+                int finalHash = (multiply * (typeHash + periodHash + unitHash * Type.GetHashCode())).GetHashCode();
+
+                return finalHash;
+            }
+        }
+
+        protected class RetentionPSSession
+        {
+            public Dictionary<int, int> HashSet { get; private set; }
+            public RetentionRule RetentionRule { get; private set; }
+
+            public RetentionPSSession(RetentionRule retentionRule)
+            {
+                int id = 1;
+                Dictionary<int, int> keyValues = new Dictionary<int, int>();
+                TimeRetentionOption[] timeRetentions = retentionRule.getTimeRetentions();
+                int ruleHash = retentionRule.getName().GetHashCode();
+                foreach (TimeRetentionOption timeRetention in timeRetentions)
+                {
+                    retention_time_span validFor = timeRetention.getValidFor();
+                    int typeHash = timeRetention.getType().ToString().GetHashCode();
+                    int validForHash = validFor.period.GetHashCode() + validFor.unit.GetHashCode();
+                    int finalHash = (typeHash + validForHash + ruleHash).GetHashCode();
+                    keyValues.Add(finalHash, id);
+                    id++;
+                }
+
+                HashSet = keyValues;
+                RetentionRule = retentionRule;
+            }
+        }
+
         public class DSClientArchiveRule
         {
             public DSClientRetentionTimeSpan TimeSpan { get; private set; }
@@ -258,6 +350,129 @@ namespace PSAsigraDSClient
                 return day.ToString();
 
             return Day;
+        }
+
+        protected static IntervalTimeRetentionOption IntervalTimeRetentionRule(IntervalTimeRetentionOption intervalTimeRetention, int timeValue, string timeUnit, int validForValue, string validForUnit)
+        {
+            retention_time_span intTimeSpan = new retention_time_span
+            {
+                period = timeValue,
+                unit = StringToEnum<RetentionTimeUnit>(timeUnit)
+            };
+            intervalTimeRetention.setRepeatTime(intTimeSpan);
+
+            retention_time_span validTimeSpan = new retention_time_span
+            {
+                period = validForValue,
+                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
+            };
+            intervalTimeRetention.setValidFor(validTimeSpan);
+
+            return intervalTimeRetention;
+        }
+
+        protected static WeeklyTimeRetentionOption WeeklyTimeRetentionRule(WeeklyTimeRetentionOption weeklyTimeRetention, string weekDay, string time, int validForValue, string validForUnit)
+        {
+            weeklyTimeRetention.setTriggerDay(StringToEnum<EWeekDay>(weekDay));
+
+            time_in_day weeklyTime = StringTotime_in_day(time);
+            //time_in_day weeklyTime = new time_in_day
+            //{
+            //    hour = retentionHour,
+            //    minute = retentionMinute,
+            //    second = 0
+            //};
+            weeklyTimeRetention.setSnapshotTime(weeklyTime);
+
+            retention_time_span validTimeSpan = new retention_time_span
+            {
+                period = validForValue,
+                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
+            };
+            weeklyTimeRetention.setValidFor(validTimeSpan);
+
+            return weeklyTimeRetention;
+        }
+
+        protected static MonthlyTimeRetentionOption MonthlyTimeRetentionRule(MonthlyTimeRetentionOption monthlyTimeRetention, int retentionDay, string time, int validForValue, string validForUnit)
+        {
+            monthlyTimeRetention.setDayOfMonth(retentionDay);
+            monthlyTimeRetention.setSnapshotTime(StringTotime_in_day(time));
+
+            retention_time_span validTimeSpan = new retention_time_span
+            {
+                period = validForValue,
+                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
+            };
+            monthlyTimeRetention.setValidFor(validTimeSpan);
+
+            return monthlyTimeRetention;
+        }
+
+        protected static YearlyTimeRetentionOption YearlyTimeRetentionRule(YearlyTimeRetentionOption yearlyTimeRetention, int monthDay, string month, string time, int validForValue, string validForUnit)
+        {
+            yearlyTimeRetention.setDayOfMonth(monthDay);
+
+            yearlyTimeRetention.setTriggerMonth(StringToEnum<EMonth>(month));
+
+            time_in_day yearlyTime = StringTotime_in_day(time);
+
+            //time_in_day yearlyTime = new time_in_day
+            //{
+            //    hour = retentionHour,
+            //    minute = retentionMinute,
+            //    second = 0
+            //};
+            yearlyTimeRetention.setSnapshotTime(yearlyTime);
+
+            retention_time_span validTimeSpan = new retention_time_span
+            {
+                period = validForValue,
+                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
+            };
+            yearlyTimeRetention.setValidFor(validTimeSpan);
+
+            return yearlyTimeRetention;
+        }
+
+        protected static void KeepAllGenerationsRule(RetentionRule retentionRule, int keepAllGensTimeValue, string keepAllGensTimeUnit)
+        {
+            retentionRule.setKeepGenerationsByPeriod(true);
+
+            retention_time_span timeSpan = new retention_time_span
+            {
+                period = keepAllGensTimeValue,
+                unit = StringToEnum<RetentionTimeUnit>(keepAllGensTimeUnit)
+            };
+            retentionRule.setKeepPeriodTimeSpan(timeSpan);
+        }
+
+        protected static TimeRetentionOption SelectTimeRetentionOption(RetentionRule retentionRule, int timeRetentionId, Dictionary<int, int> optionHashes)
+        {
+            TimeRetentionOption timeRetentionOption = null;
+
+            // Determine the Hash Codes for the Rule Name and Id
+            int ruleNameHash = retentionRule.getName().GetHashCode();
+            int ruleIdHash = retentionRule.getID().GetHashCode();
+
+            // Get all the Time Retention Options in this Retention Rule
+            TimeRetentionOption[] timeRetentions = retentionRule.getTimeRetentions();
+
+            foreach (TimeRetentionOption timeRetention in timeRetentions)
+            {
+                TimeRetentionOverview timeRetentionOverview = new TimeRetentionOverview(timeRetention);
+
+                int optionHash = timeRetentionOverview.GetHashCode();
+
+                int completeHash = optionHash * ruleNameHash * ruleIdHash;
+
+                optionHashes.TryGetValue(completeHash, out int optionId);
+
+                if (optionId == timeRetentionId)
+                    timeRetentionOption = timeRetention;
+            }
+
+            return timeRetentionOption;
         }
     }
 }

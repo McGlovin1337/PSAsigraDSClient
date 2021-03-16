@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
 
     public class StopDSClientActivity: DSClientCmdlet
     {
-        [Parameter(Position = 0, Mandatory = true, HelpMessage = "The Id of the Activity to Stop")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Id of the Activity to Stop")]
         [ValidateNotNullOrEmpty]
         public int ActivityId { get; set; }
 

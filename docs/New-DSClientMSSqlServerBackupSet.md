@@ -16,15 +16,15 @@ Creates a New MS SQL Server Backup Set
 New-DSClientMSSqlServerBackupSet [-Name] <String> [-Computer] <String> [-SetType] <String>
  [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>]
  [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-RunDBCC] [-DBCCErrorStop]
- [-BackupLog] [-Credential <PSCredential>] [-DbCredential <PSCredential>] [-DumpMethod <String>]
- [-DumpPath <String>] -BackupMethod <String> [-FullMonthlyDay <Int32>] [-FullMonthlyTime <String>]
- [-FullWeeklyDay <String>] [-FullWeeklyTime <String>] [-FullPeriod <String>] [-FullPeriodValue <Int32>]
- [-SkipWeekDays <String[]>] [-SkipWeekDaysFrom <String>] [-SkipWeekDaysTo <String>] -Compression <String>
- [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup]
- [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations]
- [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache] [-NotificationMethod <String>]
- [-NotificationRecipient <String>] [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>]
- [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
+ [-BackupLog] [-NotificationMethod <String>] [-NotificationRecipient <String>]
+ [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>] [-Credential <PSCredential>]
+ [-DbCredential <PSCredential>] [-DumpMethod <String>] [-DumpPath <String>] -BackupMethod <String>
+ [-FullMonthlyDay <Int32>] [-FullMonthlyTime <String>] [-FullWeeklyDay <String>] [-FullWeeklyTime <String>]
+ [-FullPeriod <String>] [-FullPeriodValue <Int32>] [-SkipWeekDays <String[]>] [-SkipWeekDaysFrom <String>]
+ [-SkipWeekDaysTo <String>] -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>]
+ [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>]
+ [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>]
+ [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

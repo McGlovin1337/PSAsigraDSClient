@@ -15,13 +15,13 @@ Starts an On-Demand Backup
 ### Id
 ```
 Start-DSClientBackup [-PerformRetention] [-PreScan] [-ErrorLimit <Int32>] [-UseDetailedLog]
- [-StartTime <DateTime>] [-BackupSetId] <Int32> [<CommonParameters>]
+ [-StartTime <DateTime>] [-BackupSetId] <Int32> [-PassThru] [<CommonParameters>]
 ```
 
 ### Name
 ```
 Start-DSClientBackup [-PerformRetention] [-PreScan] [-ErrorLimit <Int32>] [-UseDetailedLog]
- [-StartTime <DateTime>] [-Name] <String[]> [<CommonParameters>]
+ [-StartTime <DateTime>] [-Name] <String[]> [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -130,6 +130,21 @@ Accept wildcard characters: False
 
 ### -UseDetailedLog
 Specify to use Detailed Log
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PassThru
+Specify to output basic Activity Info
 
 ```yaml
 Type: SwitchParameter

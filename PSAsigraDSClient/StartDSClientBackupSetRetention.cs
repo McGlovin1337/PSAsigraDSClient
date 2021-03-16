@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Start, "DSClientBackupSetRetention")]
-    [OutputType(typeof(DSClientStartBackupSetActivity))]
+    [OutputType(typeof(GenericBackupSetActivity))]
 
     public class StartDSClientBackupSetRetention: BaseDSClientStartBackupSetActivity
     {
@@ -14,16 +15,15 @@ namespace PSAsigraDSClient
             WriteVerbose("Performing Action: Start Backup Set Retention Activity");
             GenericActivity retentionActivity = backupSet.enforceRetention();
 
-            DSClientStartBackupSetActivity startActivity = new DSClientStartBackupSetActivity(retentionActivity.getID(), backupSet.getID(), backupSet.getName());
-
-            WriteObject(startActivity);
+            if (PassThru)
+                WriteObject(new GenericBackupSetActivity(retentionActivity));
 
             retentionActivity.Dispose();
         }
 
         protected override void ProcessBackupSets(BackupSet[] backupSets)
         {
-            List<DSClientStartBackupSetActivity> startActivity = new List<DSClientStartBackupSetActivity>();
+            List<GenericBackupSetActivity> startActivity = new List<GenericBackupSetActivity>();
 
             foreach (BackupSet set in backupSets)
             {
@@ -32,7 +32,7 @@ namespace PSAsigraDSClient
                     WriteVerbose("Performing Action: Start Backup Set Retention Activity");
                     GenericActivity retentionActivity = set.enforceRetention();
 
-                    startActivity.Add(new DSClientStartBackupSetActivity(retentionActivity.getID(), set.getID(), set.getName()));
+                    startActivity.Add(new GenericBackupSetActivity(retentionActivity));
 
                     retentionActivity.Dispose();
                 }
@@ -44,7 +44,8 @@ namespace PSAsigraDSClient
                 }
             }
 
-            startActivity.ForEach(WriteObject);
+            if (PassThru)
+                startActivity.ForEach(WriteObject);
         }
     }
 }

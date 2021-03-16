@@ -14,12 +14,12 @@ Start a Backup Set Data Validation Activity
 
 ### Full
 ```
-Start-DSClientBackupSetValidation [-FullValidation] [<CommonParameters>]
+Start-DSClientBackupSetValidation [-FullValidation] [-PassThru] [<CommonParameters>]
 ```
 
 ### Selective
 ```
-Start-DSClientBackupSetValidation [[-Items] <String[]>] [[-ItemId] <Int64[]>] [<CommonParameters>]
+Start-DSClientBackupSetValidation [[-Items] <String[]>] [[-ItemId] <Int64[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -78,6 +78,21 @@ Required: False
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
+### -PassThru
+specify to output basic Activity Details
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

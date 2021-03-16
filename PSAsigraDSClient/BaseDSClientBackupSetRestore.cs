@@ -35,6 +35,9 @@ namespace PSAsigraDSClient
         [ValidateSet("None", "ConnectDsSysFirst", "ConnectDsSysNeeded", "ContinueWithoutDsSys")]
         public string LocalStorageMethod { get; set; } = "ConnectDsSysNeeded";
 
+        [Parameter(HelpMessage = "Specify to output basic Activity Info")]
+        public SwitchParameter PassThru { get; set; }
+
         protected ERestoreReason StringToERestoreReason(string reason)
         {
             ERestoreReason Reason;

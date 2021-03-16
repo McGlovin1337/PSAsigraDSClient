@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -48,13 +49,29 @@ namespace PSAsigraDSClient
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify if Regex Exclusions Items are case insensitive")]
         public SwitchParameter RegexCaseInsensitive { get; set; }
 
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
+        [ValidateSet("Email", "Page", "Broadcast", "Event")]
+        public string NotificationMethod { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Recipient")]
+        public string NotificationRecipient { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Completion Status to Notify on")]
+        [ValidateSet("Incomplete", "CompletedWithErrors", "Successful", "CompletedWithWarnings")]
+        public string[] NotificationCompletion { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Email Notification Options")]
+        [ValidateSet("DetailedInfo", "AttachDetailedLog", "CompressAttachment", "HtmlFormat")]
+        public string[] NotificationEmailOptions { get; set; }
+
         protected override void ProcessWinFsBackupSet()
         {
             // Create a Data Source Browser
             DataSourceBrowser dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__FileSystem);
 
             // Try to resolve the supplied Computer
-            string computer = dataSourceBrowser.expandToFullPath(Computer);
+            string computer = ResolveWinComputer(Computer);
+            computer = dataSourceBrowser.expandToFullPath(computer);
             WriteVerbose($"Notice: Specified Computer resolved to: {computer}");
 
             // Set the Credentials
@@ -72,10 +89,12 @@ namespace PSAsigraDSClient
                 backupSetCredentials.setUsingClientCredentials(true);
             }
             dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
+            backupSetCredentials.Dispose();
 
             // Create the Backup Set Object
             DataBrowserWithSetCreation setCreation = DataBrowserWithSetCreation.from(dataSourceBrowser);
             BackupSet newBackupSet = setCreation.createBackupSet(computer);
+            setCreation.Dispose();
 
             // Process the Common Backup Set Parameters
             newBackupSet = ProcessBaseBackupSetParams(MyInvocation.BoundParameters, newBackupSet);
@@ -96,6 +115,7 @@ namespace PSAsigraDSClient
 
                 newBackupSet.setItems(backupSetItems.ToArray());
             }
+            dataSourceBrowser.Dispose();
 
             // Set the Schedule and Retention Rules
             if (MyInvocation.BoundParameters.ContainsKey("ScheduleId"))
@@ -125,7 +145,6 @@ namespace PSAsigraDSClient
                 WriteObject(new DSClientBackupSetBasicProps(newWin32BackupSet));
 
             newWin32BackupSet.Dispose();
-            dataSourceBrowser.Dispose();
         }
     }
 }

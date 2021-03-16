@@ -12,8 +12,14 @@ namespace PSAsigraDSClient
             // Remove any Restore Data Types from Session State
             SessionState.PSVariable.Remove("RestoreType");
 
+            // Remove any Time Retention Options from Session State
+            SessionState.PSVariable.Remove("TimeRetention");
+
+            // Remove any Schedule Details from Session State
+            SessionState.PSVariable.Remove("ScheduleDetail");
+
             // Check for a previous Backup Set Restore View stored in Session State
-            WriteVerbose("Performing Action: Check for previous DS-Client Validation View Sessions");
+            WriteVerbose("Performing Action: Check for previous DS-Client Restore View Sessions");
             BackupSetRestoreView previousRestoreSession = SessionState.PSVariable.GetValue("RestoreView", null) as BackupSetRestoreView;
 
             // If a previous session is found, remove it

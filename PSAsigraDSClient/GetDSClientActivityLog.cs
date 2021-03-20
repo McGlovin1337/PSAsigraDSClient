@@ -12,16 +12,16 @@ namespace PSAsigraDSClient
 
     public class GetDSClientActivityLog: BaseDSClientActivityLog
     {
-        [Parameter(Position = 0, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Start Date & Time")]
-        public DateTime StartTime { get; set; } = DateTime.Parse("01/01/1970");
-
-        [Parameter(Position = 1, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify End Date & Time")]
-        public DateTime EndTime { get; set; } = DateTime.Now;
-
-        [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify ActivityId")]
+        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify ActivityId")]
         public int ActivityId { get; set; }
 
-        [Parameter(ParameterSetName = "OtherFilters", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Activity Type to Filter on")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Start Date & Time")]
+        public DateTime StartTime { get; set; } = DateTime.Parse("01/01/1970");
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify End Date & Time")]
+        public DateTime EndTime { get; set; } = DateTime.Now;
+
+        [Parameter(Position = 0, ParameterSetName = "OtherFilters", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Activity Type to Filter on")]
         [ValidateSet("Backup", "CDPBackup", "Restore", "DailyAdmin", "WeeklyAdmin", "Delete", "Recovery", "Synchronization", "DiscTapeRequest", "DiscTapeRestore", "BLMRequest", "OnlineFileSummary", "Registration", "LANAnalyze", "BLMRestore", "Validation", "Retention", "TapeConversion", "CacheCopy", "CacheMonitor", "AppAutoUpgrade", "Convert", "CancelConvert", "CleanLocalOnlyTrash", "Connection", "TestConnection", "CloudDatabaseUpload", "LANResourceDiscovery", "SnapshotRestore", "SnapshotTransfer", "CancelSnapshotTransfer")]
         public string[] ActivityType { get; set; }
 

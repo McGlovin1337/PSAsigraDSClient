@@ -277,32 +277,6 @@ namespace PSAsigraDSClient
             }
         }
 
-        protected class RetentionPSSession
-        {
-            public Dictionary<int, int> HashSet { get; private set; }
-            public RetentionRule RetentionRule { get; private set; }
-
-            public RetentionPSSession(RetentionRule retentionRule)
-            {
-                int id = 1;
-                Dictionary<int, int> keyValues = new Dictionary<int, int>();
-                TimeRetentionOption[] timeRetentions = retentionRule.getTimeRetentions();
-                int ruleHash = retentionRule.getName().GetHashCode();
-                foreach (TimeRetentionOption timeRetention in timeRetentions)
-                {
-                    retention_time_span validFor = timeRetention.getValidFor();
-                    int typeHash = timeRetention.getType().ToString().GetHashCode();
-                    int validForHash = validFor.period.GetHashCode() + validFor.unit.GetHashCode();
-                    int finalHash = (typeHash + validForHash + ruleHash).GetHashCode();
-                    keyValues.Add(finalHash, id);
-                    id++;
-                }
-
-                HashSet = keyValues;
-                RetentionRule = retentionRule;
-            }
-        }
-
         public class DSClientArchiveRule
         {
             public DSClientRetentionTimeSpan TimeSpan { get; private set; }
@@ -342,14 +316,12 @@ namespace PSAsigraDSClient
 
         protected static string MonthlyDayToString(int day)
         {
-            string Day = null;
-
             if (day >= 28)
                 return "Last";
             else if (day > 0)
                 return day.ToString();
 
-            return Day;
+            return null;
         }
 
         protected static IntervalTimeRetentionOption IntervalTimeRetentionRule(IntervalTimeRetentionOption intervalTimeRetention, int timeValue, string timeUnit, int validForValue, string validForUnit)
@@ -361,12 +333,7 @@ namespace PSAsigraDSClient
             };
             intervalTimeRetention.setRepeatTime(intTimeSpan);
 
-            retention_time_span validTimeSpan = new retention_time_span
-            {
-                period = validForValue,
-                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
-            };
-            intervalTimeRetention.setValidFor(validTimeSpan);
+            SetTimeRetentionValidityPeriod(intervalTimeRetention, validForValue, validForUnit);
 
             return intervalTimeRetention;
         }
@@ -376,20 +343,9 @@ namespace PSAsigraDSClient
             weeklyTimeRetention.setTriggerDay(StringToEnum<EWeekDay>(weekDay));
 
             time_in_day weeklyTime = StringTotime_in_day(time);
-            //time_in_day weeklyTime = new time_in_day
-            //{
-            //    hour = retentionHour,
-            //    minute = retentionMinute,
-            //    second = 0
-            //};
             weeklyTimeRetention.setSnapshotTime(weeklyTime);
 
-            retention_time_span validTimeSpan = new retention_time_span
-            {
-                period = validForValue,
-                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
-            };
-            weeklyTimeRetention.setValidFor(validTimeSpan);
+            SetTimeRetentionValidityPeriod(weeklyTimeRetention, validForValue, validForUnit);
 
             return weeklyTimeRetention;
         }
@@ -399,12 +355,7 @@ namespace PSAsigraDSClient
             monthlyTimeRetention.setDayOfMonth(retentionDay);
             monthlyTimeRetention.setSnapshotTime(StringTotime_in_day(time));
 
-            retention_time_span validTimeSpan = new retention_time_span
-            {
-                period = validForValue,
-                unit = StringToEnum<RetentionTimeUnit>(validForUnit)
-            };
-            monthlyTimeRetention.setValidFor(validTimeSpan);
+            SetTimeRetentionValidityPeriod(monthlyTimeRetention, validForValue, validForUnit);
 
             return monthlyTimeRetention;
         }
@@ -416,23 +367,23 @@ namespace PSAsigraDSClient
             yearlyTimeRetention.setTriggerMonth(StringToEnum<EMonth>(month));
 
             time_in_day yearlyTime = StringTotime_in_day(time);
-
-            //time_in_day yearlyTime = new time_in_day
-            //{
-            //    hour = retentionHour,
-            //    minute = retentionMinute,
-            //    second = 0
-            //};
             yearlyTimeRetention.setSnapshotTime(yearlyTime);
 
+            SetTimeRetentionValidityPeriod(yearlyTimeRetention, validForValue, validForUnit);
+
+            return yearlyTimeRetention;
+        }
+
+        protected static TimeRetentionOption SetTimeRetentionValidityPeriod(TimeRetentionOption timeRetentionOption, int validForValue, string validForUnit)
+        {
             retention_time_span validTimeSpan = new retention_time_span
             {
                 period = validForValue,
                 unit = StringToEnum<RetentionTimeUnit>(validForUnit)
             };
-            yearlyTimeRetention.setValidFor(validTimeSpan);
+            timeRetentionOption.setValidFor(validTimeSpan);
 
-            return yearlyTimeRetention;
+            return timeRetentionOption;
         }
 
         protected static void KeepAllGenerationsRule(RetentionRule retentionRule, int keepAllGensTimeValue, string keepAllGensTimeUnit)

@@ -239,6 +239,7 @@ namespace PSAsigraDSClient
             public WeeklyTimeRetention Weekly { get; private set; }
             public MonthlyTimeRetention Monthly { get; private set; }
             public YearlyTimeRetention Yearly { get; private set; }
+            public DSClientRetentionTimeSpan ValidFor { get; private set; }
 
             public TimeRetentionOverview(TimeRetentionOption timeRetention)
             {
@@ -250,6 +251,7 @@ namespace PSAsigraDSClient
                 Weekly = (_type == ETimeRetentionType.ETimeRetentionType__Weekly) ? new WeeklyTimeRetention(WeeklyTimeRetentionOption.from(timeRetention)) : null;
                 Monthly = (_type == ETimeRetentionType.ETimeRetentionType__Monthly) ? new MonthlyTimeRetention(MonthlyTimeRetentionOption.from(timeRetention)) : null;
                 Yearly = (_type == ETimeRetentionType.ETimeRetentionType__Yearly) ? new YearlyTimeRetention(YearlyTimeRetentionOption.from(timeRetention)) : null;
+                ValidFor = new DSClientRetentionTimeSpan(_validFor);
             }
 
             public TimeRetentionOverview(int id, TimeRetentionOption timeRetention)
@@ -263,6 +265,7 @@ namespace PSAsigraDSClient
                 Weekly = (_type == ETimeRetentionType.ETimeRetentionType__Weekly) ? new WeeklyTimeRetention(WeeklyTimeRetentionOption.from(timeRetention)) : null;
                 Monthly = (_type == ETimeRetentionType.ETimeRetentionType__Monthly) ? new MonthlyTimeRetention(MonthlyTimeRetentionOption.from(timeRetention)) : null;
                 Yearly = (_type == ETimeRetentionType.ETimeRetentionType__Yearly) ? new YearlyTimeRetention(YearlyTimeRetentionOption.from(timeRetention)) : null;
+                ValidFor = new DSClientRetentionTimeSpan(_validFor);
             }
 
             public override int GetHashCode()

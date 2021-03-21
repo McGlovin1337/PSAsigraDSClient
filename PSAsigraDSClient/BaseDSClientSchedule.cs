@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -331,7 +332,6 @@ namespace PSAsigraDSClient
 
         protected class DSClientValidationScheduleOptions
         {
-            private int _optionsSet = 0;
             public bool LastGenOnly { get; private set; } = false;
             public bool ExcludeDeleted { get; private set; } = false;
             public bool Resume { get; private set; } = false;
@@ -339,27 +339,37 @@ namespace PSAsigraDSClient
             public DSClientValidationScheduleOptions(int optionValue)
             {
                 if ((optionValue & (int)EScheduleValidationOption.EScheduleValidationOption__LastGen) > 0)
-                {
                     LastGenOnly = true;
-                    _optionsSet += 1;
-                }
 
                 if ((optionValue & (int)EScheduleValidationOption.EScheduleValidationOption__ExcludeDeletedFiles) > 0)
-                {
                     ExcludeDeleted = true;
-                    _optionsSet += 1;
-                }
 
                 if ((optionValue & (int)EScheduleValidationOption.EScheduleValidationOption__Resume) > 0)
-                {
                     Resume = true;
-                    _optionsSet += 1;
-                }
             }
 
             public override string ToString()
             {
-                return _optionsSet.ToString();
+                List<string> selectedOptions = new List<string>();
+
+                if (LastGenOnly)
+                    selectedOptions.Add("LastGenOnly");
+
+                if (ExcludeDeleted)
+                    selectedOptions.Add("ExcludeDeleted");
+
+                if (Resume)
+                    selectedOptions.Add("Resume");
+
+                string options = null;
+                for (int i = 0; i < selectedOptions.Count(); i++)
+                {
+                    options += selectedOptions[i];
+                    if (i < selectedOptions.Count()-1)
+                        options += ",";
+                }
+
+                return options;
             }
         }
 

@@ -3,6 +3,8 @@ using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 using static PSAsigraDSClient.BaseDSClientArchiveFilterRule;
 using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace PSAsigraDSClient
 {
@@ -241,19 +243,6 @@ namespace PSAsigraDSClient
             public YearlyTimeRetention Yearly { get; private set; }
             public DSClientRetentionTimeSpan ValidFor { get; private set; }
 
-            public TimeRetentionOverview(TimeRetentionOption timeRetention)
-            {
-                _validFor = timeRetention.getValidFor();
-                _type = timeRetention.getType();
-
-                Type = EnumToString(_type);
-                Interval = (_type == ETimeRetentionType.ETimeRetentionType__Interval) ? new IntervalTimeRetention(IntervalTimeRetentionOption.from(timeRetention)) : null;
-                Weekly = (_type == ETimeRetentionType.ETimeRetentionType__Weekly) ? new WeeklyTimeRetention(WeeklyTimeRetentionOption.from(timeRetention)) : null;
-                Monthly = (_type == ETimeRetentionType.ETimeRetentionType__Monthly) ? new MonthlyTimeRetention(MonthlyTimeRetentionOption.from(timeRetention)) : null;
-                Yearly = (_type == ETimeRetentionType.ETimeRetentionType__Yearly) ? new YearlyTimeRetention(YearlyTimeRetentionOption.from(timeRetention)) : null;
-                ValidFor = new DSClientRetentionTimeSpan(_validFor);
-            }
-
             public TimeRetentionOverview(int id, TimeRetentionOption timeRetention)
             {
                 _validFor = timeRetention.getValidFor();
@@ -266,17 +255,6 @@ namespace PSAsigraDSClient
                 Monthly = (_type == ETimeRetentionType.ETimeRetentionType__Monthly) ? new MonthlyTimeRetention(MonthlyTimeRetentionOption.from(timeRetention)) : null;
                 Yearly = (_type == ETimeRetentionType.ETimeRetentionType__Yearly) ? new YearlyTimeRetention(YearlyTimeRetentionOption.from(timeRetention)) : null;
                 ValidFor = new DSClientRetentionTimeSpan(_validFor);
-            }
-
-            public override int GetHashCode()
-            {
-                int multiply = 7;
-                int typeHash = _type.GetHashCode();
-                int periodHash = _validFor.period.GetHashCode();
-                int unitHash = _validFor.unit.GetHashCode();
-                int finalHash = (multiply * (typeHash + periodHash + unitHash * Type.GetHashCode())).GetHashCode();
-
-                return finalHash;
             }
         }
 
@@ -325,6 +303,58 @@ namespace PSAsigraDSClient
                 return day.ToString();
 
             return null;
+        }
+
+        protected static string TimeRetentionHash(RetentionRule retentionRule, TimeRetentionOption timeRetention)
+        {
+            ETimeRetentionType type = timeRetention.getType();
+            retention_time_span timeSpan = timeRetention.getValidFor();
+
+            string strId = retentionRule.getID().ToString();
+            string strName = retentionRule.getName();
+            string strType = type.ToString();
+            string strValidPeriod = timeSpan.period.ToString();
+            string strValidUnit = timeSpan.unit.ToString();
+
+            string strToHash = strId + strName + strType + strValidPeriod + strValidUnit;
+
+            time_in_day snapshotTime;
+            switch (type)
+            {
+                case ETimeRetentionType.ETimeRetentionType__Interval:
+                    IntervalTimeRetentionOption interval = IntervalTimeRetentionOption.from(timeRetention);
+                    retention_time_span repeatSpan = interval.getRepeatTime();
+                    strToHash += repeatSpan.period.ToString() + repeatSpan.unit.ToString();
+                    break;
+                case ETimeRetentionType.ETimeRetentionType__Weekly:
+                    WeeklyTimeRetentionOption weekly = WeeklyTimeRetentionOption.from(timeRetention);
+                    snapshotTime = weekly.getSnapshotTime();
+                    strToHash += snapshotTime.hour.ToString() + snapshotTime.minute.ToString() + snapshotTime.second.ToString() + weekly.getTriggerDay().ToString();
+                    break;
+                case ETimeRetentionType.ETimeRetentionType__Monthly:
+                    MonthlyTimeRetentionOption monthly = MonthlyTimeRetentionOption.from(timeRetention);
+                    snapshotTime = monthly.getSnapshotTime();
+                    strToHash += snapshotTime.hour.ToString() + snapshotTime.minute.ToString() + snapshotTime.second.ToString() + monthly.getDayOfMonth().ToString();
+                    break;
+                case ETimeRetentionType.ETimeRetentionType__Yearly:
+                    YearlyTimeRetentionOption yearly = YearlyTimeRetentionOption.from(timeRetention);
+                    snapshotTime = yearly.getSnapshotTime();
+                    strToHash += snapshotTime.hour.ToString() + snapshotTime.minute.ToString() + snapshotTime.second.ToString() + yearly.getDayOfMonth().ToString() + yearly.getTriggerMonth().ToString();
+                    break;
+            }
+
+            SHA256 sha256 = SHA256.Create();
+
+            byte[] hashData = sha256.ComputeHash(Encoding.UTF8.GetBytes(strToHash));
+
+            sha256.Dispose();
+
+            StringBuilder strBuilder = new StringBuilder();
+
+            for (int i = 0; i < hashData.Length; i++)
+                strBuilder.Append(hashData[i].ToString("x2"));
+
+            return strBuilder.ToString();
         }
 
         protected static IntervalTimeRetentionOption IntervalTimeRetentionRule(IntervalTimeRetentionOption intervalTimeRetention, int timeValue, string timeUnit, int validForValue, string validForUnit)
@@ -401,29 +431,23 @@ namespace PSAsigraDSClient
             retentionRule.setKeepPeriodTimeSpan(timeSpan);
         }
 
-        protected static TimeRetentionOption SelectTimeRetentionOption(RetentionRule retentionRule, int timeRetentionId, Dictionary<int, int> optionHashes)
+        protected static TimeRetentionOption SelectTimeRetentionOption(RetentionRule retentionRule, int timeRetentionId, Dictionary<string, int> optionHashes)
         {
             TimeRetentionOption timeRetentionOption = null;
-
-            // Determine the Hash Codes for the Rule Name and Id
-            int ruleNameHash = retentionRule.getName().GetHashCode();
-            int ruleIdHash = retentionRule.getID().GetHashCode();
 
             // Get all the Time Retention Options in this Retention Rule
             TimeRetentionOption[] timeRetentions = retentionRule.getTimeRetentions();
 
             foreach (TimeRetentionOption timeRetention in timeRetentions)
             {
-                TimeRetentionOverview timeRetentionOverview = new TimeRetentionOverview(timeRetention);
+                string optionHash = TimeRetentionHash(retentionRule, timeRetention);
 
-                int optionHash = timeRetentionOverview.GetHashCode();
-
-                int completeHash = optionHash * ruleNameHash * ruleIdHash;
-
-                optionHashes.TryGetValue(completeHash, out int optionId);
+                optionHashes.TryGetValue(optionHash, out int optionId);
 
                 if (optionId == timeRetentionId)
-                    timeRetentionOption = timeRetention;
+                    return timeRetention;
+
+                timeRetention.Dispose();
             }
 
             return timeRetentionOption;

@@ -24,29 +24,41 @@ namespace PSAsigraDSClient
 
             List<TimeRetentionOverview> timeRetentions = new List<TimeRetentionOverview>();
 
-            int id = 1;
+            // Get Hash Codes for Previously Identified Time Retention Options from SessionState, or start a new Dictionary if none exists
+            WriteVerbose("Performing Action: Compute Hashes to identify Time Retention Options");
+            Dictionary<string, int> retentionHashes = SessionState.PSVariable.GetValue("TimeRetention", null) as Dictionary<string, int>;
+            if (retentionHashes == null)
+                retentionHashes = new Dictionary<string, int>();
+
+            int startingId = 1;
+            Dictionary<string, TimeRetentionOption> unidentified = new Dictionary<string, TimeRetentionOption>();
+
             foreach (TimeRetentionOption timeRetention in timeRetentionOptions)
             {
-                TimeRetentionOverview timeRetentionOverview = new TimeRetentionOverview(id, timeRetention);
-                timeRetentions.Add(timeRetentionOverview);
-                id++;
-                WriteDebug($"TimeRetentionOverview Hash: {timeRetentionOverview.GetHashCode()}");
+                string optionHash = TimeRetentionHash(retentionRule, timeRetention);
+                WriteDebug($"Computed Hash: {optionHash}");
+
+                retentionHashes.TryGetValue(optionHash, out int id);
+                if (id > 0)
+                {
+                    if (id >= startingId)
+                        startingId = id + 1;
+                    timeRetentions.Add(new TimeRetentionOverview(id, timeRetention));
+                    timeRetention.Dispose();
+                }
+                else
+                    unidentified.Add(optionHash, timeRetention);
             }
 
-            // Store the retrieved rules into Session State, which will ensure correct rules are selected in case of removal
-            WriteVerbose("Performing Action: Store Time Retention Options in PS Session State");
-            Dictionary<int, int> retentionHash = new Dictionary<int, int>();
-            int ruleNameHash = retentionRule.getName().GetHashCode();
-            int ruleIdHash = retentionRule.getID().GetHashCode();
-
-            foreach (TimeRetentionOverview timeRetention in timeRetentions)
-            {
-                int timeRetentionHash = timeRetention.GetHashCode() * ruleNameHash * ruleIdHash;
-                WriteDebug($"TimeRetentionOption Final Hash: {timeRetentionHash}");
-                retentionHash.Add(timeRetentionHash, timeRetention.TimeRetentionId);
+            foreach (KeyValuePair<string, TimeRetentionOption> hash in unidentified)
+            {                
+                timeRetentions.Add(new TimeRetentionOverview(startingId, hash.Value));
+                hash.Value.Dispose();
+                retentionHashes.Add(hash.Key, startingId);
+                startingId++;
             }
-            SessionState.PSVariable.Remove("TimeRetention");
-            SessionState.PSVariable.Set("TimeRetention", retentionHash);
+
+            SessionState.PSVariable.Set("TimeRetention", retentionHashes);
             
             retentionRule.Dispose();
 

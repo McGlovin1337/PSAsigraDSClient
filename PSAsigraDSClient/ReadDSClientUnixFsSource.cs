@@ -151,7 +151,7 @@ namespace PSAsigraDSClient
 
                             if (!item.isfile && subItemDepth <= RecursiveDepth)
                             {
-                                string itemPath = (currentPath.Path != item.name) ? $"/{item.name}" : $"{currentPath.Path}/{item.name}";
+                                string itemPath = (item.name.First() != '/' && currentPath.Path.Last() != '/') ? $"{currentPath.Path}/{item.name}" : $"{currentPath.Path}{item.name}";
                                 newPaths.Insert(index, new ItemPath(itemPath, subItemDepth));
                                 index++;
                             }

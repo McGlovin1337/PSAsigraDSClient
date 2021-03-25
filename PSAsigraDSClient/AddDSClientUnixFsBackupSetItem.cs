@@ -94,8 +94,6 @@ namespace PSAsigraDSClient
                 }
             }
 
-            backupSet.setItems(backupSetItems.ToArray());
-
             // Get the existing specified items and store in the list
             backupSetItems.AddRange(backupSet.items());
 

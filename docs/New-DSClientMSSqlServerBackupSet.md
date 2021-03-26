@@ -15,8 +15,8 @@ Creates a New MS SQL Server Backup Set
 ```
 New-DSClientMSSqlServerBackupSet [-Name] <String> [-Computer] <String> [-SetType] <String>
  [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>]
- [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-RunDBCC] [-DBCCErrorStop]
- [-BackupLog] [-NotificationMethod <String>] [-NotificationRecipient <String>]
+ [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-ExcludeSubDirs] [-RunDBCC]
+ [-DBCCErrorStop] [-BackupLog] [-NotificationMethod <String>] [-NotificationRecipient <String>]
  [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>] [-Credential <PSCredential>]
  [-DbCredential <PSCredential>] [-DumpMethod <String>] [-DumpPath <String>] -BackupMethod <String>
  [-FullMonthlyDay <Int32>] [-FullMonthlyTime <String>] [-FullWeeklyDay <String>] [-FullWeeklyTime <String>]
@@ -763,6 +763,21 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeSubDirs
+Specify to exclude Sub-Directories
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

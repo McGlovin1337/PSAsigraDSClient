@@ -21,6 +21,9 @@ namespace PSAsigraDSClient
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Exclude from Backup Set")]
         public string[] ExcludeItem { get; set; }
 
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to exclude Sub-Directories")]
+        public SwitchParameter ExcludeSubDirs { get; set; }
+
         protected override void DSClientProcessRecord()
         {
             // Get the requested Backup Set from DS-Client
@@ -36,11 +39,11 @@ namespace PSAsigraDSClient
 
             // Process any Exclusion Items
             if (ExcludeItem != null)
-                backupSetItems.AddRange(ProcessBasicExclusionItems(dataSourceBrowser, computer, ExcludeItem));
+                backupSetItems.AddRange(ProcessBasicExclusionItems(dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
 
             // Process any Inclusion Items
             if (IncludeItem != null)
-                backupSetItems.AddRange(ProcessVMwareVADPInclusionItem(dataSourceBrowser, computer, IncludeItem, MaxGenerations));
+                backupSetItems.AddRange(ProcessVMwareVADPInclusionItem(dataSourceBrowser, computer, IncludeItem, MaxGenerations, ExcludeSubDirs));
 
             // Get the existing specified items and store in the list
             backupSetItems.AddRange(backupSet.items());

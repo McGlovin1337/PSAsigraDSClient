@@ -15,7 +15,8 @@ Adds a Unix based Inclusion/Exclusion item to a Backup Set
 ```
 Add-DSClientUnixFsBackupSetItem [[-BackupSetId] <Int32>] [-IncludeItem <String[]>] [-MaxGenerations <Int32>]
  [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>] [-RegexExclusionPath <String>]
- [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-ExcludeACLs] [-ExcludePosixACLs] [<CommonParameters>]
+ [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-ExcludeACLs] [-ExcludePosixACLs] [-ExcludeSubDirs]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -172,6 +173,21 @@ Specify Path for Regex Exclusion Item
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -ExcludeSubDirs
+Specify to exclude Sub-Directories
+
+```yaml
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 

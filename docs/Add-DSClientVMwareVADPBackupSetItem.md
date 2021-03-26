@@ -14,7 +14,7 @@ Adds items to a VMware VADP Backup Set
 
 ```
 Add-DSClientVMwareVADPBackupSetItem [[-BackupSetId] <Int32>] [-IncludeItem <String[]>]
- [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [<CommonParameters>]
+ [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-ExcludeSubDirs] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -81,6 +81,21 @@ Max Number of Generations for Included Items
 
 ```yaml
 Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -ExcludeSubDirs
+Specify to exclude Sub-Directories
+
+```yaml
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 

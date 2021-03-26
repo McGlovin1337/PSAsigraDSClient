@@ -14,7 +14,7 @@ Get the DS-Client Activity Log
 
 ### Id
 ```
-Get-DSClientActivityLog [[-StartTime] <DateTime>] [[-EndTime] <DateTime>] -ActivityId <Int32>
+Get-DSClientActivityLog -ActivityId <Int32> [[-StartTime] <DateTime>] [[-EndTime] <DateTime>]
  [<CommonParameters>]
 ```
 

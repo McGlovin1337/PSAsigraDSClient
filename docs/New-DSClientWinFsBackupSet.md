@@ -16,17 +16,17 @@ Creates a New Windows File System Backup Set
 New-DSClientWinFsBackupSet [-Name] <String> [-Computer] <String> [[-Credential] <PSCredential>]
  [-SetType] <String> [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>]
  [-RegexExcludeItem <String[]>] [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive]
- [-NotificationMethod <String>] [-NotificationRecipient <String>] [-NotificationCompletion <String[]>]
- [-NotificationEmailOptions <String[]>] [-BackupRemoteStorage] [-BackupSingleInstanceStore] [-CheckCommonFiles]
- [-UseVSS] [-ExcludeVSSComponents] [-IgnoreVSSComponents] [-IgnoreVSSWriters] [-FollowJunctionPoints]
- [-NoAutoFileFilter] [-ExcludeOldFilesByDate] [-ExcludeOldFilesDate <DateTime>] [-ExcludeOldFilesByTimeSpan]
- [-ExcludeOldFilesTimeSpan <String>] [-ExcludeOldFilesTimeSpanValue <Int32>] [-UseBuffer]
- [-ExcludeAltDataStreams] [-ExcludePermissions] [-CDPInterval <Int32>] [-CDPStoppedChangingForInterval]
- [-CDPStopForRetention] [-CDPStopForBLM] [-CDPStopForValidation] -Compression <String> [-Disabled]
- [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan]
- [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations]
- [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>]
- [-PassThru] [<CommonParameters>]
+ [-ExcludeSubDirs] [-NotificationMethod <String>] [-NotificationRecipient <String>]
+ [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>] [-BackupRemoteStorage]
+ [-BackupSingleInstanceStore] [-CheckCommonFiles] [-UseVSS] [-ExcludeVSSComponents] [-IgnoreVSSComponents]
+ [-IgnoreVSSWriters] [-FollowJunctionPoints] [-NoAutoFileFilter] [-ExcludeOldFilesByDate]
+ [-ExcludeOldFilesDate <DateTime>] [-ExcludeOldFilesByTimeSpan] [-ExcludeOldFilesTimeSpan <String>]
+ [-ExcludeOldFilesTimeSpanValue <Int32>] [-UseBuffer] [-ExcludeAltDataStreams] [-ExcludePermissions]
+ [-CDPInterval <Int32>] [-CDPStoppedChangingForInterval] [-CDPStopForRetention] [-CDPStopForBLM]
+ [-CDPStopForValidation] -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>]
+ [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>]
+ [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>]
+ [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -845,6 +845,21 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeSubDirs
+Specify to exclude Sub-Directories
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

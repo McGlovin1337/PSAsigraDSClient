@@ -115,7 +115,7 @@ namespace PSAsigraDSClient
             return backupSet;
         }
 
-        protected static IEnumerable<BackupSetFileItem> ProcessExclusionItems(DSClientOSType dSClientOSType, DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items)
+        protected static IEnumerable<BackupSetFileItem> ProcessExclusionItems(DSClientOSType dSClientOSType, DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, bool excludeSubDirs)
         {
             List<BackupSetFileItem> fileItems = new List<BackupSetFileItem>();
 
@@ -149,12 +149,13 @@ namespace PSAsigraDSClient
                 BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, path);
                 exclusion.setFilter(filter);
                 fileItems.Add(exclusion);
+                exclusion.setSubdirDescend(!excludeSubDirs);
             }
 
             return fileItems;
         }
 
-        protected static IEnumerable<BackupSetFileItem> ProcessBasicExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items)
+        protected static IEnumerable<BackupSetFileItem> ProcessBasicExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, bool excludeSubDirs)
         {
             List<BackupSetFileItem> sqlItems = new List<BackupSetFileItem>();
 
@@ -164,6 +165,7 @@ namespace PSAsigraDSClient
                 string trimmedItem = item.Trim();
 
                 BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, trimmedItem);
+                exclusion.setSubdirDescend(!excludeSubDirs);
                 sqlItems.Add(exclusion);
             }
 
@@ -194,7 +196,7 @@ namespace PSAsigraDSClient
             return regexItems;
         }
 
-        protected static IEnumerable<Win32FS_BackupSetInclusionItem> ProcessWin32FSInclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool excludeStreams, bool excludePerms)
+        protected static IEnumerable<Win32FS_BackupSetInclusionItem> ProcessWin32FSInclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool excludeStreams, bool excludePerms, bool excludeSubDirs)
         {
             List<Win32FS_BackupSetInclusionItem> inclusionItems = new List<Win32FS_BackupSetInclusionItem>();
 
@@ -215,16 +217,9 @@ namespace PSAsigraDSClient
                 Win32FS_BackupSetInclusionItem inclusionItem = Win32FS_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, path, maxGens));
 
                 inclusionItem.setFilter(filter);
-
-                if (excludeStreams)
-                    inclusionItem.setIncludingAlternateDataStreams(false);
-                else
-                    inclusionItem.setIncludingAlternateDataStreams(true);
-
-                if (excludePerms)
-                    inclusionItem.setIncludingPermissions(false);
-                else
-                    inclusionItem.setIncludingPermissions(true);
+                inclusionItem.setSubdirDescend(!excludeSubDirs);
+                inclusionItem.setIncludingAlternateDataStreams(!excludeStreams);
+                inclusionItem.setIncludingPermissions(!excludePerms);
 
                 inclusionItems.Add(inclusionItem);
             }
@@ -232,7 +227,7 @@ namespace PSAsigraDSClient
             return inclusionItems;
         }
 
-        protected static IEnumerable<MSSQL_BackupSetInclusionItem> ProcessMsSqlInclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool logBackup, bool runDBCC, bool stopDBCC)
+        protected static IEnumerable<MSSQL_BackupSetInclusionItem> ProcessMsSqlInclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool logBackup, bool runDBCC, bool stopDBCC, bool excludeSubDirs)
         {
             List<MSSQL_BackupSetInclusionItem> sqlInclusionItems = new List<MSSQL_BackupSetInclusionItem>();
 
@@ -250,21 +245,10 @@ namespace PSAsigraDSClient
                 MSSQL_BackupSetInclusionItem inclusionItem = MSSQL_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, item, maxGens));
 
                 inclusionItem.setFilter(filter);
-
-                if (logBackup)
-                    inclusionItem.setBackUpTransactionLog(true);
-                else
-                    inclusionItem.setBackUpTransactionLog(false);
-
-                if (runDBCC)
-                    inclusionItem.setRunDBCC(true);
-                else
-                    inclusionItem.setRunDBCC(false);
-
-                if (stopDBCC)
-                    inclusionItem.setStopOnDBCCErrors(true);
-                else
-                    inclusionItem.setStopOnDBCCErrors(false);
+                inclusionItem.setSubdirDescend(!excludeSubDirs);
+                inclusionItem.setBackUpTransactionLog(logBackup);
+                inclusionItem.setRunDBCC(runDBCC);
+                inclusionItem.setStopOnDBCCErrors(stopDBCC);
 
                 sqlInclusionItems.Add(inclusionItem);
             }
@@ -272,7 +256,7 @@ namespace PSAsigraDSClient
             return sqlInclusionItems;
         }
 
-        protected static IEnumerable<BackupSetInclusionItem> ProcessVMwareVADPInclusionItem(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens)
+        protected static IEnumerable<BackupSetInclusionItem> ProcessVMwareVADPInclusionItem(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool excludeSubDirs)
         {
             List<BackupSetInclusionItem> inclusionItems = new List<BackupSetInclusionItem>();
 
@@ -291,8 +275,9 @@ namespace PSAsigraDSClient
                 string path = trimmedItem.Remove((trimmedItem.Length - itemLength), itemLength);
 
                 BackupSetInclusionItem inclusionItem = dataSourceBrowser.createInclusionItem(computer, path, maxGens);
-
+                
                 inclusionItem.setFilter(filter);
+                inclusionItem.setSubdirDescend(!excludeSubDirs);
 
                 inclusionItems.Add(inclusionItem);
             }

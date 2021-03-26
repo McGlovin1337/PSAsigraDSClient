@@ -42,6 +42,9 @@ namespace PSAsigraDSClient
         [Parameter(HelpMessage = "Exclude POSIX ACLs")]
         public SwitchParameter ExcludePosixACLs { get; set; }
 
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to exclude Sub-Directories")]
+        public SwitchParameter ExcludeSubDirs { get; set; }
+
         protected override void DSClientProcessRecord()
         {
             // Check DS-Client is Linux
@@ -60,7 +63,7 @@ namespace PSAsigraDSClient
             List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
             if (ExcludeItem != null)
-                backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem));
+                backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
 
             if (RegexExcludeItem != null)
                 backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));
@@ -71,23 +74,13 @@ namespace PSAsigraDSClient
                 {
                     UnixFS_BackupSetInclusionItem inclusionItem = UnixFS_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, item, MaxGenerations));
 
-                    if (MyInvocation.BoundParameters.ContainsKey("ExcludeACLs"))
-                        inclusionItem.setIncludingACL(false);
-                    else
-                        inclusionItem.setIncludingACL(true);
+                    inclusionItem.setSubdirDescend(!ExcludeSubDirs);
+                    inclusionItem.setIncludingACL(!ExcludeACLs);
 
                     if (computer.Split('\\').First() == "Local File System")
                     {
-                        if (MyInvocation.BoundParameters.ContainsKey("ExcludePosixACLs"))
-                        {
-                            UnixFS_LinuxLFS_BackupSetInclusionItem linuxInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
-                            linuxInclusionItem.setIncludingPosixACL(false);
-                        }
-                        else
-                        {
-                            UnixFS_LinuxLFS_BackupSetInclusionItem linuxInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
-                            linuxInclusionItem.setIncludingPosixACL(true);
-                        }
+                        UnixFS_LinuxLFS_BackupSetInclusionItem linuxInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
+                        linuxInclusionItem.setIncludingPosixACL(!ExcludePosixACLs);
                     }
 
                     backupSetItems.Add(inclusionItem);

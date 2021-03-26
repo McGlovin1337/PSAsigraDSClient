@@ -1,5 +1,9 @@
 # PSAsigraDSClient ChangeLog
 
+### v0.4.1
+- Fixed Add-DSClientUnixFsBackupSetItem clearing out existing Backup Set Items from the specified Backup Set
+- Fixed Read-DSClientUnixFsSource Recursion not working beyond one sub-item depth
+
 ### v0.4.0
 - Added 4x Cmdlets to Manage Backup Set Notifications: Add-DSClientBackupSetNotification, Get-DSClientBackupSetNotification, Remove-DSClientBackupSetNotification, Set-DSClientBackupSetNotification
 - Added 3x Cmdlets to Manage Time Retention Options configured in Retention Rules: Get-DSClientTimeRetentionOption, Remove-DSClientTimeRetentionOption, Set-DSClientTimeRetentionOption

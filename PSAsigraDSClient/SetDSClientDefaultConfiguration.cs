@@ -37,6 +37,7 @@ namespace PSAsigraDSClient
         public string[] NotificationEmailOptions { get; set; }
 
         [Parameter(Position = 7, ValueFromPipelineByPropertyName = true, HelpMessage = "Number of Online Generations")]
+        [ValidateRange(1, 9999)]
         public int OnlineGenerations { get; set; }
 
         [Parameter(Position = 8, ValueFromPipelineByPropertyName = true, HelpMessage = "Default Retention Rule by RetentionRuleId")]

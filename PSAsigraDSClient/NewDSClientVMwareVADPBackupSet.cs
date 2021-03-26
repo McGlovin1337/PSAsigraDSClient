@@ -26,6 +26,7 @@ namespace PSAsigraDSClient
         public string[] IncludeItem { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Max Number of Generations for Included Items")]
+        [ValidateRange(1, 9999)]
         public int MaxGenerations { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Exclude from Backup Set")]

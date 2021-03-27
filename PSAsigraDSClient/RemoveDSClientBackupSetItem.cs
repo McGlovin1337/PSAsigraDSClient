@@ -65,17 +65,23 @@ namespace PSAsigraDSClient
                 if (itemType == EBackupSetItemType.EBackupSetItemType__Exclusion || itemType == EBackupSetItemType.EBackupSetItemType__Inclusion)
                 {
                     BackupSetFileItem backupSetFileItem = BackupSetFileItem.from(item);
+                    string folder = backupSetFileItem.getFolder();
+                    string filter = backupSetFileItem.getFilter();
+                    string folderFilter = (folder.Last() != '\\') ? $@"{folder}\{filter}" : $"{folder}{filter}";
 
-                    if (wcPattern.IsMatch(backupSetFileItem.getFolder() + backupSetFileItem.getFilter()))
-                        if (ShouldProcess($"{item.getFolder()}"))
+                    if (wcPattern.IsMatch(folderFilter))
+                        if (ShouldProcess($"{folderFilter}"))
                             removalItems.Add(item);
                 }
                 else if (itemType == EBackupSetItemType.EBackupSetItemType__RegExExclusion)
                 {
                     BackupSetRegexExclusion backupSetRegexExclusion = BackupSetRegexExclusion.from(item);
+                    string folder = backupSetRegexExclusion.getFolder();
+                    string expression = backupSetRegexExclusion.getExpression();
+                    string folderExpression = (folder.Last() != '\\') ? $@"{folder}\{expression}" : $"{folder}{expression}";
 
-                    if (wcPattern.IsMatch(backupSetRegexExclusion.getFolder() + backupSetRegexExclusion.getExpression()))
-                        if (ShouldProcess($"{item.getFolder()} with Expression: {backupSetRegexExclusion.getExpression()}"))
+                    if (wcPattern.IsMatch(folderExpression))
+                        if (ShouldProcess($"{folder} with Expression: {expression}"))
                             removalItems.Add(item);
                 }
             }

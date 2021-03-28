@@ -343,11 +343,11 @@ namespace PSAsigraDSClient
                     break;
             }
 
-            SHA256 sha256 = SHA256.Create();
+            SHA1Managed sha1 = new SHA1Managed();
 
-            byte[] hashData = sha256.ComputeHash(Encoding.UTF8.GetBytes(strToHash));
+            byte[] hashData = sha1.ComputeHash(Encoding.UTF8.GetBytes(strToHash));
 
-            sha256.Dispose();
+            sha1.Dispose();
 
             StringBuilder strBuilder = new StringBuilder();
 

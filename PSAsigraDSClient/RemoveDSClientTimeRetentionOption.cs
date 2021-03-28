@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
@@ -24,7 +25,7 @@ namespace PSAsigraDSClient
             Dictionary<string, int> retentionHash = SessionState.PSVariable.GetValue("TimeRetention", null) as Dictionary<string, int>;
 
             if (retentionHash == null)
-                WriteWarning("There are no Time Retention Options Stored in Session State, use Get-DSClientTimeRetentionOption to ensure removal of the desired Time Retention Option");
+                throw new Exception("There are no Time Retention Options Stored in Session State, use Get-DSClientTimeRetentionOption");
 
             // Select the Time Retention Option
             TimeRetentionOption timeRetentionOption = SelectTimeRetentionOption(retentionRule, TimeRetentionId, retentionHash);

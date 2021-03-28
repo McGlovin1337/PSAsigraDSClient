@@ -4,7 +4,7 @@ using static PSAsigraDSClient.BaseDSClientRunningActivity;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Remove, "DSClientBackupSet", SupportsShouldProcess = true)]
+    [Cmdlet(VerbsCommon.Remove, "DSClientBackupSet", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
     [OutputType(typeof(DSClientRunningActivity))]
 
     public class RemoveDSClientBackupSet: DSClientCmdlet

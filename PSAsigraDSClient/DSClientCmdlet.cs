@@ -19,6 +19,15 @@ namespace PSAsigraDSClient
             if (DSClientSession == null)
                 throw new Exception("There is currently no active DS-Client Sessions.");
 
+            try
+            {
+                DSClientSession.keepAlive();
+            }
+            catch
+            {
+                throw new Exception("DS-Client Connection Failed");
+            }
+
             DSClientProcessRecord();
         }
     }

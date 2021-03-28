@@ -13,7 +13,7 @@ Removes a DS-Client Detailed Schedule from a schedule
 ## SYNTAX
 
 ```
-Remove-DSClientScheduleDetail [-ScheduleId] <Int32> [-DetailId] <Int32[]> [-WhatIf] [-Confirm]
+Remove-DSClientScheduleDetail [-ScheduleId] <Int32> [-DetailId] <Int32> [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -39,7 +39,7 @@ Remove Schedule Detail with Id 2 from Schedule with Id 3
 Specify the Detail Id
 
 ```yaml
-Type: Int32[]
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -85,41 +87,6 @@ namespace PSAsigraDSClient
             public DSClientValidationScheduleOptions ValidationOptions { get; private set; }
             public DSClientBLMScheduleOptions BLMScheduleOptions { get; private set; }
 
-            public DSClientScheduleDetail(schedule_info scheduleInfo, ScheduleDetail schedule)
-            {
-                _detailType = schedule.getType();
-                _tasks = schedule.getTasks();
-
-                ScheduleId = scheduleInfo.id;
-                ScheduleName = scheduleInfo.name;
-
-                switch (_detailType)
-                {
-                    case EScheduleDetailType.EScheduleDetailType__OneTime:
-                        Type = new OneTimeScheduleType(schedule);
-                        break;
-                    case EScheduleDetailType.EScheduleDetailType__Daily:
-                        Type = new DailyScheduleType(schedule);
-                        break;
-                    case EScheduleDetailType.EScheduleDetailType__Weekly:
-                        Type = new WeeklyScheduleType(schedule);
-                        break;
-                    case EScheduleDetailType.EScheduleDetailType__Monthly:
-                        Type = new MonthlyScheduleType(schedule);
-                        break;
-                }
-
-                StartTime = new TimeInDay(schedule.getStartTime());
-                EndTime = new TimeInDay(schedule.getEndTime());
-                StartDate = UnixEpochToDateTime(schedule.getPeriodStartDate());
-                EndDate = UnixEpochToDateTime(schedule.getPeriodEndDate());
-                EndTimeEnabled = schedule.hasEndTime();
-                Excluded = schedule.isExcluded();
-                EnabledTasks = new DSClientScheduleTasks(_tasks);
-                ValidationOptions = new DSClientValidationScheduleOptions(schedule.getValidationOptions());
-                BLMScheduleOptions = new DSClientBLMScheduleOptions(schedule.getBLMOptions());
-            }
-
             public DSClientScheduleDetail(int detailId, schedule_info scheduleInfo, ScheduleDetail schedule)
             {
                 _detailType = schedule.getType();
@@ -154,11 +121,6 @@ namespace PSAsigraDSClient
                 EnabledTasks = new DSClientScheduleTasks(_tasks);
                 ValidationOptions = new DSClientValidationScheduleOptions(schedule.getValidationOptions());
                 BLMScheduleOptions = new DSClientBLMScheduleOptions(schedule.getBLMOptions());
-            }
-
-            public override int GetHashCode()
-            {
-                return ((_detailType.GetHashCode() + _tasks.GetHashCode() + ScheduleId.GetHashCode() + ScheduleName.GetHashCode() + StartDate.GetHashCode()) * 7).GetHashCode();
             }
         }
 
@@ -384,6 +346,77 @@ namespace PSAsigraDSClient
                 }
 
             return schedDays.ToArray();
+        }
+
+        protected static string ScheduleDetailHash(Schedule schedule, ScheduleDetail detail)
+        {
+            EScheduleDetailType type = detail.getType();
+
+            string strId = schedule.getID().ToString();
+            string strName = schedule.getName();
+            string strType = type.ToString();
+            string strStart = new TimeInDay(detail.getStartTime()).ToString();
+            string strEnd = new TimeInDay(detail.getEndTime()).ToString();
+            string strTasks = detail.getTasks().ToString();
+            string strPeriodStart = detail.getPeriodStartDate().ToString();
+            string strPeriodEnd = detail.getPeriodEndDate().ToString();
+
+            string strToHash = strId + strName + strType + strStart + strEnd + strTasks + strPeriodStart + strPeriodEnd;
+
+            switch (type)
+            {
+                case EScheduleDetailType.EScheduleDetailType__OneTime:
+                    OneTimeScheduleDetail oneTime = OneTimeScheduleDetail.from(detail);
+                    strToHash += oneTime.get_start_date().ToString();
+                    break;
+                case EScheduleDetailType.EScheduleDetailType__Daily:
+                    DailyScheduleDetail daily = DailyScheduleDetail.from(detail);
+                    strToHash += daily.getRepeatDays().ToString();
+                    break;
+                case EScheduleDetailType.EScheduleDetailType__Weekly:
+                    WeeklyScheduleDetail weekly = WeeklyScheduleDetail.from(detail);
+                    strToHash += weekly.getRepeatWeeks().ToString() + weekly.getScheduleDays().ToString();
+                    break;
+                case EScheduleDetailType.EScheduleDetailType__Monthly:
+                    MonthlyScheduleDetail monthly = MonthlyScheduleDetail.from(detail);
+                    strToHash += monthly.getRepeatMonths().ToString() + monthly.getScheduleDay().ToString() + monthly.getScheduleWhen().ToString();
+                    break;
+            }
+
+            SHA1Managed sha1 = new SHA1Managed();
+
+            byte[] hashData = sha1.ComputeHash(Encoding.UTF8.GetBytes(strToHash));
+
+            sha1.Dispose();
+
+            StringBuilder strBuilder = new StringBuilder();
+
+            for (int i = 0; i < hashData.Length; i++)
+                strBuilder.Append(hashData[i].ToString("x2"));
+
+            return strBuilder.ToString();
+        }
+
+        protected static ScheduleDetail SelectScheduleDetail(Schedule schedule, int detailId, Dictionary<string, int> detailHashes)
+        {
+            ScheduleDetail scheduleDetail = null;
+
+            // Get all the Schedule Details for this Schedule
+            ScheduleDetail[] details = schedule.getDetails();
+
+            foreach (ScheduleDetail detail in details)
+            {
+                string detailHash = ScheduleDetailHash(schedule, detail);
+
+                detailHashes.TryGetValue(detailHash, out int id);
+
+                if (id == detailId)
+                    return detail;
+
+                detail.Dispose();
+            }
+
+            return scheduleDetail;
         }
     }
 }

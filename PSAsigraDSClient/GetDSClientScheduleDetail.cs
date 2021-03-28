@@ -35,36 +35,56 @@ namespace PSAsigraDSClient
 
             List<DSClientScheduleDetail> DSClientScheduleDetail = new List<DSClientScheduleDetail>();
 
-            // Create a Base ID for each Detail in the Schedule
-            int DetailId = 0;
+            // Get Hash Codes for Previously Identified Schedule Details
+            Dictionary<string, int> detailHashes = SessionState.PSVariable.GetValue("ScheduleDetail", null) as Dictionary<string, int>;
+            if (detailHashes == null)
+                detailHashes = new Dictionary<string, int>();
 
+            int startingId = 1;
+            Dictionary<string, ScheduleDetail> unidentified = new Dictionary<string, ScheduleDetail>();
+
+            int detailCounter = 0;
+            WriteVerbose("Performing Action: Process Schedule Details");
             ProgressRecord progressRecord = new ProgressRecord(1, "Process Schedule Details", $"0 of {detailCount} processed, 0%")
             {
                 RecordType = ProgressRecordType.Processing
             };
-
-            Dictionary<int, int> scheduleHash = new Dictionary<int, int>();
-            foreach (ScheduleDetail schedule in ScheduleDetails)
+            foreach (ScheduleDetail detail in ScheduleDetails)
             {
-                DetailId++;
-                WriteVerbose($"Performing Action: Process DetailId: {DetailId}");
-                progressRecord.CurrentOperation = $"Processing DetailId: {DetailId}";
-                progressRecord.PercentComplete = (int)Math.Round((double)(((double)DetailId - 1) / (double)detailCount) * 100);
-                progressRecord.StatusDescription = $"{DetailId - 1} of {detailCount} processed, {progressRecord.PercentComplete}%";
+                progressRecord.CurrentOperation = "Processing Schedule Detail";
+                progressRecord.PercentComplete = (int)Math.Round((double)(((double)detailCounter) / (double)detailCount) * 100);
+                progressRecord.StatusDescription = $"{detailCounter} of {detailCount} processed, {progressRecord.PercentComplete}%";
                 WriteProgress(progressRecord);
+                string detailHash = ScheduleDetailHash(Schedule, detail);
+                WriteDebug($"Computed Hash: {detailHash}");
 
-                DSClientScheduleDetail scheduleDetail = new DSClientScheduleDetail(DetailId, scheduleInfo, schedule);
-                int detailHash = scheduleDetail.GetHashCode();
-                WriteDebug($"Hash Code for {DetailId}: {detailHash}");
-                scheduleHash.Add(detailHash, DetailId);
-                DSClientScheduleDetail.Add(scheduleDetail);
+                detailHashes.TryGetValue(detailHash, out int id);
+                if (id > 0)
+                {
+                    if (id >= startingId)
+                        startingId = id + 1;
+                    DSClientScheduleDetail.Add(new DSClientScheduleDetail(id, scheduleInfo, detail));
+                    detail.Dispose();
+                }
+                else
+                    unidentified.Add(detailHash, detail);
+
+                detailCounter++;
             }
+
             progressRecord.RecordType = ProgressRecordType.Completed;
-            progressRecord.PercentComplete = (int)Math.Round((double)(((double)DetailId - 1) / (double)detailCount) * 100);
+            progressRecord.PercentComplete = (int)Math.Round((double)(((double)detailCounter) / (double)detailCount) * 100);
             WriteProgress(progressRecord);
 
-            SessionState.PSVariable.Remove("ScheduleDetail");
-            SessionState.PSVariable.Set("ScheduleDetail", scheduleHash);
+            foreach (KeyValuePair<string, ScheduleDetail> hash in unidentified)
+            {
+                DSClientScheduleDetail.Add(new DSClientScheduleDetail(startingId, scheduleInfo, hash.Value));
+                hash.Value.Dispose();
+                detailHashes.Add(hash.Key, startingId);
+                startingId++;
+            }
+
+            SessionState.PSVariable.Set("ScheduleDetail", detailHashes);
 
             DSClientScheduleDetail.ForEach(WriteObject);
 

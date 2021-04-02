@@ -76,7 +76,8 @@ namespace PSAsigraDSClient
             public int DetailId { get; private set; }
             public int ScheduleId { get; private set; }            
             public string ScheduleName { get; private set; }
-            public dynamic Type { get; private set; }
+            public string Type { get; private set; }
+            public ScheduleFrequency Frequency { get; set; }
             public TimeInDay StartTime { get; private set; }
             public TimeInDay EndTime { get; private set; }
             public DateTime StartDate { get; private set; }
@@ -95,23 +96,8 @@ namespace PSAsigraDSClient
                 DetailId = detailId;
                 ScheduleId = scheduleInfo.id;
                 ScheduleName = scheduleInfo.name;
-                
-                switch (_detailType)
-                {
-                    case EScheduleDetailType.EScheduleDetailType__OneTime:
-                        Type = new OneTimeScheduleType(schedule);
-                        break;
-                    case EScheduleDetailType.EScheduleDetailType__Daily:
-                        Type = new DailyScheduleType(schedule);
-                        break;
-                    case EScheduleDetailType.EScheduleDetailType__Weekly:
-                        Type = new WeeklyScheduleType(schedule);
-                        break;
-                    case EScheduleDetailType.EScheduleDetailType__Monthly:
-                        Type = new MonthlyScheduleType(schedule);
-                        break;
-                }
-
+                Type = EnumToString(_detailType);
+                Frequency = new ScheduleFrequency(schedule);
                 StartTime = new TimeInDay(schedule.getStartTime());
                 EndTime = new TimeInDay(schedule.getEndTime());
                 StartDate = UnixEpochToDateTime(schedule.getPeriodStartDate());
@@ -124,77 +110,142 @@ namespace PSAsigraDSClient
             }
         }
 
-        protected class OneTimeScheduleType
+        protected class ScheduleFrequency
         {
-            public DateTime StartDate { get; private set; }
+            private readonly EScheduleDetailType _type;
+            public DSClientTimeSpan Frequency { get; set; }
+            public ScheduleWhen StartPeriod { get; set; }
 
-            public OneTimeScheduleType(ScheduleDetail schedule)
+            public ScheduleFrequency(ScheduleDetail detail)
             {
-                OneTimeScheduleDetail detail = OneTimeScheduleDetail.from(schedule);
+                _type = detail.getType();
 
-                StartDate = UnixEpochToDateTime(detail.get_start_date());
+                switch (_type)
+                {
+                    case EScheduleDetailType.EScheduleDetailType__OneTime:
+                        Frequency = new DSClientTimeSpan(0, "OneTime");
+                        StartPeriod = new ScheduleWhen(detail);
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Daily:
+                        DailyScheduleDetail daily = DailyScheduleDetail.from(detail);
+                        Frequency = new DSClientTimeSpan(daily.getRepeatDays(), "Days");
+                        StartPeriod = new ScheduleWhen(detail);
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Weekly:
+                        WeeklyScheduleDetail weekly = WeeklyScheduleDetail.from(detail);
+                        Frequency = new DSClientTimeSpan(weekly.getRepeatWeeks(), "Weeks");
+                        StartPeriod = new ScheduleWhen(detail);
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Monthly:
+                        MonthlyScheduleDetail monthly = MonthlyScheduleDetail.from(detail);
+                        Frequency = new DSClientTimeSpan(monthly.getRepeatMonths(), "Months");
+                        StartPeriod = new ScheduleWhen(detail);
+                        break;
+                }
             }
 
             public override string ToString()
             {
-                return "OneTime";
+                if (_type == EScheduleDetailType.EScheduleDetailType__OneTime)
+                    return "Once";
+                else
+                    return $"Every {Frequency}";
             }
         }
 
-        protected class DailyScheduleType
+        protected class ScheduleWhen
         {
-            public int RepeatDays { get; private set; }
+            private readonly EScheduleDetailType _type;
+            public string StartDate { get; set; }
+            public TimeInDay StartTime { get; set; }
+            public string[] WeekDays { get; set; }
+            public int DayOfMonth { get; set; }
+            public string MonthlyStartDay { get; set; }
 
-            public DailyScheduleType(ScheduleDetail schedule)
+            public ScheduleWhen(ScheduleDetail detail)
             {
-                DailyScheduleDetail detail = DailyScheduleDetail.from(schedule);
+                _type = detail.getType();
 
-                RepeatDays = detail.getRepeatDays();
+                switch (_type)
+                {
+                    case EScheduleDetailType.EScheduleDetailType__OneTime:
+                        OneTimeScheduleDetail oneTime = OneTimeScheduleDetail.from(detail);
+                        StartDate = (UnixEpochToDateTime(oneTime.get_start_date())).ToShortDateString();
+                        StartTime = new TimeInDay(oneTime.getStartTime());
+                        oneTime.Dispose();
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Daily:
+                        DailyScheduleDetail daily = DailyScheduleDetail.from(detail);
+                        StartDate = (UnixEpochToDateTime(daily.getPeriodStartDate())).ToShortDateString();
+                        StartTime = new TimeInDay(daily.getStartTime());
+                        daily.Dispose();
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Weekly:
+                        WeeklyScheduleDetail weekly = WeeklyScheduleDetail.from(detail);
+                        StartDate = (UnixEpochToDateTime(weekly.getPeriodStartDate())).ToShortDateString();
+                        StartTime = new TimeInDay(weekly.getStartTime());
+                        WeekDays = EScheduleWeekDaysIntToArray(weekly.getScheduleDays());
+                        weekly.Dispose();
+                        break;
+                    case EScheduleDetailType.EScheduleDetailType__Monthly:
+                        MonthlyScheduleDetail monthly = MonthlyScheduleDetail.from(detail);
+                        StartDate = (UnixEpochToDateTime(monthly.getPeriodStartDate())).ToShortDateString();
+                        StartTime = new TimeInDay(monthly.getStartTime());
+                        DayOfMonth = monthly.getScheduleDay();
+                        string startDay = EnumToString(monthly.getScheduleWhen());
+                        MonthlyStartDay = (startDay == "Thrusday") ? "Thursday" : startDay;
+                        break;
+                }
             }
 
             public override string ToString()
             {
-                return "Daily";
-            }
-        }
-
-        protected class WeeklyScheduleType
-        {
-            public int RepeatWeeks { get; private set; }
-            public string[] ScheduleDays { get; private set; }
-
-            public WeeklyScheduleType(ScheduleDetail schedule)
-            {
-                WeeklyScheduleDetail detail = WeeklyScheduleDetail.from(schedule);
-
-                RepeatWeeks = detail.getRepeatWeeks();
-                ScheduleDays = EScheduleWeekDaysIntToArray(detail.getScheduleDays());
-            }
-
-            public override string ToString()
-            {
-                return "Weekly";
-            }
-        }
-
-        protected class MonthlyScheduleType
-        {
-            public int RepeatMonths { get; private set; }
-            public int ScheduleDay { get; private set; }
-            public string MonthlyStartDay { get; private set; }
-
-            public MonthlyScheduleType(ScheduleDetail schedule)
-            {
-                MonthlyScheduleDetail detail = MonthlyScheduleDetail.from(schedule);
-
-                RepeatMonths = detail.getRepeatMonths();
-                ScheduleDay = detail.getScheduleDay();
-                MonthlyStartDay = (detail.getScheduleWhen() == EScheduleMonthlyStartDay.EScheduleMonthlyStartDay__Thrusday) ? "Thursday" : EnumToString(detail.getScheduleWhen());
-            }
-
-            public override string ToString()
-            {
-                return "Monthly";
+                switch (_type)
+                {
+                    case EScheduleDetailType.EScheduleDetailType__OneTime:
+                        return $"{StartDate} {StartTime}";
+                    case EScheduleDetailType.EScheduleDetailType__Daily:
+                        return StartTime.ToString();
+                    case EScheduleDetailType.EScheduleDetailType__Weekly:
+                        string when = null;
+                        int numdays = WeekDays.Count();
+                        for (int i = 0; i < numdays; i++)
+                        {
+                            string day = WeekDays[i];
+                            if (i == numdays - 1)
+                                when += $"{day[0]}{day[1]}{day[2]}";
+                            else
+                                when += $"{day[0]}{day[1]}{day[2]}, ";
+                        }
+                        return when;
+                    case EScheduleDetailType.EScheduleDetailType__Monthly:
+                        string monthday = null;
+                        switch (DayOfMonth)
+                        {
+                            case 1:
+                            case 21:
+                            case 31:
+                                monthday = $"{DayOfMonth}st";
+                                break;
+                            case 2:
+                            case 22:
+                                monthday = $"{DayOfMonth}nd";
+                                break;
+                            case 3:
+                            case 23:
+                                monthday = $"{DayOfMonth}rd";
+                                break;
+                            default:
+                                monthday = $"{DayOfMonth}th";
+                                break;
+                        }
+                        if (MonthlyStartDay != "DayOfMonth")
+                            return $"{monthday} {MonthlyStartDay}";
+                        else
+                            return monthday;
+                    default:
+                        return null;
+                }
             }
         }
 

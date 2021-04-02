@@ -104,6 +104,29 @@ namespace PSAsigraDSClient
             return TimeInDay;
         }
 
+        public class DSClientTimeSpan
+        {
+            public int Period { get; private set; }
+            public string Unit { get; private set; }
+
+            public DSClientTimeSpan(int period, string unit)
+            {
+                Period = period;
+                Unit = unit;
+            }
+
+            public DSClientTimeSpan(retention_time_span timeSpan)
+            {
+                Period = timeSpan.period;
+                Unit = EnumToString(timeSpan.unit);
+            }
+
+            public override string ToString()
+            {
+                return $"{Period} {Unit}";
+            }
+        }
+
         public static DateTime UnixEpochToDateTime(int epoch)
         {
             DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(epoch);

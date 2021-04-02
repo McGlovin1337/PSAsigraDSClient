@@ -53,7 +53,7 @@ namespace PSAsigraDSClient
             public bool ArchiveSpecialFiles { get; private set; }
             public bool ArchiveLatestSpecialFiles { get; private set; }
             public bool CleanupRemovedFiles { get; private set; }
-            public DSClientRetentionTimeSpan CleanupRemovedAfter { get; private set; }
+            public DSClientTimeSpan CleanupRemovedAfter { get; private set; }
             public int CleanupRemovedKeep { get; private set; }
             public bool NewBLMPackage { get; private set; }
             public bool DeleteIncompleteComponenets { get; private set; }
@@ -62,10 +62,10 @@ namespace PSAsigraDSClient
             public bool DeleteUnreferencedFiles { get; private set; }
             public bool KeepGensByPeriod { get; private set; }
             public int KeepLastGens { get; private set; }
-            public DSClientRetentionTimeSpan KeepPeriodTimeSpan { get; private set; }
-            public DSClientRetentionTimeSpan LocalStorageRetention { get; private set; }
+            public DSClientTimeSpan KeepPeriodTimeSpan { get; private set; }
+            public DSClientTimeSpan LocalStorageRetention { get; private set; }
             public bool LSCleanupRemovedFiles { get; private set; }
-            public DSClientRetentionTimeSpan LSCleanupRemovedafter { get; private set; }
+            public DSClientTimeSpan LSCleanupRemovedafter { get; private set; }
             public int LSCleanupRemovedKeep { get; private set; }
             public bool DeleteObsoleteData { get; private set; }
             public bool MoveObsoleteToBLM { get; private set; }
@@ -130,7 +130,7 @@ namespace PSAsigraDSClient
                 ArchiveSpecialFiles = retentionRule.getArchiveSpecialFiles();
                 ArchiveLatestSpecialFiles = retentionRule.getArchiveLatestSpecialFiles();
                 CleanupRemovedFiles = retentionRule.getCleanupRemovedFiles();
-                CleanupRemovedAfter = new DSClientRetentionTimeSpan(retentionRule.getCleanupRemovedAfter());
+                CleanupRemovedAfter = new DSClientTimeSpan(retentionRule.getCleanupRemovedAfter());
                 CleanupRemovedKeep = retentionRule.getCleanupRemovedKeep();
                 NewBLMPackage = retentionRule.getCreateNewBLMPackage();
                 DeleteIncompleteComponenets = retentionRule.getDeleteIncompleteComponents();
@@ -139,10 +139,10 @@ namespace PSAsigraDSClient
                 DeleteUnreferencedFiles = retentionRule.getDeleteUnreferencedFiles();
                 KeepGensByPeriod = retentionRule.getKeepGenerationsByPeriod();
                 KeepLastGens = retentionRule.getKeepLastGenerations();
-                KeepPeriodTimeSpan = new DSClientRetentionTimeSpan(retentionRule.getKeepPeriodTimeSpan());
-                LocalStorageRetention = new DSClientRetentionTimeSpan(retentionRule.getLocalStorageRetention());
+                KeepPeriodTimeSpan = new DSClientTimeSpan(retentionRule.getKeepPeriodTimeSpan());
+                LocalStorageRetention = new DSClientTimeSpan(retentionRule.getLocalStorageRetention());
                 LSCleanupRemovedFiles = retentionRule.getLSCleanupRemovedFiles();
-                LSCleanupRemovedafter = new DSClientRetentionTimeSpan(retentionRule.getLSCleanupRemovedAfter());
+                LSCleanupRemovedafter = new DSClientTimeSpan(retentionRule.getLSCleanupRemovedAfter());
                 LSCleanupRemovedKeep = retentionRule.getLSCleanupRemovedKeep();
                 DeleteObsoleteData = !obsoleteData;
                 MoveObsoleteToBLM = obsoleteData;
@@ -157,13 +157,13 @@ namespace PSAsigraDSClient
 
         public class IntervalTimeRetention
         {
-            public DSClientRetentionTimeSpan RepeatInterval { get; private set; }
-            public DSClientRetentionTimeSpan ValidFor { get; private set; }
+            public DSClientTimeSpan RepeatInterval { get; private set; }
+            public DSClientTimeSpan ValidFor { get; private set; }
 
             public IntervalTimeRetention(IntervalTimeRetentionOption interval)
             {
-                RepeatInterval = new DSClientRetentionTimeSpan(interval.getRepeatTime());
-                ValidFor = new DSClientRetentionTimeSpan(interval.getValidFor());
+                RepeatInterval = new DSClientTimeSpan(interval.getRepeatTime());
+                ValidFor = new DSClientTimeSpan(interval.getValidFor());
             }
 
             public override string ToString()
@@ -176,13 +176,13 @@ namespace PSAsigraDSClient
         {
             public string Day { get; private set; }
             public TimeInDay SnapshotTime { get; private set; }
-            public DSClientRetentionTimeSpan ValidFor { get; private set; }
+            public DSClientTimeSpan ValidFor { get; private set; }
 
             public WeeklyTimeRetention(WeeklyTimeRetentionOption weekly)
             {
                 Day = EnumToString(weekly.getTriggerDay());
                 SnapshotTime = new TimeInDay(weekly.getSnapshotTime());
-                ValidFor = new DSClientRetentionTimeSpan(weekly.getValidFor());
+                ValidFor = new DSClientTimeSpan(weekly.getValidFor());
             }
 
             public override string ToString()
@@ -195,13 +195,13 @@ namespace PSAsigraDSClient
         {
             public string DayOfMonth { get; private set; }
             public TimeInDay SnapshotTime { get; private set; }
-            public DSClientRetentionTimeSpan ValidFor { get; private set; }
+            public DSClientTimeSpan ValidFor { get; private set; }
 
             public MonthlyTimeRetention(MonthlyTimeRetentionOption monthly)
             {
                 DayOfMonth = MonthlyDayToString(monthly.getDayOfMonth());
                 SnapshotTime = new TimeInDay(monthly.getSnapshotTime());
-                ValidFor = new DSClientRetentionTimeSpan(monthly.getValidFor());
+                ValidFor = new DSClientTimeSpan(monthly.getValidFor());
             }
 
             public override string ToString()
@@ -215,14 +215,14 @@ namespace PSAsigraDSClient
             public string DayOfMonth { get; private set; }
             public string Month { get; private set; }
             public TimeInDay SnapshotTime { get; private set; }
-            public DSClientRetentionTimeSpan ValidFor { get; private set; }
+            public DSClientTimeSpan ValidFor { get; private set; }
 
             public YearlyTimeRetention(YearlyTimeRetentionOption yearly)
             {
                 DayOfMonth = MonthlyDayToString(yearly.getDayOfMonth());
                 Month = EnumToString(yearly.getTriggerMonth());
                 SnapshotTime = new TimeInDay(yearly.getSnapshotTime());
-                ValidFor = new DSClientRetentionTimeSpan(yearly.getValidFor());
+                ValidFor = new DSClientTimeSpan(yearly.getValidFor());
             }
 
             public override string ToString()
@@ -241,7 +241,7 @@ namespace PSAsigraDSClient
             public WeeklyTimeRetention Weekly { get; private set; }
             public MonthlyTimeRetention Monthly { get; private set; }
             public YearlyTimeRetention Yearly { get; private set; }
-            public DSClientRetentionTimeSpan ValidFor { get; private set; }
+            public DSClientTimeSpan ValidFor { get; private set; }
 
             public TimeRetentionOverview(int id, TimeRetentionOption timeRetention)
             {
@@ -254,13 +254,13 @@ namespace PSAsigraDSClient
                 Weekly = (_type == ETimeRetentionType.ETimeRetentionType__Weekly) ? new WeeklyTimeRetention(WeeklyTimeRetentionOption.from(timeRetention)) : null;
                 Monthly = (_type == ETimeRetentionType.ETimeRetentionType__Monthly) ? new MonthlyTimeRetention(MonthlyTimeRetentionOption.from(timeRetention)) : null;
                 Yearly = (_type == ETimeRetentionType.ETimeRetentionType__Yearly) ? new YearlyTimeRetention(YearlyTimeRetentionOption.from(timeRetention)) : null;
-                ValidFor = new DSClientRetentionTimeSpan(_validFor);
+                ValidFor = new DSClientTimeSpan(_validFor);
             }
         }
 
         public class DSClientArchiveRule
         {
-            public DSClientRetentionTimeSpan TimeSpan { get; private set; }
+            public DSClientTimeSpan TimeSpan { get; private set; }
             public DSClientArchiveFilterRule FilterRule { get; private set; }
 
             public DSClientArchiveRule(ArchiveRule archiveRule)
@@ -268,30 +268,13 @@ namespace PSAsigraDSClient
                 retention_time_span timeSpan = archiveRule.getTimeSpan();
                 ArchiveFilterRule archiveFilterRule = archiveRule.getFilterRule();
 
-                TimeSpan = new DSClientRetentionTimeSpan(timeSpan);
+                TimeSpan = new DSClientTimeSpan(timeSpan);
                 FilterRule = (archiveFilterRule == null) ? new DSClientArchiveFilterRule() : new DSClientArchiveFilterRule(archiveFilterRule);
             }
 
             public override string ToString()
             {
                 return FilterRule.Name;
-            }
-        }
-
-        public class DSClientRetentionTimeSpan
-        {
-            public int Period { get; private set; }
-            public string Unit { get; private set; }
-
-            public DSClientRetentionTimeSpan(retention_time_span timeSpan)
-            {
-                Period = timeSpan.period;
-                Unit = EnumToString(timeSpan.unit);
-            }
-
-            public override string ToString()
-            {
-                return $"{Period} {Unit}";
             }
         }
 

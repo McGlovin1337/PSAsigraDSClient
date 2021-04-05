@@ -4479,16 +4479,16 @@
       <command:verb>Add</command:verb>
       <command:noun>DSClientWinFsBackupSetItem</command:noun>
       <maml:description>
-        <maml:para>Adds a Windows File System Inclusion/Exclusion Item to a Backup Set</maml:para>
+        <maml:para>Adds a Windows File System Inclusion or Exclusion Item to a Backup Set</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Adds a Windows File System Inclusion/Exclusion to an existing Windows File System Backup Set</maml:para>
+      <maml:para>Adds a Windows File System Inclusion or Exclusion Item to an existing Windows File System Backup Set</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Add-DSClientWinFsBackupSetItem</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
           <maml:name>BackupSetId</maml:name>
           <maml:Description>
             <maml:para>Specify the Backup Set to modify</maml:para>
@@ -4511,18 +4511,6 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>ExcludeItem</maml:name>
-          <maml:Description>
-            <maml:para>Items to Exclude from Backup Set</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-          <dev:type>
-            <maml:name>String[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ExcludePermissions</maml:name>
           <maml:Description>
@@ -4534,22 +4522,71 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>IncludeItem</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>MaxGenerations</maml:name>
           <maml:Description>
-            <maml:para>Items to Include in Backup Set</maml:para>
+            <maml:para>Max Number of Generations for Included Items</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String[]</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>MaxGenerations</maml:name>
+          <maml:name>ExcludeSubDirs</maml:name>
           <maml:Description>
-            <maml:para>Max Number of Generations for Included Items</maml:para>
+            <maml:para>Specify to exclude Sub-Directories</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Expression, Item">
+          <maml:name>Filter</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Item Filter</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Inclusion</maml:name>
+          <maml:Description>
+            <maml:para>Specify that this is an Inclusion Item</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Folder, Directory">
+          <maml:name>Path</maml:name>
+          <maml:Description>
+            <maml:para>Path to add to Backup Set</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Add-DSClientWinFsBackupSetItem</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>BackupSetId</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Backup Set to modify</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -4570,9 +4607,44 @@
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>RegexExcludeDirectory</maml:name>
+          <maml:name>ExcludeSubDirs</maml:name>
           <maml:Description>
-            <maml:para>Specify to also Exclude Directories with Regex pattern</maml:para>
+            <maml:para>Specify to exclude Sub-Directories</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Expression, Item">
+          <maml:name>Filter</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Item Filter</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Folder, Directory">
+          <maml:name>Path</maml:name>
+          <maml:Description>
+            <maml:para>Path to add to Backup Set</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>RegexExclusion</maml:name>
+          <maml:Description>
+            <maml:para>Specify that this is a Regex Exclusion Item</maml:para>
           </maml:Description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -4581,25 +4653,27 @@
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>RegexExcludeItem</maml:name>
+          <maml:name>RegexMatchDirectory</maml:name>
           <maml:Description>
-            <maml:para>Specify Regex Item Exclusion Patterns</maml:para>
+            <maml:para>Specify to also Directory Names with Regex pattern</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String[]</maml:name>
+            <maml:name>SwitchParameter</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
+          <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>RegexExclusionPath</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Add-DSClientWinFsBackupSetItem</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>BackupSetId</maml:name>
           <maml:Description>
-            <maml:para>Specify Path for Regex Exclusion Item</maml:para>
+            <maml:para>Specify the Backup Set to modify</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4615,10 +4689,45 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Exclusion</maml:name>
+          <maml:Description>
+            <maml:para>Specify that this is an Exclusion Item</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Expression, Item">
+          <maml:name>Filter</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Item Filter</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Folder, Directory">
+          <maml:name>Path</maml:name>
+          <maml:Description>
+            <maml:para>Path to add to Backup Set</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
         <maml:name>BackupSetId</maml:name>
         <maml:Description>
           <maml:para>Specify the Backup Set to modify</maml:para>
@@ -4642,18 +4751,6 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>ExcludeItem</maml:name>
-        <maml:Description>
-          <maml:para>Items to Exclude from Backup Set</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-        <dev:type>
-          <maml:name>String[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ExcludePermissions</maml:name>
         <maml:Description>
@@ -4666,19 +4763,7 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>IncludeItem</maml:name>
-        <maml:Description>
-          <maml:para>Items to Include in Backup Set</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-        <dev:type>
-          <maml:name>String[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>MaxGenerations</maml:name>
         <maml:Description>
           <maml:para>Max Number of Generations for Included Items</maml:para>
@@ -4703,9 +4788,69 @@
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>RegexExcludeDirectory</maml:name>
+        <maml:name>ExcludeSubDirs</maml:name>
         <maml:Description>
-          <maml:para>Specify to also Exclude Directories with Regex pattern</maml:para>
+          <maml:para>Specify to exclude Sub-Directories</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Exclusion</maml:name>
+        <maml:Description>
+          <maml:para>Specify that this is an Exclusion Item</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Expression, Item">
+        <maml:name>Filter</maml:name>
+        <maml:Description>
+          <maml:para>Specify the Item Filter</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Inclusion</maml:name>
+        <maml:Description>
+          <maml:para>Specify that this is an Inclusion Item</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Folder, Directory">
+        <maml:name>Path</maml:name>
+        <maml:Description>
+          <maml:para>Path to add to Backup Set</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>RegexExclusion</maml:name>
+        <maml:Description>
+          <maml:para>Specify that this is a Regex Exclusion Item</maml:para>
         </maml:Description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -4715,33 +4860,9 @@
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>RegexExcludeItem</maml:name>
+        <maml:name>RegexMatchDirectory</maml:name>
         <maml:Description>
-          <maml:para>Specify Regex Item Exclusion Patterns</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-        <dev:type>
-          <maml:name>String[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>RegexExclusionPath</maml:name>
-        <maml:Description>
-          <maml:para>Specify Path for Regex Exclusion Item</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>ExcludeSubDirs</maml:name>
-        <maml:Description>
-          <maml:para>Specify to exclude Sub-Directories</maml:para>
+          <maml:para>Specify to also Directory Names with Regex pattern</maml:para>
         </maml:Description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -4802,10 +4923,31 @@
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Add-DSClientWinFsBackupSetItem -BackupSetId 4 -IncludeItem "F$\*.*", "E$\*.*" -MaxGenerations 15 -ExcludeItem "F$\Pagefile.sys"</dev:code>
+        <maml:title>--------------- Example 1 - Create an Inclusion ---------------</maml:title>
+        <dev:code>PS C:\&gt; Add-DSClientWinFsBackupSetItem -BackupSetId 4 -Path 'F$\' -Filter '*.*' -MaxGenerations 30 -Inclusion</dev:code>
         <dev:remarks>
-          <maml:para>Adds all inclusion items on F$\ and E$\ shares but excludes the file F$\Pagefile.sys</maml:para>
+          <maml:para>Creates an Inclusion Item for all Files &amp; Folders in the 'F$\' Path</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--------------- Example 2 - Create an Exclusion ---------------</maml:title>
+        <dev:code>PS C:\&gt; Add-DSClientWinFsBackupSetItem -BackupSetId 4 -Path 'C$\Windows\Temp' -Filter '*.*' -Exclusion</dev:code>
+        <dev:remarks>
+          <maml:para>Creates an Exclusion Item for all Files &amp; Folders in the 'C$\Windows\Temp' Path</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------------- Example 3 - Create a Regex Exclusion -------------</maml:title>
+        <dev:code>PS C:\&gt; Add-DSClientWinFsBackupSetItem -BackupSetId 4 -Path 'C$\' -Expression '.*\*.sys' -ExcludeSubDirs -RegexExclusion</dev:code>
+        <dev:remarks>
+          <maml:para>Creates a Regex Exclusion that Excludes all Files matching the expression '. \ .sys' in 'C$\' only</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------------- Example 4 - Include a Specific File -------------</maml:title>
+        <dev:code>PS C:\&gt; Add-DSClientWinFsBackupSetItem -BackupSetId 4 -Path 'E$\docs' -Filter 'myfile.txt' -MaxGenerations 9999 -ExcludeSubDirs -Inclusion</dev:code>
+        <dev:remarks>
+          <maml:para>Creates an Inclusion Item for myfile.txt in the 'E$\docs' Path</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

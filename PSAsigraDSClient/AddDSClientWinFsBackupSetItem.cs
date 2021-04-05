@@ -51,6 +51,9 @@ namespace PSAsigraDSClient
             WriteVerbose("Performing Action: Add Items to Backup Set");
             backupSet.setItems(backupSetItems.ToArray());
 
+            foreach (BackupSetItem item in backupSetItems)
+                item.Dispose();
+
             dataSourceBrowser.Dispose();
             backupSet.Dispose();
         }

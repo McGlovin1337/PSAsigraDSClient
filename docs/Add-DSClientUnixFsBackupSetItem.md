@@ -12,10 +12,22 @@ Adds a Unix based Inclusion/Exclusion item to a Backup Set
 
 ## SYNTAX
 
+### inclusion
 ```
-Add-DSClientUnixFsBackupSetItem [[-BackupSetId] <Int32>] [-IncludeItem <String[]>] [-MaxGenerations <Int32>]
- [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>] [-RegexExclusionPath <String>]
- [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-ExcludeACLs] [-ExcludePosixACLs] [-ExcludeSubDirs]
+Add-DSClientUnixFsBackupSetItem [-ExcludeACLs] [-ExcludePosixACLs] [-BackupSetId] <Int32> [-Inclusion]
+ -Path <String> -Filter <String> [-ExcludeSubDirs] -MaxGenerations <Int32> [<CommonParameters>]
+```
+
+### exclusion
+```
+Add-DSClientUnixFsBackupSetItem [-ExcludeACLs] [-ExcludePosixACLs] [-BackupSetId] <Int32> [-Exclusion]
+ -Path <String> -Filter <String> [-ExcludeSubDirs] [<CommonParameters>]
+```
+
+### regex
+```
+Add-DSClientUnixFsBackupSetItem [-ExcludeACLs] [-ExcludePosixACLs] [-BackupSetId] <Int32> [-RegexExclusion]
+ -Path <String> -Filter <String> [-ExcludeSubDirs] [-RegexMatchDirectory] [-RegexCaseInsensitive]
  [<CommonParameters>]
 ```
 
@@ -24,12 +36,26 @@ Adds a Unix File System Inclusion/Exclusion Item to an existing Unix File System
 
 ## EXAMPLES
 
-### Example 1
+### Example 1 - Create Inclusion Item
 ```powershell
-PS C:\> Add-DSClientUnixFsBackupSetItem -BackupSetId 1 -IncludeItem "/home/" -MaxGenerations 15
+PS C:\> Add-DSClientUnixFsBackupSetItem -BackupSetId 1 -Inclusion -Path '/\home' -Filter '*' -MaxGenerations 9999
 ```
 
-Adds the "/home/" directory as an Inclusion Item to the Backup Set with Id 1
+Adds the "/\home" directory and all folders and files as an inclusion item to the Backup Set
+
+### Example 2 - Create Exclusion Item
+```powershell
+PS C:\> Add-DSClientUnixFsBackupSetItem -BackupSetId 1 -Exclusion -Path '/\home\user' -Filter '*'
+```
+
+Excludes all the folders and files in the path '/\home\user'
+
+### Example 3 - Create Regex Exclusion Item
+```powershell
+PS C:\> Add-DSClientUnixFsBackupSetItem -BackupSetId 1 -RegexExclusion -Path '/' -Expression '.*\.txt'
+```
+
+Excludes all .txt files
 
 ## PARAMETERS
 
@@ -41,7 +67,7 @@ Type: Int32
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -63,21 +89,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ExcludeItem
-Items to Exclude from Backup Set
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -ExcludePosixACLs
 Exclude POSIX ACLs
 
@@ -93,30 +104,15 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeItem
-Items to Include in Backup Set
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -MaxGenerations
 Max Number of Generations for Included Items
 
 ```yaml
 Type: Int32
-Parameter Sets: (All)
+Parameter Sets: inclusion
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -128,52 +124,7 @@ Specify if Regex Exclusions Items are case insensitive
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -RegexExcludeDirectory
-Specify to also Exclude Directories with Regex pattern
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -RegexExcludeItem
-Specify Regex Item Exclusion Patterns
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -RegexExclusionPath
-Specify Path for Regex Exclusion Item
-
-```yaml
-Type: String
-Parameter Sets: (All)
+Parameter Sets: regex
 Aliases:
 
 Required: False
@@ -189,6 +140,108 @@ Specify to exclude Sub-Directories
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Exclusion
+Specify that this is an Exclusion Item
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: exclusion
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Filter
+Specify the Item Filter
+
+```yaml
+Type: String
+Parameter Sets: inclusion
+Aliases: Expression, Item
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: exclusion, regex
+Aliases: Expression, Item
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Inclusion
+Specify that this is an Inclusion Item
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: inclusion
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Path
+Path to add to Backup Set
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: Folder, Directory
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexExclusion
+Specify that this is a Regex Exclusion Item
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: regex
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RegexMatchDirectory
+Specify to also Directory Names with Regex pattern
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: regex
 Aliases:
 
 Required: False

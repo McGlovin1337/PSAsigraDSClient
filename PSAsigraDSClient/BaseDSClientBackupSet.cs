@@ -256,6 +256,18 @@ namespace PSAsigraDSClient
             return inclusionItems;
         }
 
+        protected static MSSQL_BackupSetInclusionItem CreateMSSqlBackupSetItem(DataSourceBrowser browser, string computer, string path, string filter, int generations, bool logBackup, bool runDbcc, bool stopDbcc, bool excludeSubDirs)
+        {
+            MSSQL_BackupSetInclusionItem item = MSSQL_BackupSetInclusionItem.from(browser.createInclusionItem(computer, path, generations));
+            item.setFilter(filter);
+            item.setSubdirDescend(!excludeSubDirs);
+            item.setBackUpTransactionLog(logBackup);
+            item.setRunDBCC(runDbcc);
+            item.setStopOnDBCCErrors(stopDbcc);
+
+            return item;
+        }
+
         protected static IEnumerable<MSSQL_BackupSetInclusionItem> ProcessMsSqlInclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool logBackup, bool runDBCC, bool stopDBCC, bool excludeSubDirs)
         {
             List<MSSQL_BackupSetInclusionItem> sqlInclusionItems = new List<MSSQL_BackupSetInclusionItem>();

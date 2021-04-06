@@ -8,34 +8,14 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientMSSqlServerBackupSetItem")]
 
-    public class AddDSClientMSSqlServerBackupSetItem: BaseDSClientBackupSet
+    public class AddDSClientMSSqlServerBackupSetItem: BaseDSClientBackupSetItemParams
     {
-        [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to Add items to")]
-        public int BackupSetId { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Include in Backup Set")]
-        public string[] IncludeItem { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Max Number of Generations for Included Items")]
-        [ValidateRange(1, 9999)]
-        public int MaxGenerations { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Exclude from Backup Set")]
-        public string[] ExcludeItem { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Regex Item Exclusion Patterns")]
-        [ValidateNotNullOrEmpty]
-        public string[] RegexExcludeItem { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Path for Regex Exclusion Item")]
-        [ValidateNotNullOrEmpty]
-        public string RegexExclusionPath { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to also Exclude Directories with Regex pattern")]
-        public SwitchParameter RegexExcludeDirectory { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify if Regex Exclusions Items are case insensitive")]
-        public SwitchParameter RegexCaseInsensitive { get; set; }
+        [Parameter(ParameterSetName = "inclusion", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Item Filter")]
+        [Parameter(ParameterSetName = "exclusion")]
+        [Parameter(Mandatory = true, ParameterSetName = "regex")]
+        [ValidateNotNull]
+        [Alias("Expression", "Item")]
+        public new string Filter { get; set; }
 
         [Parameter(HelpMessage = "Specify to run Database Consistency Check DBCC")]
         public SwitchParameter RunDBCC { get; set; }
@@ -45,9 +25,6 @@ namespace PSAsigraDSClient
 
         [Parameter(HelpMessage = "Specify to Backup Transaction Log")]
         public SwitchParameter BackupLog { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to exclude Sub-Directories")]
-        public SwitchParameter ExcludeSubDirs { get; set; }
 
         protected override void DSClientProcessRecord()
         {
@@ -66,16 +43,16 @@ namespace PSAsigraDSClient
             // Create a List of Items
             List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
-            // Process any Exclusion Items
-            if (ExcludeItem != null)
-                backupSetItems.AddRange(ProcessBasicExclusionItems(dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
+            if (Filter == null)
+                Filter = "";
 
-            if (RegexExcludeItem != null)
-                backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));
+            if (Exclusion)
+                backupSetItems.Add(CreateExclusionItem(dataSourceBrowser, computer, Path, Filter, ExcludeSubDirs));
+            else if (RegexExclusion)
+                backupSetItems.Add(CreateRegexExclusion(dataSourceBrowser, computer, Path, Filter, RegexMatchDirectory, RegexCaseInsensitive));
+            else if (Inclusion)
+                backupSetItems.Add(CreateMSSqlBackupSetItem(dataSourceBrowser, computer, Path, Filter, MaxGenerations, BackupLog, RunDBCC, DBCCErrorStop, ExcludeSubDirs));
 
-            // Process any Inclusion Items
-            if (IncludeItem != null)
-                backupSetItems.AddRange(ProcessMsSqlInclusionItems(dataSourceBrowser, computer, IncludeItem, MaxGenerations, BackupLog, RunDBCC, DBCCErrorStop, ExcludeSubDirs));
 
             // Get the existing specified items and store in the list
             backupSetItems.AddRange(backupSet.items());
@@ -86,6 +63,9 @@ namespace PSAsigraDSClient
             // Add all the items to the Backup Set
             WriteVerbose("Performing Action: Add Items to Backup Set");
             backupSet.setItems(backupSetItems.ToArray());
+
+            foreach (BackupSetItem item in backupSetItems)
+                item.Dispose();
 
             dataSourceBrowser.Dispose();
             backupSet.Dispose();

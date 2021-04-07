@@ -7,24 +7,8 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientVMwareVADPBackupSetItem")]
 
-    public class AddDSClientVMwareVADPBackupSetItem : BaseDSClientBackupSet
+    public class AddDSClientVMwareVADPBackupSetItem : BaseDSClientBackupSetItemParams
     {
-        [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to modify")]
-        public int BackupSetId { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Include in Backup Set")]
-        public string[] IncludeItem { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Max Number of Generations for Included Items")]
-        [ValidateRange(1, 9999)]
-        public int MaxGenerations { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Exclude from Backup Set")]
-        public string[] ExcludeItem { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to exclude Sub-Directories")]
-        public SwitchParameter ExcludeSubDirs { get; set; }
-
         protected override void DSClientProcessRecord()
         {
             // Get the requested Backup Set from DS-Client
@@ -38,13 +22,12 @@ namespace PSAsigraDSClient
             // Create a List of Items
             List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
-            // Process any Exclusion Items
-            if (ExcludeItem != null)
-                backupSetItems.AddRange(ProcessBasicExclusionItems(dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
-
-            // Process any Inclusion Items
-            if (IncludeItem != null)
-                backupSetItems.AddRange(ProcessVMwareVADPInclusionItem(dataSourceBrowser, computer, IncludeItem, MaxGenerations, ExcludeSubDirs));
+            if (Exclusion)
+                backupSetItems.Add(CreateExclusionItem(dataSourceBrowser, computer, Path, Filter, ExcludeSubDirs));
+            else if (RegexExclusion)
+                backupSetItems.Add(CreateRegexExclusion(dataSourceBrowser, computer, Path, Filter, RegexMatchDirectory, RegexCaseInsensitive));
+            else if (Inclusion)
+                backupSetItems.Add(CreateInclusionItem(dataSourceBrowser, computer, Path, Filter, MaxGenerations, ExcludeSubDirs));
 
             // Get the existing specified items and store in the list
             backupSetItems.AddRange(backupSet.items());
@@ -55,6 +38,9 @@ namespace PSAsigraDSClient
             // Add all the items to the Backup Set
             WriteVerbose("Performing Action: Add Items to Backup Set");
             backupSet.setItems(backupSetItems.ToArray());
+
+            foreach (BackupSetItem item in backupSetItems)
+                item.Dispose();
 
             dataSourceBrowser.Dispose();
             backupSet.Dispose();

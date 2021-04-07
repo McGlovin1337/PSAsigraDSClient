@@ -297,6 +297,15 @@ namespace PSAsigraDSClient
             return sqlInclusionItems;
         }
 
+        protected static BackupSetInclusionItem CreateInclusionItem(DataSourceBrowser browser, string computer, string path, string filter, int generations, bool excludeSubDirs)
+        {
+            BackupSetInclusionItem item = BackupSetInclusionItem.from(browser.createInclusionItem(computer, path, generations));
+            item.setFilter(filter);
+            item.setSubdirDescend(!excludeSubDirs);
+
+            return item;
+        }
+
         protected static IEnumerable<BackupSetInclusionItem> ProcessVMwareVADPInclusionItem(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool excludeSubDirs)
         {
             List<BackupSetInclusionItem> inclusionItems = new List<BackupSetInclusionItem>();

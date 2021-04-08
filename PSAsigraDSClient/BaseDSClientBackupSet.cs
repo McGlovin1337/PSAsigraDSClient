@@ -138,6 +138,7 @@ namespace PSAsigraDSClient
                 else if (dSClientOSType.OsType == "Linux")
                 {
                     filter = trimmedItem.Split('/').Last();
+                    filter = filter.Split('\\').Last();
                     itemLength = filter.Length;
                     if (string.IsNullOrEmpty(filter))
                         filter = "*";

@@ -115,35 +115,6 @@ namespace PSAsigraDSClient
             return backupSet;
         }
 
-        protected static BackupSetFileItem CreateExclusionItem(DataSourceBrowser browser, string computer, string path, string filter, bool excludeSubDir)
-        {
-            BackupSetFileItem item = browser.createExclusionItem(computer, path);
-            item.setFilter(filter);
-            item.setSubdirDescend(!excludeSubDir);
-
-            return item;
-        }
-
-        protected static BackupSetRegexExclusion CreateRegexExclusion(DataSourceBrowser browser, string computer, string path, string expression, bool matchDir, bool caseInsensitive)
-        {
-            BackupSetRegexExclusion item = browser.createRegexExclusion(computer, path, expression);
-            item.setMatchDirectories(matchDir);
-            item.setCaseSensitive(!caseInsensitive);
-
-            return item;
-        }
-
-        protected static Win32FS_BackupSetInclusionItem CreateWin32FSInclusionItem(DataSourceBrowser browser, string computer, string path, string filter, int generations, bool excludeStreams, bool excludePermissions, bool excludeSubDirs)
-        {
-            Win32FS_BackupSetInclusionItem item = Win32FS_BackupSetInclusionItem.from(browser.createInclusionItem(computer, path, generations));
-            item.setFilter(filter);
-            item.setIncludingAlternateDataStreams(!excludeStreams);
-            item.setIncludingPermissions(!excludePermissions);
-            item.setSubdirDescend(!excludeSubDirs);
-
-            return item;
-        }
-
         protected static IEnumerable<BackupSetFileItem> ProcessExclusionItems(DSClientOSType dSClientOSType, DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, bool excludeSubDirs)
         {
             List<BackupSetFileItem> fileItems = new List<BackupSetFileItem>();

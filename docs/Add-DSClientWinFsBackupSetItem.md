@@ -8,60 +8,28 @@ schema: 2.0.0
 # Add-DSClientWinFsBackupSetItem
 
 ## SYNOPSIS
-Adds a Windows File System Inclusion or Exclusion Item to a Backup Set
+Adds a Windows File System Inclusion/Exclusion Item to a Backup Set
 
 ## SYNTAX
 
-### inclusion
 ```
-Add-DSClientWinFsBackupSetItem [-ExcludeAltDataStreams] [-ExcludePermissions] [-BackupSetId] <Int32>
- [-Inclusion] -Path <String> -Filter <String> [-ExcludeSubDirs] -MaxGenerations <Int32> [<CommonParameters>]
-```
-
-### exclusion
-```
-Add-DSClientWinFsBackupSetItem [-BackupSetId] <Int32> [-Exclusion] -Path <String> -Filter <String>
- [-ExcludeSubDirs] [<CommonParameters>]
-```
-
-### regex
-```
-Add-DSClientWinFsBackupSetItem [-BackupSetId] <Int32> [-RegexExclusion] -Path <String> -Filter <String>
- [-ExcludeSubDirs] [-RegexMatchDirectory] [-RegexCaseInsensitive] [<CommonParameters>]
+Add-DSClientWinFsBackupSetItem [[-BackupSetId] <Int32>] [-ExcludeAltDataStreams] [-ExcludePermissions]
+ [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>]
+ [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-ExcludeSubDirs]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Adds a Windows File System Inclusion or Exclusion Item to an existing Windows File System Backup Set
+Adds a Windows File System Inclusion/Exclusion to an existing Windows File System Backup Set
 
 ## EXAMPLES
 
-### Example 1 - Create an Inclusion
+### Example 1
 ```powershell
-PS C:\> Add-DSClientWinFsBackupSetItem -BackupSetId 4 -Path 'F$\' -Filter '*.*' -MaxGenerations 30 -Inclusion
+PS C:\> Add-DSClientWinFsBackupSetItem -BackupSetId 4 -IncludeItem "F$\*.*", "E$\*.*" -MaxGenerations 15 -ExcludeItem "F$\Pagefile.sys"
 ```
 
-Creates an Inclusion Item for all Files & Folders in the 'F$\' Path
-
-### Example 2 - Create an Exclusion
-```powershell
-PS C:\> Add-DSClientWinFsBackupSetItem -BackupSetId 4 -Path 'C$\Windows\Temp' -Filter '*.*' -Exclusion
-```
-
-Creates an Exclusion Item for all Files & Folders in the 'C$\Windows\Temp' Path
-
-### Example 3 - Create a Regex Exclusion
-```powershell
-PS C:\> Add-DSClientWinFsBackupSetItem -BackupSetId 4 -Path 'C$\' -Expression '.*\*.sys' -ExcludeSubDirs -RegexExclusion
-```
-
-Creates a Regex Exclusion that Excludes all Files matching the expression '.*\*.sys' in 'C$\' only
-
-### Example 4 - Include a Specific File
-```powershell
-PS C:\> Add-DSClientWinFsBackupSetItem -BackupSetId 4 -Path 'E$\docs' -Filter 'myfile.txt' -MaxGenerations 9999 -ExcludeSubDirs -Inclusion
-```
-
-Creates an Inclusion Item for myfile.txt in the 'E$\docs' Path
+Adds all inclusion items on F$\ and E$\ shares but excludes the file F$\Pagefile.sys
 
 ## PARAMETERS
 
@@ -73,7 +41,7 @@ Type: Int32
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -85,13 +53,28 @@ Include Alternate Data Streams for IncludedItems
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: inclusion
+Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeItem
+Items to Exclude from Backup Set
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -100,7 +83,7 @@ Include Permissions for IncludedItems
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: inclusion
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -110,15 +93,30 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -IncludeItem
+Items to Include in Backup Set
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -MaxGenerations
 Max Number of Generations for Included Items
 
 ```yaml
 Type: Int32
-Parameter Sets: inclusion
+Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -130,7 +128,52 @@ Specify if Regex Exclusions Items are case insensitive
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: regex
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexExcludeDirectory
+Specify to also Exclude Directories with Regex pattern
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexExcludeItem
+Specify Regex Item Exclusion Patterns
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexExclusionPath
+Specify Path for Regex Exclusion Item
+
+```yaml
+Type: String
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -146,108 +189,6 @@ Specify to exclude Sub-Directories
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -Exclusion
-Specify that this is an Exclusion Item
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: exclusion
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Filter
-Specify the Item Filter
-
-```yaml
-Type: String
-Parameter Sets: inclusion
-Aliases: Expression, Item
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-```yaml
-Type: String
-Parameter Sets: exclusion, regex
-Aliases: Expression, Item
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -Inclusion
-Specify that this is an Inclusion Item
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: inclusion
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Path
-Path to add to Backup Set
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: Folder, Directory
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -RegexExclusion
-Specify that this is a Regex Exclusion Item
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: regex
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -RegexMatchDirectory
-Specify to also Directory Names with Regex pattern
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: regex
 Aliases:
 
 Required: False

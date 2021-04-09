@@ -138,7 +138,8 @@ namespace PSAsigraDSClient
 
                             if (!item.isfile && subItemDepth <= RecursiveDepth)
                             {
-                                string itemPath = (item.name.First() != '/' && currentPath.Path.Last() != '/') ? $"{currentPath.Path}/{item.name}" : $"{currentPath.Path}{item.name}";
+                                char delim = (item.type == EBrowseItemType.EBrowseItemType__Directory) ? '\\' : '/';
+                                string itemPath = (item.name.First() != delim && currentPath.Path.Last() != delim) ? $"{currentPath.Path}{delim}{item.name}" : $"{currentPath.Path}{item.name}";
                                 newPaths.Insert(index, new ItemPath(itemPath, subItemDepth));
                                 index++;
                             }

@@ -15,7 +15,7 @@ Creates a new Unix based File System Backup Set
 ```
 New-DSClientUnixFsBackupSet [-Name] <String> [-Computer] <String> [[-Credential] <PSCredential>]
  [-SetType] <String> [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>]
- [-RegexExcludeItem <String[]>] [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive]
+ [-RegexExcludeItem <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory] [-RegexCaseInsensitive]
  [-ExcludeSubDirs] [-NotificationMethod <String>] [-NotificationRecipient <String>]
  [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>] [-SSHInterpreter <String>]
  [-SSHInterpreterPath <String>] [-SSHKeyFile <String>] [-SudoCredential <PSCredential>] [-CheckCommonFiles]
@@ -37,7 +37,7 @@ Creates a new Unix based File System Backup Set
 
 ### Example 1
 ```powershell
-PS C:\> New-DSClientUnixFsBackupSet -Name "Home Directory Backup" -Computer "UNIX-SSH\LinuxServer01" -Credential (Get-Credential root) -IncludeItem "/home/" -MaxGenerations 30 -BackupHardLinks -CheckCommonFiles -SetType "Offsite" -Compression "ZLIB_HI" -ScheduleId 2 -UseDetailedLog
+PS C:\> New-DSClientUnixFsBackupSet -Name 'Home Directory Backup' -Computer 'UNIX-SSH\LinuxServer01' -Credential (Get-Credential root) -IncludeItem '/\home\*' -MaxGenerations 30 -BackupHardLinks -CheckCommonFiles -SetType 'Offsite' -Compression 'ZLIB_HI' -ScheduleId 2 -UseDetailedLog
 ```
 
 Creates a New SSH based File System Backup Set named "Home Directory Backup" for Computer "LinuxServer01"
@@ -595,21 +595,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -RegexExcludeDirectory
-Specify to also Exclude Directories with Regex pattern
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -RegexExcludeItem
 Specify Regex Item Exclusion Patterns
 
@@ -870,6 +855,21 @@ Accept wildcard characters: False
 
 ### -ExcludeSubDirs
 Specify to exclude Sub-Directories
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexMatchDirectory
+Specify to also Exclude Directories with Regex pattern
 
 ```yaml
 Type: SwitchParameter

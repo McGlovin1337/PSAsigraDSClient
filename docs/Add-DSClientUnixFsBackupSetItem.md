@@ -14,9 +14,8 @@ Adds a Unix based Inclusion/Exclusion item to a Backup Set
 
 ```
 Add-DSClientUnixFsBackupSetItem [[-BackupSetId] <Int32>] [-IncludeItem <String[]>] [-MaxGenerations <Int32>]
- [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>] [-RegexExclusionPath <String>]
- [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-ExcludeACLs] [-ExcludePosixACLs] [-ExcludeSubDirs]
- [<CommonParameters>]
+ [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory]
+ [-RegexCaseInsensitive] [-ExcludeACLs] [-ExcludePosixACLs] [-ExcludeSubDirs] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -24,12 +23,26 @@ Adds a Unix File System Inclusion/Exclusion Item to an existing Unix File System
 
 ## EXAMPLES
 
-### Example 1
+### Example 1 - Add Inclusion Item
 ```powershell
-PS C:\> Add-DSClientUnixFsBackupSetItem -BackupSetId 1 -IncludeItem "/home/" -MaxGenerations 15
+PS C:\> Add-DSClientUnixFsBackupSetItem -BackupSetId 1 -IncludeItem '/\home\*' -MaxGenerations 15
 ```
 
-Adds the "/home/" directory as an Inclusion Item to the Backup Set with Id 1
+Adds the "/\home\" directory and all files and sub-folders as an Inclusion Item to the Backup Set with Id 1
+
+### Example 2 - Add Exclusion Item
+```powershell
+PS C:\> Add-DSClientUnixFsBackupSetItem -BackupSetId 1 -ExcludeItem '/\home\user\*.txt'
+```
+
+Excludes .txt files from the '/\home\user' path
+
+### Example 3 - Add Regex Exclusion
+```powershell
+PS C:\> Add-DSClientUnixFsBackupSetItem -BackupSetId 1 -RegexExcludeItem '.*\*.bak' -RegexExclusionPath '/'
+```
+
+Excludes .bak files from the '/' drive
 
 ## PARAMETERS
 
@@ -138,21 +151,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -RegexExcludeDirectory
-Specify to also Exclude Directories with Regex pattern
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -RegexExcludeItem
 Specify Regex Item Exclusion Patterns
 
@@ -185,6 +183,21 @@ Accept wildcard characters: False
 
 ### -ExcludeSubDirs
 Specify to exclude Sub-Directories
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexMatchDirectory
+Specify to also Exclude Directories with Regex pattern
 
 ```yaml
 Type: SwitchParameter

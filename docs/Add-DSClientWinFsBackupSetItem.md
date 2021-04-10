@@ -15,7 +15,7 @@ Adds a Windows File System Inclusion/Exclusion Item to a Backup Set
 ```
 Add-DSClientWinFsBackupSetItem [[-BackupSetId] <Int32>] [-ExcludeAltDataStreams] [-ExcludePermissions]
  [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>]
- [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-ExcludeSubDirs]
+ [-RegexExclusionPath <String>] [-RegexMatchDirectory] [-RegexCaseInsensitive] [-ExcludeSubDirs]
  [<CommonParameters>]
 ```
 
@@ -138,21 +138,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -RegexExcludeDirectory
-Specify to also Exclude Directories with Regex pattern
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -RegexExcludeItem
 Specify Regex Item Exclusion Patterns
 
@@ -185,6 +170,21 @@ Accept wildcard characters: False
 
 ### -ExcludeSubDirs
 Specify to exclude Sub-Directories
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexMatchDirectory
+Specify to also Match Directory Names with Regex pattern
 
 ```yaml
 Type: SwitchParameter

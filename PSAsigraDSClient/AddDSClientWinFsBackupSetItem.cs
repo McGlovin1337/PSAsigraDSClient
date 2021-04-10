@@ -37,8 +37,8 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty]
         public string RegexExclusionPath { get; set; }
 
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to also Exclude Directories with Regex pattern")]
-        public SwitchParameter RegexExcludeDirectory { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to also Match Directory Names with Regex pattern")]
+        public SwitchParameter RegexMatchDirectory { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify if Regex Exclusions Items are case insensitive")]
         public SwitchParameter RegexCaseInsensitive { get; set; }
@@ -68,7 +68,7 @@ namespace PSAsigraDSClient
                 backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
 
             if (RegexExcludeItem != null)
-                backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));
+                backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexMatchDirectory, RegexCaseInsensitive, RegexExcludeItem));
 
             // Process any Inclusion Items
             if (IncludeItem != null)

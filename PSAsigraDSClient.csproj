@@ -201,6 +201,7 @@
     <Compile Include="PSAsigraDSClient\SetDSClientUserGroup.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientUserGroupRole.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientVMwareVADPBackupSet.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientWeeklySchedule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackup.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetDelete.cs" />
@@ -329,6 +330,7 @@
     <None Include="docs\Set-DSClientUserGroup.md" />
     <None Include="docs\Set-DSClientUserGroupRole.md" />
     <None Include="docs\Set-DSClientVMwareVADPBackupSet.md" />
+    <None Include="docs\Set-DSClientWeeklySchedule.md" />
     <None Include="docs\Set-DSClientWinFsBackupSet.md" />
     <None Include="docs\Start-DSClientBackup.md" />
     <None Include="docs\Start-DSClientBackupSetDelete.md" />

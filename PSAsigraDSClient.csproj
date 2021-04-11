@@ -190,6 +190,7 @@
     <Compile Include="PSAsigraDSClient\SetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMultiFactorAuthUser.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientInitialBackupStatus.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientMonthlySchedule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientMSSqlServerBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRegistrationInfo.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRetentionRule.cs" />
@@ -319,6 +320,7 @@
     <None Include="docs\Set-DSClientDailySchedule.md" />
     <None Include="docs\Set-DSClientDefaultConfiguration.md" />
     <None Include="docs\Set-DSClientInitialBackupStatus.md" />
+    <None Include="docs\Set-DSClientMonthlySchedule.md" />
     <None Include="docs\Set-DSClientMSSqlServerBackupSet.md" />
     <None Include="docs\Set-DSClientRegistrationInfo.md" />
     <None Include="docs\Set-DSClientRetentionRule.md" />

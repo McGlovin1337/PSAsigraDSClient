@@ -78,7 +78,9 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientMSSqlServerBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientRetentionRuleParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientScheduleDetail.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientScheduleDetailParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientSessionCleanup.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientSetScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientStartBackupSetActivity.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientTimeRetentionOption.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientUnixFsBackupSet.cs" />
@@ -184,6 +186,7 @@
     <Compile Include="PSAsigraDSClient\SetDSClientAdvancedConfig.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientBackupSetNotification.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientConfiguration.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientDailySchedule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMultiFactorAuthUser.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientInitialBackupStatus.cs" />
@@ -312,6 +315,7 @@
     <None Include="docs\Set-DSClientAdvancedConfig.md" />
     <None Include="docs\Set-DSClientBackupSetNotification.md" />
     <None Include="docs\Set-DSClientConfiguration.md" />
+    <None Include="docs\Set-DSClientDailySchedule.md" />
     <None Include="docs\Set-DSClientDefaultConfiguration.md" />
     <None Include="docs\Set-DSClientInitialBackupStatus.md" />
     <None Include="docs\Set-DSClientMSSqlServerBackupSet.md" />

@@ -448,9 +448,10 @@ namespace PSAsigraDSClient
             return strBuilder.ToString();
         }
 
-        protected static ScheduleDetail SelectScheduleDetail(Schedule schedule, int detailId, Dictionary<string, int> detailHashes)
+        protected static (ScheduleDetail, string) SelectScheduleDetail(Schedule schedule, int detailId, Dictionary<string, int> detailHashes)
         {
             ScheduleDetail scheduleDetail = null;
+            string hash = null;
 
             // Get all the Schedule Details for this Schedule
             ScheduleDetail[] details = schedule.getDetails();
@@ -462,12 +463,12 @@ namespace PSAsigraDSClient
                 detailHashes.TryGetValue(detailHash, out int id);
 
                 if (id == detailId)
-                    return detail;
+                    return (detail, detailHash);
 
                 detail.Dispose();
             }
 
-            return scheduleDetail;
+            return (scheduleDetail, hash);
         }
     }
 }

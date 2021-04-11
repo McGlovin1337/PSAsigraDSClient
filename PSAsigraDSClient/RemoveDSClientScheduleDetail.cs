@@ -31,11 +31,15 @@ namespace PSAsigraDSClient
                 throw new Exception("No Schedule Details found in Session State, use Get-DSClientScheduleDetail Cmdlet");
 
             // Select the Schedule Detail
-            ScheduleDetail scheduleDetail = SelectScheduleDetail(schedule, DetailId, detailHashes);
+            (ScheduleDetail scheduleDetail, string detailHash) = SelectScheduleDetail(schedule, DetailId, detailHashes);
 
             if (scheduleDetail != null)
                 if (ShouldProcess($"Schedule: '{schedule.getName()}'", $"Remove {EnumToString(scheduleDetail.getType())} Schedule Detail with Id '{DetailId}'"))
                     schedule.removeDetail(scheduleDetail);
+
+            // Remove the Hash from SessionState Dictionary
+            detailHashes.Remove(detailHash);
+            SessionState.PSVariable.Set("ScheduleDetail", detailHashes);
 
             schedule.Dispose();
         }

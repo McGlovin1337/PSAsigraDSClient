@@ -30,9 +30,3 @@ namespace PSAsigraDSClient
         }
     }
 }
-
-/* 
- * To-do:
- * - Create Cmdlet Help
- * - Add to Module Manifest
- */

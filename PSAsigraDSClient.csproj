@@ -192,6 +192,7 @@
     <Compile Include="PSAsigraDSClient\SetDSClientInitialBackupStatus.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientMonthlySchedule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientMSSqlServerBackupSet.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientOneTimeSchedule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRegistrationInfo.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSMTPNotification.cs" />
@@ -322,6 +323,7 @@
     <None Include="docs\Set-DSClientInitialBackupStatus.md" />
     <None Include="docs\Set-DSClientMonthlySchedule.md" />
     <None Include="docs\Set-DSClientMSSqlServerBackupSet.md" />
+    <None Include="docs\Set-DSClientOneTimeSchedule.md" />
     <None Include="docs\Set-DSClientRegistrationInfo.md" />
     <None Include="docs\Set-DSClientRetentionRule.md" />
     <None Include="docs\Set-DSClientSMTPNotification.md" />

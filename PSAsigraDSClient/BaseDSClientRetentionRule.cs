@@ -3,8 +3,6 @@ using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 using static PSAsigraDSClient.BaseDSClientArchiveFilterRule;
 using System;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace PSAsigraDSClient
 {

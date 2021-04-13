@@ -434,18 +434,7 @@ namespace PSAsigraDSClient
                     break;
             }
 
-            SHA1Managed sha1 = new SHA1Managed();
-
-            byte[] hashData = sha1.ComputeHash(Encoding.UTF8.GetBytes(strToHash));
-
-            sha1.Dispose();
-
-            StringBuilder strBuilder = new StringBuilder();
-
-            for (int i = 0; i < hashData.Length; i++)
-                strBuilder.Append(hashData[i].ToString("x2"));
-
-            return strBuilder.ToString();
+            return strToHash.GetSha1Hash();
         }
 
         protected static (ScheduleDetail, string) SelectScheduleDetail(Schedule schedule, int detailId, Dictionary<string, int> detailHashes)

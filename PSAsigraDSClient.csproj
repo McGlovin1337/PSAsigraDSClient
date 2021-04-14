@@ -168,6 +168,7 @@
     <Compile Include="PSAsigraDSClient\ReadDSClientVMwareVADPSource.cs" />
     <Compile Include="PSAsigraDSClient\ReadDSClientWinFsSource.cs" />
     <Compile Include="PSAsigraDSClient\RegisterDSClient.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientArchiveFilter.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetItem.cs" />
@@ -302,6 +303,7 @@
     <None Include="docs\Read-DSClientVMwareVADPSource.md" />
     <None Include="docs\Read-DSClientWinFsSource.md" />
     <None Include="docs\Register-DSClient.md" />
+    <None Include="docs\Remove-DSClientArchiveFilter.md" />
     <None Include="docs\Remove-DSClientArchiveFilterRule.md" />
     <None Include="docs\Remove-DSClientBackupSet.md" />
     <None Include="docs\Remove-DSClientBackupSetItem.md" />

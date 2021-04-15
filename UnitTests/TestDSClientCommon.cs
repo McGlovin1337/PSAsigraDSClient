@@ -123,5 +123,14 @@ namespace UnitTests
             Assert.AreEqual(true, DSClientCommon.ValidateHostname.ValidateHost("computer.xyz.com"));
             Assert.AreEqual(false, DSClientCommon.ValidateHostname.ValidateHost(@"\\computer"));
         }
+
+        [TestMethod]
+        public void TestGetSha1Hash()
+        {
+            // This Tests the GetSha1Hash Extension Method returns the expected Hash
+            string testStr = "This is a Test String";
+
+            Assert.AreEqual("0570639cf0edd074e827d286f07999854129e2ba", testStr.GetSha1Hash());
+        }
     }
 }

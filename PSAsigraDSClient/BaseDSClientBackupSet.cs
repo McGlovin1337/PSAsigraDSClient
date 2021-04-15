@@ -773,7 +773,7 @@ namespace PSAsigraDSClient
             public bool SubDirDescend { get; private set; }
             public string ItemType { get; private set; }
             public int MaxGenerations { get; private set; }
-            public dynamic InclusionOptions { get; private set; }
+            public BackupSetInclusionOptions InclusionOptions { get; private set; }
             public RegexItemExclusionOptions RegexExclusionOptions { get; private set; } 
 
             public DSClientBackupSetItem(BackupSetItem backupSetItem, EBackupDataType backupDataType, DSClientOSType dSClientOSType)
@@ -806,13 +806,12 @@ namespace PSAsigraDSClient
                             if (dSClientOSType.OsType == "Windows")
                             {
                                 Win32FS_BackupSetInclusionItem win32FSBackupSetInclusionItem = Win32FS_BackupSetInclusionItem.from(backupSetInclusionItem);
-                                InclusionOptions = new Win32FSBackupSetInclusionOptions(win32FSBackupSetInclusionItem);
+                                InclusionOptions = new BackupSetInclusionOptions(win32FSBackupSetInclusionItem);
                             }
-
-                            if (dSClientOSType.OsType == "Linux")
+                            else if (dSClientOSType.OsType == "Linux")
                             {
                                 UnixFS_BackupSetInclusionItem unixFSBackupSetInclusionItem = UnixFS_BackupSetInclusionItem.from(backupSetInclusionItem);
-                                InclusionOptions = new UnixFSBackupSetInclusionOptions(unixFSBackupSetInclusionItem);
+                                InclusionOptions = new BackupSetInclusionOptions(unixFSBackupSetInclusionItem);
                             }
                         }
                     }
@@ -907,20 +906,26 @@ namespace PSAsigraDSClient
             }            
         }
 
-        protected class UnixFSBackupSetInclusionOptions
+        protected class BackupSetInclusionOptions
         {
+            private readonly bool _isUnixItem;
+
             public bool IncludeACLs { get; private set; }
             public bool IncludePosixACLs { get; private set; }
+            public bool IncludeAltDatastreams { get; private set; }
+            public bool IncludePermissions { get; private set; }
 
-            public UnixFSBackupSetInclusionOptions(UnixFS_BackupSetInclusionItem inclusionItem)
+            public BackupSetInclusionOptions(UnixFS_BackupSetInclusionItem unixItem)
             {
-                IncludeACLs = inclusionItem.isIncludingACL();
+                _isUnixItem = true;
+
+                IncludeACLs = unixItem.isIncludingACL();
 
                 try
                 {
-                    UnixFS_LinuxLFS_BackupSetInclusionItem linuxFSBackupSetInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
+                    UnixFS_LinuxLFS_BackupSetInclusionItem lfsUnixItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(unixItem);
 
-                    IncludePosixACLs = linuxFSBackupSetInclusionItem.isIncludingPosixACL();
+                    IncludePosixACLs = lfsUnixItem.isIncludingPosixACL();
                 }
                 catch
                 {
@@ -928,36 +933,36 @@ namespace PSAsigraDSClient
                 }
             }
 
-            public override string ToString()
+            public BackupSetInclusionOptions(Win32FS_BackupSetInclusionItem win32Item)
             {
-                string Options = "False";
+                _isUnixItem = false;
 
-                if ((IncludeACLs || IncludePosixACLs) == true)
-                    Options = "True";
-
-                return Options;
-            }
-        }
-
-        protected class Win32FSBackupSetInclusionOptions
-        {
-            public bool IncludeAltDatastreams { get; private set; }
-            public bool IncludePermissions { get; private set; }
-
-            public Win32FSBackupSetInclusionOptions(Win32FS_BackupSetInclusionItem inclusionItem)
-            {
-                IncludeAltDatastreams = inclusionItem.isIncludingAlternateDataStreams();
-                IncludePermissions = inclusionItem.isIncludingPermissions();
+                IncludeAltDatastreams = win32Item.isIncludingAlternateDataStreams();
+                IncludePermissions = win32Item.isIncludingPermissions();
             }
 
             public override string ToString()
             {
-                string Options = "False";
+                string options = null;
 
-                if ((IncludeAltDatastreams || IncludePermissions) == true)
-                    Options = "True";
+                if (_isUnixItem)
+                {
+                    if (IncludeACLs)
+                        options += (options == null) ? nameof(IncludeACLs) : $", {nameof(IncludeACLs)}";
 
-                return Options;
+                    if (IncludePosixACLs)
+                        options += (options == null) ? nameof(IncludePosixACLs) : $", {nameof(IncludePosixACLs)}";
+                }
+                else
+                {
+                    if (IncludeAltDatastreams)
+                        options += (options == null) ? nameof(IncludeAltDatastreams) : $", {nameof(IncludeAltDatastreams)}";
+
+                    if (IncludePermissions)
+                        options += (options == null) ? nameof(IncludePermissions) : $", {nameof(IncludePermissions)}";
+                }
+
+                return options;
             }
         }
 

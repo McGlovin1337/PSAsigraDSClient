@@ -147,6 +147,10 @@ namespace PSAsigraDSClient
                 // Set the path by removing the specified filter from the end of the item
                 string path = trimmedItem.Remove((trimmedItem.Length - itemLength), itemLength);
 
+                // Validate the path exists, otherwise an invalid path passed to createExclusionItem() can crash the DS-Client Service
+                // getItemInfo() will throw an appropriate exception if the item doesn't exist
+                dataSourceBrowser.getItemInfo(computer, path);
+
                 BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, path);
                 exclusion.setFilter(filter);
                 fileItems.Add(exclusion);

@@ -12,19 +12,21 @@ namespace PSAsigraDSClient
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to remove Items from")]
         public int BackupSetId { get; set; }
 
-        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Item to remove")]
+        [Parameter(Position = 1, Mandatory = true, ParameterSetName = "wcFolder", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Folder to remove")]
         [SupportsWildcards]
         [ValidateNotNullOrEmpty]
-        public string Item { get; set; }
+        public string Folder { get; set; }
 
-        [Parameter(Mandatory = true, ParameterSetName = "Inclusion", HelpMessage = "Specify to only remove Inclusion Item")]
-        public SwitchParameter Inclusion { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "literalFolder", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Literal Folder to remove")]
+        [ValidateNotNullOrEmpty]
+        public string LiteralFolder { get; set; }
 
-        [Parameter(Mandatory = true, ParameterSetName = "Exclusion", HelpMessage = "Specify to only remove Exclusion Item")]
-        public SwitchParameter Exclusion { get; set; }
+        [Parameter(Position = 2, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Filter of the Item")]
+        public string Filter { get; set; }
 
-        [Parameter(Mandatory = true, ParameterSetName = "RegexExclusion", HelpMessage = "Specify to only remove Regex Exclusion Item")]
-        public SwitchParameter RegexExclusion { get; set; }
+        [Parameter(Mandatory = true, HelpMessage = "Specify to only remove Inclusion Item")]
+        [ValidateSet("Inclusion", "Exclusion", "RegexExclusion")]
+        public string Type { get; set; }
 
         protected override void DSClientProcessRecord()
         {
@@ -35,30 +37,39 @@ namespace PSAsigraDSClient
             // Get the Items from the Backup Set
             BackupSetItem[] backupSetItems = backupSet.items();
             BackupSetItem[] selectedItems;
-            if (Inclusion)
-                selectedItems = backupSetItems
-                    .Where(item => item.getType() == EBackupSetItemType.EBackupSetItemType__Inclusion)
-                    .ToArray();
-            else if (Exclusion)
-                selectedItems = backupSetItems
-                    .Where(item => item.getType() == EBackupSetItemType.EBackupSetItemType__Exclusion)
-                    .ToArray();
-            else if (RegexExclusion)
-                selectedItems = backupSetItems
-                    .Where(item => item.getType() == EBackupSetItemType.EBackupSetItemType__RegExExclusion)
-                    .ToArray();
-            else
-                selectedItems = backupSetItems;
+            switch (Type)
+            {
+                case "Inclusion":
+                    selectedItems = backupSetItems
+                        .Where(item => item.getType() == EBackupSetItemType.EBackupSetItemType__Inclusion)
+                        .ToArray();
+                    break;
+                case "Exclusion":
+                    selectedItems = backupSetItems
+                        .Where(item => item.getType() == EBackupSetItemType.EBackupSetItemType__Exclusion)
+                        .ToArray();
+                    break;
+                case "RegexExclusion":
+                    selectedItems = backupSetItems
+                        .Where(item => item.getType() == EBackupSetItemType.EBackupSetItemType__RegExExclusion)
+                        .ToArray();
+                    break;
+                default:
+                    selectedItems = backupSetItems;
+                    break;
+            }
 
             // Select matching items
             WildcardOptions wcOptions = WildcardOptions.IgnoreCase |
                                         WildcardOptions.Compiled;
 
-            WildcardPattern wcPattern = new WildcardPattern(Item, wcOptions);
+            WildcardPattern wcPattern = null;
+            if (MyInvocation.BoundParameters.ContainsKey(nameof(Folder)))
+                wcPattern = new WildcardPattern(Folder, wcOptions);
 
             List<BackupSetItem> removalItems = new List<BackupSetItem>();
 
-            WriteVerbose("Performing Action: Remove matching items");
+            WriteVerbose("Performing Action: Match Items");
             foreach(BackupSetItem item in selectedItems)
             {
                 EBackupSetItemType itemType = item.getType();
@@ -66,41 +77,65 @@ namespace PSAsigraDSClient
                 {
                     BackupSetFileItem backupSetFileItem = BackupSetFileItem.from(item);
                     string folder = backupSetFileItem.getFolder();
+                    WriteDebug($"Got folder: {folder}");
                     string filter = backupSetFileItem.getFilter();
-                    string folderFilter = (folder.Last() != '\\') ? $@"{folder}\{filter}" : $"{folder}{filter}";
+                    WriteDebug($"Got filter: {filter}");
+                    backupSetFileItem.Dispose();
 
-                    if (wcPattern.IsMatch(folderFilter))
-                        if (ShouldProcess($"{folderFilter}"))
+                    bool folderMatch = (MyInvocation.BoundParameters.ContainsKey(nameof(Folder))) ? wcPattern.IsMatch(folder) : LiteralFolder == folder;
+
+                    if (folderMatch)
+                    {
+                        if (MyInvocation.BoundParameters.ContainsKey(nameof(Filter)))
+                        {
+                            if (Filter == filter)
+                            {
+                                WriteVerbose($@"Notice: Matched Item: {folder}\{filter}");
+                                removalItems.Add(item);
+                            }
+                        }
+                        else
+                        {
+                            WriteVerbose($"Notice: Matched Item: {folder}");
                             removalItems.Add(item);
+                        }
+                    }
                 }
                 else if (itemType == EBackupSetItemType.EBackupSetItemType__RegExExclusion)
                 {
                     BackupSetRegexExclusion backupSetRegexExclusion = BackupSetRegexExclusion.from(item);
                     string folder = backupSetRegexExclusion.getFolder();
                     string expression = backupSetRegexExclusion.getExpression();
+                    backupSetRegexExclusion.Dispose();
+
                     string folderExpression = (folder.Last() != '\\') ? $@"{folder}\{expression}" : $"{folder}{expression}";
 
                     if (wcPattern.IsMatch(folderExpression))
                         if (ShouldProcess($"{folder} with Expression: {expression}"))
-                            removalItems.Add(item);
+                            removalItems.Add(item);                    
                 }
             }
 
-            // Remove items from original list
-            backupSetItems = backupSetItems.ToList()
-                .Except(removalItems)
-                .ToArray();
-
-            // Assign the updated list of items to the Backup Set
-            if (ShouldProcess(
-                $"Performing Operation Update Backup Set Items on target '{backupSet.getName()}'",
-                $"Are you sure you want to update the Backup Set Items belonging to '{backupSet.getName()}'?",
-                "Update Backup Set Items"
-            ))
+            if (removalItems.Count() > 0)
             {
-                WriteVerbose("Performing Action: Update Backup Set Items");
-                backupSet.setItems(backupSetItems);
+                // Remove items from original list
+                backupSetItems = backupSetItems.ToList()
+                    .Except(removalItems)
+                    .ToArray();
+
+                // Assign the updated list of items to the Backup Set
+                if (ShouldProcess(
+                    $"Performing Operation Update Backup Set Items on target '{backupSet.getName()}'",
+                    $"Are you sure you want to update the Backup Set Items belonging to '{backupSet.getName()}'?",
+                    "Update Backup Set Items"
+                ))
+                {
+                    WriteVerbose("Performing Action: Update Backup Set Items");
+                    backupSet.setItems(backupSetItems);
+                }
             }
+            else
+                WriteVerbose("Notice: No Items Matched for Removal");
 
             backupSet.Dispose();
         }

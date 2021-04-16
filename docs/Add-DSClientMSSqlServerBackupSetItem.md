@@ -14,7 +14,7 @@ Adds an MS SQL Server Database Item to a Backup Set
 
 ```
 Add-DSClientMSSqlServerBackupSetItem [[-BackupSetId] <Int32>] [-IncludeItem <String[]>]
- [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>]
+ [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludePattern <String[]>]
  [-RegexExclusionPath <String>] [-RegexMatchDirectory] [-RegexCaseInsensitive] [-RunDBCC] [-DBCCErrorStop]
  [-BackupLog] [-ExcludeSubDirs] [<CommonParameters>]
 ```
@@ -138,21 +138,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -RegexExcludeItem
-Specify Regex Item Exclusion Patterns
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -RegexExclusionPath
 Specify Path for Regex Exclusion Item
 
@@ -203,6 +188,21 @@ Specify to also Exclude Directories with Regex pattern
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexExcludePattern
+Specify Regex Item Exclusion Patterns
+
+```yaml
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 

@@ -15,8 +15,8 @@ Creates a New Windows File System Backup Set
 ```
 New-DSClientWinFsBackupSet [-Name] <String> [-Computer] <String> [[-Credential] <PSCredential>]
  [-SetType] <String> [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>]
- [-RegexExcludeItem <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory] [-RegexCaseInsensitive]
- [-ExcludeSubDirs] [-NotificationMethod <String>] [-NotificationRecipient <String>]
+ [-RegexExcludePattern <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory]
+ [-RegexCaseInsensitive] [-ExcludeSubDirs] [-NotificationMethod <String>] [-NotificationRecipient <String>]
  [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>] [-BackupRemoteStorage]
  [-BackupSingleInstanceStore] [-CheckCommonFiles] [-UseVSS] [-ExcludeVSSComponents] [-IgnoreVSSComponents]
  [-IgnoreVSSWriters] [-FollowJunctionPoints] [-NoAutoFileFilter] [-ExcludeOldFilesByDate]
@@ -636,21 +636,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -RegexExcludeItem
-Specify Regex Item Exclusion Patterns
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -RegexExclusionPath
 Specify Path for Regex Exclusion Item
 
@@ -853,6 +838,21 @@ Specify to also Exclude Directories with Regex pattern
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexExcludePattern
+Specify Regex Item Exclusion Patterns
+
+```yaml
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 

@@ -38,9 +38,9 @@ namespace PSAsigraDSClient
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Regex Item Exclusion Patterns")]
         [ValidateNotNullOrEmpty]
-        public string[] RegexExcludeItem { get; set; }
+        public string[] RegexExcludePattern { get; set; }
 
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Path for Regex Exclusion Item")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Path Regex Exclusion Pattern applies to")]
         [ValidateNotNullOrEmpty]
         public string RegexExclusionPath { get; set; }
 
@@ -134,8 +134,8 @@ namespace PSAsigraDSClient
                 if (ExcludeItem != null)
                     backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
 
-                if (RegexExcludeItem != null)
-                    backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexMatchDirectory, RegexCaseInsensitive, RegexExcludeItem));
+                if (RegexExcludePattern != null)
+                    backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexMatchDirectory, RegexCaseInsensitive, RegexExcludePattern));
 
                 if (IncludeItem != null)
                 {

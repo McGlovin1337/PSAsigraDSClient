@@ -15,8 +15,8 @@ Creates a new Unix based File System Backup Set
 ```
 New-DSClientUnixFsBackupSet [-Name] <String> [-Computer] <String> [[-Credential] <PSCredential>]
  [-SetType] <String> [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>]
- [-RegexExcludeItem <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory] [-RegexCaseInsensitive]
- [-ExcludeSubDirs] [-NotificationMethod <String>] [-NotificationRecipient <String>]
+ [-RegexExcludePattern <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory]
+ [-RegexCaseInsensitive] [-ExcludeSubDirs] [-NotificationMethod <String>] [-NotificationRecipient <String>]
  [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>] [-SSHInterpreter <String>]
  [-SSHInterpreterPath <String>] [-SSHKeyFile <String>] [-SudoCredential <PSCredential>] [-CheckCommonFiles]
  [-FollowMountPoints] [-BackupHardLinks] [-IgnoreSnapshotFailure] [-UseSnapDiff] [-ExcludeOldFilesByDate]
@@ -595,21 +595,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -RegexExcludeItem
-Specify Regex Item Exclusion Patterns
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -RegexExclusionPath
 Specify Path for Regex Exclusion Item
 
@@ -873,6 +858,21 @@ Specify to also Exclude Directories with Regex pattern
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexExcludePattern
+Specify Regex Item Exclusion Patterns
+
+```yaml
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 

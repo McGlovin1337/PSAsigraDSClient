@@ -14,17 +14,18 @@ Creates a New MS SQL Server Backup Set
 
 ```
 New-DSClientMSSqlServerBackupSet [-Name] <String> [-Computer] <String> [-SetType] <String>
- [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>]
- [-RegexExclusionPath <String>] [-RegexMatchDirectory] [-RegexCaseInsensitive] [-ExcludeSubDirs] [-RunDBCC]
- [-DBCCErrorStop] [-BackupLog] [-NotificationMethod <String>] [-NotificationRecipient <String>]
- [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>] [-Credential <PSCredential>]
- [-DbCredential <PSCredential>] [-DumpMethod <String>] [-DumpPath <String>] -BackupMethod <String>
- [-FullMonthlyDay <Int32>] [-FullMonthlyTime <String>] [-FullWeeklyDay <String>] [-FullWeeklyTime <String>]
- [-FullPeriod <String>] [-FullPeriodValue <Int32>] [-SkipWeekDays <String[]>] [-SkipWeekDaysFrom <String>]
- [-SkipWeekDaysTo <String>] -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>]
- [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>]
- [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>]
- [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
+ [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>]
+ [-RegexExcludePattern <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory]
+ [-RegexCaseInsensitive] [-ExcludeSubDirs] [-RunDBCC] [-DBCCErrorStop] [-BackupLog]
+ [-NotificationMethod <String>] [-NotificationRecipient <String>] [-NotificationCompletion <String[]>]
+ [-NotificationEmailOptions <String[]>] [-Credential <PSCredential>] [-DbCredential <PSCredential>]
+ [-DumpMethod <String>] [-DumpPath <String>] -BackupMethod <String> [-FullMonthlyDay <Int32>]
+ [-FullMonthlyTime <String>] [-FullWeeklyDay <String>] [-FullWeeklyTime <String>] [-FullPeriod <String>]
+ [-FullPeriodValue <Int32>] [-SkipWeekDays <String[]>] [-SkipWeekDaysFrom <String>] [-SkipWeekDaysTo <String>]
+ -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>]
+ [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog]
+ [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache]
+ [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -523,21 +524,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -RegexExcludeItem
-Specify Regex Item Exclusion Patterns
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -RegexExclusionPath
 Specify Path for Regex Exclusion Item
 
@@ -771,6 +757,21 @@ Specify to also Exclude Directories with Regex pattern
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexExcludePattern
+Specify Regex Item Exclusion Patterns
+
+```yaml
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 

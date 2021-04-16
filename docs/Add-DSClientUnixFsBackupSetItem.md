@@ -14,8 +14,9 @@ Adds a Unix based Inclusion/Exclusion item to a Backup Set
 
 ```
 Add-DSClientUnixFsBackupSetItem [[-BackupSetId] <Int32>] [-IncludeItem <String[]>] [-MaxGenerations <Int32>]
- [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory]
- [-RegexCaseInsensitive] [-ExcludeACLs] [-ExcludePosixACLs] [-ExcludeSubDirs] [<CommonParameters>]
+ [-ExcludeItem <String[]>] [-RegexExcludePattern <String[]>] [-RegexExclusionPath <String>]
+ [-RegexMatchDirectory] [-RegexCaseInsensitive] [-ExcludeACLs] [-ExcludePosixACLs] [-ExcludeSubDirs]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -39,7 +40,7 @@ Excludes .txt files from the '/\home\user' path
 
 ### Example 3 - Add Regex Exclusion
 ```powershell
-PS C:\> Add-DSClientUnixFsBackupSetItem -BackupSetId 1 -RegexExcludeItem '.*\*.bak' -RegexExclusionPath '/'
+PS C:\> Add-DSClientUnixFsBackupSetItem -BackupSetId 1 -RegexExcludePattern '.*\*.bak' -RegexExclusionPath '/'
 ```
 
 Excludes .bak files from the '/' drive
@@ -151,21 +152,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -RegexExcludeItem
-Specify Regex Item Exclusion Patterns
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -RegexExclusionPath
 Specify Path for Regex Exclusion Item
 
@@ -201,6 +187,21 @@ Specify to also Exclude Directories with Regex pattern
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexExcludePattern
+Specify Regex Item Exclusion Patterns
+
+```yaml
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 

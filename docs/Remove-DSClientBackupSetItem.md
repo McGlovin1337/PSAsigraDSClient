@@ -12,22 +12,16 @@ Removes an Inclusion or Exclusion Item from a Backup Set
 
 ## SYNTAX
 
-### Inclusion
+### wcFolder
 ```
-Remove-DSClientBackupSetItem [-BackupSetId] <Int32> [-Item] <String> [-Inclusion] [-WhatIf] [-Confirm]
- [<CommonParameters>]
-```
-
-### Exclusion
-```
-Remove-DSClientBackupSetItem [-BackupSetId] <Int32> [-Item] <String> [-Exclusion] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-DSClientBackupSetItem [-BackupSetId] <Int32> -Folder <String> [-Filter <String>] -Type <String>
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
-### RegexExclusion
+### literalFolder
 ```
-Remove-DSClientBackupSetItem [-BackupSetId] <Int32> [-Item] <String> [-RegexExclusion] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-DSClientBackupSetItem [-BackupSetId] <Int32> -LiteralFolder <String> [-Filter <String>] -Type <String>
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,12 +29,19 @@ Removes an Inclusion or Exclusion Item from a Backup Set
 
 ## EXAMPLES
 
-### Example 1
+### Example 1 - Remove by Wildcard Folder
 ```powershell
-PS C:\> Remove-DSClientBackupSetItem -BackupSetId 5 -Item "C$\Users\*.*" -Inclusion
+PS C:\> Remove-DSClientBackupSetItem -BackupSetId 5 -Folder 'C$*' -Type Inclusion
 ```
 
-Removes the Inclusion Item "C$\Users\*.*" from Backup Set with Id 5
+Removes all Inclusion Items matching the Folder path 'C$*'
+
+### Example 2 - Remove by Literal Folder
+```powershell
+PS C:\> Remove-DSClientBackupSetItem -BackupSetId 10 -LiteralFolder '[192.168.1.10]master' -Type Inclusion
+```
+
+Removes the Database Item '[192.168.1.10]master'
 
 ## PARAMETERS
 
@@ -56,66 +57,6 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName, ByValue)
-Accept wildcard characters: False
-```
-
-### -Exclusion
-Specify to only remove Exclusion Item
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Exclusion
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Inclusion
-Specify to only remove Inclusion Item
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Inclusion
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Item
-Specify the Item to remove
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -RegexExclusion
-Specify to only remove Regex Exclusion Item
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: RegexExclusion
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -143,6 +84,66 @@ Parameter Sets: (All)
 Aliases: wi
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Filter
+Specify the Filter of the Item
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Folder
+Specify the Folder to remove
+
+```yaml
+Type: String
+Parameter Sets: wcFolder
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -LiteralFolder
+Specify the Literal Folder to remove
+
+```yaml
+Type: String
+Parameter Sets: literalFolder
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Type
+Specify to only remove Inclusion Item
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

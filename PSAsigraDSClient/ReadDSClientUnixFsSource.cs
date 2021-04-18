@@ -76,28 +76,20 @@ namespace PSAsigraDSClient
             backupSetCredentials.Dispose();
 
             // Set the Starting path
-            string path = Path ?? "/";
+            string path = Path ?? "";
 
             // Any trailing "\" or "/" is unnecessary, remove if any are specified to tidy up output
-            while ((path.Last() == '/' || path.Last() == '\\') && path.Length > 1)
-                path = (path.Last() == '/') ? path.TrimEnd('/') : path.TrimEnd('\\');
+            if (path != "")
+                while ((path.Last() == '/' || path.Last() == '\\') && path.Length > 1)
+                    path = (path.Last() == '/') ? path.TrimEnd('/') : path.TrimEnd('\\');
             WriteDebug($"Path: {path}");
 
             // Get the items from the specified path
             List<SourceItemInfo> sourceItems = new List<SourceItemInfo>();
-            browse_item_info singleItem = null;
-            browse_item_info[] browseItems = null;
-            if (string.IsNullOrEmpty(Path))
-            {
-                singleItem = dataSourceBrowser.getItemInfo(computer, path);
-                sourceItems.Add(new SourceItemInfo(Path, singleItem));
-            }
-            else
-            {
-                browseItems = dataSourceBrowser.getSubItems(computer, path);
-                foreach (browse_item_info item in browseItems)
-                    sourceItems.Add(new SourceItemInfo(path, item));
-            }
+            browse_item_info[] browseItems = dataSourceBrowser.getSubItems(computer, path);
+
+            foreach (browse_item_info item in browseItems)
+                sourceItems.Add(new SourceItemInfo(path, item));
 
             if (Recursive)
             {
@@ -106,12 +98,7 @@ namespace PSAsigraDSClient
                 if (!string.IsNullOrEmpty(path) && path.Last() != '/')
                     path += "/";
 
-                if (singleItem != null)
-                {
-                    if (!singleItem.isfile)
-                        newPaths.Add(new ItemPath(path, 0));
-                }
-                else if (browseItems != null)
+                if (browseItems != null)
                 {
                     foreach (browse_item_info item in browseItems)
                         if (!item.isfile)
@@ -151,7 +138,8 @@ namespace PSAsigraDSClient
 
                             if (!item.isfile && subItemDepth <= RecursiveDepth)
                             {
-                                string itemPath = (item.name.First() != '/' && currentPath.Path.Last() != '/') ? $"{currentPath.Path}/{item.name}" : $"{currentPath.Path}{item.name}";
+                                char delim = (item.type == EBrowseItemType.EBrowseItemType__Directory) ? '\\' : '/';
+                                string itemPath = (item.name.First() != delim && currentPath.Path.Last() != delim) ? $"{currentPath.Path}{delim}{item.name}" : $"{currentPath.Path}{item.name}";
                                 newPaths.Insert(index, new ItemPath(itemPath, subItemDepth));
                                 index++;
                             }

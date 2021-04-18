@@ -26,10 +26,14 @@ namespace PSAsigraDSClient
         public string[] IncludeItem { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Max Number of Generations for Included Items")]
+        [ValidateRange(1, 9999)]
         public int MaxGenerations { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Exclude from Backup Set")]
         public string[] ExcludeItem { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to exclude Sub-Directories")]
+        public SwitchParameter ExcludeSubDirs { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
         [ValidateSet("Email", "Page", "Broadcast", "Event")]
@@ -89,10 +93,10 @@ namespace PSAsigraDSClient
                 List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
                 if (ExcludeItem != null)
-                    backupSetItems.AddRange(ProcessBasicExclusionItems(dataSourceBrowser, computer, ExcludeItem));
+                    backupSetItems.AddRange(ProcessBasicExclusionItems(dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
 
                 if (IncludeItem != null)
-                    backupSetItems.AddRange(ProcessVMwareVADPInclusionItem(dataSourceBrowser, computer, IncludeItem, MaxGenerations));
+                    backupSetItems.AddRange(ProcessVMwareVADPInclusionItem(dataSourceBrowser, computer, IncludeItem, MaxGenerations, ExcludeSubDirs));
 
                 newVMwareVADPBackupSet.setItems(backupSetItems.ToArray());
             }

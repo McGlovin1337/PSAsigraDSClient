@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
@@ -21,10 +22,10 @@ namespace PSAsigraDSClient
             RetentionRule retentionRule = retentionRules.Single(rule => rule.getID() == RetentionRuleId);
 
             // Get Time Retention Option Hash Dictionary from Session State
-            Dictionary<int, int> retentionHash = SessionState.PSVariable.GetValue("TimeRetention", null) as Dictionary<int, int>;
+            Dictionary<string, int> retentionHash = SessionState.PSVariable.GetValue("TimeRetention", null) as Dictionary<string, int>;
 
             if (retentionHash == null)
-                WriteWarning("There are no Time Retention Options Stored in Session State, use Get-DSClientTimeRetentionOption to ensure removal of the desired Time Retention Option");
+                throw new Exception("There are no Time Retention Options Stored in Session State, use Get-DSClientTimeRetentionOption");
 
             // Select the Time Retention Option
             TimeRetentionOption timeRetentionOption = SelectTimeRetentionOption(retentionRule, TimeRetentionId, retentionHash);
@@ -33,6 +34,7 @@ namespace PSAsigraDSClient
                 if (ShouldProcess($"Retention Rule: '{retentionRule.getName()}'", $"Remove Time Retention Option with Id '{TimeRetentionId}'"))
                     retentionRule.removeTimeRetentionOption(timeRetentionOption);
 
+            timeRetentionOption.Dispose();
             retentionRule.Dispose();
         }
     }

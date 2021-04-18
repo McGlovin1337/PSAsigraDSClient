@@ -1,5 +1,30 @@
 # PSAsigraDSClient ChangeLog
 
+### v0.5.0
+- Added Cmdlets that allow changing existing Schedule Details: Set-DSClientOneTimeSchedule, Set-DSClientDailySchedule, Set-DSClientWeeklySchedule, Set-DSClientMonthlySchedule
+- Added Remove-DSClientArchiveFilterRule Cmdlet
+- Added Rename-DSClientArchiveFilterRule Cmdlet
+- Added Remove-DSclientArchiveFilter Cmdlet
+- Added Cmdlet Export-DSClientConfig allowing the DS-Client Config to be exported to an XML File
+- Added "-ExcludeSubDirs" Parameter to Cmdlets used for Adding Backup Set Items, Inclusion & Exclusion Items now always include sub-directories
+- Added "-LiteralFolder" Parameter to Remove-DSClientBackupSetItem Cmdlet, also replaced the "-Inclusion", "-Exclusion" and "-RegexExclusion" SwitchParameters with "-Type" Parameter
+- Added Progress Indicator when using Get-DSClientTimeRetentionOption Cmdlet
+- Fixed DS-Client Service crash when adding an invalid Exclusion item to a Backup Set
+- Fixed Remove-DSClientBackupSetItem Cmdlet failing to remove Items from Unix Backup Sets
+- Fixed Read-DSClientUnixFsSource not returning all drives
+- Fixed incorrect formatting of Exclusion Items added to Unix Backup Sets
+- Improved Adding Time Retention Options, now prevents adding duplicate Time Retention Options to Time Based Retention Rules
+- Improved Remove-DSClientBackupSet Cmdlet, now sets ConfirmImpact to High thus prompting the user for confirmation before purging the backup set from the DS-Client
+- Improved notification of loss of connectivity to DS-Client when executing Cmdlets
+- Improved Id generation for Time Retention Options and Schedule Details by using SHA1 Hashing
+- Improved the Properties used in the Schedule Details removing a dynamic property
+- Improved performance of the Read-DSClientMsSqlServerSource Cmdlet
+- Improved output of Read-DSClientUnixFsSource Cmdlet so that Directory Path separators now use a backslash instead (since this is the format the DS-Client expects as input when adding Unix Items to a Backup Set)
+- Improved the Properties in the Output of Backup Set Items, removing dynamic Properties
+- Improved Progress Indicator when using Get-DSClientScheduleDetail Cmdlet
+- Renamed "-RegexExcludeDirectory" Parameter to "-RegexMatchDirectory" for Cmdlets that add Backup Set Items
+- Renamed "-RegexExcludeItem" Parameter to "-RegexExcludePattern" on all Cmdlets that Add Backup Set Items
+
 ### v0.4.1
 - Fixed Add-DSClientUnixFsBackupSetItem clearing out existing Backup Set Items from the specified Backup Set
 - Fixed Read-DSClientUnixFsSource Recursion not working beyond one sub-item depth

@@ -14,17 +14,18 @@ Creates a New MS SQL Server Backup Set
 
 ```
 New-DSClientMSSqlServerBackupSet [-Name] <String> [-Computer] <String> [-SetType] <String>
- [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>]
- [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-RunDBCC] [-DBCCErrorStop]
- [-BackupLog] [-NotificationMethod <String>] [-NotificationRecipient <String>]
- [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>] [-Credential <PSCredential>]
- [-DbCredential <PSCredential>] [-DumpMethod <String>] [-DumpPath <String>] -BackupMethod <String>
- [-FullMonthlyDay <Int32>] [-FullMonthlyTime <String>] [-FullWeeklyDay <String>] [-FullWeeklyTime <String>]
- [-FullPeriod <String>] [-FullPeriodValue <Int32>] [-SkipWeekDays <String[]>] [-SkipWeekDaysFrom <String>]
- [-SkipWeekDaysTo <String>] -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>]
- [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>]
- [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>]
- [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
+ [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>]
+ [-RegexExcludePattern <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory]
+ [-RegexCaseInsensitive] [-ExcludeSubDirs] [-RunDBCC] [-DBCCErrorStop] [-BackupLog]
+ [-NotificationMethod <String>] [-NotificationRecipient <String>] [-NotificationCompletion <String[]>]
+ [-NotificationEmailOptions <String[]>] [-Credential <PSCredential>] [-DbCredential <PSCredential>]
+ [-DumpMethod <String>] [-DumpPath <String>] -BackupMethod <String> [-FullMonthlyDay <Int32>]
+ [-FullMonthlyTime <String>] [-FullWeeklyDay <String>] [-FullWeeklyTime <String>] [-FullPeriod <String>]
+ [-FullPeriodValue <Int32>] [-SkipWeekDays <String[]>] [-SkipWeekDaysFrom <String>] [-SkipWeekDaysTo <String>]
+ -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>]
+ [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog]
+ [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache]
+ [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -34,7 +35,7 @@ Creates a New MS SQL Server Backup Set
 
 ### Example 1
 ```powershell
-PS C:\> New-DSClientMSSqlServerBackupSet -Name "SQL Instance Backup" -Computer "\\SQLSERVER01" -Credential (Get-Credential user) -DbCredential (Get-Credential dbUser) -IncludeItem "SQLSERVER01\\*" -MaxGenerations 30 -ExcludeItem "SQLSERVER01\\tempdb" -RunDBCC -DumpMethod "DumpPipe" -BackupMethod "FullDiff" -FullWeeklyDay "Sunday" -SetType "Offsite" -Compression "LZOP"
+PS C:\> New-DSClientMSSqlServerBackupSet -Name 'SQL Instance Backup' -Computer '\\SQLSERVER01' -Credential (Get-Credential user) -DbCredential (Get-Credential dbUser) -IncludeItem 'SQLSERVER01\\*' -MaxGenerations 30 -ExcludeItem 'SQLSERVER01\\tempdb' -RunDBCC -DumpMethod 'DumpPipe' -BackupMethod 'FullDiff' -FullWeeklyDay 'Sunday' -SetType 'Offsite' -Compression 'LZOP'
 ```
 
 Create a New MS SQL Server Backup Set named "SQL Instance Backup" for the Computer "SQLSERVER01".
@@ -523,36 +524,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -RegexExcludeDirectory
-Specify to also Exclude Directories with Regex pattern
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -RegexExcludeItem
-Specify Regex Item Exclusion Patterns
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -RegexExclusionPath
 Specify Path for Regex Exclusion Item
 
@@ -763,6 +734,51 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeSubDirs
+Specify to exclude Sub-Directories
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexMatchDirectory
+Specify to also Exclude Directories with Regex pattern
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexExcludePattern
+Specify Regex Item Exclusion Patterns
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

@@ -30,6 +30,7 @@ namespace PSAsigraDSClient
         public string[] IncludeItem { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Max Number of Generations for Included Items")]
+        [ValidateRange(1, 9999)]
         public int MaxGenerations { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Items to Exclude from Backup Set")]
@@ -37,17 +38,20 @@ namespace PSAsigraDSClient
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Regex Item Exclusion Patterns")]
         [ValidateNotNullOrEmpty]
-        public string[] RegexExcludeItem { get; set; }
+        public string[] RegexExcludePattern { get; set; }
 
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Path for Regex Exclusion Item")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Path Regex Exclusion Pattern applies to")]
         [ValidateNotNullOrEmpty]
         public string RegexExclusionPath { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to also Exclude Directories with Regex pattern")]
-        public SwitchParameter RegexExcludeDirectory { get; set; }
+        public SwitchParameter RegexMatchDirectory { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify if Regex Exclusions Items are case insensitive")]
         public SwitchParameter RegexCaseInsensitive { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify to exclude Sub-Directories")]
+        public SwitchParameter ExcludeSubDirs { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Notification Method")]
         [ValidateSet("Email", "Page", "Broadcast", "Event")]
@@ -105,13 +109,13 @@ namespace PSAsigraDSClient
                 List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
                 if (ExcludeItem != null)
-                    backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem));
+                    backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
 
-                if (RegexExcludeItem != null)
-                    backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexExcludeDirectory, RegexCaseInsensitive, RegexExcludeItem));
+                if (RegexExcludePattern != null)
+                    backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexMatchDirectory, RegexCaseInsensitive, RegexExcludePattern));
 
                 if (IncludeItem != null)
-                    backupSetItems.AddRange(ProcessWin32FSInclusionItems(dataSourceBrowser, computer, IncludeItem, MaxGenerations, ExcludeAltDataStreams, ExcludePermissions));
+                    backupSetItems.AddRange(ProcessWin32FSInclusionItems(dataSourceBrowser, computer, IncludeItem, MaxGenerations, ExcludeAltDataStreams, ExcludePermissions, ExcludeSubDirs));
 
                 newBackupSet.setItems(backupSetItems.ToArray());
             }

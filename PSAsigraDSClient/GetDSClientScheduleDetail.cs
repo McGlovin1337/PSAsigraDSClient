@@ -35,36 +35,72 @@ namespace PSAsigraDSClient
 
             List<DSClientScheduleDetail> DSClientScheduleDetail = new List<DSClientScheduleDetail>();
 
-            // Create a Base ID for each Detail in the Schedule
-            int DetailId = 0;
+            // Get Hash Codes for Previously Identified Schedule Details
+            Dictionary<string, int> detailHashes = SessionState.PSVariable.GetValue("ScheduleDetail", null) as Dictionary<string, int>;
+            if (detailHashes == null)
+                detailHashes = new Dictionary<string, int>();
 
+            int startingId = 1;
+            Dictionary<string, ScheduleDetail> unidentified = new Dictionary<string, ScheduleDetail>();
+
+            int detailCounter = 0;
+            int hashCounter = 0;
+            WriteVerbose("Performing Action: Process Schedule Details");
             ProgressRecord progressRecord = new ProgressRecord(1, "Process Schedule Details", $"0 of {detailCount} processed, 0%")
             {
-                RecordType = ProgressRecordType.Processing
+                RecordType = ProgressRecordType.Processing,
+                CurrentOperation = "Processing Schedule Detail"
             };
-
-            Dictionary<int, int> scheduleHash = new Dictionary<int, int>();
-            foreach (ScheduleDetail schedule in ScheduleDetails)
+            foreach (ScheduleDetail detail in ScheduleDetails)
             {
-                DetailId++;
-                WriteVerbose($"Performing Action: Process DetailId: {DetailId}");
-                progressRecord.CurrentOperation = $"Processing DetailId: {DetailId}";
-                progressRecord.PercentComplete = (int)Math.Round((double)(((double)DetailId - 1) / (double)detailCount) * 100);
-                progressRecord.StatusDescription = $"{DetailId - 1} of {detailCount} processed, {progressRecord.PercentComplete}%";
+                progressRecord.PercentComplete = (int)Math.Round((double)(((double)detailCounter + (double)hashCounter) / ((double)detailCount * 2)) * 100);
+                progressRecord.StatusDescription = $"{detailCounter} of {detailCount} processed, {progressRecord.PercentComplete}%";
                 WriteProgress(progressRecord);
 
-                DSClientScheduleDetail scheduleDetail = new DSClientScheduleDetail(DetailId, scheduleInfo, schedule);
-                int detailHash = scheduleDetail.GetHashCode();
-                WriteDebug($"Hash Code for {DetailId}: {detailHash}");
-                scheduleHash.Add(detailHash, DetailId);
-                DSClientScheduleDetail.Add(scheduleDetail);
+                string detailHash = ScheduleDetailHash(Schedule, detail);
+                hashCounter++;
+                WriteDebug($"Computed Hash: {detailHash}");
+                progressRecord.PercentComplete = (int)Math.Round((double)(((double)detailCounter + (double)hashCounter) / ((double)detailCount * 2)) * 100);
+                progressRecord.StatusDescription = $"{detailCounter} of {detailCount} processed, {progressRecord.PercentComplete}%";
+                WriteProgress(progressRecord);
+
+                // Check if the Hash is already in the Dictionary and if so fetch the associated Id
+                detailHashes.TryGetValue(detailHash, out int id);
+                if (id > 0)
+                {
+                    WriteDebug("Hash found in SessionState");
+                    if (id >= startingId)
+                        startingId = id + 1;
+                    DSClientScheduleDetail.Add(new DSClientScheduleDetail(id, scheduleInfo, detail));
+                    detail.Dispose();
+                    detailCounter++;
+                }
+                else
+                {
+                    WriteDebug("Hash not found in SessionState");
+                    unidentified.Add(detailHash, detail);
+                }
             }
+
+            // Process all the Schedule Details that were not already in the Dictionary, and add them
+            foreach (KeyValuePair<string, ScheduleDetail> hash in unidentified)
+            {
+                progressRecord.PercentComplete = (int)Math.Round((double)(((double)detailCounter + hashCounter) / ((double)detailCount * 2)) * 100);
+                progressRecord.StatusDescription = $"{detailCounter} of {detailCount} processed, {progressRecord.PercentComplete}%";
+                WriteProgress(progressRecord);
+
+                DSClientScheduleDetail.Add(new DSClientScheduleDetail(startingId, scheduleInfo, hash.Value));
+                hash.Value.Dispose();
+                detailHashes.Add(hash.Key, startingId);
+                startingId++;
+                detailCounter++;
+            }
+
             progressRecord.RecordType = ProgressRecordType.Completed;
-            progressRecord.PercentComplete = (int)Math.Round((double)(((double)DetailId - 1) / (double)detailCount) * 100);
+            progressRecord.PercentComplete = (int)Math.Round((double)(((double)detailCounter + hashCounter) / ((double)detailCount * 2)) * 100);
             WriteProgress(progressRecord);
 
-            SessionState.PSVariable.Remove("ScheduleDetail");
-            SessionState.PSVariable.Set("ScheduleDetail", scheduleHash);
+            SessionState.PSVariable.Set("ScheduleDetail", detailHashes);
 
             DSClientScheduleDetail.ForEach(WriteObject);
 

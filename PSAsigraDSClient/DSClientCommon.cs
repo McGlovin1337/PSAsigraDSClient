@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -6,7 +8,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    public class DSClientCommon
+    public static class DSClientCommon
     {
         public static string EnumToString<T>(T e)
         {
@@ -104,6 +106,29 @@ namespace PSAsigraDSClient
             return TimeInDay;
         }
 
+        public class DSClientTimeSpan
+        {
+            public int Period { get; private set; }
+            public string Unit { get; private set; }
+
+            public DSClientTimeSpan(int period, string unit)
+            {
+                Period = period;
+                Unit = unit;
+            }
+
+            public DSClientTimeSpan(retention_time_span timeSpan)
+            {
+                Period = timeSpan.period;
+                Unit = EnumToString(timeSpan.unit);
+            }
+
+            public override string ToString()
+            {
+                return $"{Period} {Unit}";
+            }
+        }
+
         public static DateTime UnixEpochToDateTime(int epoch)
         {
             DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(epoch);
@@ -169,5 +194,23 @@ namespace PSAsigraDSClient
                 return Regex.Match(Hostname, @"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$").Success;
             }
         }
+
+        public static string GetSha1Hash(this string hashStr)
+        {
+            SHA1Managed sha1 = new SHA1Managed();
+
+            byte[] hashData = sha1.ComputeHash(Encoding.UTF8.GetBytes(hashStr));
+
+            sha1.Dispose();
+
+            StringBuilder strBuilder = new StringBuilder();
+
+            for (int i = 0; i < hashData.Length; i++)
+                strBuilder.Append(hashData[i].ToString("x2"));
+
+            return strBuilder.ToString();
+        }
+
+
     }
 }

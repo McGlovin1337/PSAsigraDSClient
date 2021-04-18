@@ -14,14 +14,14 @@ Create a New VMware VADP Backup Set
 
 ```
 New-DSClientVMwareVADPBackupSet [-Name] <String> [-Computer] <String> [-SetType] <String>
- [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-NotificationMethod <String>]
- [-NotificationRecipient <String>] [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>]
- [-Credential <PSCredential>] [-IncrementalP2VBackup] [-BackupVMMemory] [-SnapshotQuiesce] [-SameTimeSnapshot]
- [-UseCBT] [-UseFLR] [-UseLocalVDR] [-VMLibraryVersion <String>] [-UseBuffer] -Compression <String> [-Disabled]
- [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan]
- [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations]
- [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>]
- [-PassThru] [<CommonParameters>]
+ [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-ExcludeSubDirs]
+ [-NotificationMethod <String>] [-NotificationRecipient <String>] [-NotificationCompletion <String[]>]
+ [-NotificationEmailOptions <String[]>] [-Credential <PSCredential>] [-IncrementalP2VBackup] [-BackupVMMemory]
+ [-SnapshotQuiesce] [-SameTimeSnapshot] [-UseCBT] [-UseFLR] [-UseLocalVDR] [-VMLibraryVersion <String>]
+ [-UseBuffer] -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>]
+ [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>]
+ [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>]
+ [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -584,6 +584,21 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeSubDirs
+Specify to exclude Sub-Directories
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

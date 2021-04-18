@@ -14,9 +14,9 @@ Adds an MS SQL Server Database Item to a Backup Set
 
 ```
 Add-DSClientMSSqlServerBackupSetItem [[-BackupSetId] <Int32>] [-IncludeItem <String[]>]
- [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludeItem <String[]>]
- [-RegexExclusionPath <String>] [-RegexExcludeDirectory] [-RegexCaseInsensitive] [-RunDBCC] [-DBCCErrorStop]
- [-BackupLog] [<CommonParameters>]
+ [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludePattern <String[]>]
+ [-RegexExclusionPath <String>] [-RegexMatchDirectory] [-RegexCaseInsensitive] [-RunDBCC] [-DBCCErrorStop]
+ [-BackupLog] [-ExcludeSubDirs] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -138,36 +138,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -RegexExcludeDirectory
-Specify to also Exclude Directories with Regex pattern
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -RegexExcludeItem
-Specify Regex Item Exclusion Patterns
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -RegexExclusionPath
 Specify Path for Regex Exclusion Item
 
@@ -195,6 +165,51 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeSubDirs
+Specify to exclude Sub-Directories
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexMatchDirectory
+Specify to also Exclude Directories with Regex pattern
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RegexExcludePattern
+Specify Regex Item Exclusion Patterns
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

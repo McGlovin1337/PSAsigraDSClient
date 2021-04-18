@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
@@ -21,32 +22,77 @@ namespace PSAsigraDSClient
             // Get all the Time Retention Options
             WriteVerbose("Performing Action: Retrieve Time Retention Options");
             TimeRetentionOption[] timeRetentionOptions = retentionRule.getTimeRetentions();
+            int optionCount = timeRetentionOptions.Count();
 
             List<TimeRetentionOverview> timeRetentions = new List<TimeRetentionOverview>();
 
-            int id = 1;
+            // Get Hash Codes for Previously Identified Time Retention Options from SessionState, or start a new Dictionary if none exists
+            Dictionary<string, int> retentionHashes = SessionState.PSVariable.GetValue("TimeRetention", null) as Dictionary<string, int>;
+            if (retentionHashes == null)
+                retentionHashes = new Dictionary<string, int>();
+
+            int startingId = 1;
+            Dictionary<string, TimeRetentionOption> unidentified = new Dictionary<string, TimeRetentionOption>();
+
+            int optionCounter = 0;
+            int hashCounter = 0;
+
+            WriteVerbose("Performing Action: Process Time Retention Options");
+            ProgressRecord progressRecord = new ProgressRecord(1, "Process Time Retention Options", $"0 of {optionCount} processed, 0%")
+            {
+                RecordType = ProgressRecordType.Processing,
+                CurrentOperation = "Processing Time Retention Option"
+            };
             foreach (TimeRetentionOption timeRetention in timeRetentionOptions)
             {
-                TimeRetentionOverview timeRetentionOverview = new TimeRetentionOverview(id, timeRetention);
-                timeRetentions.Add(timeRetentionOverview);
-                id++;
-                WriteDebug($"TimeRetentionOverview Hash: {timeRetentionOverview.GetHashCode()}");
+                progressRecord.PercentComplete = (int)Math.Round((double)(((double)optionCounter + (double)hashCounter) / ((double)optionCount * 2)) * 100);
+                progressRecord.StatusDescription = $"{optionCounter} of {optionCount} processed, {progressRecord.PercentComplete}%";
+                WriteProgress(progressRecord);
+
+                string optionHash = TimeRetentionHash(retentionRule, timeRetention);
+                WriteDebug($"Computed Hash: {optionHash}");
+                hashCounter++;
+                progressRecord.PercentComplete = (int)Math.Round((double)(((double)optionCounter + (double)hashCounter) / ((double)optionCount * 2)) * 100);
+                progressRecord.StatusDescription = $"{optionCounter} of {optionCount} processed, {progressRecord.PercentComplete}%";
+                WriteProgress(progressRecord);
+
+                // Check if the Hash is already in the Dictionary and if so fetch the associated Id
+                retentionHashes.TryGetValue(optionHash, out int id);
+                if (id > 0)
+                {
+                    WriteDebug("Hash found in SessionState");
+                    if (id >= startingId)
+                        startingId = id + 1;
+                    timeRetentions.Add(new TimeRetentionOverview(id, timeRetention));
+                    timeRetention.Dispose();
+                    optionCounter++;
+                }
+                else
+                {
+                    WriteDebug("Hash not found in SessionState");
+                    unidentified.Add(optionHash, timeRetention);
+                }
             }
 
-            // Store the retrieved rules into Session State, which will ensure correct rules are selected in case of removal
-            WriteVerbose("Performing Action: Store Time Retention Options in PS Session State");
-            Dictionary<int, int> retentionHash = new Dictionary<int, int>();
-            int ruleNameHash = retentionRule.getName().GetHashCode();
-            int ruleIdHash = retentionRule.getID().GetHashCode();
-
-            foreach (TimeRetentionOverview timeRetention in timeRetentions)
+            // Process all the Time Retention Options that were not already in the Dictionary, and add them
+            foreach (KeyValuePair<string, TimeRetentionOption> hash in unidentified)
             {
-                int timeRetentionHash = timeRetention.GetHashCode() * ruleNameHash * ruleIdHash;
-                WriteDebug($"TimeRetentionOption Final Hash: {timeRetentionHash}");
-                retentionHash.Add(timeRetentionHash, timeRetention.TimeRetentionId);
+                progressRecord.PercentComplete = (int)Math.Round((double)(((double)optionCounter + (double)hashCounter) / ((double)optionCount * 2)) * 100);
+                progressRecord.StatusDescription = $"{optionCounter} of {optionCount} processed, {progressRecord.PercentComplete}%";
+                WriteProgress(progressRecord);
+
+                timeRetentions.Add(new TimeRetentionOverview(startingId, hash.Value));
+                hash.Value.Dispose();
+                retentionHashes.Add(hash.Key, startingId);
+                startingId++;
+                optionCounter++;
             }
-            SessionState.PSVariable.Remove("TimeRetention");
-            SessionState.PSVariable.Set("TimeRetention", retentionHash);
+
+            progressRecord.RecordType = ProgressRecordType.Completed;
+            progressRecord.PercentComplete = (int)Math.Round((double)(((double)optionCounter + (double)hashCounter) / ((double)optionCount * 2)) * 100);
+            WriteProgress(progressRecord);
+
+            SessionState.PSVariable.Set("TimeRetention", retentionHashes);
             
             retentionRule.Dispose();
 

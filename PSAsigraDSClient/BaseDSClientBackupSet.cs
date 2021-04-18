@@ -115,7 +115,7 @@ namespace PSAsigraDSClient
             return backupSet;
         }
 
-        protected static IEnumerable<BackupSetFileItem> ProcessExclusionItems(DSClientOSType dSClientOSType, DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items)
+        protected static IEnumerable<BackupSetFileItem> ProcessExclusionItems(DSClientOSType dSClientOSType, DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, bool excludeSubDirs)
         {
             List<BackupSetFileItem> fileItems = new List<BackupSetFileItem>();
 
@@ -138,6 +138,7 @@ namespace PSAsigraDSClient
                 else if (dSClientOSType.OsType == "Linux")
                 {
                     filter = trimmedItem.Split('/').Last();
+                    filter = filter.Split('\\').Last();
                     itemLength = filter.Length;
                     if (string.IsNullOrEmpty(filter))
                         filter = "*";
@@ -146,15 +147,20 @@ namespace PSAsigraDSClient
                 // Set the path by removing the specified filter from the end of the item
                 string path = trimmedItem.Remove((trimmedItem.Length - itemLength), itemLength);
 
+                // Validate the path exists, otherwise an invalid path passed to createExclusionItem() can crash the DS-Client Service
+                // getItemInfo() will throw an appropriate exception if the item doesn't exist
+                dataSourceBrowser.getItemInfo(computer, path);
+
                 BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, path);
                 exclusion.setFilter(filter);
                 fileItems.Add(exclusion);
+                exclusion.setSubdirDescend(!excludeSubDirs);
             }
 
             return fileItems;
         }
 
-        protected static IEnumerable<BackupSetFileItem> ProcessBasicExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items)
+        protected static IEnumerable<BackupSetFileItem> ProcessBasicExclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, bool excludeSubDirs)
         {
             List<BackupSetFileItem> sqlItems = new List<BackupSetFileItem>();
 
@@ -164,6 +170,7 @@ namespace PSAsigraDSClient
                 string trimmedItem = item.Trim();
 
                 BackupSetFileItem exclusion = dataSourceBrowser.createExclusionItem(computer, trimmedItem);
+                exclusion.setSubdirDescend(!excludeSubDirs);
                 sqlItems.Add(exclusion);
             }
 
@@ -194,7 +201,7 @@ namespace PSAsigraDSClient
             return regexItems;
         }
 
-        protected static IEnumerable<Win32FS_BackupSetInclusionItem> ProcessWin32FSInclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool excludeStreams, bool excludePerms)
+        protected static IEnumerable<Win32FS_BackupSetInclusionItem> ProcessWin32FSInclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool excludeStreams, bool excludePerms, bool excludeSubDirs)
         {
             List<Win32FS_BackupSetInclusionItem> inclusionItems = new List<Win32FS_BackupSetInclusionItem>();
 
@@ -215,16 +222,9 @@ namespace PSAsigraDSClient
                 Win32FS_BackupSetInclusionItem inclusionItem = Win32FS_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, path, maxGens));
 
                 inclusionItem.setFilter(filter);
-
-                if (excludeStreams)
-                    inclusionItem.setIncludingAlternateDataStreams(false);
-                else
-                    inclusionItem.setIncludingAlternateDataStreams(true);
-
-                if (excludePerms)
-                    inclusionItem.setIncludingPermissions(false);
-                else
-                    inclusionItem.setIncludingPermissions(true);
+                inclusionItem.setSubdirDescend(!excludeSubDirs);
+                inclusionItem.setIncludingAlternateDataStreams(!excludeStreams);
+                inclusionItem.setIncludingPermissions(!excludePerms);
 
                 inclusionItems.Add(inclusionItem);
             }
@@ -232,7 +232,7 @@ namespace PSAsigraDSClient
             return inclusionItems;
         }
 
-        protected static IEnumerable<MSSQL_BackupSetInclusionItem> ProcessMsSqlInclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool logBackup, bool runDBCC, bool stopDBCC)
+        protected static IEnumerable<MSSQL_BackupSetInclusionItem> ProcessMsSqlInclusionItems(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool logBackup, bool runDBCC, bool stopDBCC, bool excludeSubDirs)
         {
             List<MSSQL_BackupSetInclusionItem> sqlInclusionItems = new List<MSSQL_BackupSetInclusionItem>();
 
@@ -250,21 +250,10 @@ namespace PSAsigraDSClient
                 MSSQL_BackupSetInclusionItem inclusionItem = MSSQL_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, item, maxGens));
 
                 inclusionItem.setFilter(filter);
-
-                if (logBackup)
-                    inclusionItem.setBackUpTransactionLog(true);
-                else
-                    inclusionItem.setBackUpTransactionLog(false);
-
-                if (runDBCC)
-                    inclusionItem.setRunDBCC(true);
-                else
-                    inclusionItem.setRunDBCC(false);
-
-                if (stopDBCC)
-                    inclusionItem.setStopOnDBCCErrors(true);
-                else
-                    inclusionItem.setStopOnDBCCErrors(false);
+                inclusionItem.setSubdirDescend(!excludeSubDirs);
+                inclusionItem.setBackUpTransactionLog(logBackup);
+                inclusionItem.setRunDBCC(runDBCC);
+                inclusionItem.setStopOnDBCCErrors(stopDBCC);
 
                 sqlInclusionItems.Add(inclusionItem);
             }
@@ -272,7 +261,7 @@ namespace PSAsigraDSClient
             return sqlInclusionItems;
         }
 
-        protected static IEnumerable<BackupSetInclusionItem> ProcessVMwareVADPInclusionItem(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens)
+        protected static IEnumerable<BackupSetInclusionItem> ProcessVMwareVADPInclusionItem(DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, int maxGens, bool excludeSubDirs)
         {
             List<BackupSetInclusionItem> inclusionItems = new List<BackupSetInclusionItem>();
 
@@ -291,8 +280,9 @@ namespace PSAsigraDSClient
                 string path = trimmedItem.Remove((trimmedItem.Length - itemLength), itemLength);
 
                 BackupSetInclusionItem inclusionItem = dataSourceBrowser.createInclusionItem(computer, path, maxGens);
-
+                
                 inclusionItem.setFilter(filter);
+                inclusionItem.setSubdirDescend(!excludeSubDirs);
 
                 inclusionItems.Add(inclusionItem);
             }
@@ -787,7 +777,7 @@ namespace PSAsigraDSClient
             public bool SubDirDescend { get; private set; }
             public string ItemType { get; private set; }
             public int MaxGenerations { get; private set; }
-            public dynamic InclusionOptions { get; private set; }
+            public BackupSetInclusionOptions InclusionOptions { get; private set; }
             public RegexItemExclusionOptions RegexExclusionOptions { get; private set; } 
 
             public DSClientBackupSetItem(BackupSetItem backupSetItem, EBackupDataType backupDataType, DSClientOSType dSClientOSType)
@@ -820,13 +810,12 @@ namespace PSAsigraDSClient
                             if (dSClientOSType.OsType == "Windows")
                             {
                                 Win32FS_BackupSetInclusionItem win32FSBackupSetInclusionItem = Win32FS_BackupSetInclusionItem.from(backupSetInclusionItem);
-                                InclusionOptions = new Win32FSBackupSetInclusionOptions(win32FSBackupSetInclusionItem);
+                                InclusionOptions = new BackupSetInclusionOptions(win32FSBackupSetInclusionItem);
                             }
-
-                            if (dSClientOSType.OsType == "Linux")
+                            else if (dSClientOSType.OsType == "Linux")
                             {
                                 UnixFS_BackupSetInclusionItem unixFSBackupSetInclusionItem = UnixFS_BackupSetInclusionItem.from(backupSetInclusionItem);
-                                InclusionOptions = new UnixFSBackupSetInclusionOptions(unixFSBackupSetInclusionItem);
+                                InclusionOptions = new BackupSetInclusionOptions(unixFSBackupSetInclusionItem);
                             }
                         }
                     }
@@ -921,20 +910,26 @@ namespace PSAsigraDSClient
             }            
         }
 
-        protected class UnixFSBackupSetInclusionOptions
+        protected class BackupSetInclusionOptions
         {
+            private readonly bool _isUnixItem;
+
             public bool IncludeACLs { get; private set; }
             public bool IncludePosixACLs { get; private set; }
+            public bool IncludeAltDatastreams { get; private set; }
+            public bool IncludePermissions { get; private set; }
 
-            public UnixFSBackupSetInclusionOptions(UnixFS_BackupSetInclusionItem inclusionItem)
+            public BackupSetInclusionOptions(UnixFS_BackupSetInclusionItem unixItem)
             {
-                IncludeACLs = inclusionItem.isIncludingACL();
+                _isUnixItem = true;
+
+                IncludeACLs = unixItem.isIncludingACL();
 
                 try
                 {
-                    UnixFS_LinuxLFS_BackupSetInclusionItem linuxFSBackupSetInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
+                    UnixFS_LinuxLFS_BackupSetInclusionItem lfsUnixItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(unixItem);
 
-                    IncludePosixACLs = linuxFSBackupSetInclusionItem.isIncludingPosixACL();
+                    IncludePosixACLs = lfsUnixItem.isIncludingPosixACL();
                 }
                 catch
                 {
@@ -942,36 +937,36 @@ namespace PSAsigraDSClient
                 }
             }
 
-            public override string ToString()
+            public BackupSetInclusionOptions(Win32FS_BackupSetInclusionItem win32Item)
             {
-                string Options = "False";
+                _isUnixItem = false;
 
-                if ((IncludeACLs || IncludePosixACLs) == true)
-                    Options = "True";
-
-                return Options;
-            }
-        }
-
-        protected class Win32FSBackupSetInclusionOptions
-        {
-            public bool IncludeAltDatastreams { get; private set; }
-            public bool IncludePermissions { get; private set; }
-
-            public Win32FSBackupSetInclusionOptions(Win32FS_BackupSetInclusionItem inclusionItem)
-            {
-                IncludeAltDatastreams = inclusionItem.isIncludingAlternateDataStreams();
-                IncludePermissions = inclusionItem.isIncludingPermissions();
+                IncludeAltDatastreams = win32Item.isIncludingAlternateDataStreams();
+                IncludePermissions = win32Item.isIncludingPermissions();
             }
 
             public override string ToString()
             {
-                string Options = "False";
+                string options = null;
 
-                if ((IncludeAltDatastreams || IncludePermissions) == true)
-                    Options = "True";
+                if (_isUnixItem)
+                {
+                    if (IncludeACLs)
+                        options += (options == null) ? nameof(IncludeACLs) : $", {nameof(IncludeACLs)}";
 
-                return Options;
+                    if (IncludePosixACLs)
+                        options += (options == null) ? nameof(IncludePosixACLs) : $", {nameof(IncludePosixACLs)}";
+                }
+                else
+                {
+                    if (IncludeAltDatastreams)
+                        options += (options == null) ? nameof(IncludeAltDatastreams) : $", {nameof(IncludeAltDatastreams)}";
+
+                    if (IncludePermissions)
+                        options += (options == null) ? nameof(IncludePermissions) : $", {nameof(IncludePermissions)}";
+                }
+
+                return options;
             }
         }
 

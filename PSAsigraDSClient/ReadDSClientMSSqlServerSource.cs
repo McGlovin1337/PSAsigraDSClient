@@ -66,17 +66,19 @@ namespace PSAsigraDSClient
             else
                 sqlDataSourceBrowser.setDBCredentials(computerCredentials);
 
-            // Get the Instances Info
-            WriteVerbose("Performing Action: Retrieve SQL Instance Info from Source Computer");
-            mssql_instance_info[] dbInstances = sqlDataSourceBrowser.getInstancesInfo(sqlComputer);
-
             // Get the Databases Info
             List<mssql_db_path> dbPaths = new List<mssql_db_path>();
             if (Instance != null)
                 dbPaths = sqlDataSourceBrowser.getDatabasesPath(sqlComputer, Instance).ToList();
             else
+            {
+                // Get the Instances Info
+                WriteVerbose("Performing Action: Retrieve SQL Instance Info from Source Computer");
+                mssql_instance_info[] dbInstances = sqlDataSourceBrowser.getInstancesInfo(sqlComputer);
+
                 foreach (mssql_instance_info instance in dbInstances)
                     dbPaths.AddRange(sqlDataSourceBrowser.getDatabasesPath(sqlComputer, instance.name).ToList());
+            }
 
             List<SourceMSSqlItemInfo> sqlItems = new List<SourceMSSqlItemInfo>();
             foreach (mssql_db_path database in dbPaths)

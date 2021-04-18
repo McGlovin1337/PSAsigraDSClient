@@ -97,7 +97,7 @@ namespace PSAsigraDSClient
             }
 
             progressRecord.RecordType = ProgressRecordType.Completed;
-            progressRecord.PercentComplete = (int)Math.Round((double)(((double)detailCounter) / (double)detailCount) * 100);
+            progressRecord.PercentComplete = (int)Math.Round((double)(((double)detailCounter + hashCounter) / ((double)detailCount * 2)) * 100);
             WriteProgress(progressRecord);
 
             SessionState.PSVariable.Set("ScheduleDetail", detailHashes);

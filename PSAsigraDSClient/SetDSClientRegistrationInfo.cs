@@ -37,7 +37,7 @@ namespace PSAsigraDSClient
         public string PrivateKey { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Encryption for Private Key")]
-        [ValidateSet("DES", "AES128", "AES192", "AES256", "AES128IV", "AES192IV", "AES256IV")]
+        [ValidateSet("DES", "AES128", "AES192", "AES256", "AES128_IV", "AES192_IV", "AES256_IV")]
         public string PrivateKeyEncryption { get; set; }
 
         [Parameter(HelpMessage = "Specify if to Forward Encryption Keys to DS-System")]

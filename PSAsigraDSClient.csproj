@@ -57,6 +57,7 @@
     <Compile Include="PSAsigraDSClient\AddDSClientMonthlySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMSSqlServerBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientOneTimeSchedule.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientRestoreItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientTimeRetentionOption.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientUnixFsBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientUserGroupRole.cs" />
@@ -90,6 +91,9 @@
     <Compile Include="PSAsigraDSClient\CompareDSClientEncryptionKeys.cs" />
     <Compile Include="PSAsigraDSClient\DisableDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\DisableDSClientSchedule.cs" />
+    <Compile Include="PSAsigraDSClient\DSClientBackupSetItemInfo.cs" />
+    <Compile Include="PSAsigraDSClient\DSClientRestoreSession.cs" />
+    <Compile Include="PSAsigraDSClient\DSClientVMwareRestoreOptions.cs" />
     <Compile Include="PSAsigraDSClient\EnableDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\EnableDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\ExportDSClientConfig.cs" />
@@ -107,6 +111,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientInitialBackupStatus.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientNocSettings.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientOS.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientRestoreSession.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSupportedDataType.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientTimeRetentionOption.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientTools.cs" />
@@ -116,6 +121,7 @@
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetRestore.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetValidation.cs" />
+    <Compile Include="PSAsigraDSClient\InitializeDSClientRestoreSession.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientInitialBackupPath.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientMSSqlServerBackupSet.cs" />
@@ -174,6 +180,7 @@
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetNotification.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientInitialBackupPath.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientRestoreSession.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientScheduleDetail.cs" />
@@ -197,6 +204,7 @@
     <Compile Include="PSAsigraDSClient\SetDSClientMSSqlServerBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientOneTimeSchedule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRegistrationInfo.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientRestoreSession.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSMTPNotification.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSNMPHeartbeat.cs" />
@@ -212,7 +220,9 @@
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetRetention.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientMSSqlServerRestore.cs" />
+    <Compile Include="PSAsigraDSClient\StartDSClientRestore.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientUnixFsRestore.cs" />
+    <Compile Include="PSAsigraDSClient\StartDSClientVMwareVADPRestore.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientWinFsRestore.cs" />
     <Compile Include="PSAsigraDSClient\StopDSClientGridNode.cs" />
     <Compile Include="PSAsigraDSClient\SyncDSClientBackupSet.cs" />

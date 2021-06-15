@@ -1,4 +1,6 @@
-﻿using System.Management.Automation;
+﻿using System;
+using System.Collections.Generic;
+using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -14,6 +16,14 @@ namespace PSAsigraDSClient
 
         [Parameter(Mandatory = true, ParameterSetName = "RestoreSession", HelpMessage = "Specify to use Restore View stored in SessionState")]
         public SwitchParameter UseRestoreSession { get; set; }
+
+        [Parameter(Mandatory = true, ParameterSetName = "RestoreId", HelpMessage = "Specify an existing Restore Session Id")]
+        public int RestoreId { get; set; }
+
+        protected virtual void ProcessRestoreSessionData(ref DSClientRestoreSession restoreSession)
+        {
+            throw new NotImplementedException("This Method Should be Overridden");
+        }
 
         protected abstract void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView);
 
@@ -51,6 +61,34 @@ namespace PSAsigraDSClient
 
                 // Update the Restore View in SessionState
                 SessionState.PSVariable.Set("RestoreView", restoreView);
+            }
+            else if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreId)))
+            {
+                // Get the Restore View from a Restore Session
+                List<DSClientRestoreSession> restoreSessions = SessionState.PSVariable.GetValue("RestoreSessions", null) as List<DSClientRestoreSession>;
+
+                if (restoreSessions == null)
+                    throw new Exception("No Restore Sessions found");
+
+                // Get the Specified Restore Session by Id
+                bool found = false;
+                for (int i = 0; i < restoreSessions.Count; i++)
+                {
+                    if (restoreSessions[i].RestoreId == RestoreId)
+                    {
+                        DSClientRestoreSession restoreSession = restoreSessions[i];
+                        ProcessRestoreSessionData(ref restoreSession);
+                        restoreSessions[i] = restoreSession;
+                        found = true;
+                        break;
+                    }
+                }
+
+                // Update the Session State if a Restore Session was found
+                if (found)
+                    SessionState.PSVariable.Set("RestoreSessions", restoreSessions);
+                else
+                    throw new Exception("Specified RestoreId not found");
             }
             else
             {

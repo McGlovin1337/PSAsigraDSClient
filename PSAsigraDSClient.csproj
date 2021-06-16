@@ -180,6 +180,7 @@
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetNotification.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientInitialBackupPath.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientRestoreItem.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientRestoreSession.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSchedule.cs" />

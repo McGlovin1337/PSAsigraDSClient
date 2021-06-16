@@ -33,6 +33,14 @@ namespace PSAsigraDSClient
             // Get the Backup Set Details
             WriteDebug("Getting Backup Set Details");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
+
+            // Check if Backup Set is in use
+            if (backupSet.check_lock_status(EActivityType.EActivityType__Restore) == EBackupSetLockStatus.EBackupSetLockStatus__Locked)
+            {
+                backupSet.Dispose();
+                throw new Exception("Backup Set is Currently Locked");
+            }
+
             EBackupDataType dataType = backupSet.getDataType();
             Type setType = typeof(BackupSet);
 

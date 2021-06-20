@@ -349,14 +349,14 @@ namespace PSAsigraDSClient
         public class FileSystemRestoreOptions
         {
             public bool Applicable { get; private set; }
-            public string OverwriteOption { get; private set; }
+            public string FileOverwriteOption { get; private set; }
             public string RestoreMethod { get; private set; }
             public string RestorePermissions { get; private set; }
             public WinFSRestoreOptions WinFSOptions { get; private set; }
 
             public FileSystemRestoreOptions()
             {
-                OverwriteOption = "RestoreAll";
+                FileOverwriteOption = "RestoreAll";
                 RestoreMethod = "Fast";
                 RestorePermissions = "Yes";
             }
@@ -373,7 +373,7 @@ namespace PSAsigraDSClient
 
             public void SetOverwriteOption(string overwriteOption)
             {
-                OverwriteOption = overwriteOption;
+                FileOverwriteOption = overwriteOption;
             }
 
             public void SetRestoreMethod(string restoreMethod)
@@ -523,7 +523,7 @@ namespace PSAsigraDSClient
 
             _fsRestoreActivityInitiator = FS_RestoreActivityInitiator.from(GetRestoreActivityInitiator());
 
-            _fsRestoreActivityInitiator.setFileOverwriteOption(StringToEnum<EFileOverwriteOption>(FileSystemOptions.OverwriteOption));
+            _fsRestoreActivityInitiator.setFileOverwriteOption(StringToEnum<EFileOverwriteOption>(FileSystemOptions.FileOverwriteOption));
             _fsRestoreActivityInitiator.setRestoreMethod(StringToEnum<ERestoreMethod>(FileSystemOptions.RestoreMethod));
             _fsRestoreActivityInitiator.setRestorePermission(StringToEnum<ERestorePermission>(FileSystemOptions.RestorePermissions));
 

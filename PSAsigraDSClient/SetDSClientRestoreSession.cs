@@ -51,6 +51,27 @@ namespace PSAsigraDSClient
         [Parameter(ParameterSetName = "sharemapping", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the amount to truncate the original path by")]
         public int TruncateAmount { get; set; }
 
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the File System Overwrite Option")]
+        [ValidateSet("RestoreAll", "RestoreNewer", "RestoreOlder", "RestoreDifferent", "SkipExisting")]
+        public string FileOverwriteOption { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the File Restore Method")]
+        [ValidateSet("Fast", "Save", "UseBuffer")]
+        public string RestoreMethod { get; set; }
+
+        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify whether to Restore File Permissions")]
+        [ValidateSet("Yes", "Skip", "Only")]
+        public string RestorePermissions { get; set; }
+
+        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify if this is an Authoritative Restore (Windows Only)")]
+        public SwitchParameter AuthoritativeRestore { get; set; }
+
+        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify whether to Overwrite Junction Points (Windows Only)")]
+        public SwitchParameter OverwriteJunctionPoint { get; set; }
+
+        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify whether to Skip Restoring Offline Files")]
+        public SwitchParameter SkipOfflineFiles { get; set; }
+
         protected override void DSClientProcessRecord()
         {
             List<DSClientRestoreSession> restoreSessions = SessionState.PSVariable.GetValue("RestoreSessions", null) as List<DSClientRestoreSession>;
@@ -107,6 +128,24 @@ namespace PSAsigraDSClient
                             }
                         }
                     }
+
+                    if (MyInvocation.BoundParameters.ContainsKey(nameof(FileOverwriteOption)))
+                        restoreSession.FileSystemOptions.SetOverwriteOption(FileOverwriteOption);
+
+                    if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreMethod)))
+                        restoreSession.FileSystemOptions.SetRestoreMethod(RestoreMethod);
+
+                    if (MyInvocation.BoundParameters.ContainsKey(nameof(RestorePermissions)))
+                        restoreSession.FileSystemOptions.SetRestorePermissions(RestorePermissions);
+
+                    if (MyInvocation.BoundParameters.ContainsKey(nameof(AuthoritativeRestore)))
+                        restoreSession.FileSystemOptions.WinFSOptions.SetAuthoritative(AuthoritativeRestore);
+
+                    if (MyInvocation.BoundParameters.ContainsKey(nameof(OverwriteJunctionPoint)))
+                        restoreSession.FileSystemOptions.WinFSOptions.SetOverwriteJunctionPoint(OverwriteJunctionPoint);
+
+                    if (MyInvocation.BoundParameters.ContainsKey(nameof(SkipOfflineFiles)))
+                        restoreSession.FileSystemOptions.WinFSOptions.SetSkipOfflineFile(SkipOfflineFiles);
 
                     found = true;
                     break;

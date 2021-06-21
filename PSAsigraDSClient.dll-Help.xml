@@ -5131,6 +5131,85 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Disconnect-DSClientSession</command:name>
+      <command:verb>Disconnect</command:verb>
+      <command:noun>DSClientSession</command:noun>
+      <maml:description>
+        <maml:para>Disconnect and Logout from a DS-Client Session</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Disconnect and Logout from a DS-Client Session</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Disconnect-DSClientSession</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>Session</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Session to Disconnect</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">DSClientSession</command:parameterValue>
+          <dev:type>
+            <maml:name>DSClientSession</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+        <maml:name>Session</maml:name>
+        <maml:Description>
+          <maml:para>Specify the Session to Disconnect</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">DSClientSession</command:parameterValue>
+        <dev:type>
+          <maml:name>DSClientSession</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>PSAsigraDSClient.DSClientCommon+DSClientSession</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSAsigraDSClient.DSClientCommon+DSClientSession</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Disconnect-DSClientSession -Session $Session</dev:code>
+        <dev:remarks>
+          <maml:para>Logout of the DS-Client specified in $Session</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Enable-DSClientBackupSet</command:name>
       <command:verb>Enable</command:verb>
       <command:noun>DSClientBackupSet</command:noun>
@@ -5394,7 +5473,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Enter-DSClientSession</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
           <maml:name>Host</maml:name>
           <maml:Description>
             <maml:para>Specify the DSClient Host to connect to</maml:para>
@@ -5453,6 +5532,18 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>Session</maml:name>
+          <maml:Description>
+            <maml:para>Specify an existing Session to use</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">DSClientSession</command:parameterValue>
+          <dev:type>
+            <maml:name>DSClientSession</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -5480,7 +5571,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
         <maml:name>Host</maml:name>
         <maml:Description>
           <maml:para>Specify the DSClient Host to connect to</maml:para>
@@ -5512,6 +5603,18 @@
         <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
         <dev:type>
           <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>Session</maml:name>
+        <maml:Description>
+          <maml:para>Specify an existing Session to use</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">DSClientSession</command:parameterValue>
+        <dev:type>
+          <maml:name>DSClientSession</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5548,6 +5651,13 @@
         <dev:code>PS C:\&gt; Enter-DSClientSession -Host my.dsclient.local -Credential joe.bloggs</dev:code>
         <dev:remarks>
           <maml:para>Establishes a connection to the DS-Client running on computer "my.dsclient.local", using Credential "joe.bloggs"</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Enter-DSClientSession -Session $Session</dev:code>
+        <dev:remarks>
+          <maml:para>Enters the DS-Client Session specified in $Session variable.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -14044,6 +14154,180 @@
         <dev:code>PS C:\&gt; New-DSClientSchedule -Name "Regular Backup and Retention"</dev:code>
         <dev:remarks>
           <maml:para>Creates a new Schedule named "Regular Backup and Retention"</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>New-DSClientSession</command:name>
+      <command:verb>New</command:verb>
+      <command:noun>DSClientSession</command:noun>
+      <maml:description>
+        <maml:para>Create and Establish a new DS-Client Session</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Create and Establish a new DS-Client Session.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>New-DSClientSession</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Host</maml:name>
+          <maml:Description>
+            <maml:para>Specify the DS-Client Host to connect to</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Port</maml:name>
+          <maml:Description>
+            <maml:para>Specify the TCP port to connect to</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+          <maml:name>NoSSL</maml:name>
+          <maml:Description>
+            <maml:para>Specify to NOT establish an SSL Connection</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+          <maml:name>APIVersion</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Asigra DS-Client API Version to use</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+          <maml:name>Credential</maml:name>
+          <maml:Description>
+            <maml:para>Specify Credentials to use to connect to DSClient</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <dev:type>
+            <maml:name>PSCredential</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+        <maml:name>APIVersion</maml:name>
+        <maml:Description>
+          <maml:para>Specify the Asigra DS-Client API Version to use</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+        <maml:name>Credential</maml:name>
+        <maml:Description>
+          <maml:para>Specify Credentials to use to connect to DSClient</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <dev:type>
+          <maml:name>PSCredential</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Host</maml:name>
+        <maml:Description>
+          <maml:para>Specify the DS-Client Host to connect to</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <maml:name>NoSSL</maml:name>
+        <maml:Description>
+          <maml:para>Specify to NOT establish an SSL Connection</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Port</maml:name>
+        <maml:Description>
+          <maml:para>Specify the TCP port to connect to</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSAsigraDSClient.DSClientCommon+DSClientSession</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $Session = New-DSClientSession -Host mydsclient -Credential (Get-Credential)</dev:code>
+        <dev:remarks>
+          <maml:para>Creates a new DS-Client Session to the host mydsclient and stores it in the variable $Session</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

@@ -243,6 +243,7 @@
     <None Include="docs\Compare-DSClientEncryptionKeys.md" />
     <None Include="docs\Disable-DSClientBackupSet.md" />
     <None Include="docs\Disable-DSClientSchedule.md" />
+    <None Include="docs\Disconnect-DSClientSession.md" />
     <None Include="docs\Enable-DSClientBackupSet.md" />
     <None Include="docs\Enable-DSClientSchedule.md" />
     <None Include="docs\Enter-DSClientSession.md" />
@@ -297,6 +298,7 @@
     <None Include="docs\New-DSClientMSSqlServerBackupSet.md" />
     <None Include="docs\New-DSClientRetentionRule.md" />
     <None Include="docs\New-DSClientSchedule.md" />
+    <None Include="docs\New-DSClientSession.md" />
     <None Include="docs\New-DSClientUnixFsBackupSet.md" />
     <None Include="docs\New-DSClientVMwareVADPBackupSet.md" />
     <None Include="docs\New-DSClientWinFsBackupSet.md" />

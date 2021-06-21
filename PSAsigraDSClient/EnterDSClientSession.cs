@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Enter, "DSClientSession")]
     public class EnterDSClientSession: BaseDSClientSessionCleanup
     {
-        [Parameter(Position = 0, HelpMessage = "Specify the DS-Client Host to connect to")]
+        [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the DS-Client Host to connect to")]
         [ValidateNotNullOrEmpty]
         public new string Host { get; set; }
 
@@ -26,13 +26,23 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty]
         public PSCredential Credential { get; set; }
 
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = "session", HelpMessage = "Specify an existing Session to use" )]
+        public DSClientSession Session { get; set; }
+
         protected override void ProcessCleanSession()
         {
-            string user = Credential.UserName;
-            string pwd = Credential.GetNetworkCredential().Password;
+            ClientConnection DSClientSession;
 
-            WriteVerbose("Performing Action: Establish DS-Client Session");
-            ClientConnection DSClientSession = ConnectSession(Host, Port, NoSSL, APIVersion, user, pwd);
+            if (Session != null)
+                DSClientSession = Session.GetClientConnection();
+            else
+            {
+                string user = Credential.UserName;
+                string pwd = Credential.GetNetworkCredential().Password;
+
+                WriteVerbose("Performing Action: Establish DS-Client Session");
+                DSClientSession = ConnectSession(Host, Port, NoSSL, APIVersion, user, pwd);
+            }
 
             SessionState.PSVariable.Set("DSClientSession", DSClientSession);
 

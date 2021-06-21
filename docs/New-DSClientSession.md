@@ -13,8 +13,8 @@ Create and Establish a new DS-Client Session
 ## SYNTAX
 
 ```
-New-DSClientSession [[-Host] <String>] [[-Port] <UInt16>] [-NoSSL] [[-APIVersion] <String>]
- [[-Credential] <PSCredential>] [<CommonParameters>]
+New-DSClientSession -HostName <String> [-Credential] <PSCredential> [-Name <String>] [[-Port] <UInt16>]
+ [-NoSSL] [[-APIVersion] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -54,23 +54,8 @@ Type: PSCredential
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 5
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Host
-Specify the DS-Client Host to connect to
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -103,6 +88,36 @@ Required: False
 Position: 1
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -HostName
+Specify the DS-Client Host to connect to
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
+### -Name
+Specify a name for this Session
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

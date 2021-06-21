@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Management.Automation;
 using AsigraDSClientApi;
+using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -13,11 +14,16 @@ namespace PSAsigraDSClient
             private readonly string _apiVersion;
             private ClientConnection _clientConnection;
 
+            public int Id { get; private set; }
+            public string Name { get; private set; }
             public string Host { get; private set; }
+            public int Port { get; private set; }
             public string State { get; private set; }
             public DateTime Established { get; private set; }
+            public string Transport { get; private set; }
+            public string OperatingSystem { get; private set; }
 
-            public DSClientSession(string computer, UInt16 port, bool nossl, string apiVersion, PSCredential credential)
+            public DSClientSession(int id, string computer, UInt16 port, bool nossl, string apiVersion, PSCredential credential, string name = null)
             {
                 string prefix = (nossl) ? "http" : "https";
 
@@ -26,9 +32,17 @@ namespace PSAsigraDSClient
                 _credential = credential;
                 _clientConnection = ApiFactory.CreateConnection(_url, _apiVersion, credential.UserName, credential.GetNetworkCredential().Password, 0);
 
+                Id = id;
+                Name = (string.IsNullOrEmpty(name)) ? $"Session{id}" : name;
                 Host = computer;
-                State = "Connected";
+                Port = port;
+                State = "Connected";                
                 Established = DateTime.Now;
+                Transport = prefix;
+
+                ClientConfiguration cfgMgr = _clientConnection.getConfigurationManager();
+                OperatingSystem = EnumToString(cfgMgr.getClientOSType());
+                cfgMgr.Dispose();
             }
 
             public void Connect()
@@ -41,6 +55,19 @@ namespace PSAsigraDSClient
             {
                 _clientConnection.logout();
                 State = "Disconnected";
+            }
+
+            public void UpdateState()
+            {
+                try
+                {
+                    _clientConnection.keepAlive();
+                    State = "Connected";
+                }
+                catch
+                {
+                    State = "Disconnected";
+                }
             }
 
             public ClientConnection GetClientConnection()

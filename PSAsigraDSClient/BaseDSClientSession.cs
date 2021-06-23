@@ -16,9 +16,9 @@ namespace PSAsigraDSClient
 
             public int Id { get; private set; }
             public string Name { get; private set; }
-            public string Host { get; private set; }
+            public string HostName { get; private set; }
             public int Port { get; private set; }
-            public string State { get; private set; }
+            public ConnectionState State { get; private set; }
             public DateTime Established { get; private set; }
             public string Transport { get; private set; }
             public string OperatingSystem { get; private set; }
@@ -34,9 +34,9 @@ namespace PSAsigraDSClient
 
                 Id = id;
                 Name = (string.IsNullOrEmpty(name)) ? $"Session{id}" : name;
-                Host = computer;
+                HostName = computer;
                 Port = port;
-                State = "Connected";                
+                State = ConnectionState.Connected;
                 Established = DateTime.Now;
                 Transport = prefix;
 
@@ -54,7 +54,7 @@ namespace PSAsigraDSClient
             public void Disconnect()
             {
                 _clientConnection.logout();
-                State = "Disconnected";
+                State = ConnectionState.Disconnected;
             }
 
             public void UpdateState()
@@ -62,17 +62,23 @@ namespace PSAsigraDSClient
                 try
                 {
                     _clientConnection.keepAlive();
-                    State = "Connected";
+                    State = ConnectionState.Connected;
                 }
                 catch
                 {
-                    State = "Disconnected";
+                    State = ConnectionState.Disconnected;
                 }
             }
 
             public ClientConnection GetClientConnection()
             {
                 return _clientConnection;
+            }
+
+            public enum ConnectionState
+            {
+                Connected,
+                Disconnected
             }
         }
     }

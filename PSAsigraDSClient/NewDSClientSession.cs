@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 
 namespace PSAsigraDSClient
@@ -7,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.New, "DSClientSession")]
     [OutputType(typeof(DSClientSession))]
 
-    public class NewDSClientSession : PSCmdlet
+    sealed public class NewDSClientSession : BaseDSClientSession
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the DS-Client Host to connect to")]
         [ValidateNotNullOrEmpty]
@@ -31,22 +32,22 @@ namespace PSAsigraDSClient
         [Parameter(HelpMessage = "Specify the Asigra DS-Client API Version to use")]
         public string APIVersion { get; set; } = "13.0.0.0";
 
+        private List<DSClientSession> _sessions;
 
-        protected override void ProcessRecord()
+        protected override void ProcessDSClientSession(IEnumerable<DSClientSession> sessions)
         {
-            List<DSClientSession> sessions = SessionState.PSVariable.GetValue("DSClientSessions", null) as List<DSClientSession>;
+            if (sessions != null)
+                _sessions = sessions.ToList();
 
             int id = 1;
-            if (sessions != null)
+            if (_sessions.Count() > 0)
             {
-                for (int i = 0; i < sessions.Count; i++)
+                for (int i = 0; i < _sessions.Count; i++)
                 {
-                    if (sessions[i].Id >= id)
-                        id = sessions[i].Id + 1;
+                    if (_sessions[i].Id >= id)
+                        id = _sessions[i].Id + 1;
                 }
             }
-            else
-                sessions = new List<DSClientSession>();
 
             bool nossl = false;
             if (MyInvocation.BoundParameters.ContainsKey(nameof(NoSSL)))
@@ -54,9 +55,9 @@ namespace PSAsigraDSClient
 
             WriteVerbose("Performing Action: Establish DS-Client Session");
             DSClientSession session = new DSClientSession(id, HostName, Port, nossl, APIVersion, Credential, Name);
+            _sessions.Add(session);
 
-            sessions.Add(session);
-            SessionState.PSVariable.Set("DSClientSessions", sessions);
+            SessionState.PSVariable.Set("DSClientSessions", _sessions);
 
             WriteObject(session);
         }

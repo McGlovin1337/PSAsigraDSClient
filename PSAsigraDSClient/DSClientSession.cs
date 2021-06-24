@@ -43,19 +43,22 @@ namespace PSAsigraDSClient
             cfgMgr.Dispose();
         }
 
-        public void Connect()
+        internal void Connect()
         {
             _clientConnection = ApiFactory.CreateConnection(_url, _apiVersion, _credential.UserName, _credential.GetNetworkCredential().Password, 0);
             Established = DateTime.Now;
         }
 
-        public void Disconnect()
+        internal void Disconnect()
         {
-            _clientConnection.logout();
+            UpdateState();
+            if (State == ConnectionState.Connected)
+                _clientConnection.logout();
+
             State = ConnectionState.Disconnected;
         }
 
-        public void UpdateState()
+        internal void UpdateState()
         {
             try
             {

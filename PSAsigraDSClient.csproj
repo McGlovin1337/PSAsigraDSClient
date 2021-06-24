@@ -79,6 +79,7 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientRetentionRuleParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientScheduleDetailParams.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientSession.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientSessionCleanup.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientSetScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientStartBackupSetActivity.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="PSAsigraDSClient\RemoveDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientScheduleDetail.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientSession.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientTimeRetentionOption.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientUser.cs" />
@@ -319,6 +321,7 @@
     <None Include="docs\Remove-DSClientRetentionRule.md" />
     <None Include="docs\Remove-DSClientSchedule.md" />
     <None Include="docs\Remove-DSClientScheduleDetail.md" />
+    <None Include="docs\Remove-DSClientSession.md" />
     <None Include="docs\Remove-DSClientSNMPCommunity.md" />
     <None Include="docs\Remove-DSClientTimeRetentionOption.md" />
     <None Include="docs\Remove-DSClientUser.md" />

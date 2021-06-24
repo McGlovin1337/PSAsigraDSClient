@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommunications.Disconnect, "DSClientSession")]
     [OutputType(typeof(DSClientSession))]
 
-    public class DisconnectDSClientSession : PSCmdlet
+    sealed public class DisconnectDSClientSession : BaseDSClientSession
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "session", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Session to Disconnect")]
         public DSClientSession Session { get; set; }
@@ -16,9 +16,12 @@ namespace PSAsigraDSClient
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "id", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Id of the Session to Disconnect")]
         public int Id { get; set; }
 
-        protected override void ProcessRecord()
+        private List<DSClientSession> _sessions;
+
+        protected override void ProcessDSClientSession(IEnumerable<DSClientSession> sessions)
         {
-            List<DSClientSession> sessions = SessionState.PSVariable.GetValue("DSClientSessions", null) as List<DSClientSession>;
+            if (sessions != null)
+                _sessions = sessions.ToList();
 
             DSClientSession session = null;
             if (MyInvocation.BoundParameters.ContainsKey(nameof(Id)))
@@ -26,9 +29,9 @@ namespace PSAsigraDSClient
                 bool found = false;
                 for (int i = 0; i < sessions.Count(); i++)
                 {
-                    if (sessions[i].Id == Id)
+                    if (_sessions[i].Id == Id)
                     {
-                        session = sessions[i];
+                        session = _sessions[i];
                         found = true;
                         break;
                     }

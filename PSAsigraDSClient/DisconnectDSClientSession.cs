@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommunications.Disconnect, "DSClientSession")]
     [OutputType(typeof(DSClientSession))]
 
-    public class DisconnectDSClientSession : BaseDSClientSession
+    public class DisconnectDSClientSession : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "session", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Session to Disconnect")]
         public DSClientSession Session { get; set; }

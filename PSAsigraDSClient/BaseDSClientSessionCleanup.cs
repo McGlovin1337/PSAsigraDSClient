@@ -3,7 +3,7 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    public abstract class BaseDSClientSessionCleanup: BaseDSClientSession
+    public abstract class BaseDSClientSessionCleanup: PSCmdlet
     {
         protected abstract void ProcessCleanSession();
 

@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.New, "DSClientSession")]
     [OutputType(typeof(DSClientSession))]
 
-    public class NewDSClientSession : BaseDSClientSession
+    public class NewDSClientSession : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the DS-Client Host to connect to")]
         [ValidateNotNullOrEmpty]

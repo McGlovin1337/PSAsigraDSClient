@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientSession")]
     [OutputType(typeof(DSClientSession))]
 
-    sealed public class GetDSClientSession : BaseDSClientSession
+    sealed public class GetDSClientSession : PSCmdlet
     {
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Retrieve DS-Client Sessions by Id")]
         public int[] Id { get; set; }

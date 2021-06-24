@@ -13,8 +13,8 @@ Returns available DS-Client Sessions
 ## SYNTAX
 
 ```
-Get-DSClientSession [-Id <Int32[]>] [-Name <String>] [-HostName <String>] [-Port <Int32[]>] [-State <String>]
- [-Transport <String>] [-OperatingSystem <String[]>] [<CommonParameters>]
+Get-DSClientSession [-Id <Int32[]>] [-Name <String[]>] [-HostName <String[]>] [-Port <Int32[]>]
+ [-State <String>] [-Transport <String>] [-OperatingSystem <String[]>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,7 +35,7 @@ Returns all sessions
 Retrieve DS-Client Sessions by HostName
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
@@ -65,7 +65,7 @@ Accept wildcard characters: False
 Retrieve DS-Client Sessions by Name
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 

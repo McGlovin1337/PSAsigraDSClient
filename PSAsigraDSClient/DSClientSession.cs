@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Management.Automation;
+using System.Threading;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -47,15 +48,25 @@ namespace PSAsigraDSClient
         {
             _clientConnection = ApiFactory.CreateConnection(_url, _apiVersion, _credential.UserName, _credential.GetNetworkCredential().Password, 0);
             Established = DateTime.Now;
+            UpdateState();
         }
 
         internal void Disconnect()
         {
             UpdateState();
-            if (State == ConnectionState.Connected)
-                _clientConnection.logout();
-
-            State = ConnectionState.Disconnected;
+            while (State == ConnectionState.Connected)
+            {
+                try
+                {
+                    _clientConnection.logout();
+                }
+                catch
+                {
+                    // If we fail here, then we finally logged out
+                    // The next Update State should exit this loop
+                }
+                UpdateState();
+            }
         }
 
         internal void UpdateState()
@@ -63,12 +74,14 @@ namespace PSAsigraDSClient
             try
             {
                 _clientConnection.keepAlive();
-                State = ConnectionState.Connected;
             }
             catch
             {
                 State = ConnectionState.Disconnected;
+                return;
             }
+
+            State = ConnectionState.Connected;
         }
 
         public ClientConnection GetClientConnection()

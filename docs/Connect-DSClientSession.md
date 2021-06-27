@@ -5,93 +5,63 @@ online version:
 schema: 2.0.0
 ---
 
-# Disconnect-DSClientSession
+# Connect-DSClientSession
 
 ## SYNOPSIS
-Disconnect and Logout from a DS-Client Session
+Connects a previously disconnected DS-Client Session
 
 ## SYNTAX
 
 ### id (Default)
 ```
-Disconnect-DSClientSession -Id <Int32[]> [<CommonParameters>]
+Connect-DSClientSession [-Id] <Int32[]> [<CommonParameters>]
 ```
 
 ### name
 ```
-Disconnect-DSClientSession -Name <String[]> [<CommonParameters>]
+Connect-DSClientSession -Name <String[]> [<CommonParameters>]
 ```
 
 ### hostname
 ```
-Disconnect-DSClientSession -HostName <String[]> [<CommonParameters>]
+Connect-DSClientSession -HostName <String[]> [<CommonParameters>]
 ```
 
 ### state
 ```
-Disconnect-DSClientSession -State <String> [<CommonParameters>]
+Connect-DSClientSession -State <String> [<CommonParameters>]
 ```
 
 ### os
 ```
-Disconnect-DSClientSession -OperatingSystem <String[]> [<CommonParameters>]
+Connect-DSClientSession -OperatingSystem <String[]> [<CommonParameters>]
 ```
 
 ### sessionObj
 ```
-Disconnect-DSClientSession [-Session] <DSClientSession[]> [<CommonParameters>]
+Connect-DSClientSession [-Session] <DSClientSession[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Disconnect and Logout from a DS-Client Session
+Connects a previously disconnected DS-Client Session
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Disconnect-DSClientSession -Session $Session
+PS C:\> Connect-DSClientSession -Id 1
 ```
 
-Logout of the DS-Client specified in $Session
+Connects the DS-Client Session with Id of 1
 
 ### Example 2
 ```powershell
-PS C:\> Disconnect-DSClientSession -Id 2
+PS C:\> Connect-DSClientSession -Session $session
 ```
 
-Logout of the DS-Client specified by the Session Id
+Connects the DS-Client Session specified in the variable $session
 
 ## PARAMETERS
-
-### -Session
-Specify the Session to Disconnect
-
-```yaml
-Type: DSClientSession[]
-Parameter Sets: sessionObj
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByPropertyName, ByValue)
-Accept wildcard characters: False
-```
-
-### -Id
-Specify the Id of the Session to Disconnect
-
-```yaml
-Type: Int32[]
-Parameter Sets: id
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName, ByValue)
-Accept wildcard characters: False
-```
 
 ### -HostName
 Specify DS-Client Sessions by HostName
@@ -105,6 +75,21 @@ Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: True
+```
+
+### -Id
+Specify DS-Client Session by Id
+
+```yaml
+Type: Int32[]
+Parameter Sets: id
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
@@ -120,7 +105,7 @@ Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
+Accept wildcard characters: True
 ```
 
 ### -OperatingSystem
@@ -130,11 +115,27 @@ Specify DS-Client Sessions by Operating System
 Type: String[]
 Parameter Sets: os
 Aliases:
+Accepted values: Linux, Mac, Windows
 
 Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Session
+Specify DS-Client Session by DSClientSession Object
+
+```yaml
+Type: DSClientSession[]
+Parameter Sets: sessionObj
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
@@ -145,6 +146,7 @@ Specify DS-Client Sessions by Connection State
 Type: String
 Parameter Sets: state
 Aliases:
+Accepted values: Connected, Disconnected
 
 Required: True
 Position: Named
@@ -158,12 +160,17 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### PSAsigraDSClient.DSClientCommon+DSClientSession
+### System.Int32[]
+
+### System.String[]
+
+### System.String
+
+### PSAsigraDSClient.DSClientSession[]
 
 ## OUTPUTS
 
-### PSAsigraDSClient.DSClientCommon+DSClientSession
-
+### System.Object
 ## NOTES
 
 ## RELATED LINKS

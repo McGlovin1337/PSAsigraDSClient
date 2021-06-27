@@ -36,8 +36,7 @@ namespace PSAsigraDSClient
 
         protected override void ProcessDSClientSession(IEnumerable<DSClientSession> sessions)
         {
-            if (sessions != null)
-                _sessions = sessions.ToList();
+            _sessions = sessions.ToList();
 
             int id = 1;
             if (_sessions.Count() > 0)

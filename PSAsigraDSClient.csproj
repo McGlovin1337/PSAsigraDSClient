@@ -89,6 +89,7 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientVMwareVADPBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\CompareDSClientEncryptionKeys.cs" />
+    <Compile Include="PSAsigraDSClient\ConnectDSClientSession.cs" />
     <Compile Include="PSAsigraDSClient\DisableDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\DisableDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\DisconnectDSClientSession.cs" />
@@ -244,6 +245,7 @@
     <None Include="docs\Add-DSClientWeeklySchedule.md" />
     <None Include="docs\Add-DSClientWinFsBackupSetItem.md" />
     <None Include="docs\Compare-DSClientEncryptionKeys.md" />
+    <None Include="docs\Connect-DSClientSession.md" />
     <None Include="docs\Disable-DSClientBackupSet.md" />
     <None Include="docs\Disable-DSClientSchedule.md" />
     <None Include="docs\Disconnect-DSClientSession.md" />

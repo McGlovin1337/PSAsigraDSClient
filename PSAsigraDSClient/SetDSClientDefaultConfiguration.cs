@@ -241,7 +241,7 @@ namespace PSAsigraDSClient
             }
 
             // If this is a Windows DS-Client, extend and set additional properties
-            if (DSClientOSType.OsType == "Windows")
+            if (DSClientSessionInfo.OperatingSystem == "Windows")
             {
                 defaultConfigurationWindows = DefaultConfigurationWindowsClient.from(defaultConfiguration);
 

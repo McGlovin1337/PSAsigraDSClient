@@ -60,7 +60,7 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             // Check DS-Client is Windows
-            if (DSClientOSType.OsType != "Windows")
+            if (DSClientSessionInfo.OperatingSystem != "Windows")
                 throw new Exception("MS SQL Server Backup Sets can only be created on a Windows DS-Client");
 
             // Validate the Common Base Parameters

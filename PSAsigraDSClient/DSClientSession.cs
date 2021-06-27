@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Management.Automation;
-using System.Threading;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -11,6 +10,7 @@ namespace PSAsigraDSClient
         private readonly PSCredential _credential;
         private readonly string _url;
         private readonly string _apiVersion;
+        private readonly bool _logoutOnExit;
         private ClientConnection _clientConnection;
 
         public int Id { get; private set; }
@@ -22,13 +22,14 @@ namespace PSAsigraDSClient
         public string Transport { get; private set; }
         public string OperatingSystem { get; private set; }
 
-        public DSClientSession(int id, string computer, UInt16 port, bool nossl, string apiVersion, PSCredential credential, string name = null)
+        public DSClientSession(int id, string computer, UInt16 port, bool nossl, string apiVersion, PSCredential credential, string name = null, bool logoutExit = false)
         {
             string prefix = (nossl) ? "http" : "https";
 
             _url = $@"{prefix}://{computer}:{port}/api";
             _apiVersion = apiVersion;
             _credential = credential;
+            _logoutOnExit = logoutExit;
             _clientConnection = ApiFactory.CreateConnection(_url, _apiVersion, credential.UserName, credential.GetNetworkCredential().Password, 0);
 
             Id = id;
@@ -67,6 +68,14 @@ namespace PSAsigraDSClient
                 }
                 UpdateState();
             }
+
+            if (State == ConnectionState.Disconnected)
+                _clientConnection.Dispose();
+        }
+
+        internal bool GetLogoutOnExit()
+        {
+            return _logoutOnExit;
         }
 
         internal void UpdateState()

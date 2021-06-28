@@ -121,6 +121,7 @@
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetRestore.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetValidation.cs" />
+    <Compile Include="PSAsigraDSClient\InvokeDSClientCommand.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientInitialBackupPath.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientMSSqlServerBackupSet.cs" />
@@ -299,6 +300,7 @@
     <None Include="docs\Initialize-DSClientBackupSetDelete.md" />
     <None Include="docs\Initialize-DSClientBackupSetRestore.md" />
     <None Include="docs\Initialize-DSClientBackupSetValidation.md" />
+    <None Include="docs\Invoke-DSClientCommand.md" />
     <None Include="docs\New-DSClientArchiveFilterRule.md" />
     <None Include="docs\New-DSClientInitialBackupPath.md" />
     <None Include="docs\New-DSClientMSSqlServerBackupSet.md" />

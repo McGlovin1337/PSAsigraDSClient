@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Management.Automation;
-using AsigraDSClientApi;
-using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -33,7 +31,6 @@ namespace PSAsigraDSClient
         protected override void ProcessCleanSession()
         {
             DSClientSession currentSessionContext;
-            //ClientConnection DSClientSession;
 
             if (Session != null)
                 currentSessionContext = Session;
@@ -44,7 +41,6 @@ namespace PSAsigraDSClient
 
                 WriteVerbose("Performing Action: Establish DS-Client Session");
                 currentSessionContext = new DSClientSession(-1, HostName, Port, NoSSL, APIVersion, Credential, logoutExit: true);
-                //DSClientSession = ConnectSession(Host, Port, NoSSL, APIVersion, user, pwd);
             }
 
             // Confirm the Connection is Alive
@@ -59,29 +55,7 @@ namespace PSAsigraDSClient
 
             SessionState.PSVariable.Set("DSClientSession", currentSessionContext);
 
-            // Get and store the DSClient Operating System Type into SessionState
-            //ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
-            //EOSFlavour DSClientOSFlavour = DSClientConfigMgr.getClientOSType();
-            //DSClientOSType DSClientOSType = new DSClientOSType(DSClientOSFlavour);
-            //SessionState.PSVariable.Set("DSClientOSType", DSClientOSType);
-
-            //DSClientConfigMgr.Dispose();
-
             WriteObject("DS-Client Session Established.");
-        }
-
-        private ClientConnection ConnectSession(string Host, UInt16 Port, bool NoSSL, string APIVersion, string User, string Pass)
-        {
-            string URL;
-
-            if (NoSSL == false)
-                URL = @"https://" + Host + ":" + Port + @"/api";
-            else
-                URL = @"http://" + Host + ":" + Port + @"/api";
-
-            ClientConnection session = ApiFactory.CreateConnection(URL, APIVersion, User, Pass, 0);
-
-            return session;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace PSAsigraDSClient
         public string Transport { get; private set; }
         public string OperatingSystem { get; private set; }
 
-        public DSClientSession(int id, string computer, UInt16 port, bool nossl, string apiVersion, PSCredential credential, string name = null, bool logoutExit = false)
+        internal DSClientSession(int id, string computer, UInt16 port, bool nossl, string apiVersion, PSCredential credential, string name = null, bool logoutExit = false)
         {
             string prefix = (nossl) ? "http" : "https";
 
@@ -93,7 +93,7 @@ namespace PSAsigraDSClient
             State = ConnectionState.Connected;
         }
 
-        public ClientConnection GetClientConnection()
+        internal ClientConnection GetClientConnection()
         {
             return _clientConnection;
         }

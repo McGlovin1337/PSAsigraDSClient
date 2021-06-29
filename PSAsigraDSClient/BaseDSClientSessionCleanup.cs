@@ -91,7 +91,6 @@ namespace PSAsigraDSClient
 
                 WriteVerbose("Performing Action: Remove on DS-Client Session");
                 SessionState.PSVariable.Remove("DSClientSession");
-                SessionState.PSVariable.Remove("DSClientOSType");
                 WriteObject("DS-Client Session removed.");
             }
             else

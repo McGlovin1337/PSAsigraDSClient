@@ -18,7 +18,7 @@ namespace PSAsigraDSClient
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
             WriteDebug("Parsing Backup Set details.");
-            DSClientBackupSet dSClientBackupSet = new DSClientBackupSet(backupSet, DSClientOSType);
+            DSClientBackupSet dSClientBackupSet = new DSClientBackupSet(backupSet, DSClientSessionInfo.OperatingSystem);
 
             WriteObject(dSClientBackupSet);
         }

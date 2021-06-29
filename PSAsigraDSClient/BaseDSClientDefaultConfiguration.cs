@@ -16,7 +16,7 @@ namespace PSAsigraDSClient
 
             DSClientDefaultConfiguration dSClientDefaultConfiguration;
 
-            if (DSClientOSType.OsType == "Windows")
+            if (DSClientSessionInfo.OperatingSystem == "Windows")
             {
                 defaultConfigurationWindows = DefaultConfigurationWindowsClient.from(defaultConfiguration);
                 dSClientDefaultConfiguration = new DSClientDefaultConfiguration(defaultConfigurationWindows);

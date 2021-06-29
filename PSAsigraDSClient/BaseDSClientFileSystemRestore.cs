@@ -77,7 +77,7 @@ namespace PSAsigraDSClient
             // Set the Destination Computer Credentials
             BackupSetCredentials backupSetCredentials = dataSourceBrowser.neededCredentials(computer);
 
-            if (DSClientOSType.OsType == "Windows")
+            if (DSClientSessionInfo.OperatingSystem == "Windows")
             {
                 Win32FS_Generic_BackupSetCredentials win32FSBSCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
 
@@ -95,7 +95,7 @@ namespace PSAsigraDSClient
                 dataSourceBrowser.setCurrentCredentials(win32FSBSCredentials);
                 win32FSBSCredentials.Dispose();
             }
-            else if (DSClientOSType.OsType == "Linux")
+            else if (DSClientSessionInfo.OperatingSystem == "Linux")
             {
                 UnixFS_Generic_BackupSetCredentials unixFSBackupSetCredentials = UnixFS_Generic_BackupSetCredentials.from(backupSetCredentials);
 

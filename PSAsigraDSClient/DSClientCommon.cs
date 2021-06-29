@@ -28,16 +28,6 @@ namespace PSAsigraDSClient
             return result;
         }
 
-        public class DSClientOSType
-        {
-            public string OsType { get; private set; }
-
-            public DSClientOSType(EOSFlavour osType)
-            {
-                OsType = EnumToString(osType);
-            }
-        }
-
         public class TimeInDay
         {
             public int Hour { get; set; }

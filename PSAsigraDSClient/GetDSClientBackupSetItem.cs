@@ -27,7 +27,7 @@ namespace PSAsigraDSClient
             List<DSClientBackupSetItem> dSClientBackupSetItems = new List<DSClientBackupSetItem>();
 
             foreach (BackupSetItem item in backupSetItems)
-                dSClientBackupSetItems.Add(new DSClientBackupSetItem(item, backupDataType, DSClientOSType));
+                dSClientBackupSetItems.Add(new DSClientBackupSetItem(item, backupDataType, DSClientSessionInfo.OperatingSystem));
 
             dSClientBackupSetItems.ForEach(WriteObject);
 

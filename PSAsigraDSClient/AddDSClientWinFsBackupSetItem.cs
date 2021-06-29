@@ -49,7 +49,7 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             // Check DS-Client is Windows
-            if (DSClientOSType.OsType != "Windows")
+            if (DSClientSessionInfo.OperatingSystem != "Windows")
                 throw new Exception("Windows FileSystem Backup Sets can only be created on a Windows DS-Client");
 
             // Get the requested Backup Set from DS-Client
@@ -65,7 +65,7 @@ namespace PSAsigraDSClient
 
             // Process any Exclusion Items
             if (ExcludeItem != null)
-                backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
+                backupSetItems.AddRange(ProcessExclusionItems(DSClientSessionInfo.OperatingSystem, dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
 
             if (RegexExcludePattern != null)
                 backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexMatchDirectory, RegexCaseInsensitive, RegexExcludePattern));

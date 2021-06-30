@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Management.Automation;
 
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientRestoreSession")]
 
-    public class SetDSClientRestoreSession : DSClientCmdlet
+    sealed public class SetDSClientRestoreSession : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Restore Session Id")]
         public int RestoreId { get; set; }

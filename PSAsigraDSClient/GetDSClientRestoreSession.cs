@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientRestoreSession")]
     [OutputType(typeof(DSClientRestoreSession), typeof(void))]
 
-    public class GetDSClientRestoreSession : DSClientCmdlet
+    sealed public class GetDSClientRestoreSession : DSClientCmdlet
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Select a specific Restore Session by Id")]
         public int RestoreId { get; set; }

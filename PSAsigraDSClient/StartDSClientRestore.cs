@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Start, "DSClientRestore")]
 
-    public class StartDSClientRestore : DSClientCmdlet
+    sealed public class StartDSClientRestore : DSClientCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Restore Session Id")]
         public int RestoreId { get; set; }

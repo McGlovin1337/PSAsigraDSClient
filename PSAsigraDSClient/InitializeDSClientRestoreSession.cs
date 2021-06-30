@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsData.Initialize, "DSClientRestoreSession")]
 
-    public class InitializeDSClientRestoreSession : DSClientCmdlet
+    sealed public class InitializeDSClientRestoreSession : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to Initialize a Restore Session for")]
         public int BackupSetId { get; set; }

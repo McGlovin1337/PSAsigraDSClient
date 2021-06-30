@@ -35,7 +35,7 @@ namespace PSAsigraDSClient
         public int MaxPendingAsyncIO { get; private set; }
         public FileSystemRestoreOptions FileSystemOptions { get; private set; }
 
-        public DSClientRestoreSession(int restoreId,
+        internal DSClientRestoreSession(int restoreId,
             int backupSetId,
             string computer,
             Type setType,
@@ -77,14 +77,14 @@ namespace PSAsigraDSClient
             UpdateReadyStatus();
         }
 
-        public void AddBrowsedItems(IEnumerable<DSClientBackupSetItemInfo> items)
+        internal void AddBrowsedItems(IEnumerable<DSClientBackupSetItemInfo> items)
         {
             // This method helps keep track of all the items discovered when calling Get-DSClientStoredItem Cmdlet
             // Since the BackedUpDataView class doesn't allow selecting items by id, this allows to select items by id, and view the details of each selected item when added to SelectedItems Property
             _browsedItems.AddRange(items.Except(_browsedItems));
         }
 
-        public void AddSelectedItem(long itemId)
+        internal void AddSelectedItem(long itemId)
         {
             if (!_selectedItemIds.Contains(itemId))
                 _selectedItemIds.Add(itemId);
@@ -92,14 +92,14 @@ namespace PSAsigraDSClient
             SetSelectedItems();
         }
 
-        public void AddSelectedItems(long[] itemIds)
+        internal void AddSelectedItems(long[] itemIds)
         {
             _selectedItemIds.AddRange(itemIds.Except(_selectedItemIds));
 
             SetSelectedItems();
         }
 
-        public void Dispose()
+        internal void Dispose()
         {
             if (_backupSetRestoreView != null)
                 _backupSetRestoreView.Dispose();
@@ -131,19 +131,19 @@ namespace PSAsigraDSClient
             return _restoreActivityInitiator;
         }
 
-        public ref BackupSetRestoreView GetRestoreView()
+        internal ref BackupSetRestoreView GetRestoreView()
         {
             return ref _backupSetRestoreView;
         }
 
-        public void RemoveSelectedItem(long itemId)
+        internal void RemoveSelectedItem(long itemId)
         {
             _selectedItemIds.Remove(itemId);
 
             SetSelectedItems();
         }
 
-        public void RemoveSelectedItems(long[] itemIds)
+        internal void RemoveSelectedItems(long[] itemIds)
         {
             foreach (long item in itemIds)
                 _selectedItemIds.Remove(item);
@@ -151,7 +151,7 @@ namespace PSAsigraDSClient
             SetSelectedItems();
         }
 
-        public virtual void SetSelectedItems()
+        internal virtual void SetSelectedItems()
         {
             // Every time the items are changed a new RestoreActivityInitiator is required
             if (_restoreActivityInitiator != null)
@@ -187,7 +187,7 @@ namespace PSAsigraDSClient
                 _restoreActivityInitiator = null;
         }
 
-        public void SetComputer(string computer)
+        internal void SetComputer(string computer)
         {
             if (_dataSourceBrowser != null)
             {
@@ -198,7 +198,7 @@ namespace PSAsigraDSClient
             UpdateReadyStatus();
         }
 
-        public void SetCredentials(PSCredential credential)
+        internal void SetCredentials(PSCredential credential)
         {
             if (_setType == typeof(UnixFS_Generic_BackupSet))
             {
@@ -217,7 +217,7 @@ namespace PSAsigraDSClient
             UpdateReadyStatus();
         }
 
-        public void SetSudoCredentials(PSCredential credential)
+        internal void SetSudoCredentials(PSCredential credential)
         {
             if (_setType == typeof(UnixFS_Generic_BackupSet))
             {
@@ -228,7 +228,7 @@ namespace PSAsigraDSClient
                 throw new Exception("This Restore Session does not support Sudo Credentials");
         }
 
-        public void SetDSSystemReadThreads(int threads)
+        internal void SetDSSystemReadThreads(int threads)
         {
             if (_restoreActivityInitiator != null)
                 _restoreActivityInitiator.setDSSystemReadThreads(threads);
@@ -236,7 +236,7 @@ namespace PSAsigraDSClient
             DSSystemReadThreads = threads;
         }
 
-        public void SetLocalStorageMethod(string method)
+        internal void SetLocalStorageMethod(string method)
         {
             if (_restoreActivityInitiator != null)
                 _restoreActivityInitiator.setLocalStorageHandling(StringToEnum<ERestoreLocalStorageHandling>(method));
@@ -245,7 +245,7 @@ namespace PSAsigraDSClient
             UpdateReadyStatus();
         }
 
-        public void SetMaxPendingAsyncIO(int io)
+        internal void SetMaxPendingAsyncIO(int io)
         {
             if (_restoreActivityInitiator != null)
                 _restoreActivityInitiator.setMaxPendingAsyncIO(io);
@@ -253,7 +253,7 @@ namespace PSAsigraDSClient
             MaxPendingAsyncIO = io;
         }
 
-        public void SetRestoreClassification(string classification)
+        internal void SetRestoreClassification(string classification)
         {
             if (_restoreActivityInitiator != null)
                 _restoreActivityInitiator.setRestoreClassification(StringToEnum<ERestoreClassification>(classification));
@@ -262,7 +262,7 @@ namespace PSAsigraDSClient
             UpdateReadyStatus();
         }
 
-        public void SetRestoreReason(string reason)
+        internal void SetRestoreReason(string reason)
         {
             if (_restoreActivityInitiator != null)
                 _restoreActivityInitiator.setRestoreReason(StringToEnum<ERestoreReason>(reason));
@@ -271,7 +271,7 @@ namespace PSAsigraDSClient
             UpdateReadyStatus();
         }
 
-        public void SetUseDetailedLog(bool v)
+        internal void SetUseDetailedLog(bool v)
         {
             if (_restoreActivityInitiator != null)
                 _restoreActivityInitiator.setDetailLogReporting(v);
@@ -311,7 +311,7 @@ namespace PSAsigraDSClient
                 Ready = new ReadyStatus(true, "Ready to Start Restore", null);
         }
 
-        public GenericActivity StartRestore()
+        internal GenericActivity StartRestore()
         {
             if (Ready.Ready)
             {
@@ -333,7 +333,7 @@ namespace PSAsigraDSClient
             public string Description { get; private set; }
             public string[] Errors { get; private set; }
 
-            public ReadyStatus(bool ready, string description, string[] errs)
+            internal ReadyStatus(bool ready, string description, string[] errs)
             {
                 Ready = ready;
                 Description = description;
@@ -354,34 +354,34 @@ namespace PSAsigraDSClient
             public string RestorePermissions { get; private set; }
             public WinFSRestoreOptions WinFSOptions { get; private set; }
 
-            public FileSystemRestoreOptions()
+            internal FileSystemRestoreOptions()
             {
                 FileOverwriteOption = "RestoreAll";
                 RestoreMethod = "Fast";
                 RestorePermissions = "Yes";
             }
 
-            public FileSystemRestoreOptions(bool applicable) : this()
+            internal FileSystemRestoreOptions(bool applicable) : this()
             {
                 Applicable = applicable;
             }
 
-            public FileSystemRestoreOptions(bool applicable, bool winFSapplicable) : this(applicable)
+            internal FileSystemRestoreOptions(bool applicable, bool winFSapplicable) : this(applicable)
             {
                 WinFSOptions = new WinFSRestoreOptions(winFSapplicable);
             }
 
-            public void SetOverwriteOption(string overwriteOption)
+            internal void SetOverwriteOption(string overwriteOption)
             {
                 FileOverwriteOption = overwriteOption;
             }
 
-            public void SetRestoreMethod(string restoreMethod)
+            internal void SetRestoreMethod(string restoreMethod)
             {
                 RestoreMethod = restoreMethod;
             }
 
-            public void SetRestorePermissions(string restorePermissions)
+            internal void SetRestorePermissions(string restorePermissions)
             {
                 RestorePermissions = restorePermissions;
             }
@@ -399,29 +399,29 @@ namespace PSAsigraDSClient
             public bool OverwriteJunctionPoint { get; private set; }
             public bool SkipOfflineFiles { get; private set; }
 
-            public WinFSRestoreOptions()
+            internal WinFSRestoreOptions()
             {
                 AuthoritativeRestore = false;
                 OverwriteJunctionPoint = false;
                 SkipOfflineFiles = true;
             }
 
-            public WinFSRestoreOptions(bool applicable) : this()
+            internal WinFSRestoreOptions(bool applicable) : this()
             {
                 Applicable = applicable;
             }
 
-            public void SetAuthoritative(bool v)
+            internal void SetAuthoritative(bool v)
             {
                 AuthoritativeRestore = v;
             }
 
-            public void SetOverwriteJunctionPoint(bool v)
+            internal void SetOverwriteJunctionPoint(bool v)
             {
                 OverwriteJunctionPoint = v;
             }
 
-            public void SetSkipOfflineFile(bool v)
+            internal void SetSkipOfflineFile(bool v)
             {
                 SkipOfflineFiles = v;
             }
@@ -442,7 +442,7 @@ namespace PSAsigraDSClient
             public string TruncatablePath { get; private set; }
             public int TruncateAmount { get; private set; }
 
-            public RestoreDestination(int id, selected_shares selectedShares)
+            internal RestoreDestination(int id, selected_shares selectedShares)
             {
                 DestinationId = id;
                 Source = selectedShares.share_name;
@@ -458,7 +458,7 @@ namespace PSAsigraDSClient
                 };
             }
 
-            public RestoreDestination(int id, selected_shares selectedShares, string destination)
+            internal RestoreDestination(int id, selected_shares selectedShares, string destination)
             {
                 DestinationId = id;
                 Source = selectedShares.share_name;
@@ -474,18 +474,18 @@ namespace PSAsigraDSClient
                 };
             }
 
-            public share_mapping GetShareMapping()
+            internal share_mapping GetShareMapping()
             {
                 return _shareMapping;
             }
 
-            public void SetDestination(string destination)
+            internal void SetDestination(string destination)
             {
                 _shareMapping.destination_path = destination;
                 Destination = _shareMapping.destination_path;
             }
 
-            public void SetTruncateLevel(int truncate)
+            internal void SetTruncateLevel(int truncate)
             {
                 int maxTruncate = TruncatablePath.Split('\\').Length;
                 _shareMapping.truncate_level = (truncate > maxTruncate) ? maxTruncate : truncate;
@@ -503,7 +503,7 @@ namespace PSAsigraDSClient
     {
         private FS_RestoreActivityInitiator _fsRestoreActivityInitiator;
 
-        public DSClientFSRestoreSession(int restoreId,
+        internal DSClientFSRestoreSession(int restoreId,
             int backupSetId,
             string computer,
             Type setType,
@@ -514,7 +514,7 @@ namespace PSAsigraDSClient
             
         }
 
-        public override void SetSelectedItems()
+        internal override void SetSelectedItems()
         {
             if (_fsRestoreActivityInitiator != null)
                 _fsRestoreActivityInitiator.Dispose();

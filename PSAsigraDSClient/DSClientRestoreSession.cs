@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
+using System.Reflection;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -18,6 +19,7 @@ namespace PSAsigraDSClient
         private readonly DataSourceBrowser _dataSourceBrowser;             
         private readonly List<DSClientBackupSetItemInfo> _browsedItems;
         private readonly Type _setType;
+        private readonly Type _restoreOptionsType;
 
         public int RestoreId { get; private set; }
         public int BackupSetId { get; private set; }        
@@ -29,11 +31,7 @@ namespace PSAsigraDSClient
         public RestoreDestination[] DestinationPaths { get; private set; }
         public string RestoreReason { get; private set; }
         public string RestoreClassification { get; private set; }
-        public bool UseDetailedLog { get; private set; }
-        public string LocalStorageMethod { get; private set; }
-        public int DSSystemReadThreads { get; private set; }
-        public int MaxPendingAsyncIO { get; private set; }
-        public FileSystemRestoreOptions FileSystemOptions { get; private set; }
+        public DSClientRestoreOption[] RestoreOptions { get; private set; }
 
         internal DSClientRestoreSession(int restoreId,
             int backupSetId,
@@ -58,18 +56,24 @@ namespace PSAsigraDSClient
             DataType = EnumToString(dataType);
             Computer = computer;
             RestoreClassification = "Production";
-            UseDetailedLog = false;
-            LocalStorageMethod = "ContinueIfDisconnect";
-            DSSystemReadThreads = 0;
-            MaxPendingAsyncIO = 0;
             
             switch (dataType)
             {
                 case EBackupDataType.EBackupDataType__FileSystem:
-                    FileSystemOptions = (_setType == typeof(Win32FS_BackupSet)) ? new FileSystemRestoreOptions(true, true) : new FileSystemRestoreOptions(true, false);
+                    if (_setType == typeof(Win32FS_BackupSet))
+                    {
+                        _restoreOptionsType = typeof(RestoreOptions_Win32FileSystem);
+                        RestoreOptions = new RestoreOptions_Win32FileSystem().GetRestoreOptions().ToArray();
+                    }
+                    else
+                    {
+                        _restoreOptionsType = typeof(RestoreOptions_FileSystem);
+                        RestoreOptions = new RestoreOptions_FileSystem().GetRestoreOptions().ToArray();
+                    }
+                    //FileSystemOptions = (_setType == typeof(Win32FS_BackupSet)) ? new FileSystemRestoreOptions(true, true) : new FileSystemRestoreOptions(true, false);
                     break;
                 default:
-                    FileSystemOptions = new FileSystemRestoreOptions(false);
+                    //FileSystemOptions = new FileSystemRestoreOptions(false);
                     break;
             }
 
@@ -90,6 +94,7 @@ namespace PSAsigraDSClient
                 _selectedItemIds.Add(itemId);
 
             SetSelectedItems();
+            UpdateReadyStatus();
         }
 
         internal void AddSelectedItems(long[] itemIds)
@@ -97,6 +102,99 @@ namespace PSAsigraDSClient
             _selectedItemIds.AddRange(itemIds.Except(_selectedItemIds));
 
             SetSelectedItems();
+            UpdateReadyStatus();
+        }
+
+        private void ApplyRestoreOptions()
+        {
+            bool log = (bool?)RestoreOptions.SingleOrDefault(v => v.Option == "UseDetailedLog").Value ?? false;
+            _restoreActivityInitiator.setDetailLogReporting(log);
+
+            int readThreads = (int?)RestoreOptions.SingleOrDefault(v => v.Option == "DSSystemReadThreads").Value ?? 0;
+            _restoreActivityInitiator.setDSSystemReadThreads(readThreads);
+
+            int asyncIO = (int?)RestoreOptions.SingleOrDefault(v => v.Option == "MaxPendingAsyncIO").Value ?? 0;
+            _restoreActivityInitiator.setMaxPendingAsyncIO(asyncIO);
+
+            _restoreActivityInitiator.setRestoreClassification(StringToEnum<ERestoreClassification>(RestoreClassification));
+
+            if (RestoreReason != null)
+                _restoreActivityInitiator.setRestoreReason(StringToEnum<ERestoreReason>(RestoreReason));
+
+            string localStorageMethod = (string)RestoreOptions.SingleOrDefault(v => v.Option == "LocalStorageMethod").Value;
+            if (localStorageMethod != null)
+                _restoreActivityInitiator.setLocalStorageHandling(StringToEnum<ERestoreLocalStorageHandling>(localStorageMethod));
+
+            if (_restoreOptionsType == typeof(RestoreOptions_FileSystem) || _restoreOptionsType == typeof(RestoreOptions_Win32FileSystem))
+            {
+                FS_RestoreActivityInitiator fs = FS_RestoreActivityInitiator.from(_restoreActivityInitiator);
+                try
+                {
+                    string overwrite = (string)RestoreOptions.Single(v => v.Option == "FileOverwriteOption").Value;
+                    fs.setFileOverwriteOption(StringToEnum<EFileOverwriteOption>(overwrite));
+                }
+                catch (InvalidOperationException)
+                {
+                    throw new Exception("Missing FileOverwriteOption Option");
+                }
+
+                try
+                {
+                    string restoreMethod = (string)RestoreOptions.Single(v => v.Option == "RestoreMethod").Value;
+                    fs.setRestoreMethod(StringToEnum<ERestoreMethod>(restoreMethod));
+                }
+                catch (InvalidOperationException)
+                {
+                    throw new Exception("Missing RestoreMethod Option");
+                }
+
+                try
+                {
+                    string restorePermissions = (string)RestoreOptions.Single(v => v.Option == "RestorePermissions").Value;
+                    fs.setRestorePermission(StringToEnum<ERestorePermission>(restorePermissions));
+                }
+                catch (InvalidOperationException)
+                {
+                    throw new Exception("Missing RestorePermissions Option");
+                }
+
+                if (_restoreOptionsType == typeof(RestoreOptions_Win32FileSystem))
+                {
+                    Win32FS_RestoreActivityInitiator winfs = Win32FS_RestoreActivityInitiator.from(fs);
+                    if (winfs.hasActiveDirectory())
+                    {
+                        try
+                        {
+                            bool authoritative = (bool)RestoreOptions.Single(v => v.Option == "AuthoritativeRestore").Value;
+                            winfs.setAuthoritativeRestore(authoritative);
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            throw new Exception("Missing AuthoritativeRestore Option");
+                        }
+                    }
+
+                    try
+                    {
+                        bool junctOverwrite = (bool)RestoreOptions.Single(v => v.Option == "OverwriteJunctionPoint").Value;
+                        winfs.setOverwriteJunctionPoint(junctOverwrite);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new Exception("Missing OverwriteJunctionPoint Option");
+                    }
+
+                    try
+                    {
+                        bool skipoffline = (bool)RestoreOptions.Single(v => v.Option == "SkipOfflineFiles").Value;
+                        winfs.setSkipOfflineFiles(skipoffline);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new Exception("Missing SkipOfflineFiles Option");
+                    }
+                }
+            }
         }
 
         internal void Dispose()
@@ -131,6 +229,11 @@ namespace PSAsigraDSClient
             return _restoreActivityInitiator;
         }
 
+        internal Type GetRestoreOptionsType()
+        {
+            return _restoreOptionsType;
+        }
+
         internal ref BackupSetRestoreView GetRestoreView()
         {
             return ref _backupSetRestoreView;
@@ -141,6 +244,7 @@ namespace PSAsigraDSClient
             _selectedItemIds.Remove(itemId);
 
             SetSelectedItems();
+            UpdateReadyStatus();
         }
 
         internal void RemoveSelectedItems(long[] itemIds)
@@ -149,42 +253,7 @@ namespace PSAsigraDSClient
                 _selectedItemIds.Remove(item);
 
             SetSelectedItems();
-        }
-
-        internal virtual void SetSelectedItems()
-        {
-            // Every time the items are changed a new RestoreActivityInitiator is required
-            if (_restoreActivityInitiator != null)
-                _restoreActivityInitiator.Dispose();
-
-            long[] items = _selectedItemIds.ToArray();
-
-            if (items.Length > 0)
-            {
-                _restoreActivityInitiator = _backupSetRestoreView.prepareRestore(items);
-
-                _restoreActivityInitiator.setDetailLogReporting(UseDetailedLog);
-                _restoreActivityInitiator.setDSSystemReadThreads(DSSystemReadThreads);
-                _restoreActivityInitiator.setMaxPendingAsyncIO(MaxPendingAsyncIO);
-                _restoreActivityInitiator.setRestoreClassification(StringToEnum<ERestoreClassification>(RestoreClassification));
-
-                if (RestoreReason != null)
-                    _restoreActivityInitiator.setRestoreReason(StringToEnum<ERestoreReason>(RestoreReason));
-
-                if (LocalStorageMethod != null)
-                    _restoreActivityInitiator.setLocalStorageHandling(StringToEnum<ERestoreLocalStorageHandling>(LocalStorageMethod));
-
-                SelectedItems = new DSClientBackupSetItemInfo[items.Length];
-                for (int i = 0; i < items.Length; i++)
-                    SelectedItems[i] = _browsedItems.Single(item => item.ItemId == items[i]);
-
-                selected_shares[] selectedShares = _restoreActivityInitiator.selected_shares();
-                DestinationPaths = new RestoreDestination[selectedShares.Length];
-                for (int i = 0; i < selectedShares.Length; i++)
-                    DestinationPaths[i] = new RestoreDestination(i+1, selectedShares[i]);
-            }
-            else
-                _restoreActivityInitiator = null;
+            UpdateReadyStatus();
         }
 
         internal void SetComputer(string computer)
@@ -217,42 +286,6 @@ namespace PSAsigraDSClient
             UpdateReadyStatus();
         }
 
-        internal void SetSudoCredentials(PSCredential credential)
-        {
-            if (_setType == typeof(UnixFS_Generic_BackupSet))
-            {
-                UnixFS_SSH_BackupSetCredentials creds = UnixFS_SSH_BackupSetCredentials.from(_credentials);
-                creds.setSudoAs(credential.UserName, credential.GetNetworkCredential().Password);
-            }
-            else
-                throw new Exception("This Restore Session does not support Sudo Credentials");
-        }
-
-        internal void SetDSSystemReadThreads(int threads)
-        {
-            if (_restoreActivityInitiator != null)
-                _restoreActivityInitiator.setDSSystemReadThreads(threads);
-
-            DSSystemReadThreads = threads;
-        }
-
-        internal void SetLocalStorageMethod(string method)
-        {
-            if (_restoreActivityInitiator != null)
-                _restoreActivityInitiator.setLocalStorageHandling(StringToEnum<ERestoreLocalStorageHandling>(method));
-
-            LocalStorageMethod = method;
-            UpdateReadyStatus();
-        }
-
-        internal void SetMaxPendingAsyncIO(int io)
-        {
-            if (_restoreActivityInitiator != null)
-                _restoreActivityInitiator.setMaxPendingAsyncIO(io);
-
-            MaxPendingAsyncIO = io;
-        }
-
         internal void SetRestoreClassification(string classification)
         {
             if (_restoreActivityInitiator != null)
@@ -260,6 +293,26 @@ namespace PSAsigraDSClient
 
             RestoreClassification = classification;
             UpdateReadyStatus();
+        }
+
+        internal void SetRestoreOptions(object restoreOptions)
+        {
+            Type type = restoreOptions.GetType();
+
+            if (type == typeof(RestoreOptions_FileSystem))
+            {
+                RestoreOptions_FileSystem fsOptions = restoreOptions as RestoreOptions_FileSystem;
+                RestoreOptions = fsOptions.GetRestoreOptions();
+            }
+            else if (type == typeof(RestoreOptions_Win32FileSystem))
+            {
+                RestoreOptions_Win32FileSystem winfsOptions = restoreOptions as RestoreOptions_Win32FileSystem;
+                RestoreOptions = winfsOptions.GetRestoreOptions();
+            }
+            else
+            {
+                throw new Exception("Unsupported Option Type");
+            }
         }
 
         internal void SetRestoreReason(string reason)
@@ -271,13 +324,58 @@ namespace PSAsigraDSClient
             UpdateReadyStatus();
         }
 
-        internal void SetUseDetailedLog(bool v)
+        private void SetSelectedItems()
         {
+            // Every time the items are changed a new RestoreActivityInitiator is required
             if (_restoreActivityInitiator != null)
-                _restoreActivityInitiator.setDetailLogReporting(v);
+                _restoreActivityInitiator.Dispose();
 
-            UseDetailedLog = v;
-            UpdateReadyStatus();
+            long[] items = _selectedItemIds.ToArray();
+
+            if (items.Length > 0)
+            {
+                _restoreActivityInitiator = _backupSetRestoreView.prepareRestore(items);
+
+                ApplyRestoreOptions();
+
+                SelectedItems = new DSClientBackupSetItemInfo[items.Length];
+                for (int i = 0; i < items.Length; i++)
+                    SelectedItems[i] = _browsedItems.Single(item => item.ItemId == items[i]);
+
+                selected_shares[] selectedShares = _restoreActivityInitiator.selected_shares();
+                DestinationPaths = new RestoreDestination[selectedShares.Length];
+                for (int i = 0; i < selectedShares.Length; i++)
+                    DestinationPaths[i] = new RestoreDestination(i + 1, selectedShares[i]);
+            }
+            else
+                _restoreActivityInitiator = null;
+        }
+
+        internal void SetSudoCredentials(PSCredential credential)
+        {
+            if (_setType == typeof(UnixFS_Generic_BackupSet))
+            {
+                UnixFS_SSH_BackupSetCredentials creds = UnixFS_SSH_BackupSetCredentials.from(_credentials);
+                creds.setSudoAs(credential.UserName, credential.GetNetworkCredential().Password);
+            }
+            else
+                throw new Exception("This Restore Session does not support Sudo Credentials");
+        }
+
+        internal GenericActivity StartRestore()
+        {
+            if (Ready.Ready)
+            {
+                share_mapping[] shares = new share_mapping[DestinationPaths.Length];
+                for (int i = 0; i < DestinationPaths.Length; i++)
+                    shares[i] = DestinationPaths[i].GetShareMapping();
+
+                GenericActivity restoreActivity = _restoreActivityInitiator.startRestore(_dataSourceBrowser, Computer, shares);
+                Dispose();
+                return restoreActivity;
+            }
+
+            throw new Exception("Restore Session is not Ready to Start a Restore");
         }
 
         protected virtual void UpdateReadyStatus()
@@ -305,26 +403,19 @@ namespace PSAsigraDSClient
             if (DestinationPaths == null)
                 errors.Add("DestinationPaths Not Specified");
 
+            foreach (DSClientRestoreOption option in RestoreOptions)
+            {
+                if (option.GetClassType() != _restoreOptionsType)
+                {
+                    errors.Add("Invalid Restore Options");
+                    break;
+                }
+            }
+
             if (errors.Count > 0)
                 Ready = new ReadyStatus(false, "Unable to Start Restore", errors.ToArray());
             else
                 Ready = new ReadyStatus(true, "Ready to Start Restore", null);
-        }
-
-        internal GenericActivity StartRestore()
-        {
-            if (Ready.Ready)
-            {
-                share_mapping[] shares = new share_mapping[DestinationPaths.Length];
-                for (int i = 0; i < DestinationPaths.Length; i++)
-                    shares[i] = DestinationPaths[i].GetShareMapping();
-
-                GenericActivity restoreActivity = _restoreActivityInitiator.startRestore(_dataSourceBrowser, Computer, shares);
-                Dispose();
-                return restoreActivity;
-            }
-
-            throw new Exception("Restore Session is not Ready to Start a Restore");
         }
 
         public class ReadyStatus
@@ -343,92 +434,6 @@ namespace PSAsigraDSClient
             public override string ToString()
             {
                 return Ready.ToString();
-            }
-        }
-
-        public class FileSystemRestoreOptions
-        {
-            public bool Applicable { get; private set; }
-            public string FileOverwriteOption { get; private set; }
-            public string RestoreMethod { get; private set; }
-            public string RestorePermissions { get; private set; }
-            public WinFSRestoreOptions WinFSOptions { get; private set; }
-
-            internal FileSystemRestoreOptions()
-            {
-                FileOverwriteOption = "RestoreAll";
-                RestoreMethod = "Fast";
-                RestorePermissions = "Yes";
-            }
-
-            internal FileSystemRestoreOptions(bool applicable) : this()
-            {
-                Applicable = applicable;
-            }
-
-            internal FileSystemRestoreOptions(bool applicable, bool winFSapplicable) : this(applicable)
-            {
-                WinFSOptions = new WinFSRestoreOptions(winFSapplicable);
-            }
-
-            internal void SetOverwriteOption(string overwriteOption)
-            {
-                FileOverwriteOption = overwriteOption;
-            }
-
-            internal void SetRestoreMethod(string restoreMethod)
-            {
-                RestoreMethod = restoreMethod;
-            }
-
-            internal void SetRestorePermissions(string restorePermissions)
-            {
-                RestorePermissions = restorePermissions;
-            }
-
-            public override string ToString()
-            {
-                return Applicable.ToString();
-            }
-        }
-
-        public class WinFSRestoreOptions
-        {
-            public bool Applicable { get; private set; }
-            public bool AuthoritativeRestore { get; private set; }
-            public bool OverwriteJunctionPoint { get; private set; }
-            public bool SkipOfflineFiles { get; private set; }
-
-            internal WinFSRestoreOptions()
-            {
-                AuthoritativeRestore = false;
-                OverwriteJunctionPoint = false;
-                SkipOfflineFiles = true;
-            }
-
-            internal WinFSRestoreOptions(bool applicable) : this()
-            {
-                Applicable = applicable;
-            }
-
-            internal void SetAuthoritative(bool v)
-            {
-                AuthoritativeRestore = v;
-            }
-
-            internal void SetOverwriteJunctionPoint(bool v)
-            {
-                OverwriteJunctionPoint = v;
-            }
-
-            internal void SetSkipOfflineFile(bool v)
-            {
-                SkipOfflineFiles = v;
-            }
-
-            public override string ToString()
-            {
-                return Applicable.ToString();
             }
         }
 
@@ -499,35 +504,167 @@ namespace PSAsigraDSClient
         }
     }
 
-    public class DSClientFSRestoreSession : DSClientRestoreSession
+    public class DSClientRestoreOption
     {
-        private FS_RestoreActivityInitiator _fsRestoreActivityInitiator;
+        private readonly Type _classType;
+        public string Option { get; private set; }
+        public object Value { get; private set; }
 
-        internal DSClientFSRestoreSession(int restoreId,
-            int backupSetId,
-            string computer,
-            Type setType,
-            EBackupDataType dataType,
-            DataSourceBrowser dataSourceBrowser,
-            BackupSetRestoreView restoreView) : base (restoreId, backupSetId, computer, setType, dataType, dataSourceBrowser, restoreView)
+        internal DSClientRestoreOption(Type classType, string option, object value)
         {
-            
+            _classType = classType;
+            Option = option;
+            Value = value;
         }
 
-        internal override void SetSelectedItems()
+        internal Type GetClassType()
         {
-            if (_fsRestoreActivityInitiator != null)
-                _fsRestoreActivityInitiator.Dispose();
+            return _classType;
+        }
 
-            base.SetSelectedItems();
+        public override string ToString()
+        {
+            return Option;
+        }
+    }
 
-            _fsRestoreActivityInitiator = FS_RestoreActivityInitiator.from(GetRestoreActivityInitiator());
+    public class RestoreOptions_Base
+    {
+        public bool UseDetailedLog { get; protected set; }
+        public string LocalStorageMethod { get; protected set; }
+        public int DSSystemReadThreads { get; protected set; }
+        public int MaxPendingAsyncIO { get; protected set; }
 
-            _fsRestoreActivityInitiator.setFileOverwriteOption(StringToEnum<EFileOverwriteOption>(FileSystemOptions.FileOverwriteOption));
-            _fsRestoreActivityInitiator.setRestoreMethod(StringToEnum<ERestoreMethod>(FileSystemOptions.RestoreMethod));
-            _fsRestoreActivityInitiator.setRestorePermission(StringToEnum<ERestorePermission>(FileSystemOptions.RestorePermissions));
+        internal RestoreOptions_Base()
+        {
+            UseDetailedLog = false;
+            LocalStorageMethod = "ContinueIfDisconnect";
+            DSSystemReadThreads = 0;
+            MaxPendingAsyncIO = 0;
+        }
 
-            UpdateReadyStatus();
+        internal DSClientRestoreOption[] GetRestoreOptions()
+        {
+            PropertyInfo[] props = this.GetType().GetProperties();
+            DSClientRestoreOption[] restoreOptions = new DSClientRestoreOption[props.Length];
+            for (int i = 0; i < props.Length; i++)
+                restoreOptions[i] = new DSClientRestoreOption(this.GetType(), props[i].Name, props[i].GetValue(this, null));
+
+            return restoreOptions;
+        }
+
+        internal void SetUseDetailedLog(bool v)
+        {
+            UseDetailedLog = v;
+        }
+
+        internal void SetLocalStorageMethod(string localStorageMethod)
+        {
+            LocalStorageMethod = localStorageMethod;
+        }
+
+        internal void SetDSSystemReadThreads(int readThreads)
+        {
+            DSSystemReadThreads = readThreads;
+        }
+
+        internal void SetMaxPendingIO(int maxIO)
+        {
+            MaxPendingAsyncIO = maxIO;
+        }
+    }
+
+    public class RestoreOptions_FileSystem : RestoreOptions_Base
+    {
+        public string FileOverwriteOption { get; protected set; }
+        public string RestoreMethod { get; protected set; }
+        public string RestorePermissions { get; protected set; }
+
+        internal RestoreOptions_FileSystem() : base()
+        {
+            FileOverwriteOption = "RestoreAll";
+            RestoreMethod = "Fast";
+            RestorePermissions = "Yes";
+        }
+
+        internal RestoreOptions_FileSystem(PSObject obj)
+        {
+            if (obj.ImmediateBaseObject.GetType() != typeof(RestoreOptions_FileSystem))
+                throw new Exception("Invalid Object Type");
+
+            PSMemberInfoCollection<PSPropertyInfo> objProps = obj.Properties;
+            foreach (PSPropertyInfo objProp in objProps)
+                foreach (PropertyInfo thisObj in this.GetType().GetProperties())
+                    if (thisObj.Name == objProp.Name)
+                        thisObj.SetValue(this, objProp.Value, null);
+        }
+
+        internal void SetOverwriteOption(string overwriteOption)
+        {
+            FileOverwriteOption = overwriteOption;
+        }
+
+        internal void SetRestoreMethod(string restoreMethod)
+        {
+            RestoreMethod = restoreMethod;
+        }
+
+        internal void SetRestorePermissions(string restorePermissions)
+        {
+            RestorePermissions = restorePermissions;
+        }
+    }
+
+    public class RestoreOptions_Win32FileSystem : RestoreOptions_FileSystem
+    {
+        public bool AuthoritativeRestore { get; private set; }
+        public bool OverwriteJunctionPoint { get; private set; }
+        public bool SkipOfflineFiles { get; private set; }
+
+        internal RestoreOptions_Win32FileSystem() : base()
+        {
+            AuthoritativeRestore = false;
+            OverwriteJunctionPoint = false;
+            SkipOfflineFiles = true;
+        }
+
+        internal RestoreOptions_Win32FileSystem(PSObject obj)
+        {
+            if (obj.ImmediateBaseObject.GetType() != typeof(RestoreOptions_Win32FileSystem))
+                throw new Exception("Invalid Object Type");
+
+            PSMemberInfoCollection<PSPropertyInfo> objProps = obj.Properties;
+            foreach (PSPropertyInfo objProp in objProps)
+                foreach (PropertyInfo thisObj in this.GetType().GetProperties())
+                    if (thisObj.Name == objProp.Name)
+                        thisObj.SetValue(this, objProp.Value, null);
+        }
+
+        internal static RestoreOptions_Win32FileSystem From(RestoreOptions_FileSystem restoreOptions_FileSystem)
+        {
+            RestoreOptions_Win32FileSystem restoreOptions = new RestoreOptions_Win32FileSystem();
+
+            foreach (PropertyInfo parentProp in restoreOptions_FileSystem.GetType().GetProperties())
+                foreach (PropertyInfo thisProp in restoreOptions.GetType().GetProperties())
+                    if (thisProp.Name == parentProp.Name)
+                        thisProp.SetValue(restoreOptions, parentProp.GetValue(restoreOptions_FileSystem), null);
+
+            return restoreOptions;
+        }
+
+        internal void SetAuthoritative(bool v)
+        {
+            AuthoritativeRestore = v;
+        }
+
+        internal void SetOverwriteJunctionPoint(bool v)
+        {
+            OverwriteJunctionPoint = v;
+        }
+
+        internal void SetSkipOfflineFile(bool v)
+        {
+            SkipOfflineFiles = v;
         }
     }
 }

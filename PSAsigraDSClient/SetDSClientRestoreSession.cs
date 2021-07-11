@@ -26,18 +26,8 @@ namespace PSAsigraDSClient
         [ValidateSet("Production", "Drill", "ProductionDrill")]
         public string RestoreClassification { get; set; }
 
-        [Parameter(ParameterSetName = "default", HelpMessage = "Specify to use Detailed Log")]
-        public SwitchParameter UseDetailedLog { get; set; }
-
-        [Parameter(ParameterSetName = "default", HelpMessage = "Specify Local Storage Handling")]
-        [ValidateSet("None", "ConnectFirst", "ConnectIfNeeded", "ContinueIfDisconnect")]
-        public string LocalStorageMethod { get; set; }
-
-        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Set the number of DS-System Read Threads")]
-        public int DSSystemReadThreads { get; set; }
-
-        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Set the maximum pending Asynchronious IO")]
-        public int MaxPendingAsyncIO { get; set; }
+        [Parameter(ParameterSetName = "options", HelpMessage = "Apply New Restore Options")]
+        public PSObject Options { get; set; }
 
         [Parameter(Position = 1, Mandatory = true, ParameterSetName = "sharemapping", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify a Destination Path Id to modify")]
         public int DestinationId { get; set; }
@@ -48,32 +38,21 @@ namespace PSAsigraDSClient
         [Parameter(ParameterSetName = "sharemapping", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the amount to truncate the original path by")]
         public int TruncateAmount { get; set; }
 
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the File System Overwrite Option")]
-        [ValidateSet("RestoreAll", "RestoreNewer", "RestoreOlder", "RestoreDifferent", "SkipExisting")]
-        public string FileOverwriteOption { get; set; }
-
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the File Restore Method")]
-        [ValidateSet("Fast", "Save", "UseBuffer")]
-        public string RestoreMethod { get; set; }
-
-        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify whether to Restore File Permissions")]
-        [ValidateSet("Yes", "Skip", "Only")]
-        public string RestorePermissions { get; set; }
-
-        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify if this is an Authoritative Restore (Windows Only)")]
-        public SwitchParameter AuthoritativeRestore { get; set; }
-
-        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify whether to Overwrite Junction Points (Windows Only)")]
-        public SwitchParameter OverwriteJunctionPoint { get; set; }
-
-        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify whether to Skip Restoring Offline Files")]
-        public SwitchParameter SkipOfflineFiles { get; set; }
-
         protected override void DSClientProcessRecord()
         {
-            List<DSClientRestoreSession> restoreSessions = SessionState.PSVariable.GetValue("RestoreSessions", null) as List<DSClientRestoreSession>;
+            // If the Options Parameter is specified, validate it is of an accepted object type
+            if (MyInvocation.BoundParameters.ContainsKey(nameof(Options)))
+            {
+                WriteDebug($"Immediate Base Type: {Options.ImmediateBaseObject.GetType()}");                
+                
+                if (!(Options.ImmediateBaseObject.GetType() == typeof(RestoreOptions_FileSystem) ||
+                    Options.ImmediateBaseObject.GetType() == typeof(RestoreOptions_Win32FileSystem)))
+                {
+                    throw new ParameterBindingException("Invalid Options Data Type");
+                }
+            }
 
-            if (restoreSessions == null)
+            if (!(SessionState.PSVariable.GetValue("RestoreSessions", null) is List<DSClientRestoreSession> restoreSessions))
                 throw new Exception("No Restore Sessions Found");
 
             bool found = false;
@@ -83,66 +62,48 @@ namespace PSAsigraDSClient
                 {
                     DSClientRestoreSession restoreSession = restoreSessions[i];
 
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(Computer)))
-                        restoreSession.SetComputer(Computer);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(Credential)))
-                        restoreSession.SetCredentials(Credential);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreReason)))
-                        restoreSession.SetRestoreReason(RestoreReason);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreClassification)))
-                        restoreSession.SetRestoreClassification(RestoreClassification);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(UseDetailedLog)))
-                        restoreSession.SetUseDetailedLog(UseDetailedLog);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(LocalStorageMethod)))
-                        restoreSession.SetLocalStorageMethod(LocalStorageMethod);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(DSSystemReadThreads)))
-                        restoreSession.SetDSSystemReadThreads(DSSystemReadThreads);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(MaxPendingAsyncIO)))
-                        restoreSession.SetMaxPendingAsyncIO(MaxPendingAsyncIO);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(DestinationId)))
+                    if (MyInvocation.BoundParameters.ContainsKey(nameof(Options)))
                     {
-                        for (int x = 0; x < restoreSession.DestinationPaths.Length; x++)
+                        if (Options.ImmediateBaseObject.GetType() == typeof(RestoreOptions_FileSystem) && restoreSession.GetRestoreOptionsType() == typeof(RestoreOptions_Win32FileSystem))
+                            restoreSession.SetRestoreOptions(RestoreOptions_Win32FileSystem.From(new RestoreOptions_FileSystem(Options)));
+                        else if (Options.ImmediateBaseObject.GetType() == typeof(RestoreOptions_FileSystem))
+                            restoreSession.SetRestoreOptions(new RestoreOptions_FileSystem(Options));
+                        else if (Options.ImmediateBaseObject.GetType() == typeof(RestoreOptions_Win32FileSystem))
+                            restoreSession.SetRestoreOptions(new RestoreOptions_Win32FileSystem(Options));
+                    }
+                    else
+                    {
+                        if (MyInvocation.BoundParameters.ContainsKey(nameof(Computer)))
+                            restoreSession.SetComputer(Computer);
+
+                        if (MyInvocation.BoundParameters.ContainsKey(nameof(Credential)))
+                            restoreSession.SetCredentials(Credential);
+
+                        if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreReason)))
+                            restoreSession.SetRestoreReason(RestoreReason);
+
+                        if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreClassification)))
+                            restoreSession.SetRestoreClassification(RestoreClassification);
+
+                        if (MyInvocation.BoundParameters.ContainsKey(nameof(DestinationId)))
                         {
-                            if (restoreSession.DestinationPaths[x].DestinationId == DestinationId)
+                            for (int x = 0; x < restoreSession.DestinationPaths.Length; x++)
                             {
-                                DSClientRestoreSession.RestoreDestination destination = restoreSession.DestinationPaths[x];
-                                if (MyInvocation.BoundParameters.ContainsKey(nameof(DestinationPath)))
-                                    destination.SetDestination(DestinationPath);
+                                if (restoreSession.DestinationPaths[x].DestinationId == DestinationId)
+                                {
+                                    DSClientRestoreSession.RestoreDestination destination = restoreSession.DestinationPaths[x];
+                                    if (MyInvocation.BoundParameters.ContainsKey(nameof(DestinationPath)))
+                                        destination.SetDestination(DestinationPath);
 
-                                if (MyInvocation.BoundParameters.ContainsKey(nameof(TruncateAmount)))
-                                    destination.SetTruncateLevel(TruncateAmount);
+                                    if (MyInvocation.BoundParameters.ContainsKey(nameof(TruncateAmount)))
+                                        destination.SetTruncateLevel(TruncateAmount);
 
-                                restoreSession.DestinationPaths[x] = destination;
-                                break;
+                                    restoreSession.DestinationPaths[x] = destination;
+                                    break;
+                                }
                             }
                         }
                     }
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(FileOverwriteOption)))
-                        restoreSession.FileSystemOptions.SetOverwriteOption(FileOverwriteOption);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreMethod)))
-                        restoreSession.FileSystemOptions.SetRestoreMethod(RestoreMethod);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(RestorePermissions)))
-                        restoreSession.FileSystemOptions.SetRestorePermissions(RestorePermissions);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(AuthoritativeRestore)))
-                        restoreSession.FileSystemOptions.WinFSOptions.SetAuthoritative(AuthoritativeRestore);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(OverwriteJunctionPoint)))
-                        restoreSession.FileSystemOptions.WinFSOptions.SetOverwriteJunctionPoint(OverwriteJunctionPoint);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(SkipOfflineFiles)))
-                        restoreSession.FileSystemOptions.WinFSOptions.SetSkipOfflineFile(SkipOfflineFiles);
 
                     found = true;
                     break;

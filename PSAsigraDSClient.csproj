@@ -77,6 +77,7 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientFileSystemRestore.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientInitializeBackupSetDataBrowser.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientMSSqlServerBackupSet.cs" />
+    <Compile Include="PSAsigraDSClient\BaseDSClientRestoreOptions.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientRetentionRuleParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientScheduleDetail.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientScheduleDetailParams.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetValidation.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientRestoreSession.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientArchiveFilterRule.cs" />
+    <Compile Include="PSAsigraDSClient\NewDSClientFSRestoreOptions.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientInitialBackupPath.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientMSSqlServerBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientRetentionRule.cs" />

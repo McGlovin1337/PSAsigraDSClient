@@ -21,13 +21,6 @@ namespace PSAsigraDSClient
         [ValidateSet("Production", "Drill", "ProductionDrill")]
         public string RestoreClassification { get; set; }
 
-        [Parameter(HelpMessage = "Specify to use Detailed Log")]
-        public SwitchParameter UseDetailedLog { get; set; }
-
-        [Parameter(HelpMessage = "Specify Local Storage Handling")]
-        [ValidateSet("None", "ConnectFirst", "ConnectIfNeeded", "ContinueIfDisconnect")]
-        public string LocalStorageMethod { get; set; }
-
         protected override void DSClientProcessRecord()
         {
             // Get the Backup Set Details
@@ -70,11 +63,10 @@ namespace PSAsigraDSClient
 
             // Get Restore Sessions from Session State
             WriteVerbose("Performing Action: Retrieve Existing Restore Sessions");
-            List<DSClientRestoreSession> restoreSessions = SessionState.PSVariable.GetValue("RestoreSessions", null) as List<DSClientRestoreSession>;
 
             int restoreId = 1;
 
-            if (restoreSessions == null)
+            if (!(SessionState.PSVariable.GetValue("RestoreSessions", null) is List<DSClientRestoreSession> restoreSessions))
                 restoreSessions = new List<DSClientRestoreSession>();
             else
             {
@@ -84,11 +76,7 @@ namespace PSAsigraDSClient
             }
 
             WriteVerbose("Performing Action: Creating new Restore Session");
-            DSClientRestoreSession restoreSession = null;
-
-            if (dataType == EBackupDataType.EBackupDataType__FileSystem)
-            {
-                DSClientFSRestoreSession fsRestoreSession = new DSClientFSRestoreSession(
+            DSClientRestoreSession restoreSession = new DSClientRestoreSession(
                     restoreId,
                     BackupSetId,
                     backupSet.getComputerName(),
@@ -97,20 +85,11 @@ namespace PSAsigraDSClient
                     dataSourceBrowser,
                     backupSetRestoreView);
 
-                restoreSession = fsRestoreSession;
-            }
-
             if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreClassification)))
                 restoreSession.SetRestoreClassification(RestoreClassification);
 
             if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreReason)))
                 restoreSession.SetRestoreReason(RestoreReason);
-
-            if (UseDetailedLog)
-                restoreSession.SetUseDetailedLog(UseDetailedLog);
-
-            if (MyInvocation.BoundParameters.ContainsKey(nameof(LocalStorageMethod)))
-                restoreSession.SetLocalStorageMethod(LocalStorageMethod);
 
             restoreSessions.Add(restoreSession);
 

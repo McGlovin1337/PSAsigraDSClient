@@ -19,9 +19,7 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             WriteVerbose("Performing Action: Retrieve Restore Sessions");
-            List<DSClientRestoreSession> restoreSessions = SessionState.PSVariable.GetValue("RestoreSessions", null) as List<DSClientRestoreSession>;
-
-            if (restoreSessions == null)
+            if (!(SessionState.PSVariable.GetValue("RestoreSessions", null) is List<DSClientRestoreSession> restoreSessions))
                 throw new Exception("No Restore Sessions Found");
 
             bool found = false;

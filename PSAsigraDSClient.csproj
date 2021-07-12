@@ -243,6 +243,7 @@
     <None Include="docs\Add-DSClientMSSqlServerBackupSetItem.md" />
     <None Include="docs\Add-DSClientMultiFactorAuthUser.md" />
     <None Include="docs\Add-DSClientOneTimeSchedule.md" />
+    <None Include="docs\Add-DSClientRestoreItem.md" />
     <None Include="docs\Add-DSClientSNMPCommunity.md" />
     <None Include="docs\Add-DSClientTimeRetentionOption.md" />
     <None Include="docs\Add-DSClientUnixFsBackupSetItem.md" />
@@ -285,6 +286,7 @@
     <None Include="docs\Get-DSClientOS.md" />
     <None Include="docs\Get-DSClientQuota.md" />
     <None Include="docs\Get-DSClientRegistrationInfo.md" />
+    <None Include="docs\Get-DSClientRestoreSession.md" />
     <None Include="docs\Get-DSClientRetentionRule.md" />
     <None Include="docs\Get-DSClientRunningActivity.md" />
     <None Include="docs\Get-DSClientSchedule.md" />
@@ -302,7 +304,9 @@
     <None Include="docs\Initialize-DSClientBackupSetDelete.md" />
     <None Include="docs\Initialize-DSClientBackupSetRestore.md" />
     <None Include="docs\Initialize-DSClientBackupSetValidation.md" />
+    <None Include="docs\Initialize-DSClientRestoreSession.md" />
     <None Include="docs\New-DSClientArchiveFilterRule.md" />
+    <None Include="docs\New-DSClientFSRestoreOptions.md" />
     <None Include="docs\New-DSClientInitialBackupPath.md" />
     <None Include="docs\New-DSClientMSSqlServerBackupSet.md" />
     <None Include="docs\New-DSClientRetentionRule.md" />
@@ -322,6 +326,8 @@
     <None Include="docs\Remove-DSClientBackupSetItem.md" />
     <None Include="docs\Remove-DSClientBackupSetNotification.md" />
     <None Include="docs\Remove-DSClientInitialBackupPath.md" />
+    <None Include="docs\Remove-DSClientRestoreItem.md" />
+    <None Include="docs\Remove-DSClientRestoreSession.md" />
     <None Include="docs\Remove-DSClientRetentionRule.md" />
     <None Include="docs\Remove-DSClientSchedule.md" />
     <None Include="docs\Remove-DSClientScheduleDetail.md" />
@@ -344,6 +350,7 @@
     <None Include="docs\Set-DSClientMSSqlServerBackupSet.md" />
     <None Include="docs\Set-DSClientOneTimeSchedule.md" />
     <None Include="docs\Set-DSClientRegistrationInfo.md" />
+    <None Include="docs\Set-DSClientRestoreSession.md" />
     <None Include="docs\Set-DSClientRetentionRule.md" />
     <None Include="docs\Set-DSClientSMTPNotification.md" />
     <None Include="docs\Set-DSClientSNMPHeartbeat.md" />
@@ -360,6 +367,7 @@
     <None Include="docs\Start-DSClientBackupSetRetention.md" />
     <None Include="docs\Start-DSClientBackupSetValidation.md" />
     <None Include="docs\Start-DSClientMSSqlServerRestore.md" />
+    <None Include="docs\Start-DSClientRestore.md" />
     <None Include="docs\Start-DSClientSystemActivity.md" />
     <None Include="docs\Start-DSClientUnixFsRestore.md" />
     <None Include="docs\Start-DSClientWinFsRestore.md" />

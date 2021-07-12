@@ -8,6 +8,7 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Start, "DSClientRestore")]
+    [OutputType(typeof(void), typeof(GenericBackupSetActivity))]
 
     sealed public class StartDSClientRestore : DSClientCmdlet
     {
@@ -19,9 +20,8 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            List<DSClientRestoreSession> restoreSessions = SessionState.PSVariable.GetValue("RestoreSessions", null) as List<DSClientRestoreSession>;
-
-            if (restoreSessions == null)
+            WriteVerbose("Performing Action: Retrieve Restore Sessions");
+            if (!(SessionState.PSVariable.GetValue("RestoreSessions", null) is List<DSClientRestoreSession> restoreSessions))
                 throw new Exception("No Restore Sessions found");
 
             GenericActivity activity = null;

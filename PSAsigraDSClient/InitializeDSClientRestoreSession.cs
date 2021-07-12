@@ -24,7 +24,7 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             // Get the Backup Set Details
-            WriteDebug("Getting Backup Set Details");
+            WriteVerbose("Performing Action: Retrieve Backup Set Details");
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
             // Check if Backup Set is in use
@@ -37,7 +37,6 @@ namespace PSAsigraDSClient
             EBackupDataType dataType = backupSet.getDataType();
             Type setType = typeof(BackupSet);
 
-            WriteDebug("Determining Backup Set Type");
             if (dataType == EBackupDataType.EBackupDataType__FileSystem)
             {
                 DSClientOSType osType = SessionState.PSVariable.GetValue("DSClientOSType", null) as DSClientOSType;
@@ -54,6 +53,7 @@ namespace PSAsigraDSClient
             {
                 setType = typeof(VMwareVADP_BackupSet);
             }
+            WriteDebug($"Backup Set Type: {setType}");
 
             WriteDebug("Creating a Data Browser");
             DataSourceBrowser dataSourceBrowser = backupSet.dataBrowser(); // Sets up a Data Browser for restore back to original Computer

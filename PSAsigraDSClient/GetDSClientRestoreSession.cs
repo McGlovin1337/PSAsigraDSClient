@@ -5,7 +5,7 @@ using System.Management.Automation;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Get, "DSClientRestoreSession")]
-    [OutputType(typeof(DSClientRestoreSession), typeof(void))]
+    [OutputType(typeof(DSClientRestoreSession))]
 
     sealed public class GetDSClientRestoreSession : DSClientCmdlet
     {
@@ -14,9 +14,7 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            List<DSClientRestoreSession> restoreSessions = SessionState.PSVariable.GetValue("RestoreSessions", null) as List<DSClientRestoreSession>;
-
-            if (restoreSessions != null)
+            if (SessionState.PSVariable.GetValue("RestoreSessions", null) is List<DSClientRestoreSession> restoreSessions)
             {
                 if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreId)))
                     WriteObject(restoreSessions.Single(session => session.RestoreId == RestoreId));

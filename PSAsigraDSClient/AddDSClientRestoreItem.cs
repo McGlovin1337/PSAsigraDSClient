@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Management.Automation;
+using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
@@ -23,7 +22,7 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             // Retrieve the Restore Session from SessionState
-
+            WriteVerbose("Performing Action: Retrieve Restore Sessions");
             if (!(SessionState.PSVariable.GetValue("RestoreSessions", null) is List<DSClientRestoreSession> restoreSessions))
                 throw new Exception("No Restore Sessions Found");
 
@@ -35,8 +34,35 @@ namespace PSAsigraDSClient
                     DSClientRestoreSession restoreSession = restoreSessions[i];
 
                     // Process ItemId's, these should already exist in the sessions browsed items list
-                    if (ItemId.Length > 0)
+                    if (ItemId != null && ItemId.Length > 0)
                         restoreSession.AddSelectedItems(ItemId);
+
+                    // Attempt to Find and Add Items by Name
+                    if (Item != null && Item.Length > 0)
+                    {
+                        BackedUpDataView backedUpDataView = restoreSession.GetRestoreView();
+
+                        foreach (string item in Item)
+                        {
+                            SelectableItem selectableItem = null;
+                            try
+                            {
+                                WriteVerbose($"Performing Action: Retrieve Item Info for '{item}'");
+                                selectableItem = backedUpDataView.getItem(item);
+                            }
+                            catch
+                            {
+                                WriteWarning($"Failed to Select Item: {item}");
+                            }
+
+                            // If no item was found, on to the next
+                            if (selectableItem == null)
+                                continue;
+
+                            restoreSession.AddBrowsedItem(new DSClientBackupSetItemInfo(item, selectableItem, backedUpDataView.getItemSize(selectableItem.id)));
+                            restoreSession.AddSelectedItem(selectableItem.id);
+                        }
+                    }
 
                     found = true;
                 }

@@ -13,9 +13,9 @@ namespace PSAsigraDSClient
         private BackupSetRestoreView _backupSetRestoreView;
         private RestoreActivityInitiator _restoreActivityInitiator;
         private readonly BackupSetCredentials _credentials;
-        private List<int> _destinationIds;
+        //private List<int> _destinationIds;
         private List<long> _selectedItemIds;
-        private readonly EBackupDataType _dataType;
+        //private readonly EBackupDataType _dataType;
         private readonly DataSourceBrowser _dataSourceBrowser;             
         private readonly List<DSClientBackupSetItemInfo> _browsedItems;
         private readonly Type _setType;
@@ -42,13 +42,13 @@ namespace PSAsigraDSClient
             BackupSetRestoreView restoreView)
         {
             _setType = setType;
-            _dataType = dataType;
+            //_dataType = dataType;
             _backupSetRestoreView = restoreView;
             _restoreActivityInitiator = null;
             _dataSourceBrowser = dataSourceBrowser;
             _credentials = dataSourceBrowser.getCurrentCredentials();
             _browsedItems = new List<DSClientBackupSetItemInfo>();
-            _destinationIds = new List<int>();
+            //_destinationIds = new List<int>();
             _selectedItemIds = new List<long>();
 
             RestoreId = restoreId;
@@ -79,6 +79,12 @@ namespace PSAsigraDSClient
 
             GetCredentials();
             UpdateReadyStatus();
+        }
+
+        internal void AddBrowsedItem(DSClientBackupSetItemInfo item)
+        {
+            if (!_browsedItems.Exists(i => i.ItemId == item.ItemId))
+                _browsedItems.Add(item);
         }
 
         internal void AddBrowsedItems(IEnumerable<DSClientBackupSetItemInfo> items)
@@ -348,7 +354,11 @@ namespace PSAsigraDSClient
                     DestinationPaths[i] = new RestoreDestination(i + 1, selectedShares[i]);
             }
             else
+            {
+                SelectedItems = null;
+                DestinationPaths = null;
                 _restoreActivityInitiator = null;
+            }
         }
 
         internal void SetSudoCredentials(PSCredential credential)

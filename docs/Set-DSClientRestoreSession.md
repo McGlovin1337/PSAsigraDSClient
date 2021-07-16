@@ -15,7 +15,8 @@ Updates the Specified Restore Session
 ### default
 ```
 Set-DSClientRestoreSession [-RestoreId] <Int32> [-Computer <String>] [-Credential <PSCredential>]
- [-RestoreReason <String>] [-RestoreClassification <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-SudoCredential <PSCredential>] [-RestoreReason <String>] [-RestoreClassification <String>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### options
@@ -179,6 +180,21 @@ Type: String
 Parameter Sets: default
 Aliases:
 Accepted values: UserErrorDataDeletion, MaliciousIntent, DeviceLostOrStolen, HardwareMalfunction, SoftwareMalfunction, DataStolen, DataCorruption, NaturalDisasters, PowerOutages, OtherDisaster, PreviousGeneration, DeviceDamaged
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -SudoCredential
+Specify Sudo Credentials
+
+```yaml
+Type: PSCredential
+Parameter Sets: default
+Aliases:
 
 Required: False
 Position: Named

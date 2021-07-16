@@ -18,6 +18,9 @@ namespace PSAsigraDSClient
         [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Computer Credentials")]
         public PSCredential Credential { get; set; }
 
+        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Sudo Credentials")]
+        public PSCredential SudoCredential { get; set; }
+
         [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Reason for the Restore")]
         [ValidateSet("UserErrorDataDeletion", "MaliciousIntent", "DeviceLostOrStolen", "HardwareMalfunction", "SoftwareMalfunction", "DataStolen", "DataCorruption", "NaturalDisasters", "PowerOutages", "OtherDisaster", "PreviousGeneration", "DeviceDamaged")]
         public string RestoreReason { get; set; }
@@ -90,6 +93,10 @@ namespace PSAsigraDSClient
                         if (MyInvocation.BoundParameters.ContainsKey(nameof(Credential)))
                             if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Credentials to '{Credential.UserName}'"))
                                 restoreSession.SetCredentials(Credential);
+
+                        if (MyInvocation.BoundParameters.ContainsKey(nameof(SudoCredential)))
+                            if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Sudo Credentials to '{SudoCredential.UserName}'"))
+                                restoreSession.SetSudoCredentials(SudoCredential);
 
                         if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreReason)))
                             if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Reason to '{RestoreReason}'"))

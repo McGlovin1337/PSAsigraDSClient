@@ -116,11 +116,25 @@ namespace PSAsigraDSClient
             bool log = (bool?)RestoreOptions.SingleOrDefault(v => v.Option == "UseDetailedLog").Value ?? false;
             _restoreActivityInitiator.setDetailLogReporting(log);
 
-            int readThreads = (int?)RestoreOptions.SingleOrDefault(v => v.Option == "DSSystemReadThreads").Value ?? 0;
-            _restoreActivityInitiator.setDSSystemReadThreads(readThreads);
+            try
+            {
+                int readThreads = (int?)RestoreOptions.SingleOrDefault(v => v.Option == "DSSystemReadThreads").Value ?? 0;
+                _restoreActivityInitiator.setDSSystemReadThreads(readThreads);
+            }
+            catch
+            {
+                // Do nothing, it's likely this option isn't supported
+            }
 
-            int asyncIO = (int?)RestoreOptions.SingleOrDefault(v => v.Option == "MaxPendingAsyncIO").Value ?? 0;
-            _restoreActivityInitiator.setMaxPendingAsyncIO(asyncIO);
+            try
+            {
+                int asyncIO = (int?)RestoreOptions.SingleOrDefault(v => v.Option == "MaxPendingAsyncIO").Value ?? 0;
+                _restoreActivityInitiator.setMaxPendingAsyncIO(asyncIO);
+            }
+            catch
+            {
+                // Do nothing it's likely this option isn't supported
+            }
 
             _restoreActivityInitiator.setRestoreClassification(StringToEnum<ERestoreClassification>(RestoreClassification));
 

@@ -36,7 +36,9 @@ namespace PSAsigraDSClient
                     if (!restoreSession.Ready.Ready)
                         throw new Exception("Restore Session is Not Ready to Start");
 
+                    WriteVerbose("Performing Action: Start Restore");
                     activity = restoreSession.StartRestore();
+                    WriteVerbose($"Notice: Restore Activity Id: {activity.getID()}");
 
                     restoreSessions.Remove(restoreSession);
 

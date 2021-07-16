@@ -59,6 +59,7 @@ namespace PSAsigraDSClient
                             if (selectableItem == null)
                                 continue;
 
+                            WriteVerbose($"Performing Action: Add '{item}' to Restore Session '{RestoreId}'");
                             restoreSession.AddBrowsedItem(new DSClientBackupSetItemInfo(item, selectableItem, backedUpDataView.getItemSize(selectableItem.id)));
                             restoreSession.AddSelectedItem(selectableItem.id);
                         }

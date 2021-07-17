@@ -5,51 +5,38 @@ online version:
 schema: 2.0.0
 ---
 
-# Enter-DSClientSession
+# New-DSClientSession
 
 ## SYNOPSIS
-Establishes a connection to an Asigra DS-Client
+Create and Establish a new DS-Client Session
 
 ## SYNTAX
 
-### default (Default)
 ```
-Enter-DSClientSession -HostName <String> [[-Port] <UInt16>] [-NoSSL] [[-APIVersion] <String>]
- [[-Credential] <PSCredential>] [<CommonParameters>]
-```
-
-### session
-```
-Enter-DSClientSession -Session <DSClientSession> [<CommonParameters>]
+New-DSClientSession -HostName <String> [-Credential] <PSCredential> [-Name <String>] [[-Port] <UInt16>]
+ [-NoSSL] [[-APIVersion] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Establishes a connection to an Asigra DS-Client and stores as a session for management.
+Create and Establish a new DS-Client Session.
 
 ## EXAMPLES
 
 ### Example 1
-```
-PS C:\> Enter-DSClientSession -Host my.dsclient.local -Credential joe.bloggs
-```
-
-Establishes a connection to the DS-Client running on computer "my.dsclient.local", using Credential "joe.bloggs"
-
-### Example 2
-```
-PS C:\> Enter-DSClientSession -Session $Session
+```powershell
+PS C:\> $Session = New-DSClientSession -Host mydsclient -Credential (Get-Credential)
 ```
 
-Enters the DS-Client Session specified in $Session variable.
+Creates a new DS-Client Session to the host mydsclient and stores it in the variable $Session
 
 ## PARAMETERS
 
 ### -APIVersion
-Specify the Asigra DSClient API Version to use
+Specify the Asigra DS-Client API Version to use
 
 ```yaml
 Type: String
-Parameter Sets: default
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -64,10 +51,10 @@ Specify Credentials to use to connect to DSClient
 
 ```yaml
 Type: PSCredential
-Parameter Sets: default
+Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 5
 Default value: None
 Accept pipeline input: False
@@ -79,12 +66,12 @@ Specify to NOT establish an SSL Connection
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: default
+Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: 3
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -94,7 +81,7 @@ Specify the TCP port to connect to
 
 ```yaml
 Type: UInt16
-Parameter Sets: default
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -104,27 +91,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Session
-Specify an existing Session to use
-
-```yaml
-Type: DSClientSession
-Parameter Sets: session
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -HostName
 Specify the DS-Client Host to connect to
 
 ```yaml
 Type: String
-Parameter Sets: default
+Parameter Sets: (All)
 Aliases:
 
 Required: True
@@ -134,15 +106,32 @@ Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
+### -Name
+Specify a name for this Session
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ### None
+
 ## OUTPUTS
 
-### System.Object
+### PSAsigraDSClient.DSClientCommon+DSClientSession
+
 ## NOTES
 
 ## RELATED LINKS

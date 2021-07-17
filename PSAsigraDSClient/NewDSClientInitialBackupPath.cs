@@ -30,7 +30,7 @@ namespace PSAsigraDSClient
 
             // Set the Credentials
             BackupSetCredentials pathCredentials = null;
-            if (DSClientOSType.OsType == "Windows" && Path[0] == '\\' && Path[1] == '\\')
+            if (DSClientSessionInfo.OperatingSystem == "Windows" && Path[0] == '\\' && Path[1] == '\\')
             {
                 string path = Path.TrimStart('\\');
                 string computer = path.Split('\\').First();

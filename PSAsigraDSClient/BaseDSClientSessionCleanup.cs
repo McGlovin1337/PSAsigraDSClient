@@ -82,25 +82,15 @@ namespace PSAsigraDSClient
             }
 
             WriteVerbose("Performing Action: Check for existing DS-Client Sessions");
-            ClientConnection previousSession = SessionState.PSVariable.GetValue("DSClientSession", null) as ClientConnection;
 
-            if (previousSession != null)
+            if (SessionState.PSVariable.GetValue("DSClientSession", null) is DSClientSession previousSession)
             {
                 WriteVerbose("Notice: Previous DS-Client Session found");
-                try
-                {
-                    WriteVerbose("Performing Action: Logout DS-Client Session");
-                    previousSession.logout();
-                    WriteVerbose("Performing Action: Dispose DS-Client Session");
-                    previousSession.Dispose();
-                }
-                catch
-                {
-                    WriteVerbose("Notice: Previous session failed to dispose");
-                }
+                if (previousSession.GetLogoutOnExit())
+                    previousSession.Disconnect();
+
                 WriteVerbose("Performing Action: Remove on DS-Client Session");
                 SessionState.PSVariable.Remove("DSClientSession");
-                SessionState.PSVariable.Remove("DSClientOSType");
                 WriteObject("DS-Client Session removed.");
             }
             else

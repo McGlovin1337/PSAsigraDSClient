@@ -84,7 +84,7 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             //Check DS-Client is Linux/Unix
-            if (DSClientOSType.OsType != "Linux")
+            if (DSClientSessionInfo.OperatingSystem != "Linux")
                 throw new Exception("Unix FileSystem Backup Sets can only be created on a Unix DS-Client");
 
             // Validate the Common Base Parameters

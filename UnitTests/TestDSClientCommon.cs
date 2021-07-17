@@ -26,15 +26,6 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestDSClientOSType()
-        {
-            // This Tests the DSClientOSType Class and checks the OsType Property returns the expected String
-            DSClientCommon.DSClientOSType osType = new DSClientCommon.DSClientOSType(EOSFlavour.EOSFlavour__Windows);
-
-            Assert.AreEqual("Windows", osType.OsType);
-        }
-
-        [TestMethod]
         public void TestTimeInDay()
         {
             // This Tests the TimeInDay Class and checks the Properties and ToString() Override returns the expected values

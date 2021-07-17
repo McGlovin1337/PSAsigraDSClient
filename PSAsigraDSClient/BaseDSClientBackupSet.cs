@@ -115,7 +115,7 @@ namespace PSAsigraDSClient
             return backupSet;
         }
 
-        protected static IEnumerable<BackupSetFileItem> ProcessExclusionItems(DSClientOSType dSClientOSType, DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, bool excludeSubDirs)
+        protected static IEnumerable<BackupSetFileItem> ProcessExclusionItems(string dSClientOSType, DataSourceBrowser dataSourceBrowser, string computer, IEnumerable<string> items, bool excludeSubDirs)
         {
             List<BackupSetFileItem> fileItems = new List<BackupSetFileItem>();
 
@@ -128,14 +128,14 @@ namespace PSAsigraDSClient
                 string filter = "*";
                 int itemLength = 0;
 
-                if (dSClientOSType.OsType == "Windows")
+                if (dSClientOSType == "Windows")
                 {
                     filter = trimmedItem.Split('\\').Last();
                     itemLength = filter.Length;
                     if (string.IsNullOrEmpty(filter))
                         filter = "*";
                 }
-                else if (dSClientOSType.OsType == "Linux")
+                else if (dSClientOSType == "Linux")
                 {
                     filter = trimmedItem.Split('/').Last();
                     filter = filter.Split('\\').Last();
@@ -387,7 +387,7 @@ namespace PSAsigraDSClient
             public int OwnerId { get; private set; }
             public string OwnerName { get; private set; }
 
-            public DSClientBackupSet(BackupSet backupSet, DSClientOSType dSClientOSType)
+            public DSClientBackupSet(BackupSet backupSet, string dSClientOSType)
             {
                 backup_set_overview_info backupSetOverviewInfo = backupSet.getOverview();
 
@@ -422,10 +422,10 @@ namespace PSAsigraDSClient
                 // Set the DataType dynamic property based on the Backup Set Data type
                 if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__FileSystem)
                 {
-                    if (dSClientOSType.OsType == "Windows")
+                    if (dSClientOSType == "Windows")
                         DataType = new Win32FSBackupSet(backupSet);
 
-                    if (dSClientOSType.OsType == "Linux")
+                    if (dSClientOSType == "Linux")
                         DataType = new UnixFSBackupSet(backupSet);
                 }
                 else if (backupSetOverviewInfo.data_type == EBackupDataType.EBackupDataType__SQLServer)
@@ -439,7 +439,7 @@ namespace PSAsigraDSClient
                      * VMwareVADP_BackupSet, therefore we only fetch the additional VMware Options
                      * for Sets created on Windows DS-Clients
                      */
-                    if (dSClientOSType.OsType == "Windows")
+                    if (dSClientOSType == "Windows")
                     {
                         DataType = new VMWareVADPBackupSet(backupSet);
                     }
@@ -475,14 +475,14 @@ namespace PSAsigraDSClient
                 UseLocalStorage = backupSet.isUsingLocalStorage();
                 ForceBackup = backupSet.isForceBackup();
                 ErrorLimit = backupSet.getBackupErrorLimit();
-                if (dSClientOSType.OsType == "Windows")
+                if (dSClientOSType == "Windows")
                     MaxPendingAsyncIO = backupSet.getMaxPendingAsyncIO();
                 PreScan = backupSet.getPreScanByDefault();
                 CreatedByPolicy = backupSet.isCreatedByBackupPolicy();
                 Notification = dSClientBackupSetNotifications.ToArray();
                 SnmpTrapNotification = IntEBackupCompletionToArray(backupSet.getSNMPTrapsConditions());
                 PrePost = dSClientPrePosts.ToArray();
-                if (dSClientOSType.OsType == "Windows")
+                if (dSClientOSType == "Windows")
                     ReadBufferSize = backupSet.getReadBufferSize();
                 UseTransmissionCache = backupSet.isUsingLocalTransmissionCache();
                 DetailedLog = backupSet.isUsingDetailedLog();
@@ -780,7 +780,7 @@ namespace PSAsigraDSClient
             public BackupSetInclusionOptions InclusionOptions { get; private set; }
             public RegexItemExclusionOptions RegexExclusionOptions { get; private set; } 
 
-            public DSClientBackupSetItem(BackupSetItem backupSetItem, EBackupDataType backupDataType, DSClientOSType dSClientOSType)
+            public DSClientBackupSetItem(BackupSetItem backupSetItem, EBackupDataType backupDataType, string dSClientOSType)
             {
                 EItemOption[] itemOptions = backupSetItem.getItemOptions();
                 List<string> ItemOptions = new List<string>();
@@ -807,12 +807,12 @@ namespace PSAsigraDSClient
 
                         if (backupDataType == EBackupDataType.EBackupDataType__FileSystem)
                         {
-                            if (dSClientOSType.OsType == "Windows")
+                            if (dSClientOSType == "Windows")
                             {
                                 Win32FS_BackupSetInclusionItem win32FSBackupSetInclusionItem = Win32FS_BackupSetInclusionItem.from(backupSetInclusionItem);
                                 InclusionOptions = new BackupSetInclusionOptions(win32FSBackupSetInclusionItem);
                             }
-                            else if (dSClientOSType.OsType == "Linux")
+                            else if (dSClientOSType == "Linux")
                             {
                                 UnixFS_BackupSetInclusionItem unixFSBackupSetInclusionItem = UnixFS_BackupSetInclusionItem.from(backupSetInclusionItem);
                                 InclusionOptions = new BackupSetInclusionOptions(unixFSBackupSetInclusionItem);

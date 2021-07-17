@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
@@ -20,37 +18,27 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Performing Action: Retrieve Restore Sessions");
-            if (!(SessionState.PSVariable.GetValue("RestoreSessions", null) is List<DSClientRestoreSession> restoreSessions))
-                throw new Exception("No Restore Sessions found");
+            GenericActivity activity;
 
-            GenericActivity activity = null;
+            DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
 
-            bool found = false;
-            for (int i = 0; i < restoreSessions.Count(); i++)
+            if (restoreSession != null)
             {
-                if (restoreSessions[i].RestoreId == RestoreId)
-                {
-                    DSClientRestoreSession restoreSession = restoreSessions[i];
+                if (!restoreSession.Ready.Ready)
+                    throw new Exception("Restore Session is Not Ready to Start");
 
-                    if (!restoreSession.Ready.Ready)
-                        throw new Exception("Restore Session is Not Ready to Start");
+                WriteVerbose("Performing Action: Start Restore");
+                activity = restoreSession.StartRestore();
+                WriteVerbose($"Notice: Restore Activity Id: {activity.getID()}");
 
-                    WriteVerbose("Performing Action: Start Restore");
-                    activity = restoreSession.StartRestore();
-                    WriteVerbose($"Notice: Restore Activity Id: {activity.getID()}");
-
-                    restoreSessions.Remove(restoreSession);
-
-                    found = true;
-                    break;
-                }
+                DSClientSessionInfo.RemoveRestoreSession(restoreSession);
+            }
+            else
+            {
+                throw new Exception("Restore Session not found");
             }
 
-            if (!found)
-                throw new Exception("Restore Session not found");
-
-            if (PassThru)
+            if (PassThru && activity != null)
                 WriteObject(new GenericBackupSetActivity(activity));
         }
     }

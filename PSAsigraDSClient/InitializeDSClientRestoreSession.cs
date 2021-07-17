@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
@@ -39,8 +38,7 @@ namespace PSAsigraDSClient
 
             if (dataType == EBackupDataType.EBackupDataType__FileSystem)
             {
-                DSClientOSType osType = SessionState.PSVariable.GetValue("DSClientOSType", null) as DSClientOSType;
-                if (osType.OsType == "Windows")
+                if (DSClientSessionInfo.OperatingSystem == "Windows")
                     setType = typeof(Win32FS_BackupSet);
                 else
                     setType = typeof(UnixFS_Generic_BackupSet);
@@ -64,20 +62,9 @@ namespace PSAsigraDSClient
             // Get Restore Sessions from Session State
             WriteVerbose("Performing Action: Retrieve Existing Restore Sessions");
 
-            int restoreId = 1;
-
-            if (!(SessionState.PSVariable.GetValue("RestoreSessions", null) is List<DSClientRestoreSession> restoreSessions))
-                restoreSessions = new List<DSClientRestoreSession>();
-            else
-            {
-                foreach (DSClientRestoreSession session in restoreSessions)
-                    if (session.RestoreId >= restoreId)
-                        restoreId = session.RestoreId + 1;
-            }
-
             WriteVerbose("Performing Action: Creating new Restore Session");
             DSClientRestoreSession restoreSession = new DSClientRestoreSession(
-                    restoreId,
+                    DSClientSessionInfo.GenerateRestoreId(),
                     BackupSetId,
                     backupSet.getComputerName(),
                     setType,
@@ -91,9 +78,7 @@ namespace PSAsigraDSClient
             if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreReason)))
                 restoreSession.SetRestoreReason(RestoreReason);
 
-            restoreSessions.Add(restoreSession);
-
-            SessionState.PSVariable.Set("RestoreSessions", restoreSessions);
+            DSClientSessionInfo.AddRestoreSession(restoreSession);
         }
     }
 }

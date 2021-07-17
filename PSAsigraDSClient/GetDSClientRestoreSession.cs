@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Management.Automation;
 
 namespace PSAsigraDSClient
@@ -14,13 +13,12 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            if (SessionState.PSVariable.GetValue("RestoreSessions", null) is List<DSClientRestoreSession> restoreSessions)
-            {
-                if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreId)))
-                    WriteObject(restoreSessions.Single(session => session.RestoreId == RestoreId));
-                else
-                    restoreSessions.ForEach(WriteObject);
-            }
+            if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreId)))
+                WriteObject(DSClientSessionInfo.GetRestoreSession(RestoreId));
+            else
+                DSClientSessionInfo.GetRestoreSessions()
+                                    .ToList()
+                                    .ForEach(WriteObject);
         }
     }
 }

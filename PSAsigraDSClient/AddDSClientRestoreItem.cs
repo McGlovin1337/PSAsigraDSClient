@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
 
@@ -21,56 +19,46 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            // Retrieve the Restore Session from SessionState
-            WriteVerbose("Performing Action: Retrieve Restore Sessions");
-            if (!(SessionState.PSVariable.GetValue("RestoreSessions", null) is List<DSClientRestoreSession> restoreSessions))
-                throw new Exception("No Restore Sessions Found");
+            DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
 
-            bool found = false;
-            for (int i = 0; i < restoreSessions.Count; i++)
+            if (restoreSession != null)
             {
-                if (restoreSessions[i].RestoreId == RestoreId)
+                // Process ItemId's, these should already exist in the sessions browsed items list
+                if (ItemId != null && ItemId.Length > 0)
+                    restoreSession.AddSelectedItems(ItemId);
+
+                // Attempt to Find and Add Items by Name
+                if (Item != null && Item.Length > 0)
                 {
-                    DSClientRestoreSession restoreSession = restoreSessions[i];
+                    BackedUpDataView backedUpDataView = restoreSession.GetRestoreView();
 
-                    // Process ItemId's, these should already exist in the sessions browsed items list
-                    if (ItemId != null && ItemId.Length > 0)
-                        restoreSession.AddSelectedItems(ItemId);
-
-                    // Attempt to Find and Add Items by Name
-                    if (Item != null && Item.Length > 0)
+                    foreach (string item in Item)
                     {
-                        BackedUpDataView backedUpDataView = restoreSession.GetRestoreView();
-
-                        foreach (string item in Item)
+                        SelectableItem selectableItem = null;
+                        try
                         {
-                            SelectableItem selectableItem = null;
-                            try
-                            {
-                                WriteVerbose($"Performing Action: Retrieve Item Info for '{item}'");
-                                selectableItem = backedUpDataView.getItem(item);
-                            }
-                            catch
-                            {
-                                WriteWarning($"Failed to Select Item: {item}");
-                            }
-
-                            // If no item was found, on to the next
-                            if (selectableItem == null)
-                                continue;
-
-                            WriteVerbose($"Performing Action: Add '{item}' to Restore Session '{RestoreId}'");
-                            restoreSession.AddBrowsedItem(new DSClientBackupSetItemInfo(item, selectableItem, backedUpDataView.getItemSize(selectableItem.id)));
-                            restoreSession.AddSelectedItem(selectableItem.id);
+                            WriteVerbose($"Performing Action: Retrieve Item Info for '{item}'");
+                            selectableItem = backedUpDataView.getItem(item);
                         }
-                    }
+                        catch
+                        {
+                            WriteWarning($"Failed to Select Item: {item}");
+                        }
 
-                    found = true;
+                        // If no item was found, on to the next
+                        if (selectableItem == null)
+                            continue;
+
+                        WriteVerbose($"Performing Action: Add '{item}' to Restore Session '{RestoreId}'");
+                        restoreSession.AddBrowsedItem(new DSClientBackupSetItemInfo(item, selectableItem, backedUpDataView.getItemSize(selectableItem.id)));
+                        restoreSession.AddSelectedItem(selectableItem.id);
+                    }
                 }
             }
-
-            if (!found)
+            else
+            {
                 throw new Exception("Specified Restore Session Not Found");
+            }
         }
     }
 }

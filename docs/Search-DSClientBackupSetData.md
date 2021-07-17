@@ -32,6 +32,12 @@ Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>
  [<CommonParameters>]
 ```
 
+### RestoreId
+```
+Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
+ -RestoreId <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
+```
+
 ### BackupSetId
 ```
 Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
@@ -195,6 +201,21 @@ Specify to use Validation View stored in SessionState
 ```yaml
 Type: SwitchParameter
 Parameter Sets: ValidationSession
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RestoreId
+Specify an existing Restore Session Id
+
+```yaml
+Type: Int32
+Parameter Sets: RestoreId
 Aliases:
 
 Required: True

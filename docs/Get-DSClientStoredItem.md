@@ -54,6 +54,13 @@ Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-Recu
  [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
+### RestoreId
+```
+Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
+ [-ExcludePath <String[]>] -RestoreId <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>]
+ [-DeletedDate <DateTime>] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Returns a list of items that have been backed up by a Backup Set
 
@@ -310,6 +317,21 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RestoreId
+Specify an existing Restore Session Id
+
+```yaml
+Type: Int32
+Parameter Sets: RestoreId
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

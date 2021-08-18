@@ -37,7 +37,7 @@ namespace PSAsigraDSClient
         [Parameter(ParameterSetName = "BackupSetId")]
         public SwitchParameter HideDirectories { get; set; }
 
-        protected override void ProcessRestoreSessionData(ref DSClientRestoreSession restoreSession)
+        protected override void ProcessRestoreSessionData(DSClientRestoreSession restoreSession)
         {
             // This method is specific for processing the data from a Restore Session, by adding every item to the sessions browsed items list.
             // The repeated code from this method and ProcessBackupSetData() can probably be simplified at a later time

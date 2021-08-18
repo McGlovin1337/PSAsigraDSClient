@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Management.Automation;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -12,12 +12,11 @@ namespace PSAsigraDSClient
     {
         private BackupSetRestoreView _backupSetRestoreView;
         private RestoreActivityInitiator _restoreActivityInitiator;
-        private readonly BackupSetCredentials _credentials;
-        //private List<int> _destinationIds;
         private List<long> _selectedItemIds;
-        //private readonly EBackupDataType _dataType;
         private readonly DataSourceBrowser _dataSourceBrowser;             
         private readonly List<DSClientBackupSetItemInfo> _browsedItems;
+        private readonly EBackupDataType _dataType;
+        private readonly Type _credType;
         private readonly Type _setType;
         private readonly Type _restoreOptionsType;
 
@@ -27,58 +26,91 @@ namespace PSAsigraDSClient
         public ReadyStatus Ready { get; private set; }
         public string DataType { get; private set; }
         public string Computer { get; private set; }
-        public string Credential { get; private set; }
+        public DSClientCredentialSet[] CredentialSet { get; set; }
         public RestoreDestination[] DestinationPaths { get; private set; }
         public string RestoreReason { get; private set; }
         public string RestoreClassification { get; private set; }
         public DSClientRestoreOption[] RestoreOptions { get; private set; }
 
-        internal DSClientRestoreSession(int restoreId,
-            int backupSetId,
-            string computer,
-            Type setType,
-            EBackupDataType dataType,
-            DataSourceBrowser dataSourceBrowser,
-            BackupSetRestoreView restoreView)
+        internal DSClientRestoreSession(int restoreId, BackupSet backupSet, Type setType)
         {
-            _setType = setType;
-            //_dataType = dataType;
-            _backupSetRestoreView = restoreView;
-            _restoreActivityInitiator = null;
-            _dataSourceBrowser = dataSourceBrowser;
-            _credentials = dataSourceBrowser.getCurrentCredentials();
+            _backupSetRestoreView = backupSet.prepare_restore(0, DateTimeToUnixEpoch(DateTime.Now), 0);
             _browsedItems = new List<DSClientBackupSetItemInfo>();
-            //_destinationIds = new List<int>();
+            _dataSourceBrowser = backupSet.dataBrowser();
+            _dataType = backupSet.getDataType();
+            _restoreActivityInitiator = null;
             _selectedItemIds = new List<long>();
+            _setType = setType;
 
             RestoreId = restoreId;
-            BackupSetId = backupSetId;
-            DataType = EnumToString(dataType);
-            Computer = computer;
+            BackupSetId = backupSet.getID();
+            DataType = EnumToString(_dataType);
+            Computer = backupSet.getComputerName();
             RestoreClassification = "Production";
-            
-            switch (dataType)
+
+            switch (_dataType)
             {
                 case EBackupDataType.EBackupDataType__FileSystem:
-                    if (_setType == typeof(Win32FS_BackupSet))
-                    {
-                        _restoreOptionsType = typeof(RestoreOptions_Win32FileSystem);
-                        RestoreOptions = new RestoreOptions_Win32FileSystem().GetRestoreOptions().ToArray();
-                    }
-                    else
-                    {
-                        _restoreOptionsType = typeof(RestoreOptions_FileSystem);
-                        RestoreOptions = new RestoreOptions_FileSystem().GetRestoreOptions().ToArray();
-                    }
-                    //FileSystemOptions = (_setType == typeof(Win32FS_BackupSet)) ? new FileSystemRestoreOptions(true, true) : new FileSystemRestoreOptions(true, false);
+                    _restoreOptionsType = (_setType == typeof(Win32FS_BackupSet)) ? typeof(RestoreOptions_Win32FileSystem) : typeof(RestoreOptions_FileSystem);
+                    RestoreOptions = (_setType == typeof(Win32FS_BackupSet))
+                        ? new RestoreOptions_Win32FileSystem().GetRestoreOptions().ToArray()
+                        : new RestoreOptions_FileSystem().GetRestoreOptions().ToArray();
                     break;
-                default:
-                    //FileSystemOptions = new FileSystemRestoreOptions(false);
+                case EBackupDataType.EBackupDataType__SQLServer:
+                    _restoreOptionsType = typeof(RestoreOptions_MSSQLServer);
+                    RestoreOptions = new RestoreOptions_MSSQLServer().GetRestoreOptions().ToArray();
                     break;
             }
 
-            GetCredentials();
+            List<DSClientCredentialSet> credSet = new List<DSClientCredentialSet>();
+            BackupSetCredentials backupSetCredentials = _dataSourceBrowser.getCurrentCredentials();
+
+            // The Type of Computer Credentials is determined by the Type of BackupSet              
+            if (_setType == typeof(UnixFS_Generic_BackupSet))
+            {
+                if (backupSet.getComputerName().Split('\\')[0] == "UNIX-SSH")
+                    _credType = typeof(UnixFS_SSH_BackupSetCredentials);
+                else
+                    _credType = typeof(UnixFS_Generic_BackupSetCredentials);
+            }
+            else if (_setType == typeof(DB2_BackupSet))
+                _credType = typeof(DB2_BackupSetCredentials);
+            else
+                _credType = typeof(Win32FS_Generic_BackupSetCredentials);
+
+            // Add the Computer Credentials
+            if (_credType == typeof(UnixFS_Generic_BackupSetCredentials))
+            {
+                UnixFS_Generic_BackupSetCredentials unixCredentials = UnixFS_Generic_BackupSetCredentials.from(backupSetCredentials);
+                DSClientCredential credential = new DSClientCredential(unixCredentials, unixCredentials.getUserName());
+                credSet.Add(new DSClientCredentialSet(credential, DSClientConnectionOption.ComputerCredential));
+            }
+            else if (_credType == typeof(UnixFS_SSH_BackupSetCredentials))
+            {
+                UnixFS_SSH_BackupSetCredentials sshBackupSetCreds = UnixFS_SSH_BackupSetCredentials.from(backupSetCredentials);
+                DSClientSSHCredential sshCredential = new DSClientSSHCredential(sshBackupSetCreds, sshBackupSetCreds.getUserName());
+                credSet.Add(new DSClientCredentialSet(sshCredential, DSClientConnectionOption.SSHCredential));
+            }
+            else if (_credType == typeof(Win32FS_Generic_BackupSetCredentials))
+            {
+                Win32FS_Generic_BackupSetCredentials win32BackupSetCreds = Win32FS_Generic_BackupSetCredentials.from(backupSetCredentials);
+                DSClientCredential credential = new DSClientCredential(win32BackupSetCreds, win32BackupSetCreds.getUserName());
+                credSet.Add(new DSClientCredentialSet(credential, DSClientConnectionOption.ComputerCredential));
+            }
+
+            // If the Backup Set is MSSQL, add the Database Credentials
+            if (_setType == typeof(MSSQL_BackupSet))
+            {
+                Win32FS_Generic_BackupSetCredentials databaseCredential = MSSQL_BackupSet.from(backupSet).getDBCredentials();
+                DSClientCredential dbCredential = new DSClientCredential(databaseCredential, databaseCredential.getUserName());
+                credSet.Add(new DSClientCredentialSet(dbCredential, DSClientConnectionOption.DatabaseCredential));
+            }
+
+            CredentialSet = credSet.ToArray();
+
             UpdateReadyStatus();
+
+            backupSet.Dispose();
         }
 
         internal void AddBrowsedItem(DSClientBackupSetItemInfo item)
@@ -215,6 +247,34 @@ namespace PSAsigraDSClient
                     }
                 }
             }
+            else if (_restoreOptionsType == typeof(RestoreOptions_MSSQLServer))
+            {
+                Console.WriteLine("I got here");
+                MSSQL_RestoreActivityInitiator sqlRestoreActivityInitiator = MSSQL_RestoreActivityInitiator.from(_restoreActivityInitiator);
+
+                mssql_dump_parameters dumpParams = new mssql_dump_parameters
+                {
+                    dump_method = StringToEnum<ESQLDumpMethod>(RestoreOptions.Single(v => v.Option == "DumpMethod").Value as string),
+                    path = RestoreOptions.Single(option => option.Option == "DumpMethod").Value as string
+                };
+                sqlRestoreActivityInitiator.setDumpParameters(dumpParams);
+                Console.WriteLine("I got here");
+
+                sqlRestoreActivityInitiator.setLeaveRestoringMode((bool)RestoreOptions.Single(v => v.Option == "LeaveRestoringMode").Value);
+
+                sqlRestoreActivityInitiator.setRestoreDumpOnly((bool)RestoreOptions.Single(v => v.Option == "RestoreDumpOnly").Value);
+
+                sqlRestoreActivityInitiator.setPreserveOriginalLocation((bool)RestoreOptions.Single(v => v.Option == "PreserveOriginalLocation").Value);
+
+                // Get all of the Database mappings into a single List and pass to setRestorePath method
+                List<mssql_restore_path> dbrestorePaths = new List<mssql_restore_path>();
+                Console.WriteLine("I got here");
+                foreach (RestoreDestination destination in DestinationPaths)
+                    foreach (MSSQLDatabaseMap dbMap in destination.DatabaseMapping)
+                        dbrestorePaths.Add(dbMap.GetRestorePath());
+                sqlRestoreActivityInitiator.setRestorePath(dbrestorePaths.ToArray());
+                Console.WriteLine("I got here");
+            }
         }
 
         internal void Dispose()
@@ -228,20 +288,10 @@ namespace PSAsigraDSClient
             if (_restoreActivityInitiator != null)
                 _restoreActivityInitiator.Dispose();
 
-            if (_credentials != null)
-                _credentials.Dispose();
-        }
-
-        private void GetCredentials()
-        {
-            if (_credentials.isUsingClientCredentials())
-                Credential = "DS-Client Service Impersonation";
-            else if (_setType == typeof(UnixFS_Generic_BackupSet))
-                Credential = UnixFS_Generic_BackupSetCredentials.from(_credentials).getUserName();
-            else if (_setType == typeof(DB2_BackupSet))
-                Credential = DB2_BackupSetCredentials.from(_credentials).getUserName();
-            else
-                Credential = Win32FS_Generic_BackupSetCredentials.from(_credentials).getUserName();
+            foreach (DSClientCredentialSet credential in CredentialSet)
+                credential.GetCredential()
+                    .GetCredentials()
+                    .Dispose();
         }
 
         protected RestoreActivityInitiator GetRestoreActivityInitiator()
@@ -254,9 +304,9 @@ namespace PSAsigraDSClient
             return _restoreOptionsType;
         }
 
-        internal ref BackupSetRestoreView GetRestoreView()
+        internal BackupSetRestoreView GetRestoreView()
         {
-            return ref _backupSetRestoreView;
+            return _backupSetRestoreView;
         }
 
         internal void RemoveSelectedItem(long itemId)
@@ -287,22 +337,28 @@ namespace PSAsigraDSClient
             UpdateReadyStatus();
         }
 
-        internal void SetCredentials(PSCredential credential)
+        internal void SetCredentials(DSClientCredential credential)
         {
-            if (_setType == typeof(UnixFS_Generic_BackupSet))
-            {
-                UnixFS_Generic_BackupSetCredentials creds = UnixFS_Generic_BackupSetCredentials.from(_credentials);
-                creds.setCredentials(credential.UserName, credential.GetNetworkCredential().Password);
-                creds.setUsingClientCredentials(false);
-            }
-            else if (_setType == typeof(Win32FS_BackupSet))
-            {
-                Win32FS_Generic_BackupSetCredentials creds = Win32FS_Generic_BackupSetCredentials.from(_credentials);
-                creds.setCredentials(credential.UserName, credential.GetNetworkCredential().Password);
-                creds.setUsingClientCredentials(false);
-            }
+            _dataSourceBrowser.setCurrentCredentials(credential.GetCredentials());
 
-            GetCredentials();
+            for (int i = 0; i < CredentialSet.Length; i++)
+                if (CredentialSet[i].Type == DSClientConnectionOption.ComputerCredential)
+                    CredentialSet[i] = new DSClientCredentialSet(credential, DSClientConnectionOption.ComputerCredential);
+
+            UpdateReadyStatus();
+        }
+
+        internal void SetDatabaseCredentials(DSClientCredential credential)
+        {
+            if (_setType == typeof(MSSQL_BackupSet))
+                SQLDataBrowserWithSetCreation.from(_dataSourceBrowser).setDBCredentials(Win32FS_Generic_BackupSetCredentials.from(credential.GetCredentials()));
+            else
+                throw new Exception("Database Credentials not supported in this Restore Session");
+
+            for (int i = 0; i < CredentialSet.Length; i++)
+                if (CredentialSet[i].Type == DSClientConnectionOption.DatabaseCredential)
+                    CredentialSet[i] = new DSClientCredentialSet(credential, DSClientConnectionOption.DatabaseCredential);
+
             UpdateReadyStatus();
         }
 
@@ -315,7 +371,7 @@ namespace PSAsigraDSClient
             UpdateReadyStatus();
         }
 
-        internal void SetRestoreOptions(object restoreOptions)
+        internal void SetRestoreOptions(RestoreOptions_Base restoreOptions)
         {
             Type type = restoreOptions.GetType();
 
@@ -354,9 +410,7 @@ namespace PSAsigraDSClient
 
             if (items.Length > 0)
             {
-                _restoreActivityInitiator = _backupSetRestoreView.prepareRestore(items);
-
-                ApplyRestoreOptions();
+                _restoreActivityInitiator = _backupSetRestoreView.prepareRestore(items);                
 
                 SelectedItems = new DSClientBackupSetItemInfo[items.Length];
                 for (int i = 0; i < items.Length; i++)
@@ -365,7 +419,19 @@ namespace PSAsigraDSClient
                 selected_shares[] selectedShares = _restoreActivityInitiator.selected_shares();
                 DestinationPaths = new RestoreDestination[selectedShares.Length];
                 for (int i = 0; i < selectedShares.Length; i++)
-                    DestinationPaths[i] = new RestoreDestination(i + 1, selectedShares[i]);
+                        DestinationPaths[i] = new RestoreDestination(i + 1, selectedShares[i]);
+
+                if (_setType == typeof(MSSQL_BackupSet))
+                {
+                    foreach (DSClientBackupSetItemInfo item in SelectedItems)
+                    {
+                        string instance = Regex.Match(item.Path, @"\[.*?\]").Value;
+                        DestinationPaths.Single(dbInst => dbInst.Destination == instance)
+                            .AddDatabaseMapping(item, Computer, SQLDataBrowserWithSetCreation.from(_dataSourceBrowser));
+                    }
+                }
+
+                ApplyRestoreOptions();
             }
             else
             {
@@ -373,17 +439,6 @@ namespace PSAsigraDSClient
                 DestinationPaths = null;
                 _restoreActivityInitiator = null;
             }
-        }
-
-        internal void SetSudoCredentials(PSCredential credential)
-        {
-            if (_setType == typeof(UnixFS_Generic_BackupSet))
-            {
-                UnixFS_SSH_BackupSetCredentials creds = UnixFS_SSH_BackupSetCredentials.from(_credentials);
-                creds.setSudoAs(credential.UserName, credential.GetNetworkCredential().Password);
-            }
-            else
-                throw new Exception("This Restore Session does not support Sudo Credentials");
         }
 
         internal GenericActivity StartRestore()
@@ -417,7 +472,10 @@ namespace PSAsigraDSClient
             // Test Destination Credentials are Valid
             try
             {
-                _credentials.check(Computer);
+                CredentialSet.Single(c => c.Type == DSClientConnectionOption.ComputerCredential)
+                    .GetCredential()
+                    .GetCredentials()
+                    .check(Computer);
             }
             catch
             {
@@ -470,6 +528,7 @@ namespace PSAsigraDSClient
             public string Destination { get; private set; }
             public string TruncatablePath { get; private set; }
             public int TruncateAmount { get; private set; }
+            public MSSQLDatabaseMap[] DatabaseMapping { get; private set; }
 
             internal RestoreDestination(int id, selected_shares selectedShares)
             {
@@ -487,6 +546,14 @@ namespace PSAsigraDSClient
                 };
             }
 
+            public RestoreDestination(int id, selected_shares selectedShares, mssql_restore_path[] dbRestorePaths) : this(id, selectedShares)
+            {
+                DatabaseMapping = new MSSQLDatabaseMap[dbRestorePaths.Length];
+
+                for (int i = 0; i < dbRestorePaths.Length; i++)
+                    DatabaseMapping[i] = new MSSQLDatabaseMap(dbRestorePaths[i]);
+            }
+
             internal RestoreDestination(int id, selected_shares selectedShares, string destination)
             {
                 DestinationId = id;
@@ -501,6 +568,22 @@ namespace PSAsigraDSClient
                     source_share = selectedShares.share_name,
                     truncate_level = 0
                 };
+            }
+
+            internal void AddDatabaseMapping(DSClientBackupSetItemInfo selectedItem, string computer, SQLDataBrowserWithSetCreation dataSourceBrowser)
+            {
+                mssql_db_path[] databases = dataSourceBrowser.getDatabasesPath(computer.Split('\\').Last(), Destination.TrimStart('[').TrimEnd(']'));
+
+                MSSQLDatabaseMap dbMap;
+                mssql_db_path matchingDatabase = databases.SingleOrDefault(db => db.destination_db == selectedItem.Name);
+                if (matchingDatabase != null)
+                    dbMap = new MSSQLDatabaseMap(selectedItem, matchingDatabase);
+                else
+                    dbMap = new MSSQLDatabaseMap(selectedItem);
+
+                List<MSSQLDatabaseMap> existingMaps = (DatabaseMapping == null) ? new List<MSSQLDatabaseMap>() : DatabaseMapping.ToList();
+                existingMaps.Add(dbMap);
+                DatabaseMapping = existingMaps.ToArray();
             }
 
             internal share_mapping GetShareMapping()
@@ -524,6 +607,92 @@ namespace PSAsigraDSClient
             public override string ToString()
             {
                 return $"{Source} => {Destination}";
+            }
+        }
+    }
+
+    public class MSSQLDatabaseMap
+    {
+        private mssql_restore_path _mssqlRestorePath;
+        public string SourceDatabase { get; private set; }
+        public string DestinationDatabase { get; private set; }
+        public MSSQLFilePath[] FilePaths { get; private set; }
+
+        internal MSSQLDatabaseMap(mssql_restore_path restorePath)
+        {
+            _mssqlRestorePath = restorePath;
+            SourceDatabase = restorePath.source_db;
+            DestinationDatabase = restorePath.destination_db;
+            FilePaths = new MSSQLFilePath[restorePath.files_path.Length];
+
+            for (int i = 0; i < restorePath.files_path.Length; i++)
+                FilePaths[i] = new MSSQLFilePath(restorePath.files_path[i]);
+        }
+
+        internal MSSQLDatabaseMap(DSClientBackupSetItemInfo selectedItem)
+        {
+            SourceDatabase = selectedItem.Name;
+
+            _mssqlRestorePath = new mssql_restore_path
+            {
+                source_db = SourceDatabase
+            };
+        }
+
+        internal MSSQLDatabaseMap(DSClientBackupSetItemInfo selectedItem, mssql_db_path destinationDb)
+        {
+            SourceDatabase = selectedItem.Name;
+            DestinationDatabase = destinationDb.destination_db;
+            FilePaths = new MSSQLFilePath[destinationDb.files_path.Length];
+
+            for (int i = 0; i < destinationDb.files_path.Length; i++)
+                FilePaths[i] = new MSSQLFilePath(destinationDb.files_path[i]);
+
+            _mssqlRestorePath = new mssql_restore_path
+            {
+                source_db = SourceDatabase,
+                destination_db = DestinationDatabase,
+                files_path = destinationDb.files_path
+            };
+        }
+
+        internal mssql_restore_path GetRestorePath()
+        {
+            return _mssqlRestorePath;
+        }
+
+        public override string ToString()
+        {
+            return $"{SourceDatabase} => {DestinationDatabase}";
+        }
+
+        public class MSSQLFilePath
+        {
+            private mssql_path_item _filePath;
+            public MSSQLFileType FileType { get; private set; }
+            public string Path { get; private set; }
+
+            internal MSSQLFilePath(mssql_path_item pathItem)
+            {
+                _filePath = pathItem;
+                FileType = (pathItem.is_data) ? MSSQLFileType.Data : MSSQLFileType.Log;
+                Path = pathItem.path;
+            }
+
+            internal mssql_path_item  GetPathItem()
+            {
+                return _filePath;
+            }
+
+            public override string ToString()
+            {
+                return $"{FileType}: {Path}";
+            }
+
+            public enum MSSQLFileType
+            {
+                Data,
+                Log
             }
         }
     }
@@ -611,18 +780,6 @@ namespace PSAsigraDSClient
             RestorePermissions = "Yes";
         }
 
-        internal RestoreOptions_FileSystem(PSObject obj)
-        {
-            if (obj.ImmediateBaseObject.GetType() != typeof(RestoreOptions_FileSystem))
-                throw new Exception("Invalid Object Type");
-
-            PSMemberInfoCollection<PSPropertyInfo> objProps = obj.Properties;
-            foreach (PSPropertyInfo objProp in objProps)
-                foreach (PropertyInfo thisObj in this.GetType().GetProperties())
-                    if (thisObj.Name == objProp.Name)
-                        thisObj.SetValue(this, objProp.Value, null);
-        }
-
         internal void SetOverwriteOption(string overwriteOption)
         {
             FileOverwriteOption = overwriteOption;
@@ -652,18 +809,6 @@ namespace PSAsigraDSClient
             SkipOfflineFiles = true;
         }
 
-        internal RestoreOptions_Win32FileSystem(PSObject obj)
-        {
-            if (obj.ImmediateBaseObject.GetType() != typeof(RestoreOptions_Win32FileSystem))
-                throw new Exception("Invalid Object Type");
-
-            PSMemberInfoCollection<PSPropertyInfo> objProps = obj.Properties;
-            foreach (PSPropertyInfo objProp in objProps)
-                foreach (PropertyInfo thisObj in this.GetType().GetProperties())
-                    if (thisObj.Name == objProp.Name)
-                        thisObj.SetValue(this, objProp.Value, null);
-        }
-
         internal static RestoreOptions_Win32FileSystem From(RestoreOptions_FileSystem restoreOptions_FileSystem)
         {
             RestoreOptions_Win32FileSystem restoreOptions = new RestoreOptions_Win32FileSystem();
@@ -689,6 +834,31 @@ namespace PSAsigraDSClient
         internal void SetSkipOfflineFile(bool v)
         {
             SkipOfflineFiles = v;
+        }
+    }
+
+    public class RestoreOptions_MSSQLServer : RestoreOptions_Base
+    {
+        public string DumpMethod { get; set; }
+        public string DumpPath { get; set; }
+        public bool RestoreDumpOnly { get; set; }
+        public bool LeaveRestoringMode { get; set; }
+        public bool PreserveOriginalLocation { get; set; }
+
+
+        internal RestoreOptions_MSSQLServer() : base()
+        {
+            DumpMethod = EnumToString(ESQLDumpMethod.ESQLDumpMethod__DumpToPipe);
+            DumpPath = null;
+            RestoreDumpOnly = false;
+            LeaveRestoringMode = false;
+            PreserveOriginalLocation = false;
+        }
+
+        internal void SetDumpParameters(mssql_dump_parameters dumpParams)
+        {
+            DumpMethod = EnumToString(dumpParams.dump_method);
+            DumpPath = dumpParams.path;
         }
     }
 }

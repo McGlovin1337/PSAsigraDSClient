@@ -14,11 +14,11 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty]
         public string Computer { get; set; }
 
-        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Computer Credentials")]
-        public PSCredential Credential { get; set; }
+        [Parameter(ParameterSetName = "default", HelpMessage = "Specify Destination Computer Credentials")]
+        public DSClientCredential ComputerCredential { get; set; }
 
-        [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Sudo Credentials")]
-        public PSCredential SudoCredential { get; set; }
+        [Parameter(ParameterSetName = "default", HelpMessage = "Specify MSSQL Database Credentials")]
+        public DSClientCredential DatabaseCredential { get; set; }
 
         [Parameter(ParameterSetName = "default", ValueFromPipelineByPropertyName = true, HelpMessage = "Reason for the Restore")]
         [ValidateSet("UserErrorDataDeletion", "MaliciousIntent", "DeviceLostOrStolen", "HardwareMalfunction", "SoftwareMalfunction", "DataStolen", "DataCorruption", "NaturalDisasters", "PowerOutages", "OtherDisaster", "PreviousGeneration", "DeviceDamaged")]
@@ -28,8 +28,8 @@ namespace PSAsigraDSClient
         [ValidateSet("Production", "Drill", "ProductionDrill")]
         public string RestoreClassification { get; set; }
 
-        [Parameter(ParameterSetName = "options", HelpMessage = "Apply New Restore Options")]
-        public PSObject Options { get; set; }
+        [Parameter(ParameterSetName = "default", HelpMessage = "Apply New Restore Options")]
+        public RestoreOptions_Base Options { get; set; }
 
         [Parameter(Position = 1, Mandatory = true, ParameterSetName = "sharemapping", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify a Destination Path Id to modify")]
         public int DestinationId { get; set; }
@@ -42,80 +42,47 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            // If the Options Parameter is specified, validate it is of an accepted object type
-            if (MyInvocation.BoundParameters.ContainsKey(nameof(Options)))
-            {
-                WriteDebug($"Immediate Base Type: {Options.ImmediateBaseObject.GetType()}");                
-                
-                if (!(Options.ImmediateBaseObject.GetType() == typeof(RestoreOptions_FileSystem) ||
-                    Options.ImmediateBaseObject.GetType() == typeof(RestoreOptions_Win32FileSystem)))
-                {
-                    throw new ParameterBindingException("Invalid Options Data Type");
-                }
-            }
-
             DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
 
             if (restoreSession != null)
             {
                 if (MyInvocation.BoundParameters.ContainsKey(nameof(Options)))
+                    if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", "Set Restore Options"))
+                        restoreSession.SetRestoreOptions(Options);
+
+                if (MyInvocation.BoundParameters.ContainsKey(nameof(Computer)))
+                    if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Destination Computer to '{Computer}'"))
+                        restoreSession.SetComputer(Computer);
+
+                if (MyInvocation.BoundParameters.ContainsKey(nameof(ComputerCredential)))
+                    if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Credentials to '{ComputerCredential.UserName}"))
+                        restoreSession.SetCredentials(ComputerCredential);
+
+                if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreReason)))
+                    if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Reason to '{RestoreReason}'"))
+                        restoreSession.SetRestoreReason(RestoreReason);
+
+                if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreClassification)))
+                    if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Classification to '{RestoreClassification}'"))
+                        restoreSession.SetRestoreClassification(RestoreClassification);
+
+                if (MyInvocation.BoundParameters.ContainsKey(nameof(DestinationId)))
                 {
-                    if (Options.ImmediateBaseObject.GetType() == typeof(RestoreOptions_FileSystem) && restoreSession.GetRestoreOptionsType() == typeof(RestoreOptions_Win32FileSystem))
+                    for (int x = 0; x < restoreSession.DestinationPaths.Length; x++)
                     {
-                        if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", "Set Restore Options"))
-                            restoreSession.SetRestoreOptions(RestoreOptions_Win32FileSystem.From(new RestoreOptions_FileSystem(Options)));
-                    }
-                    else if (Options.ImmediateBaseObject.GetType() == typeof(RestoreOptions_FileSystem))
-                    {
-                        if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", "Set Restore Options"))
-                            restoreSession.SetRestoreOptions(new RestoreOptions_FileSystem(Options));
-                    }
-                    else if (Options.ImmediateBaseObject.GetType() == typeof(RestoreOptions_Win32FileSystem))
-                    {
-                        if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", "Set Restore Options"))
-                            restoreSession.SetRestoreOptions(new RestoreOptions_Win32FileSystem(Options));
-                    }
-                }
-                else
-                {
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(Computer)))
-                        if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Destination Computer to '{Computer}'"))
-                            restoreSession.SetComputer(Computer);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(Credential)))
-                        if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Credentials to '{Credential.UserName}'"))
-                            restoreSession.SetCredentials(Credential);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(SudoCredential)))
-                        if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Sudo Credentials to '{SudoCredential.UserName}'"))
-                            restoreSession.SetSudoCredentials(SudoCredential);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreReason)))
-                        if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Reason to '{RestoreReason}'"))
-                            restoreSession.SetRestoreReason(RestoreReason);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreClassification)))
-                        if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Classification to '{RestoreClassification}'"))
-                            restoreSession.SetRestoreClassification(RestoreClassification);
-
-                    if (MyInvocation.BoundParameters.ContainsKey(nameof(DestinationId)))
-                    {
-                        for (int x = 0; x < restoreSession.DestinationPaths.Length; x++)
+                        if (restoreSession.DestinationPaths[x].DestinationId == DestinationId)
                         {
-                            if (restoreSession.DestinationPaths[x].DestinationId == DestinationId)
-                            {
-                                DSClientRestoreSession.RestoreDestination destination = restoreSession.DestinationPaths[x];
-                                if (MyInvocation.BoundParameters.ContainsKey(nameof(DestinationPath)))
-                                    if (ShouldProcess($"DestinationId '{DestinationId}' on Restore Session '{RestoreId}'", $"Set Restore Destination Path to '{DestinationPath}'"))
-                                        destination.SetDestination(DestinationPath);
+                            DSClientRestoreSession.RestoreDestination destination = restoreSession.DestinationPaths[x];
+                            if (MyInvocation.BoundParameters.ContainsKey(nameof(DestinationPath)))
+                                if (ShouldProcess($"DestinationId '{DestinationId}' on Restore Session '{RestoreId}'", $"Set Restore Destination Path to '{DestinationPath}'"))
+                                    destination.SetDestination(DestinationPath);
 
-                                if (MyInvocation.BoundParameters.ContainsKey(nameof(TruncateAmount)))
-                                    if (ShouldProcess($"DestinationId '{DestinationId}' on Restore Session '{RestoreId}'", $"Truncate Source Path by '{TruncateAmount}'"))
-                                        destination.SetTruncateLevel(TruncateAmount);
+                            if (MyInvocation.BoundParameters.ContainsKey(nameof(TruncateAmount)))
+                                if (ShouldProcess($"DestinationId '{DestinationId}' on Restore Session '{RestoreId}'", $"Truncate Source Path by '{TruncateAmount}'"))
+                                    destination.SetTruncateLevel(TruncateAmount);
 
-                                restoreSession.DestinationPaths[x] = destination;
-                                break;
-                            }
+                            restoreSession.DestinationPaths[x] = destination;
+                            break;
                         }
                     }
                 }

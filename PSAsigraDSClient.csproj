@@ -95,6 +95,7 @@
     <Compile Include="PSAsigraDSClient\DisableDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\DisableDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\DisconnectDSClientSession.cs" />
+    <Compile Include="PSAsigraDSClient\DSClientCredential.cs" />
     <Compile Include="PSAsigraDSClient\DSClientSession.cs" />
     <Compile Include="PSAsigraDSClient\DSClientBackupSetItemInfo.cs" />
     <Compile Include="PSAsigraDSClient\DSClientRestoreSession.cs" />
@@ -174,8 +175,10 @@
     <Compile Include="PSAsigraDSClient\GetDSClientSNMPCommunity.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientSNMPInfo.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientSession.cs" />
+    <Compile Include="PSAsigraDSClient\NewDSClientUnixCredential.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientUnixFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientVMwareVADPBackupSet.cs" />
+    <Compile Include="PSAsigraDSClient\NewDSClientWindowsCredential.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\PublishDSClientEncryptionKeys.cs" />
     <Compile Include="PSAsigraDSClient\ReadDSClientMSSqlServerSource.cs" />
@@ -232,9 +235,7 @@
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetRetention.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientMSSqlServerRestore.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientRestore.cs" />
-    <Compile Include="PSAsigraDSClient\StartDSClientUnixFsRestore.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientVMwareVADPRestore.cs" />
-    <Compile Include="PSAsigraDSClient\StartDSClientWinFsRestore.cs" />
     <Compile Include="PSAsigraDSClient\StopDSClientGridNode.cs" />
     <Compile Include="PSAsigraDSClient\SyncDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetValidation.cs" />

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Management.Automation;
 using AsigraDSClientApi;
-using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -33,9 +32,9 @@ namespace PSAsigraDSClient
                 throw new Exception("Backup Set is Currently Locked");
             }
 
+            // Determine the Backup Set Type based on the Data Type
             EBackupDataType dataType = backupSet.getDataType();
             Type setType = typeof(BackupSet);
-
             if (dataType == EBackupDataType.EBackupDataType__FileSystem)
             {
                 if (DSClientSessionInfo.OperatingSystem == "Windows")
@@ -53,24 +52,9 @@ namespace PSAsigraDSClient
             }
             WriteDebug($"Backup Set Type: {setType}");
 
-            WriteDebug("Creating a Data Browser");
-            DataSourceBrowser dataSourceBrowser = backupSet.dataBrowser(); // Sets up a Data Browser for restore back to original Computer
-            WriteDebug("Creating a Restore View");
-            DateTime currentDateTime = DateTime.Now;
-            BackupSetRestoreView backupSetRestoreView = backupSet.prepare_restore(0, DateTimeToUnixEpoch(currentDateTime), 0); // Sets up a Restore View for Selecting Latest Generations of Data
-
-            // Get Restore Sessions from Session State
-            WriteVerbose("Performing Action: Retrieve Existing Restore Sessions");
-
-            WriteVerbose("Performing Action: Creating new Restore Session");
-            DSClientRestoreSession restoreSession = new DSClientRestoreSession(
-                    DSClientSessionInfo.GenerateRestoreId(),
-                    BackupSetId,
-                    backupSet.getComputerName(),
-                    setType,
-                    dataType,
-                    dataSourceBrowser,
-                    backupSetRestoreView);
+            WriteVerbose("Performing Action: Create Restore Session");
+            DSClientRestoreSession restoreSession = new DSClientRestoreSession(DSClientSessionInfo.GenerateRestoreId(), backupSet, setType);
+            WriteVerbose($"Restore Session Id: {restoreSession.RestoreId}");
 
             if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreClassification)))
                 restoreSession.SetRestoreClassification(RestoreClassification);

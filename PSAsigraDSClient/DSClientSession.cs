@@ -97,6 +97,11 @@ namespace PSAsigraDSClient
             return id;
         }
 
+        internal string GetApiUrl()
+        {
+            return _url;
+        }
+
         internal bool GetLogoutOnExit()
         {
             return _logoutOnExit;

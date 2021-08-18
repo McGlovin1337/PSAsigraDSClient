@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 
 namespace PSAsigraDSClient
 {
@@ -19,26 +16,11 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             WriteVerbose("Performing Action: Retrieve Restore Sessions");
-            if (!(SessionState.PSVariable.GetValue("RestoreSessions", null) is List<DSClientRestoreSession> restoreSessions))
-                throw new Exception("No Restore Sessions Found");
+            DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
 
-            bool found = false;
-            for (int i = 0; i < restoreSessions.Count(); i++)
-            {
-                if (restoreSessions[i].RestoreId == RestoreId)
-                {
-                    DSClientRestoreSession restoreSession = restoreSessions[i];
-
-                    if(ShouldProcess($"Restore Session with Id '{RestoreId}'", "Remove Items for Restore"))
-                        restoreSession.RemoveSelectedItems(ItemId);
-
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found)
-                throw new Exception("Restore Session Not Found");
+            if (restoreSession != null)
+                if (ShouldProcess($"Restore Session with Id '{RestoreId}'", "Remove Items for Restore"))
+                    restoreSession.RemoveSelectedItems(ItemId);
         }
     }
 }

@@ -322,12 +322,15 @@
     <None Include="docs\New-DSClientArchiveFilterRule.md" />
     <None Include="docs\New-DSClientFSRestoreOptions.md" />
     <None Include="docs\New-DSClientInitialBackupPath.md" />
+    <None Include="docs\New-DSClientMSSQLRestoreOptions.md" />
     <None Include="docs\New-DSClientMSSqlServerBackupSet.md" />
     <None Include="docs\New-DSClientRetentionRule.md" />
     <None Include="docs\New-DSClientSchedule.md" />
     <None Include="docs\New-DSClientSession.md" />
+    <None Include="docs\New-DSClientUnixCredential.md" />
     <None Include="docs\New-DSClientUnixFsBackupSet.md" />
     <None Include="docs\New-DSClientVMwareVADPBackupSet.md" />
+    <None Include="docs\New-DSClientWindowsCredential.md" />
     <None Include="docs\New-DSClientWinFsBackupSet.md" />
     <None Include="docs\Publish-DSClientEncryptionKeys.md" />
     <None Include="docs\Read-DSClientMSSqlServerSource.md" />

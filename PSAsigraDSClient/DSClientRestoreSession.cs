@@ -385,6 +385,11 @@ namespace PSAsigraDSClient
                 RestoreOptions_Win32FileSystem winfsOptions = restoreOptions as RestoreOptions_Win32FileSystem;
                 RestoreOptions = winfsOptions.GetRestoreOptions();
             }
+            else if (type == typeof(RestoreOptions_MSSQLServer))
+            {
+                RestoreOptions_MSSQLServer sqlOptions = restoreOptions as RestoreOptions_MSSQLServer;
+                RestoreOptions = sqlOptions.GetRestoreOptions();
+            }
             else
             {
                 throw new Exception("Unsupported Option Type");
@@ -839,11 +844,11 @@ namespace PSAsigraDSClient
 
     public class RestoreOptions_MSSQLServer : RestoreOptions_Base
     {
-        public string DumpMethod { get; set; }
-        public string DumpPath { get; set; }
-        public bool RestoreDumpOnly { get; set; }
-        public bool LeaveRestoringMode { get; set; }
-        public bool PreserveOriginalLocation { get; set; }
+        public string DumpMethod { get; private set; }
+        public string DumpPath { get; private set; }
+        public bool RestoreDumpOnly { get; private set; }
+        public bool LeaveRestoringMode { get; private set; }
+        public bool PreserveOriginalLocation { get; private set; }
 
 
         internal RestoreOptions_MSSQLServer() : base()
@@ -855,10 +860,32 @@ namespace PSAsigraDSClient
             PreserveOriginalLocation = false;
         }
 
-        internal void SetDumpParameters(mssql_dump_parameters dumpParams)
+        internal void SetDumpMethod(string dumpMethod)
         {
-            DumpMethod = EnumToString(dumpParams.dump_method);
-            DumpPath = dumpParams.path;
+            // Check the string is a valid Enum
+            StringToEnum<ESQLDumpMethod>(dumpMethod);
+
+            DumpMethod = dumpMethod;
+        }
+
+        internal void SetDumpPath(string dumpPath)
+        {
+            DumpPath = dumpPath;
+        }
+
+        internal void SetRestoreDumpOnly(bool restoreDumpOnly)
+        {
+            RestoreDumpOnly = restoreDumpOnly;
+        }
+
+        internal void SetLeaveRestoringMode(bool leaveRestoring)
+        {
+            LeaveRestoringMode = leaveRestoring;
+        }
+
+        internal void SetPreserveOriginalLocation(bool preserveOriginalLocation)
+        {
+            PreserveOriginalLocation = preserveOriginalLocation;
         }
     }
 }

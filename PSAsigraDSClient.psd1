@@ -149,6 +149,7 @@ CmdletsToExport = @(
 "New-DSClientArchiveFilterRule",
 "New-DSClientFSRestoreOptions",
 "New-DSClientInitialBackupPath",
+"New-DSClientMSSQLRestoreOptions",
 "New-DSClientMSSqlServerBackupSet",
 "New-DSClientRetentionRule",
 "New-DSClientSchedule",

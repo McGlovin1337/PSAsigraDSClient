@@ -133,6 +133,7 @@
     <Compile Include="PSAsigraDSClient\NewDSClientArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientFSRestoreOptions.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientInitialBackupPath.cs" />
+    <Compile Include="PSAsigraDSClient\NewDSClientMSSQLRestoreOptions.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientMSSqlServerBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientRetentionRule.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientSchedule.cs" />

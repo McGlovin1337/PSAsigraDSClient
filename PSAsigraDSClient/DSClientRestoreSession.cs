@@ -254,7 +254,7 @@ namespace PSAsigraDSClient
                 mssql_dump_parameters dumpParams = new mssql_dump_parameters
                 {
                     dump_method = StringToEnum<ESQLDumpMethod>(RestoreOptions.Single(v => v.Option == "DumpMethod").Value as string),
-                    path = RestoreOptions.Single(option => option.Option == "DumpMethod").Value as string
+                    path = RestoreOptions.SingleOrDefault(option => option.Option == "DumpPath").Value as string ?? ""
                 };
                 sqlRestoreActivityInitiator.setDumpParameters(dumpParams);
 
@@ -390,6 +390,8 @@ namespace PSAsigraDSClient
             {
                 throw new Exception("Unsupported Option Type");
             }
+
+            ApplyRestoreOptions();
         }
 
         internal void SetRestoreReason(string reason)
@@ -496,6 +498,8 @@ namespace PSAsigraDSClient
                     break;
                 }
             }
+
+            ApplyRestoreOptions();
         }
 
         protected virtual void UpdateReadyStatus()

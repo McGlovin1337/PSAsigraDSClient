@@ -390,8 +390,6 @@
     <None Include="docs\Start-DSClientMSSqlServerRestore.md" />
     <None Include="docs\Start-DSClientRestore.md" />
     <None Include="docs\Start-DSClientSystemActivity.md" />
-    <None Include="docs\Start-DSClientUnixFsRestore.md" />
-    <None Include="docs\Start-DSClientWinFsRestore.md" />
     <None Include="docs\Stop-DSClientActivity.md" />
     <None Include="docs\Stop-DSClientGridNode.md" />
     <None Include="docs\Sync-DSClientBackupSet.md" />

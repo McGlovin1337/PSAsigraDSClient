@@ -268,7 +268,11 @@ namespace PSAsigraDSClient
                 List<mssql_restore_path> dbrestorePaths = new List<mssql_restore_path>();
                 foreach (RestoreDestination destination in DestinationPaths)
                     foreach (MSSQLDatabaseMap dbMap in destination.DatabaseMapping)
-                        dbrestorePaths.Add(dbMap.GetRestorePath());
+                    {
+                        mssql_restore_path restorePath = dbMap.GetRestorePath();
+                        if (restorePath != null && restorePath.destination_db != null)
+                            dbrestorePaths.Add(restorePath);
+                    }
                 sqlRestoreActivityInitiator.setRestorePath(dbrestorePaths.ToArray());
             }
         }
@@ -500,6 +504,7 @@ namespace PSAsigraDSClient
             }
 
             ApplyRestoreOptions();
+            UpdateReadyStatus();
         }
 
         protected virtual void UpdateReadyStatus()
@@ -527,8 +532,16 @@ namespace PSAsigraDSClient
                 errors.Add("Invalid Credentials");
             }
 
+            // Check a Destination has been specified
             if (DestinationPaths == null)
                 errors.Add("DestinationPaths Not Specified");
+
+            // If this is a SQL Database restore, check each selected database has a destination database mapping (except when RestoreDumpOnly option is set)
+            if (_setType == typeof(MSSQL_BackupSet))
+                if (!(bool)RestoreOptions.Single(o => o.Option == "RestoreDumpOnly").Value && DestinationPaths != null)
+                    foreach (RestoreDestination destination in DestinationPaths)
+                        if (destination.DatabaseMapping.Any(map => string.IsNullOrEmpty(map.DestinationDatabase)))
+                            errors.Add("Missing Database Mapping");
 
             foreach (DSClientRestoreOption option in RestoreOptions)
             {

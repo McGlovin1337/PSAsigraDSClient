@@ -13789,6 +13789,110 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>New-DSClientMSSQLDatabaseRestoreMapping</command:name>
+      <command:verb>New</command:verb>
+      <command:noun>DSClientMSSQLDatabaseRestoreMapping</command:noun>
+      <maml:description>
+        <maml:para>Create a new Database Mapping for MSSQL Database Restore Operations</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Use this Cmdlet to Map a Source MS SQL Database to a Destination MS SQL Database. Note, that the Source Database must be selected for restore and the Destination Database must exist on the Destination SQL Instance.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>New-DSClientMSSQLDatabaseRestoreMapping</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>SourceDatabase</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Source Database</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="none">
+          <maml:name>DestinationDatabase</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Destination Database to Map Source Databse to</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="none">
+        <maml:name>DestinationDatabase</maml:name>
+        <maml:Description>
+          <maml:para>Specify the Destination Database to Map Source Databse to</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+        <maml:name>SourceDatabase</maml:name>
+        <maml:Description>
+          <maml:para>Specify the Source Database</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSAsigraDSClient.MSSQLDatabaseMap</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $dbmap = New-DSClientMSSQLDatabaseRestoreMapping -SourceDatabase 'ProdDatabase' -DestinationDatabase 'DevDatabase'
+PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMapping $dbmap</dev:code>
+        <dev:remarks>
+          <maml:para>Maps the Source Database named 'ProdDatabase' to the Destination Database named 'DevDatabase' in the selected Restore Session</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>New-DSClientMSSQLRestoreOptions</command:name>
       <command:verb>New</command:verb>
       <command:noun>DSClientMSSQLRestoreOptions</command:noun>
@@ -30437,14 +30541,14 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>Credential</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Options</maml:name>
           <maml:Description>
-            <maml:para>Specify the Computer Credentials</maml:para>
+            <maml:para>Apply New Restore Options</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">RestoreOptions_Base</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>RestoreOptions_Base</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -30492,18 +30596,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>SudoCredential</maml:name>
-          <maml:Description>
-            <maml:para>Specify Sudo Credentials</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-          <dev:type>
-            <maml:name>PSCredential</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
           <maml:name>WhatIf</maml:name>
           <maml:Description>
@@ -30514,6 +30606,30 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ComputerCredential</maml:name>
+          <maml:Description>
+            <maml:para>Specify Destination Computer Credentials</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
+          <dev:type>
+            <maml:name>DSClientCredential</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DatabaseCredential</maml:name>
+          <maml:Description>
+            <maml:para>Specify MSSQL Database Credentials</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
+          <dev:type>
+            <maml:name>DSClientCredential</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
@@ -30588,54 +30704,17 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-      </command:syntaxItem>
-      <command:syntaxItem>
-        <maml:name>Set-DSClientRestoreSession</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
-          <maml:name>RestoreId</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>DatabaseMapping</maml:name>
           <maml:Description>
-            <maml:para>Specify the Restore Session Id</maml:para>
+            <maml:para>Update Database Mapping(s)</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">MSSQLDatabaseMap[]</command:parameterValue>
           <dev:type>
-            <maml:name>Int32</maml:name>
+            <maml:name>MSSQLDatabaseMap[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
-          <maml:name>Confirm</maml:name>
-          <maml:Description>
-            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Options</maml:name>
-          <maml:Description>
-            <maml:para>Apply New Restore Options</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
-          <dev:type>
-            <maml:name>PSObject</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
-          <maml:name>WhatIf</maml:name>
-          <maml:Description>
-            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -30663,18 +30742,6 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>Credential</maml:name>
-        <maml:Description>
-          <maml:para>Specify the Computer Credentials</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-        <dev:type>
-          <maml:name>PSCredential</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>DestinationId</maml:name>
@@ -30705,9 +30772,9 @@
         <maml:Description>
           <maml:para>Apply New Restore Options</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">RestoreOptions_Base</command:parameterValue>
         <dev:type>
-          <maml:name>PSObject</maml:name>
+          <maml:name>RestoreOptions_Base</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -30749,18 +30816,6 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>SudoCredential</maml:name>
-        <maml:Description>
-          <maml:para>Specify Sudo Credentials</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-        <dev:type>
-          <maml:name>PSCredential</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>TruncateAmount</maml:name>
         <maml:Description>
           <maml:para>Specify the amount to truncate the original path by</maml:para>
@@ -30783,6 +30838,42 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ComputerCredential</maml:name>
+        <maml:Description>
+          <maml:para>Specify Destination Computer Credentials</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
+        <dev:type>
+          <maml:name>DSClientCredential</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>DatabaseCredential</maml:name>
+        <maml:Description>
+          <maml:para>Specify MSSQL Database Credentials</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
+        <dev:type>
+          <maml:name>DSClientCredential</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>DatabaseMapping</maml:name>
+        <maml:Description>
+          <maml:para>Update Database Mapping(s)</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">MSSQLDatabaseMap[]</command:parameterValue>
+        <dev:type>
+          <maml:name>MSSQLDatabaseMap[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
@@ -38731,1118 +38822,6 @@
         <dev:code>PS C:\&gt; Start-DSClientSystemActivity -Activity DailyAdmin</dev:code>
         <dev:remarks>
           <maml:para>Start a Daily Admin task</maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks />
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>Start-DSClientUnixFsRestore</command:name>
-      <command:verb>Start</command:verb>
-      <command:noun>DSClientUnixFsRestore</command:noun>
-      <maml:description>
-        <maml:para>Starts a Restore of a Unix File System Backup Set</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Starts a Restore of a Unix File System Backup Set, the Initialize-DSClientBackupSetRestore Cmdlet must be executed prior to this Cmdlet</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Start-DSClientUnixFsRestore</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="Path">
-          <maml:name>Items</maml:name>
-          <maml:Description>
-            <maml:para>Specify the items to validate</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-          <dev:type>
-            <maml:name>String[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
-          <maml:name>ItemId</maml:name>
-          <maml:Description>
-            <maml:para>Select Items by ItemId</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int64[]</command:parameterValue>
-          <dev:type>
-            <maml:name>Int64[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>Computer</maml:name>
-          <maml:Description>
-            <maml:para>Specify the Computer to Restore to</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Credential</maml:name>
-          <maml:Description>
-            <maml:para>Specify Credentials for Destination Computer</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-          <dev:type>
-            <maml:name>PSCredential</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>DestinationPath</maml:name>
-          <maml:Description>
-            <maml:para>Destination to restore items to</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>LocalStorageMethod</maml:name>
-          <maml:Description>
-            <maml:para>Specify Local Storage Handling</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">None</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">ConnectDsSysFirst</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">ConnectDsSysNeeded</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">ContinueWithoutDsSys</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>OverwriteOption</maml:name>
-          <maml:Description>
-            <maml:para>File Overwrite Option</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">RestoreAll</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">RestoreNewer</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">RestoreOlder</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">RestoreDifferent</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">SkipExisting</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>RestoreClassification</maml:name>
-          <maml:Description>
-            <maml:para>Specify Restore Classification</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Production</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Drill</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">ProductionDrill</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>RestoreMethod</maml:name>
-          <maml:Description>
-            <maml:para>File Restore Method</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Save</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Fast</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">UseBuffer</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>RestorePermissions</maml:name>
-          <maml:Description>
-            <maml:para>Specify Restoration of Permissions</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Yes</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Skip</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Only</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>RestoreReason</maml:name>
-          <maml:Description>
-            <maml:para>Specify the Restore Reason</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">AccidentalDeletion</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">MaliciousIntent</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">DeviceLostOrStolen</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">HardwareFault</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">SoftwareFault</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">DataStolen</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">DataCorruption</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">NaturalDisaster</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">PowerOutage</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">OtherDisaster</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">PreviousGeneration</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">DeviceDamaged</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SSHInterpreter</maml:name>
-          <maml:Description>
-            <maml:para>Specify the SSH Iterpreter to access the data</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Perl</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Python</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Direct</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SSHInterpreterPath</maml:name>
-          <maml:Description>
-            <maml:para>Specify SSH Interpreter path</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SSHKeyFile</maml:name>
-          <maml:Description>
-            <maml:para>Specify path to SSH Key File</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SudoCredential</maml:name>
-          <maml:Description>
-            <maml:para>Specify SUDO User Credentials</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-          <dev:type>
-            <maml:name>PSCredential</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>TruncateSource</maml:name>
-          <maml:Description>
-            <maml:para>Specify how many levels to Truncate Source Path</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>UseDetailedLog</maml:name>
-          <maml:Description>
-            <maml:para>Specify to use Detailed Log</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>PassThru</maml:name>
-          <maml:Description>
-            <maml:para>Specify to output basic Activity Info</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>Computer</maml:name>
-        <maml:Description>
-          <maml:para>Specify the Computer to Restore to</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Credential</maml:name>
-        <maml:Description>
-          <maml:para>Specify Credentials for Destination Computer</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-        <dev:type>
-          <maml:name>PSCredential</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>DestinationPath</maml:name>
-        <maml:Description>
-          <maml:para>Destination to restore items to</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
-        <maml:name>ItemId</maml:name>
-        <maml:Description>
-          <maml:para>Select Items by ItemId</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int64[]</command:parameterValue>
-        <dev:type>
-          <maml:name>Int64[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="Path">
-        <maml:name>Items</maml:name>
-        <maml:Description>
-          <maml:para>Specify the items to validate</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-        <dev:type>
-          <maml:name>String[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>LocalStorageMethod</maml:name>
-        <maml:Description>
-          <maml:para>Specify Local Storage Handling</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>OverwriteOption</maml:name>
-        <maml:Description>
-          <maml:para>File Overwrite Option</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>RestoreClassification</maml:name>
-        <maml:Description>
-          <maml:para>Specify Restore Classification</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>RestoreMethod</maml:name>
-        <maml:Description>
-          <maml:para>File Restore Method</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>RestorePermissions</maml:name>
-        <maml:Description>
-          <maml:para>Specify Restoration of Permissions</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>RestoreReason</maml:name>
-        <maml:Description>
-          <maml:para>Specify the Restore Reason</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SSHInterpreter</maml:name>
-        <maml:Description>
-          <maml:para>Specify the SSH Iterpreter to access the data</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SSHInterpreterPath</maml:name>
-        <maml:Description>
-          <maml:para>Specify SSH Interpreter path</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SSHKeyFile</maml:name>
-        <maml:Description>
-          <maml:para>Specify path to SSH Key File</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SudoCredential</maml:name>
-        <maml:Description>
-          <maml:para>Specify SUDO User Credentials</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-        <dev:type>
-          <maml:name>PSCredential</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>TruncateSource</maml:name>
-        <maml:Description>
-          <maml:para>Specify how many levels to Truncate Source Path</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>UseDetailedLog</maml:name>
-        <maml:Description>
-          <maml:para>Specify to use Detailed Log</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>PassThru</maml:name>
-        <maml:Description>
-          <maml:para>Specify to output basic Activity Info</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>System.Int64[]</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-      <command:inputType>
-        <dev:type>
-          <maml:name>System.String[]</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-      <command:inputType>
-        <dev:type>
-          <maml:name>System.String</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Object</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Start-DSClientUnixFsRestore -Computer "UNIX-SSH\LinuxServer01" -Items "/home/\user\docs\myfile.txt" -DestinationPath "/home/user/docs/restore/" -UseDetailedLog</dev:code>
-        <dev:remarks>
-          <maml:para>Restores the "myfile.txt" file to the "/home/user/docs/restore/" path on Computer LinuxServer01 and uses the Detailed Log for the Restore Activity</maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks />
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>Start-DSClientWinFsRestore</command:name>
-      <command:verb>Start</command:verb>
-      <command:noun>DSClientWinFsRestore</command:noun>
-      <maml:description>
-        <maml:para>Starts a Restore of a Windows File System Backup Set</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Starts a Restore of a Windows File System Backup Set, the Initialize-DSClientBackupSetRestore Cmdlet must be executed prior to this Cmdlet</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Start-DSClientWinFsRestore</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="Path">
-          <maml:name>Items</maml:name>
-          <maml:Description>
-            <maml:para>Specify the items to validate</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-          <dev:type>
-            <maml:name>String[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
-          <maml:name>ItemId</maml:name>
-          <maml:Description>
-            <maml:para>Select Items by ItemId</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int64[]</command:parameterValue>
-          <dev:type>
-            <maml:name>Int64[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>AuthoritativeRestore</maml:name>
-          <maml:Description>
-            <maml:para>Specify AD (System State) Authoritative Restore</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-          <maml:name>Computer</maml:name>
-          <maml:Description>
-            <maml:para>Specify the Computer to Restore to</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Credential</maml:name>
-          <maml:Description>
-            <maml:para>Specify Credentials for Destination Computer</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-          <dev:type>
-            <maml:name>PSCredential</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>DestinationPath</maml:name>
-          <maml:Description>
-            <maml:para>Destination to restore items to</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>LocalStorageMethod</maml:name>
-          <maml:Description>
-            <maml:para>Specify Local Storage Handling</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">None</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">ConnectDsSysFirst</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">ConnectDsSysNeeded</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">ContinueWithoutDsSys</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>MaxPendingAsyncIO</maml:name>
-          <maml:Description>
-            <maml:para>Specify Max Pending Asynchronous I/O per File</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>OverwriteJunctionPoint</maml:name>
-          <maml:Description>
-            <maml:para>Specify if to Overwrite Junction Points</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>OverwriteOption</maml:name>
-          <maml:Description>
-            <maml:para>File Overwrite Option</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">RestoreAll</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">RestoreNewer</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">RestoreOlder</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">RestoreDifferent</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">SkipExisting</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>ReadThreads</maml:name>
-          <maml:Description>
-            <maml:para>Specify the number of DS-System Read Threads</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>RestoreClassification</maml:name>
-          <maml:Description>
-            <maml:para>Specify Restore Classification</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Production</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Drill</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">ProductionDrill</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>RestoreMethod</maml:name>
-          <maml:Description>
-            <maml:para>File Restore Method</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Save</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Fast</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">UseBuffer</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>RestorePermissions</maml:name>
-          <maml:Description>
-            <maml:para>Specify Restoration of Permissions</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Yes</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Skip</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Only</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>RestoreReason</maml:name>
-          <maml:Description>
-            <maml:para>Specify the Restore Reason</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">AccidentalDeletion</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">MaliciousIntent</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">DeviceLostOrStolen</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">HardwareFault</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">SoftwareFault</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">DataStolen</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">DataCorruption</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">NaturalDisaster</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">PowerOutage</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">OtherDisaster</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">PreviousGeneration</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">DeviceDamaged</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SkipOfflineFiles</maml:name>
-          <maml:Description>
-            <maml:para>Specify if to Skip Offline Files (stubs)</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>TruncateSource</maml:name>
-          <maml:Description>
-            <maml:para>Specify how many levels to Truncate Source Path</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>UseDetailedLog</maml:name>
-          <maml:Description>
-            <maml:para>Specify to use Detailed Log</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>PassThru</maml:name>
-          <maml:Description>
-            <maml:para>Specify to output basic Activity Info</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>AuthoritativeRestore</maml:name>
-        <maml:Description>
-          <maml:para>Specify AD (System State) Authoritative Restore</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>Computer</maml:name>
-        <maml:Description>
-          <maml:para>Specify the Computer to Restore to</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Credential</maml:name>
-        <maml:Description>
-          <maml:para>Specify Credentials for Destination Computer</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-        <dev:type>
-          <maml:name>PSCredential</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>DestinationPath</maml:name>
-        <maml:Description>
-          <maml:para>Destination to restore items to</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
-        <maml:name>ItemId</maml:name>
-        <maml:Description>
-          <maml:para>Select Items by ItemId</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int64[]</command:parameterValue>
-        <dev:type>
-          <maml:name>Int64[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="Path">
-        <maml:name>Items</maml:name>
-        <maml:Description>
-          <maml:para>Specify the items to validate</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-        <dev:type>
-          <maml:name>String[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>LocalStorageMethod</maml:name>
-        <maml:Description>
-          <maml:para>Specify Local Storage Handling</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>MaxPendingAsyncIO</maml:name>
-        <maml:Description>
-          <maml:para>Specify Max Pending Asynchronous I/O per File</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>OverwriteJunctionPoint</maml:name>
-        <maml:Description>
-          <maml:para>Specify if to Overwrite Junction Points</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>OverwriteOption</maml:name>
-        <maml:Description>
-          <maml:para>File Overwrite Option</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>ReadThreads</maml:name>
-        <maml:Description>
-          <maml:para>Specify the number of DS-System Read Threads</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>RestoreClassification</maml:name>
-        <maml:Description>
-          <maml:para>Specify Restore Classification</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>RestoreMethod</maml:name>
-        <maml:Description>
-          <maml:para>File Restore Method</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>RestorePermissions</maml:name>
-        <maml:Description>
-          <maml:para>Specify Restoration of Permissions</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>RestoreReason</maml:name>
-        <maml:Description>
-          <maml:para>Specify the Restore Reason</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SkipOfflineFiles</maml:name>
-        <maml:Description>
-          <maml:para>Specify if to Skip Offline Files (stubs)</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>TruncateSource</maml:name>
-        <maml:Description>
-          <maml:para>Specify how many levels to Truncate Source Path</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>UseDetailedLog</maml:name>
-        <maml:Description>
-          <maml:para>Specify to use Detailed Log</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>PassThru</maml:name>
-        <maml:Description>
-          <maml:para>Specify to output basic Activity Info</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>System.Int64[]</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-      <command:inputType>
-        <dev:type>
-          <maml:name>System.String[]</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-      <command:inputType>
-        <dev:type>
-          <maml:name>System.String</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Object</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Start-DSClientWinFsRestore -Computer "\\WindowsServer02" -Items "C$\Users" -DestinationPath "C$\Restore"</dev:code>
-        <dev:remarks>
-          <maml:para>Performs a restore of "C$\Users" to "C$\Restore" on Computer "WindowsServer02"</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

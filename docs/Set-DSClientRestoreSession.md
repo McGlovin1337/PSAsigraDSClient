@@ -14,20 +14,15 @@ Updates the Specified Restore Session
 
 ### default
 ```
-Set-DSClientRestoreSession [-RestoreId] <Int32> [-Computer <String>] [-Credential <PSCredential>]
- [-SudoCredential <PSCredential>] [-RestoreReason <String>] [-RestoreClassification <String>] [-WhatIf]
- [-Confirm] [<CommonParameters>]
-```
-
-### options
-```
-Set-DSClientRestoreSession [-RestoreId] <Int32> [-Options <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-DSClientRestoreSession [-RestoreId] <Int32> [-Computer <String>] [-ComputerCredential <DSClientCredential>]
+ [-DatabaseCredential <DSClientCredential>] [-RestoreReason <String>] [-RestoreClassification <String>]
+ [-Options <RestoreOptions_Base>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### sharemapping
 ```
 Set-DSClientRestoreSession [-RestoreId] <Int32> [-DestinationId] <Int32> [-DestinationPath <String>]
- [-TruncateAmount <Int32>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-TruncateAmount <Int32>] [-DatabaseMapping <MSSQLDatabaseMap[]>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -81,21 +76,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Credential
-Specify the Computer Credentials
-
-```yaml
-Type: PSCredential
-Parameter Sets: default
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -DestinationId
 Specify a Destination Path Id to modify
 
@@ -130,8 +110,8 @@ Accept wildcard characters: False
 Apply New Restore Options
 
 ```yaml
-Type: PSObject
-Parameter Sets: options
+Type: RestoreOptions_Base
+Parameter Sets: default
 Aliases:
 
 Required: False
@@ -188,21 +168,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -SudoCredential
-Specify Sudo Credentials
-
-```yaml
-Type: PSCredential
-Parameter Sets: default
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -TruncateAmount
 Specify the amount to truncate the original path by
 
@@ -231,6 +196,51 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ComputerCredential
+Specify Destination Computer Credentials
+
+```yaml
+Type: DSClientCredential
+Parameter Sets: default
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DatabaseCredential
+Specify MSSQL Database Credentials
+
+```yaml
+Type: DSClientCredential
+Parameter Sets: default
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DatabaseMapping
+Update Database Mapping(s)
+
+```yaml
+Type: MSSQLDatabaseMap[]
+Parameter Sets: sharemapping
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

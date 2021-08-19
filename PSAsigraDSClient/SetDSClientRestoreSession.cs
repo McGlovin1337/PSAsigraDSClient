@@ -40,6 +40,9 @@ namespace PSAsigraDSClient
         [Parameter(ParameterSetName = "sharemapping", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the amount to truncate the original path by")]
         public int TruncateAmount { get; set; }
 
+        [Parameter(ParameterSetName = "sharemapping", ValueFromPipelineByPropertyName = true, HelpMessage = "Update Database Mapping(s)")]
+        public MSSQLDatabaseMap[] DatabaseMapping { get; set; }
+
         protected override void DSClientProcessRecord()
         {
             DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
@@ -80,6 +83,11 @@ namespace PSAsigraDSClient
                             if (MyInvocation.BoundParameters.ContainsKey(nameof(TruncateAmount)))
                                 if (ShouldProcess($"DestinationId '{DestinationId}' on Restore Session '{RestoreId}'", $"Truncate Source Path by '{TruncateAmount}'"))
                                     destination.SetTruncateLevel(TruncateAmount);
+
+                            if (MyInvocation.BoundParameters.ContainsKey(nameof(DatabaseMapping)))
+                                if (ShouldProcess($"DestinationId '{DestinationId}' on Restore Session '{RestoreId}'", "Update Database Mappings"))
+                                    foreach (MSSQLDatabaseMap map in DatabaseMapping)
+                                        restoreSession.UpdateMSSQLDatabaseRestoreMap(DestinationId, map);                                    
 
                             restoreSession.DestinationPaths[x] = destination;
                             break;

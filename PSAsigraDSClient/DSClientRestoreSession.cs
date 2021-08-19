@@ -249,7 +249,6 @@ namespace PSAsigraDSClient
             }
             else if (_restoreOptionsType == typeof(RestoreOptions_MSSQLServer))
             {
-                Console.WriteLine("I got here");
                 MSSQL_RestoreActivityInitiator sqlRestoreActivityInitiator = MSSQL_RestoreActivityInitiator.from(_restoreActivityInitiator);
 
                 mssql_dump_parameters dumpParams = new mssql_dump_parameters
@@ -258,7 +257,6 @@ namespace PSAsigraDSClient
                     path = RestoreOptions.Single(option => option.Option == "DumpMethod").Value as string
                 };
                 sqlRestoreActivityInitiator.setDumpParameters(dumpParams);
-                Console.WriteLine("I got here");
 
                 sqlRestoreActivityInitiator.setLeaveRestoringMode((bool)RestoreOptions.Single(v => v.Option == "LeaveRestoringMode").Value);
 
@@ -268,12 +266,10 @@ namespace PSAsigraDSClient
 
                 // Get all of the Database mappings into a single List and pass to setRestorePath method
                 List<mssql_restore_path> dbrestorePaths = new List<mssql_restore_path>();
-                Console.WriteLine("I got here");
                 foreach (RestoreDestination destination in DestinationPaths)
                     foreach (MSSQLDatabaseMap dbMap in destination.DatabaseMapping)
                         dbrestorePaths.Add(dbMap.GetRestorePath());
                 sqlRestoreActivityInitiator.setRestorePath(dbrestorePaths.ToArray());
-                Console.WriteLine("I got here");
             }
         }
 
@@ -460,6 +456,46 @@ namespace PSAsigraDSClient
             }
 
             throw new Exception("Restore Session is not Ready to Start a Restore");
+        }
+
+        internal void UpdateMSSQLDatabaseRestoreMap(int destinationId, MSSQLDatabaseMap databaseMap)
+        {
+            RestoreDestination instance;
+            try
+            {
+                instance = DestinationPaths.Single(dest => dest.DestinationId == destinationId);
+            }
+            catch
+            {
+                throw new Exception("DestinationPath Not Found");
+            }
+
+            // Check the specified source database is actually selected for restore
+            if (!instance.DatabaseMapping.Any(db => db.SourceDatabase == databaseMap.SourceDatabase))
+                throw new Exception("Specified Source Database not Selected for Restore");
+
+            // Check the restore destination has a matching Destination Database Name
+            SQLDataBrowserWithSetCreation sqlDataBrowser = SQLDataBrowserWithSetCreation.from(_dataSourceBrowser);
+            mssql_db_path[] destinationDatabases = sqlDataBrowser.getDatabasesPath(Computer.Split('\\').Last(), instance.Destination.TrimStart('[').TrimEnd(']'));
+            if (!destinationDatabases.Any(db => db.destination_db == databaseMap.DestinationDatabase))
+                throw new Exception("Specified Destination Database does not exist");
+
+            // If the specified new mapping doesn't have a configured mssql_restore_path object, we need to complete the setup
+            if (databaseMap.GetRestorePath() == null)
+            {
+                MSSQLDatabaseMap newDatabaseMap = new MSSQLDatabaseMap(SelectedItems.Single(item => item.Name == databaseMap.SourceDatabase), destinationDatabases.Single(dest => dest.destination_db == databaseMap.DestinationDatabase));
+                databaseMap = newDatabaseMap;
+            }   
+
+            // If we get this far, update the mapping
+            for (int i = 0; i < instance.DatabaseMapping.Length; i++)
+            {
+                if (instance.DatabaseMapping[i].SourceDatabase == databaseMap.SourceDatabase)
+                {
+                    instance.DatabaseMapping[i] = databaseMap;
+                    break;
+                }
+            }
         }
 
         protected virtual void UpdateReadyStatus()
@@ -659,6 +695,12 @@ namespace PSAsigraDSClient
                 destination_db = DestinationDatabase,
                 files_path = destinationDb.files_path
             };
+        }
+
+        internal MSSQLDatabaseMap(string sourceDb, string destinationDb)
+        {
+            SourceDatabase = sourceDb;
+            DestinationDatabase = destinationDb;
         }
 
         internal mssql_restore_path GetRestorePath()

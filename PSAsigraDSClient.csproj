@@ -126,7 +126,6 @@
     <Compile Include="PSAsigraDSClient\GetDSClientUserGroup.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientUserGroupRole.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetDelete.cs" />
-    <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetRestore.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetValidation.cs" />
     <Compile Include="PSAsigraDSClient\InvokeDSClientCommand.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientRestoreSession.cs" />
@@ -235,7 +234,6 @@
     <Compile Include="PSAsigraDSClient\StartDSClientBackup.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetRetention.cs" />
-    <Compile Include="PSAsigraDSClient\StartDSClientMSSqlServerRestore.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientRestore.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientVMwareVADPRestore.cs" />
     <Compile Include="PSAsigraDSClient\StopDSClientGridNode.cs" />
@@ -316,7 +314,6 @@
     <None Include="docs\Get-DSClientUserGroup.md" />
     <None Include="docs\Get-DSClientUserGroupRole.md" />
     <None Include="docs\Initialize-DSClientBackupSetDelete.md" />
-    <None Include="docs\Initialize-DSClientBackupSetRestore.md" />
     <None Include="docs\Initialize-DSClientBackupSetValidation.md" />
     <None Include="docs\Invoke-DSClientCommand.md" />
     <None Include="docs\Initialize-DSClientRestoreSession.md" />
@@ -387,7 +384,6 @@
     <None Include="docs\Start-DSClientBackupSetDelete.md" />
     <None Include="docs\Start-DSClientBackupSetRetention.md" />
     <None Include="docs\Start-DSClientBackupSetValidation.md" />
-    <None Include="docs\Start-DSClientMSSqlServerRestore.md" />
     <None Include="docs\Start-DSClientRestore.md" />
     <None Include="docs\Start-DSClientSystemActivity.md" />
     <None Include="docs\Stop-DSClientActivity.md" />

@@ -60,9 +60,9 @@ namespace PSAsigraDSClient
                     _restoreOptionsType = typeof(RestoreOptions_MSSQLServer);
                     RestoreOptions = new RestoreOptions_MSSQLServer().GetRestoreOptions().ToArray();
                     break;
-                case EBackupDataType.EBackupDataType__VMwareVADP:
-                    _restoreOptionsType = typeof(RestoreOptions_VMWareVADP);
-                    RestoreOptions = new RestoreOptions_VMWareVADP().GetRestoreOptions().ToArray();
+                default:
+                    _restoreOptionsType = typeof(RestoreOptions_Base);
+                    RestoreOptions = new RestoreOptions_Base().GetRestoreOptions().ToArray();
                     break;
             }
 
@@ -441,16 +441,6 @@ namespace PSAsigraDSClient
                             .AddDatabaseMapping(item, Computer, SQLDataBrowserWithSetCreation.from(_dataSourceBrowser));
                     }
                 }
-                else if (_setType == typeof(VMwareVADP_BackupSet))
-                {
-                    foreach (RestoreDestination destination in DestinationPaths)
-                    {
-                        vmware_options[] vmwareOptions = VMwareVADP_RestoreActivityInitiator.from(_restoreActivityInitiator)
-                            .getRestoreOptions(destination.Destination);
-
-                        destination.AddVMwareMapping(vmwareOptions.Single(o => o.vmName == destination.TruncatablePath.Split('\\').Last()));
-                    }
-                }
 
                 ApplyRestoreOptions();
             }
@@ -601,7 +591,6 @@ namespace PSAsigraDSClient
             public string TruncatablePath { get; private set; }
             public int TruncateAmount { get; private set; }
             public MSSQLDatabaseMap[] DatabaseMapping { get; private set; }
-            public VMwareMap VMwareMapping { get; private set; }
 
             internal RestoreDestination(int id, selected_shares selectedShares)
             {
@@ -657,11 +646,6 @@ namespace PSAsigraDSClient
                 List<MSSQLDatabaseMap> existingMaps = (DatabaseMapping == null) ? new List<MSSQLDatabaseMap>() : DatabaseMapping.ToList();
                 existingMaps.Add(dbMap);
                 DatabaseMapping = existingMaps.ToArray();
-            }
-
-            internal void AddVMwareMapping(vmware_options vmwareOptions)
-            {
-                VMwareMapping = new VMwareMap(vmwareOptions);
             }
 
             internal share_mapping GetShareMapping()
@@ -778,46 +762,6 @@ namespace PSAsigraDSClient
                 Data,
                 Log
             }
-        }
-    }
-
-    public class VMwareMap
-    {
-        private readonly vmware_options _vmwareOptions;
-
-        public string Datacenter { get; private set; }
-        public string VirtualMachineName { get; private set; }
-        public string VMwareHost { get; private set; }
-        public string Datastore { get; private set; }
-        public string Folder { get; private set; }
-        public bool TimestampVMName { get; private set; }
-        public bool PowerOnAfterRestore { get; private set; }
-        public bool UnregisterAfterRestore { get; private set; }
-        public bool SANRestoreMethod { get; private set; }
-
-        internal VMwareMap(vmware_options vmwareOptions)
-        {
-            _vmwareOptions = vmwareOptions;
-
-            Datacenter = vmwareOptions.dataCenter;
-            VirtualMachineName = vmwareOptions.vmName;
-            VMwareHost = vmwareOptions.hostName;
-            Datastore = vmwareOptions.dataStore;
-            Folder = vmwareOptions.folderName;
-            TimestampVMName = vmwareOptions.addTimestampVMName;
-            PowerOnAfterRestore = vmwareOptions.powerOnVMAfterRestore;
-            UnregisterAfterRestore = vmwareOptions.unregisterAfterRestore;
-            SANRestoreMethod = vmwareOptions.forceSAN;
-        }
-
-        internal vmware_options GetVMwareOptions()
-        {
-            return _vmwareOptions;
-        }
-
-        public override string ToString()
-        {
-            return $"VMName => {VirtualMachineName}";
         }
     }
 

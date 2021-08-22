@@ -168,20 +168,5 @@ namespace PSAsigraDSClient
                 PreserveOriginalLocation = preserveOriginalLocation;
             }
         }
-
-        public class RestoreOptions_VMWareVADP : RestoreOptions_Base
-        {
-            public bool AttemptIncrementalRestore { get; private set; }
-
-            internal RestoreOptions_VMWareVADP() : base()
-            {
-                AttemptIncrementalRestore = false;
-            }
-
-            internal void SetAttemptIncrementalRestore(bool attemptIncrementalRestore)
-            {
-                AttemptIncrementalRestore = attemptIncrementalRestore;
-            }
-        }
     }
 }

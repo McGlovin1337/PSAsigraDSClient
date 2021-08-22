@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
@@ -13,9 +12,6 @@ namespace PSAsigraDSClient
 
         [Parameter(Mandatory = true, ParameterSetName = "DeleteSession", HelpMessage = "Specify to use Delete View stored in SessionState")]
         public SwitchParameter UseDeleteSession { get; set; }
-
-        [Parameter(Mandatory = true, ParameterSetName = "RestoreSession", HelpMessage = "Specify to use Restore View stored in SessionState")]
-        public SwitchParameter UseRestoreSession { get; set; }
 
         [Parameter(Mandatory = true, ParameterSetName = "RestoreId", HelpMessage = "Specify an existing Restore Session Id")]
         public int RestoreId { get; set; }
@@ -50,17 +46,6 @@ namespace PSAsigraDSClient
 
                 // Update the Delete View in SessionState
                 SessionState.PSVariable.Set("DeleteView", deleteView);
-            }
-            else if (UseRestoreSession)
-            {
-                // Get the Restore View from SessionState
-                BackupSetRestoreView restoreView = SessionState.PSVariable.GetValue("RestoreView", null) as BackupSetRestoreView;
-
-                if (restoreView != null)
-                    ProcessBackupSetData(restoreView);
-
-                // Update the Restore View in SessionState
-                SessionState.PSVariable.Set("RestoreView", restoreView);
             }
             else if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreId)))
             {

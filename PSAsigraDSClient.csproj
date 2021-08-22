@@ -96,6 +96,7 @@
     <Compile Include="PSAsigraDSClient\DisableDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\DisconnectDSClientSession.cs" />
     <Compile Include="PSAsigraDSClient\DSClientCredential.cs" />
+    <Compile Include="PSAsigraDSClient\DSClientRestoreOptions.cs" />
     <Compile Include="PSAsigraDSClient\DSClientSession.cs" />
     <Compile Include="PSAsigraDSClient\DSClientBackupSetItemInfo.cs" />
     <Compile Include="PSAsigraDSClient\DSClientRestoreSession.cs" />

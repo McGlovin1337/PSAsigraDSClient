@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
+using static PSAsigraDSClient.DSClientRestoreOptions;
 
 namespace PSAsigraDSClient
 {
@@ -59,6 +59,10 @@ namespace PSAsigraDSClient
                 case EBackupDataType.EBackupDataType__SQLServer:
                     _restoreOptionsType = typeof(RestoreOptions_MSSQLServer);
                     RestoreOptions = new RestoreOptions_MSSQLServer().GetRestoreOptions().ToArray();
+                    break;
+                case EBackupDataType.EBackupDataType__VMwareVADP:
+                    _restoreOptionsType = typeof(RestoreOptions_VMWareVADP);
+                    RestoreOptions = new RestoreOptions_VMWareVADP().GetRestoreOptions().ToArray();
                     break;
             }
 
@@ -437,6 +441,16 @@ namespace PSAsigraDSClient
                             .AddDatabaseMapping(item, Computer, SQLDataBrowserWithSetCreation.from(_dataSourceBrowser));
                     }
                 }
+                else if (_setType == typeof(VMwareVADP_BackupSet))
+                {
+                    foreach (RestoreDestination destination in DestinationPaths)
+                    {
+                        vmware_options[] vmwareOptions = VMwareVADP_RestoreActivityInitiator.from(_restoreActivityInitiator)
+                            .getRestoreOptions(destination.Destination);
+
+                        destination.AddVMwareMapping(vmwareOptions.Single(o => o.vmName == destination.TruncatablePath.Split('\\').Last()));
+                    }
+                }
 
                 ApplyRestoreOptions();
             }
@@ -587,6 +601,7 @@ namespace PSAsigraDSClient
             public string TruncatablePath { get; private set; }
             public int TruncateAmount { get; private set; }
             public MSSQLDatabaseMap[] DatabaseMapping { get; private set; }
+            public VMwareMap VMwareMapping { get; private set; }
 
             internal RestoreDestination(int id, selected_shares selectedShares)
             {
@@ -604,7 +619,7 @@ namespace PSAsigraDSClient
                 };
             }
 
-            public RestoreDestination(int id, selected_shares selectedShares, mssql_restore_path[] dbRestorePaths) : this(id, selectedShares)
+            internal RestoreDestination(int id, selected_shares selectedShares, mssql_restore_path[] dbRestorePaths) : this(id, selectedShares)
             {
                 DatabaseMapping = new MSSQLDatabaseMap[dbRestorePaths.Length];
 
@@ -644,6 +659,11 @@ namespace PSAsigraDSClient
                 DatabaseMapping = existingMaps.ToArray();
             }
 
+            internal void AddVMwareMapping(vmware_options vmwareOptions)
+            {
+                VMwareMapping = new VMwareMap(vmwareOptions);
+            }
+
             internal share_mapping GetShareMapping()
             {
                 return _shareMapping;
@@ -671,7 +691,7 @@ namespace PSAsigraDSClient
 
     public class MSSQLDatabaseMap
     {
-        private mssql_restore_path _mssqlRestorePath;
+        private readonly mssql_restore_path _mssqlRestorePath;
         public string SourceDatabase { get; private set; }
         public string DestinationDatabase { get; private set; }
         public MSSQLFilePath[] FilePaths { get; private set; }
@@ -732,7 +752,7 @@ namespace PSAsigraDSClient
 
         public class MSSQLFilePath
         {
-            private mssql_path_item _filePath;
+            private readonly mssql_path_item _filePath;
             public MSSQLFileType FileType { get; private set; }
             public string Path { get; private set; }
 
@@ -761,6 +781,46 @@ namespace PSAsigraDSClient
         }
     }
 
+    public class VMwareMap
+    {
+        private readonly vmware_options _vmwareOptions;
+
+        public string Datacenter { get; private set; }
+        public string VirtualMachineName { get; private set; }
+        public string VMwareHost { get; private set; }
+        public string Datastore { get; private set; }
+        public string Folder { get; private set; }
+        public bool TimestampVMName { get; private set; }
+        public bool PowerOnAfterRestore { get; private set; }
+        public bool UnregisterAfterRestore { get; private set; }
+        public bool SANRestoreMethod { get; private set; }
+
+        internal VMwareMap(vmware_options vmwareOptions)
+        {
+            _vmwareOptions = vmwareOptions;
+
+            Datacenter = vmwareOptions.dataCenter;
+            VirtualMachineName = vmwareOptions.vmName;
+            VMwareHost = vmwareOptions.hostName;
+            Datastore = vmwareOptions.dataStore;
+            Folder = vmwareOptions.folderName;
+            TimestampVMName = vmwareOptions.addTimestampVMName;
+            PowerOnAfterRestore = vmwareOptions.powerOnVMAfterRestore;
+            UnregisterAfterRestore = vmwareOptions.unregisterAfterRestore;
+            SANRestoreMethod = vmwareOptions.forceSAN;
+        }
+
+        internal vmware_options GetVMwareOptions()
+        {
+            return _vmwareOptions;
+        }
+
+        public override string ToString()
+        {
+            return $"VMName => {VirtualMachineName}";
+        }
+    }
+
     public class DSClientRestoreOption
     {
         private readonly Type _classType;
@@ -782,169 +842,6 @@ namespace PSAsigraDSClient
         public override string ToString()
         {
             return Option;
-        }
-    }
-
-    public class RestoreOptions_Base
-    {
-        public bool UseDetailedLog { get; protected set; }
-        public string LocalStorageMethod { get; protected set; }
-        public int DSSystemReadThreads { get; protected set; }
-        public int MaxPendingAsyncIO { get; protected set; }
-
-        internal RestoreOptions_Base()
-        {
-            UseDetailedLog = false;
-            LocalStorageMethod = "ContinueIfDisconnect";
-            DSSystemReadThreads = 0;
-            MaxPendingAsyncIO = 0;
-        }
-
-        internal DSClientRestoreOption[] GetRestoreOptions()
-        {
-            PropertyInfo[] props = this.GetType().GetProperties();
-            DSClientRestoreOption[] restoreOptions = new DSClientRestoreOption[props.Length];
-            for (int i = 0; i < props.Length; i++)
-                restoreOptions[i] = new DSClientRestoreOption(this.GetType(), props[i].Name, props[i].GetValue(this, null));
-
-            return restoreOptions;
-        }
-
-        internal void SetUseDetailedLog(bool v)
-        {
-            UseDetailedLog = v;
-        }
-
-        internal void SetLocalStorageMethod(string localStorageMethod)
-        {
-            LocalStorageMethod = localStorageMethod;
-        }
-
-        internal void SetDSSystemReadThreads(int readThreads)
-        {
-            DSSystemReadThreads = readThreads;
-        }
-
-        internal void SetMaxPendingIO(int maxIO)
-        {
-            MaxPendingAsyncIO = maxIO;
-        }
-    }
-
-    public class RestoreOptions_FileSystem : RestoreOptions_Base
-    {
-        public string FileOverwriteOption { get; protected set; }
-        public string RestoreMethod { get; protected set; }
-        public string RestorePermissions { get; protected set; }
-
-        internal RestoreOptions_FileSystem() : base()
-        {
-            FileOverwriteOption = "RestoreAll";
-            RestoreMethod = "Fast";
-            RestorePermissions = "Yes";
-        }
-
-        internal void SetOverwriteOption(string overwriteOption)
-        {
-            FileOverwriteOption = overwriteOption;
-        }
-
-        internal void SetRestoreMethod(string restoreMethod)
-        {
-            RestoreMethod = restoreMethod;
-        }
-
-        internal void SetRestorePermissions(string restorePermissions)
-        {
-            RestorePermissions = restorePermissions;
-        }
-    }
-
-    public class RestoreOptions_Win32FileSystem : RestoreOptions_FileSystem
-    {
-        public bool AuthoritativeRestore { get; private set; }
-        public bool OverwriteJunctionPoint { get; private set; }
-        public bool SkipOfflineFiles { get; private set; }
-
-        internal RestoreOptions_Win32FileSystem() : base()
-        {
-            AuthoritativeRestore = false;
-            OverwriteJunctionPoint = false;
-            SkipOfflineFiles = true;
-        }
-
-        internal static RestoreOptions_Win32FileSystem From(RestoreOptions_FileSystem restoreOptions_FileSystem)
-        {
-            RestoreOptions_Win32FileSystem restoreOptions = new RestoreOptions_Win32FileSystem();
-
-            foreach (PropertyInfo parentProp in restoreOptions_FileSystem.GetType().GetProperties())
-                foreach (PropertyInfo thisProp in restoreOptions.GetType().GetProperties())
-                    if (thisProp.Name == parentProp.Name)
-                        thisProp.SetValue(restoreOptions, parentProp.GetValue(restoreOptions_FileSystem), null);
-
-            return restoreOptions;
-        }
-
-        internal void SetAuthoritative(bool v)
-        {
-            AuthoritativeRestore = v;
-        }
-
-        internal void SetOverwriteJunctionPoint(bool v)
-        {
-            OverwriteJunctionPoint = v;
-        }
-
-        internal void SetSkipOfflineFile(bool v)
-        {
-            SkipOfflineFiles = v;
-        }
-    }
-
-    public class RestoreOptions_MSSQLServer : RestoreOptions_Base
-    {
-        public string DumpMethod { get; private set; }
-        public string DumpPath { get; private set; }
-        public bool RestoreDumpOnly { get; private set; }
-        public bool LeaveRestoringMode { get; private set; }
-        public bool PreserveOriginalLocation { get; private set; }
-
-
-        internal RestoreOptions_MSSQLServer() : base()
-        {
-            DumpMethod = EnumToString(ESQLDumpMethod.ESQLDumpMethod__DumpToPipe);
-            DumpPath = null;
-            RestoreDumpOnly = false;
-            LeaveRestoringMode = false;
-            PreserveOriginalLocation = false;
-        }
-
-        internal void SetDumpMethod(string dumpMethod)
-        {
-            // Check the string is a valid Enum
-            StringToEnum<ESQLDumpMethod>(dumpMethod);
-
-            DumpMethod = dumpMethod;
-        }
-
-        internal void SetDumpPath(string dumpPath)
-        {
-            DumpPath = dumpPath;
-        }
-
-        internal void SetRestoreDumpOnly(bool restoreDumpOnly)
-        {
-            RestoreDumpOnly = restoreDumpOnly;
-        }
-
-        internal void SetLeaveRestoringMode(bool leaveRestoring)
-        {
-            LeaveRestoringMode = leaveRestoring;
-        }
-
-        internal void SetPreserveOriginalLocation(bool preserveOriginalLocation)
-        {
-            PreserveOriginalLocation = preserveOriginalLocation;
         }
     }
 }

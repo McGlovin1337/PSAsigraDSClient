@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Management.Automation;
+using static PSAsigraDSClient.DSClientRestoreOptions;
 
 namespace PSAsigraDSClient
 {

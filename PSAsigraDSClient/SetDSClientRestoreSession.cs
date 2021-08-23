@@ -59,8 +59,12 @@ namespace PSAsigraDSClient
                         restoreSession.SetComputer(Computer);
 
                 if (MyInvocation.BoundParameters.ContainsKey(nameof(ComputerCredential)))
-                    if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Credentials to '{ComputerCredential.UserName}"))
+                    if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Credentials to '{ComputerCredential.UserName}'"))
                         restoreSession.SetCredentials(ComputerCredential);
+
+                if (MyInvocation.BoundParameters.ContainsKey(nameof(DatabaseCredential)))
+                    if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Database Credentials to '{DatabaseCredential.UserName}'"))
+                        restoreSession.SetDatabaseCredentials(DatabaseCredential);
 
                 if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreReason)))
                     if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Restore Reason to '{RestoreReason}'"))

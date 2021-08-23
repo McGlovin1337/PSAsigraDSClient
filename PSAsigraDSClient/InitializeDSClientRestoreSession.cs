@@ -5,6 +5,7 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsData.Initialize, "DSClientRestoreSession")]
+    [OutputType(typeof(DSClientRestoreSession))]
 
     sealed public class InitializeDSClientRestoreSession : DSClientCmdlet
     {
@@ -63,6 +64,8 @@ namespace PSAsigraDSClient
                 restoreSession.SetRestoreReason(RestoreReason);
 
             DSClientSessionInfo.AddRestoreSession(restoreSession);
+
+            WriteObject(restoreSession);
         }
     }
 }

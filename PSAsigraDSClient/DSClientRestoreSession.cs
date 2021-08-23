@@ -149,6 +149,8 @@ namespace PSAsigraDSClient
 
         private void ApplyRestoreOptions()
         {
+            // This method applies all the current Restore Options to the Restore Activity Initiator
+
             bool log = (bool?)RestoreOptions.SingleOrDefault(v => v.Option == "UseDetailedLog").Value ?? false;
             _restoreActivityInitiator.setDetailLogReporting(log);
 
@@ -298,27 +300,9 @@ namespace PSAsigraDSClient
                     .Dispose();
         }
 
-        protected RestoreActivityInitiator GetRestoreActivityInitiator()
-        {
-            return _restoreActivityInitiator;
-        }
-
-        internal Type GetRestoreOptionsType()
-        {
-            return _restoreOptionsType;
-        }
-
         internal BackupSetRestoreView GetRestoreView()
         {
             return _backupSetRestoreView;
-        }
-
-        internal void RemoveSelectedItem(long itemId)
-        {
-            _selectedItemIds.Remove(itemId);
-
-            SetSelectedItems();
-            UpdateReadyStatus();
         }
 
         internal void RemoveSelectedItems(long[] itemIds)
@@ -608,30 +592,6 @@ namespace PSAsigraDSClient
                 };
             }
 
-            internal RestoreDestination(int id, selected_shares selectedShares, mssql_restore_path[] dbRestorePaths) : this(id, selectedShares)
-            {
-                DatabaseMapping = new MSSQLDatabaseMap[dbRestorePaths.Length];
-
-                for (int i = 0; i < dbRestorePaths.Length; i++)
-                    DatabaseMapping[i] = new MSSQLDatabaseMap(dbRestorePaths[i]);
-            }
-
-            internal RestoreDestination(int id, selected_shares selectedShares, string destination)
-            {
-                DestinationId = id;
-                Source = selectedShares.share_name;
-                Destination = destination;
-                TruncatablePath = selectedShares.truncatable_path;
-                TruncateAmount = 0;
-
-                _shareMapping = new share_mapping
-                {
-                    destination_path = destination,
-                    source_share = selectedShares.share_name,
-                    truncate_level = 0
-                };
-            }
-
             internal void AddDatabaseMapping(DSClientBackupSetItemInfo selectedItem, string computer, SQLDataBrowserWithSetCreation dataSourceBrowser)
             {
                 mssql_db_path[] databases = dataSourceBrowser.getDatabasesPath(computer.Split('\\').Last(), Destination.TrimStart('[').TrimEnd(']'));
@@ -680,17 +640,6 @@ namespace PSAsigraDSClient
         public string DestinationDatabase { get; private set; }
         public MSSQLFilePath[] FilePaths { get; private set; }
 
-        internal MSSQLDatabaseMap(mssql_restore_path restorePath)
-        {
-            _mssqlRestorePath = restorePath;
-            SourceDatabase = restorePath.source_db;
-            DestinationDatabase = restorePath.destination_db;
-            FilePaths = new MSSQLFilePath[restorePath.files_path.Length];
-
-            for (int i = 0; i < restorePath.files_path.Length; i++)
-                FilePaths[i] = new MSSQLFilePath(restorePath.files_path[i]);
-        }
-
         internal MSSQLDatabaseMap(DSClientBackupSetItemInfo selectedItem)
         {
             SourceDatabase = selectedItem.Name;
@@ -736,20 +685,13 @@ namespace PSAsigraDSClient
 
         public class MSSQLFilePath
         {
-            private readonly mssql_path_item _filePath;
             public MSSQLFileType FileType { get; private set; }
             public string Path { get; private set; }
 
             internal MSSQLFilePath(mssql_path_item pathItem)
             {
-                _filePath = pathItem;
                 FileType = (pathItem.is_data) ? MSSQLFileType.Data : MSSQLFileType.Log;
                 Path = pathItem.path;
-            }
-
-            internal mssql_path_item  GetPathItem()
-            {
-                return _filePath;
             }
 
             public override string ToString()

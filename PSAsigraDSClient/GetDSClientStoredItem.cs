@@ -109,16 +109,19 @@ namespace PSAsigraDSClient
                     progressRecord.CurrentOperation = $"Enumerating Path: {currentPath.Path}";
                     WriteProgress(progressRecord);
 
+                    WriteDebug($"Retrieve Info for Path: {currentPath.Path}");
                     item = backedUpDataView.getItem(currentPath.Path);
                     itemId = item.id;
 
                     // Fetch all the subitems of the current path
+                    WriteDebug("Retrieve Sub Item Info");
                     SelectableItem[] subItems = backedUpDataView.getSubItemsByCategory(itemId, itemCategory);
 
                     int subItemDepth = currentPath.Depth + 1;
                     int index = 1;
                     foreach (SelectableItem subItem in subItems)
                     {
+                        WriteDebug($"Get Size of Item: {subItem.name}");
                         selectable_size subItemSize = backedUpDataView.getItemSize(subItem.id);
                         DSClientBackupSetItemInfo currentItemInfo = new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize);
                         allItems.Add(currentItemInfo);
@@ -127,6 +130,7 @@ namespace PSAsigraDSClient
                         {
                             if (wcPattern.IsMatch(subItem.name))
                             {
+                                WriteDebug("Item Matched Filter");
                                 ItemInfo.Add(currentItemInfo);
                                 itemCount++;
                             }
@@ -149,6 +153,7 @@ namespace PSAsigraDSClient
                     }
 
                     // Remove the Path we've just completed enumerating from the list
+                    WriteDebug("Remove Item from Enumeration List");
                     newPaths.Remove(currentPath);
                     enumeratedCount++;
                 }
@@ -224,22 +229,26 @@ namespace PSAsigraDSClient
                     progressRecord.CurrentOperation = $"Enumerating Path: {currentPath.Path}";
                     WriteProgress(progressRecord);
 
+                    WriteDebug($"Retrieve Info for Path: {currentPath.Path}");
                     item = backedUpDataView.getItem(currentPath.Path);
                     itemId = item.id;
 
                     // Fetch all the subitems of the current path
+                    WriteDebug("Retrieve Sub Item Info");
                     SelectableItem[] subItems = backedUpDataView.getSubItemsByCategory(itemId, itemCategory);
 
                     int subItemDepth = currentPath.Depth + 1;
                     int index = 1;
                     foreach (SelectableItem subItem in subItems)
                     {
+                        WriteDebug($"Get Size of Item: {subItem.name}");
                         selectable_size subItemSize = backedUpDataView.getItemSize(subItem.id);
 
                         if (Filter != null)
                         {
                             if (wcPattern.IsMatch(subItem.name))
                             {
+                                WriteDebug("Item Matched Filter");
                                 ItemInfo.Add(new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize));
                                 itemCount++;
                             }
@@ -262,6 +271,7 @@ namespace PSAsigraDSClient
                     }
 
                     // Remove the Path we've just completed enumerating from the list
+                    WriteDebug("Remove Item from Enumeration List");
                     newPaths.Remove(currentPath);
                     enumeratedCount++;
                 }

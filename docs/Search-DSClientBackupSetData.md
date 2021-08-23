@@ -25,13 +25,6 @@ Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>
  [-UseDeleteSession] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
-### RestoreSession
-```
-Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
- [-UseRestoreSession] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>]
- [<CommonParameters>]
-```
-
 ### RestoreId
 ```
 Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
@@ -171,21 +164,6 @@ Specify to use Delete View stored in SessionState
 ```yaml
 Type: SwitchParameter
 Parameter Sets: DeleteSession
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -UseRestoreSession
-Specify to use Restore View stored in SessionState
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: RestoreSession
 Aliases:
 
 Required: True

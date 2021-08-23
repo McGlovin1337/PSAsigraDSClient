@@ -10544,115 +10544,6 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>UseRestoreSession</maml:name>
-          <maml:Description>
-            <maml:para>Specify to use Restore View stored in SessionState</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>ExcludePath</maml:name>
-          <maml:Description>
-            <maml:para>Specify Paths to Exclude during Recursion</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-          <dev:type>
-            <maml:name>String[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-      <command:syntaxItem>
-        <maml:name>Get-DSClientStoredItem</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Folder">
-          <maml:name>Path</maml:name>
-          <maml:Description>
-            <maml:para>Specify the Full Path to the Item</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-          <maml:name>Filter</maml:name>
-          <maml:Description>
-            <maml:para>Filter returned items</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="StartTime">
-          <maml:name>DateFrom</maml:name>
-          <maml:Description>
-            <maml:para>Specify Date to Search From</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
-          <dev:type>
-            <maml:name>DateTime</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="EndTime">
-          <maml:name>DateTo</maml:name>
-          <maml:Description>
-            <maml:para>Specify Date to Search To</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
-          <dev:type>
-            <maml:name>DateTime</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>DeletedDate</maml:name>
-          <maml:Description>
-            <maml:para>Specify Date for Deleted Files from Source</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
-          <dev:type>
-            <maml:name>DateTime</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Recursive</maml:name>
-          <maml:Description>
-            <maml:para>Specify to return items recursively</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>RecursiveDepth</maml:name>
-          <maml:Description>
-            <maml:para>Specify the rescursion depth</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>UseValidationSession</maml:name>
           <maml:Description>
             <maml:para>Specify to use Validation View stored in SessionState</maml:para>
@@ -11106,18 +10997,6 @@
         <maml:name>UseDeleteSession</maml:name>
         <maml:Description>
           <maml:para>Specify to use Delete View stored in SessionState</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>UseRestoreSession</maml:name>
-        <maml:Description>
-          <maml:para>Specify to use Restore View stored in SessionState</maml:para>
         </maml:Description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -25039,91 +24918,6 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>UseRestoreSession</maml:name>
-          <maml:Description>
-            <maml:para>Specify to use Restore View stored in SessionState</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-      <command:syntaxItem>
-        <maml:name>Search-DSClientBackupSetData</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
-          <maml:name>Filter</maml:name>
-          <maml:Description>
-            <maml:para>Specify the File Search Filters</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-          <dev:type>
-            <maml:name>String[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
-          <maml:name>DirectoryFilter</maml:name>
-          <maml:Description>
-            <maml:para>Specify Directory Search Filters</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-          <dev:type>
-            <maml:name>String[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="StartTime">
-          <maml:name>DateFrom</maml:name>
-          <maml:Description>
-            <maml:para>Specify Date to Search From</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
-          <dev:type>
-            <maml:name>DateTime</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="EndTime">
-          <maml:name>DateTo</maml:name>
-          <maml:Description>
-            <maml:para>Specify Date to Search To</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
-          <dev:type>
-            <maml:name>DateTime</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>DeletedDate</maml:name>
-          <maml:Description>
-            <maml:para>Specify Date for Deleted Files from Source</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
-          <dev:type>
-            <maml:name>DateTime</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>LatestGenerationOnly</maml:name>
-          <maml:Description>
-            <maml:para>Specify to display the most recent Generation only</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>UseValidationSession</maml:name>
           <maml:Description>
             <maml:para>Specify to use Validation View stored in SessionState</maml:para>
@@ -25311,18 +25105,6 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         <maml:name>UseDeleteSession</maml:name>
         <maml:Description>
           <maml:para>Specify to use Delete View stored in SessionState</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>UseRestoreSession</maml:name>
-        <maml:Description>
-          <maml:para>Specify to use Restore View stored in SessionState</maml:para>
         </maml:Description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -30403,6 +30185,30 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DateFrom</maml:name>
+          <maml:Description>
+            <maml:para>Filter Data Selection From Date</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
+          <dev:type>
+            <maml:name>DateTime</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DateTo</maml:name>
+          <maml:Description>
+            <maml:para>Filter Data Selection To Date</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
+          <dev:type>
+            <maml:name>DateTime</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>Set-DSClientRestoreSession</maml:name>
@@ -30643,6 +30449,30 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         <command:parameterValue required="true" variableLength="false">MSSQLDatabaseMap[]</command:parameterValue>
         <dev:type>
           <maml:name>MSSQLDatabaseMap[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>DateFrom</maml:name>
+        <maml:Description>
+          <maml:para>Filter Data Selection From Date</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
+        <dev:type>
+          <maml:name>DateTime</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>DateTo</maml:name>
+        <maml:Description>
+          <maml:para>Filter Data Selection To Date</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
+        <dev:type>
+          <maml:name>DateTime</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>

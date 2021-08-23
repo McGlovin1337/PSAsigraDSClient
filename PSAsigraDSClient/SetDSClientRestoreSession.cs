@@ -32,6 +32,12 @@ namespace PSAsigraDSClient
         [Parameter(ParameterSetName = "default", HelpMessage = "Apply New Restore Options")]
         public RestoreOptions_Base Options { get; set; }
 
+        [Parameter(ParameterSetName = "default", HelpMessage = "Filter Data Selection From Date")]
+        public DateTime DateFrom { get; set; } = DateTime.Parse("1/1/1970");
+
+        [Parameter(ParameterSetName = "default", HelpMessage = "Filter Data Selection To Date")]
+        public DateTime DateTo { get; set; } = DateTime.Now;
+
         [Parameter(Position = 1, Mandatory = true, ParameterSetName = "sharemapping", ValueFromPipelineByPropertyName = true, HelpMessage = "Specify a Destination Path Id to modify")]
         public int DestinationId { get; set; }
 
@@ -50,6 +56,10 @@ namespace PSAsigraDSClient
 
             if (restoreSession != null)
             {
+                if (MyInvocation.BoundParameters.ContainsKey(nameof(DateFrom)) || MyInvocation.BoundParameters.ContainsKey(nameof(DateTo)))
+                    if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", $"Set Data Selection From '{DateFrom}' to '{DateTo}'"))
+                        restoreSession.SetDataTimeRange(DateFrom, DateTo);
+
                 if (MyInvocation.BoundParameters.ContainsKey(nameof(Options)))
                     if (ShouldProcess($"Restore Session with RestoreId: {RestoreId}", "Set Restore Options"))
                         restoreSession.SetRestoreOptions(Options);

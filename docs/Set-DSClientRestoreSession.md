@@ -16,7 +16,8 @@ Updates the Specified Restore Session
 ```
 Set-DSClientRestoreSession [-RestoreId] <Int32> [-Computer <String>] [-ComputerCredential <DSClientCredential>]
  [-DatabaseCredential <DSClientCredential>] [-RestoreReason <String>] [-RestoreClassification <String>]
- [-Options <RestoreOptions_Base>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-Options <RestoreOptions_Base>] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### sharemapping
@@ -241,6 +242,36 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -DateFrom
+Filter Data Selection From Date
+
+```yaml
+Type: DateTime
+Parameter Sets: default
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DateTo
+Filter Data Selection To Date
+
+```yaml
+Type: DateTime
+Parameter Sets: default
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

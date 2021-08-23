@@ -436,6 +436,22 @@ namespace PSAsigraDSClient
             }
         }
 
+        internal void SetDataTimeRange(DateTime from, DateTime to)
+        {
+            // Sets the Time Range for which Data is Selected
+            // Setting this will clear any existing selected items
+
+            if (_restoreActivityInitiator != null)
+                _restoreActivityInitiator.Dispose();
+
+            _browsedItems.Clear();
+            _selectedItemIds = null;
+            SelectedItems = null;
+            DestinationPaths = null;
+
+            _backupSetRestoreView.setTimeInterval(DateTimeToUnixEpoch(from), DateTimeToUnixEpoch(to));
+        }
+
         internal GenericActivity StartRestore()
         {
             if (Ready.Ready)

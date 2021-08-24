@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using System;
+using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -12,8 +13,13 @@ namespace PSAsigraDSClient
         [Parameter(Mandatory = true, ParameterSetName = "DeleteSession", HelpMessage = "Specify to use Delete View stored in SessionState")]
         public SwitchParameter UseDeleteSession { get; set; }
 
-        [Parameter(Mandatory = true, ParameterSetName = "RestoreSession", HelpMessage = "Specify to use Restore View stored in SessionState")]
-        public SwitchParameter UseRestoreSession { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "RestoreId", HelpMessage = "Specify an existing Restore Session Id")]
+        public int RestoreId { get; set; }
+
+        protected virtual void ProcessRestoreSessionData(DSClientRestoreSession restoreSession)
+        {
+            throw new NotImplementedException("This Method Should be Overridden");
+        }
 
         protected abstract void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView);
 
@@ -41,16 +47,14 @@ namespace PSAsigraDSClient
                 // Update the Delete View in SessionState
                 SessionState.PSVariable.Set("DeleteView", deleteView);
             }
-            else if (UseRestoreSession)
+            else if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreId)))
             {
-                // Get the Restore View from SessionState
-                BackupSetRestoreView restoreView = SessionState.PSVariable.GetValue("RestoreView", null) as BackupSetRestoreView;
-
-                if (restoreView != null)
-                    ProcessBackupSetData(restoreView);
-
-                // Update the Restore View in SessionState
-                SessionState.PSVariable.Set("RestoreView", restoreView);
+                // Get the Restore View from a Restore Session
+                DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
+                if (restoreSession != null)
+                    ProcessRestoreSessionData(restoreSession);
+                else
+                    throw new Exception("Specified RestoreId not found");
             }
             else
             {

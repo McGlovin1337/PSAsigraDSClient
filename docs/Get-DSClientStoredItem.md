@@ -47,10 +47,10 @@ Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-Recu
  [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
-### RestoreSession
+### RestoreId
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-UseRestoreSession] [-DateFrom <DateTime>] [-DateTo <DateTime>]
+ [-ExcludePath <String[]>] -RestoreId <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>]
  [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
@@ -217,21 +217,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseRestoreSession
-Specify to use Restore View stored in SessionState
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: RestoreSession
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -UseValidationSession
 Specify to use Validation View stored in SessionState
 
@@ -310,6 +295,21 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RestoreId
+Specify an existing Restore Session Id
+
+```yaml
+Type: Int32
+Parameter Sets: RestoreId
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

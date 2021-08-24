@@ -25,11 +25,10 @@ Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>
  [-UseDeleteSession] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
-### RestoreSession
+### RestoreId
 ```
 Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
- [-UseRestoreSession] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>]
- [<CommonParameters>]
+ -RestoreId <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
 ### BackupSetId
@@ -174,12 +173,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseRestoreSession
-Specify to use Restore View stored in SessionState
+### -UseValidationSession
+Specify to use Validation View stored in SessionState
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: RestoreSession
+Parameter Sets: ValidationSession
 Aliases:
 
 Required: True
@@ -189,12 +188,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseValidationSession
-Specify to use Validation View stored in SessionState
+### -RestoreId
+Specify an existing Restore Session Id
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: ValidationSession
+Type: Int32
+Parameter Sets: RestoreId
 Aliases:
 
 Required: True

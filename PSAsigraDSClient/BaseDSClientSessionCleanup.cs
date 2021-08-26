@@ -20,10 +20,9 @@ namespace PSAsigraDSClient
 
             // Check for a previous Backup Set Restore View stored in Session State
             WriteVerbose("Performing Action: Check for previous DS-Client Restore View Sessions");
-            BackupSetRestoreView previousRestoreSession = SessionState.PSVariable.GetValue("RestoreView", null) as BackupSetRestoreView;
 
             // If a previous session is found, remove it
-            if (previousRestoreSession != null)
+            if (SessionState.PSVariable.GetValue("RestoreView", null) is BackupSetRestoreView previousRestoreSession)
             {
                 WriteVerbose("Notice: Previous Restore View found");
                 try
@@ -41,10 +40,9 @@ namespace PSAsigraDSClient
 
             // Check for a previous Backup Set Delete View stored in Session State
             WriteVerbose("Performing Action: Check for previous DS-Client Delete View Sessions");
-            BackupSetDeleteView previousDeleteSession = SessionState.PSVariable.GetValue("DeleteView", null) as BackupSetDeleteView;
 
             // If a previous session is found, remove it
-            if (previousDeleteSession != null)
+            if (SessionState.PSVariable.GetValue("DeleteView", null) is BackupSetDeleteView previousDeleteSession)
             {
                 WriteVerbose("Notice: Previous Delete View found");
                 try
@@ -62,10 +60,9 @@ namespace PSAsigraDSClient
 
             // Check for a previous Backup Set Validation View stored in Session State
             WriteVerbose("Performing Action: Check for previous DS-Client Validation View Sessions");
-            BackupSetValidationView previousValidationSession = SessionState.PSVariable.GetValue("ValidateView", null) as BackupSetValidationView;
 
             // If a previous session is found, remove it
-            if (previousValidationSession != null)
+            if (SessionState.PSVariable.GetValue("ValidateView", null) is BackupSetValidationView previousValidationSession)
             {
                 WriteVerbose("Notice: Previous Validation View found");
                 try
@@ -96,7 +93,6 @@ namespace PSAsigraDSClient
             else
             {
                 WriteVerbose("Notice: No previous DSClient Session found");
-                WriteObject("DS-Client Session does not exist.");
             }
 
             ProcessCleanSession();

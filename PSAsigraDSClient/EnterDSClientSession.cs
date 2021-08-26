@@ -36,8 +36,8 @@ namespace PSAsigraDSClient
                 currentSessionContext = Session;
             else
             {
-                string user = Credential.UserName;
-                string pwd = Credential.GetNetworkCredential().Password;
+                //string user = Credential.UserName;
+                //string pwd = Credential.GetNetworkCredential().Password;
 
                 WriteVerbose("Performing Action: Establish DS-Client Session");
                 currentSessionContext = new DSClientSession(-1, HostName, Port, NoSSL, APIVersion, Credential, logoutExit: true);

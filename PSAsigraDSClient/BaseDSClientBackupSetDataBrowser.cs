@@ -55,6 +55,9 @@ namespace PSAsigraDSClient
             {
                 BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
+                if (backupSet.check_lock_status(EActivityType.EActivityType__Restore) == EBackupSetLockStatus.EBackupSetLockStatus__Locked)
+                    throw new Exception("Backup Set is Currently Locked");
+
                 int deletedDate = 0;
 
                 if (MyInvocation.BoundParameters.ContainsKey("DeletedDate"))

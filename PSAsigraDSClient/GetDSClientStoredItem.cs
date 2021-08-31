@@ -37,12 +37,9 @@ namespace PSAsigraDSClient
         [Parameter(ParameterSetName = "BackupSetId")]
         public SwitchParameter HideDirectories { get; set; }
 
-        protected override void ProcessRestoreSessionData(DSClientRestoreSession restoreSession)
+        protected override void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView)
         {
-            // This method is specific for processing the data from a Restore Session, by adding every item to the sessions browsed items list.
-            // The repeated code from this method and ProcessBackupSetData() can probably be simplified at a later time
-
-            BackedUpDataViewWithFilters backedUpDataView = BackedUpDataViewWithFilters.from(restoreSession.GetRestoreView());
+            BackedUpDataViewWithFilters backedUpDataView = BackedUpDataViewWithFilters.from(DSClientBackedUpDataView);
 
             // Apply File & Directory Visibility Filters
             ESelectableItemCategory itemCategory = ESelectableItemCategory.ESelectableItemCategory__FilesAndDirectories;
@@ -131,124 +128,6 @@ namespace PSAsigraDSClient
                             if (wcPattern.IsMatch(subItem.name))
                             {
                                 WriteDebug("Item Matched Filter");
-                                ItemInfo.Add(currentItemInfo);
-                                itemCount++;
-                            }
-                        }
-                        else
-                        {
-                            ItemInfo.Add(currentItemInfo);
-                            itemCount++;
-                        }
-
-                        if (!subItem.is_file && subItemDepth <= RecursiveDepth)
-                        {
-                            string fullPath = $"{currentPath.Path}\\{subItem.name}";
-                            if (!exclusionPatterns.Any(match => match.IsMatch(fullPath)))
-                            {
-                                newPaths.Insert(index, new ItemPath(fullPath, subItemDepth));
-                                index++;
-                            }
-                        }
-                    }
-
-                    // Remove the Path we've just completed enumerating from the list
-                    WriteDebug("Remove Item from Enumeration List");
-                    newPaths.Remove(currentPath);
-                    enumeratedCount++;
-                }
-            }
-
-            restoreSession.AddBrowsedItems(allItems);
-            ItemInfo.ForEach(WriteObject);
-        }
-
-        protected override void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView)
-        {
-            BackedUpDataViewWithFilters backedUpDataView = BackedUpDataViewWithFilters.from(DSClientBackedUpDataView);
-
-            // Apply File & Directory Visibility Filters
-            ESelectableItemCategory itemCategory = ESelectableItemCategory.ESelectableItemCategory__FilesAndDirectories;
-
-            if (HideFiles)
-                itemCategory = ESelectableItemCategory.ESelectableItemCategory__DirectoriesOnly;
-            else if (HideDirectories)
-                itemCategory = ESelectableItemCategory.ESelectableItemCategory__FilesOnly;
-
-            List<DSClientBackupSetItemInfo> ItemInfo = new List<DSClientBackupSetItemInfo>();
-
-            // Any trailing "\" is unnecessary, remove if any are specified to tidy up output
-            string path = Path.TrimEnd('\\');
-
-            // We always return info of the root/first item the user has specified, irrespective of other parameters
-            WriteVerbose($"Performing Action: Retrieve Item Info for Path: {path}");
-            SelectableItem item = backedUpDataView.getItem(path);
-            long itemId = item.id;
-
-            selectable_size itemSize = backedUpDataView.getItemSize(itemId);
-
-            ItemInfo.Add(new DSClientBackupSetItemInfo(path, item, itemSize));
-
-            if (Recursive)
-            {
-                // Set the Wildcard Options
-                WildcardOptions wcOptions = WildcardOptions.IgnoreCase |
-                                WildcardOptions.Compiled;
-
-                // Set the Filter Wildcard Pattern
-                WildcardPattern wcPattern = null;
-                if (Filter != null)
-                    wcPattern = new WildcardPattern(Filter, wcOptions);
-
-                // Set the Path Exclusion Wildcard Patterns
-                List<WildcardPattern> exclusionPatterns = new List<WildcardPattern>();
-                if (ExcludePath?.Count() > 0)
-                    foreach (string exclusionPath in ExcludePath)
-                        exclusionPatterns.Add(new WildcardPattern(exclusionPath, wcOptions));
-
-                List<ItemPath> newPaths = new List<ItemPath>
-                {
-                    new ItemPath(path, 0)
-                };
-
-                int enumeratedCount = 0;
-                int itemCount = 0;
-                ProgressRecord progressRecord = new ProgressRecord(1, "Enumerate Stored Backup Set Items", $"{enumeratedCount} Paths Enumerated, {itemCount} Items Discovered")
-                {
-                    PercentComplete = -1,
-                };
-
-                while (newPaths.Count() > 0)
-                {
-                    // Select the first item in the list
-                    ItemPath currentPath = newPaths.ElementAt(0);
-
-                    WriteVerbose($"Performing Action: Enumerate Path: {currentPath.Path} (Depth: {currentPath.Depth})");
-
-                    progressRecord.StatusDescription = $"{enumeratedCount} Paths Enumerated, {itemCount} Items Discovered";
-                    progressRecord.CurrentOperation = $"Enumerating Path: {currentPath.Path}";
-                    WriteProgress(progressRecord);
-
-                    WriteDebug($"Retrieve Info for Path: {currentPath.Path}");
-                    item = backedUpDataView.getItem(currentPath.Path);
-                    itemId = item.id;
-
-                    // Fetch all the subitems of the current path
-                    WriteDebug("Retrieve Sub Item Info");
-                    SelectableItem[] subItems = backedUpDataView.getSubItemsByCategory(itemId, itemCategory);
-
-                    int subItemDepth = currentPath.Depth + 1;
-                    int index = 1;
-                    foreach (SelectableItem subItem in subItems)
-                    {
-                        WriteDebug($"Get Size of Item: {subItem.name}");
-                        selectable_size subItemSize = backedUpDataView.getItemSize(subItem.id);
-
-                        if (Filter != null)
-                        {
-                            if (wcPattern.IsMatch(subItem.name))
-                            {
-                                WriteDebug("Item Matched Filter");
                                 ItemInfo.Add(new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize));
                                 itemCount++;
                             }
@@ -275,6 +154,12 @@ namespace PSAsigraDSClient
                     newPaths.Remove(currentPath);
                     enumeratedCount++;
                 }
+            }
+
+            if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreId)))
+            {
+                DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
+                restoreSession.AddBrowsedItems(allItems);
             }
 
             ItemInfo.ForEach(WriteObject);

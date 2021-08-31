@@ -16,11 +16,6 @@ namespace PSAsigraDSClient
         [Parameter(Mandatory = true, ParameterSetName = "RestoreId", HelpMessage = "Specify an existing Restore Session Id")]
         public int RestoreId { get; set; }
 
-        protected virtual void ProcessRestoreSessionData(DSClientRestoreSession restoreSession)
-        {
-            throw new NotImplementedException("This Method Should be Overridden");
-        }
-
         protected abstract void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView);
 
         protected override void DSClientProcessRecord()
@@ -52,7 +47,7 @@ namespace PSAsigraDSClient
                 // Get the Restore View from a Restore Session
                 DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
                 if (restoreSession != null)
-                    ProcessRestoreSessionData(restoreSession);
+                    ProcessBackupSetData(restoreSession.GetRestoreView());
                 else
                     throw new Exception("Specified RestoreId not found");
             }

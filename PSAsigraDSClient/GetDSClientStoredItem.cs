@@ -37,6 +37,9 @@ namespace PSAsigraDSClient
         [Parameter(ParameterSetName = "BackupSetId")]
         public SwitchParameter HideDirectories { get; set; }
 
+        [Parameter(HelpMessage = "Return the Size of Directories/Folders")]
+        public SwitchParameter CalculateDirectorySize { get; set; }
+
         protected override void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView)
         {
             BackedUpDataViewWithFilters backedUpDataView = BackedUpDataViewWithFilters.from(DSClientBackedUpDataView);
@@ -60,7 +63,16 @@ namespace PSAsigraDSClient
             SelectableItem item = backedUpDataView.getItem(path);
             long itemId = item.id;
 
-            selectable_size itemSize = backedUpDataView.getItemSize(itemId);
+            selectable_size itemSize = new selectable_size
+            {
+                data_size = 0,
+                file_count = 0
+            };
+            if ((!item.is_file && MyInvocation.BoundParameters.ContainsKey(nameof(CalculateDirectorySize))) ||
+                item.is_file)
+            {
+                itemSize = backedUpDataView.getItemSize(itemId);
+            }
 
             DSClientBackupSetItemInfo itemInfo = new DSClientBackupSetItemInfo(path, item, itemSize);
             allItems.Add(itemInfo);
@@ -118,8 +130,17 @@ namespace PSAsigraDSClient
                     int index = 1;
                     foreach (SelectableItem subItem in subItems)
                     {
-                        WriteDebug($"Get Size of Item: {subItem.name}");
-                        selectable_size subItemSize = backedUpDataView.getItemSize(subItem.id);
+                        selectable_size subItemSize = new selectable_size
+                        {
+                            data_size = 0,
+                            file_count = 0
+                        };
+                        if (MyInvocation.BoundParameters.ContainsKey(nameof(CalculateDirectorySize)) ||
+                            subItem.is_file)
+                        {
+                            WriteDebug($"Get Size of Item: {subItem.name}");
+                            subItemSize = backedUpDataView.getItemSize(subItem.id);
+                        }
                         DSClientBackupSetItemInfo currentItemInfo = new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize);
                         allItems.Add(currentItemInfo);
 

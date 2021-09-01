@@ -15,43 +15,43 @@ Return the Backed Up Items of a Backup Set
 ### hidefiles
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-HideFiles] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>]
- [<CommonParameters>]
+ [-ExcludePath <String[]>] [-HideFiles] [-CalculateDirectorySize] [-DateFrom <DateTime>] [-DateTo <DateTime>]
+ [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
 ### BackupSetId
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-HideFiles] [-HideDirectories] [-BackupSetId] <Int32> [-DateFrom <DateTime>]
- [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
+ [-ExcludePath <String[]>] [-HideFiles] [-HideDirectories] [-CalculateDirectorySize] [-BackupSetId] <Int32>
+ [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
 ### hidedirs
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-HideDirectories] [-DateFrom <DateTime>] [-DateTo <DateTime>]
- [-DeletedDate <DateTime>] [<CommonParameters>]
+ [-ExcludePath <String[]>] [-HideDirectories] [-CalculateDirectorySize] [-DateFrom <DateTime>]
+ [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
 ### ValidationSession
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-UseValidationSession] [-DateFrom <DateTime>] [-DateTo <DateTime>]
- [-DeletedDate <DateTime>] [<CommonParameters>]
+ [-ExcludePath <String[]>] [-CalculateDirectorySize] [-UseValidationSession] [-DateFrom <DateTime>]
+ [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
 ### DeleteSession
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-UseDeleteSession] [-DateFrom <DateTime>] [-DateTo <DateTime>]
- [-DeletedDate <DateTime>] [<CommonParameters>]
+ [-ExcludePath <String[]>] [-CalculateDirectorySize] [-UseDeleteSession] [-DateFrom <DateTime>]
+ [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
 ### RestoreId
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] -RestoreId <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>]
- [-DeletedDate <DateTime>] [<CommonParameters>]
+ [-ExcludePath <String[]>] [-CalculateDirectorySize] -RestoreId <Int32> [-DateFrom <DateTime>]
+ [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -310,6 +310,21 @@ Parameter Sets: RestoreId
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CalculateDirectorySize
+Return the Size of Directories/Folders
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

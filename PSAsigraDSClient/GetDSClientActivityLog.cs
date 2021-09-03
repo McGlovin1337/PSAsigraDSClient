@@ -69,10 +69,7 @@ namespace PSAsigraDSClient
             List<DSClientAcivityLog> ActivityLogs = new List<DSClientAcivityLog>();
 
             foreach(var activity in activityLogs)
-            {
-                DSClientAcivityLog activityLog = new DSClientAcivityLog(activity);
-                ActivityLogs.Add(activityLog);
-            }
+                ActivityLogs.Add(new DSClientAcivityLog(activity));
 
             // Filter Activity Type and Status here so we don't have to convert the strings back to their equivilent enums
             if (ActivityType != null)
@@ -82,6 +79,9 @@ namespace PSAsigraDSClient
                 ActivityLogs = ActivityLogs.Where(log => Status.Contains(log.Status)).ToList();
 
             WriteVerbose($"Notice: Yielded {ActivityLogs.Count()} Activities");
+
+            // Sort the Activity Logs by StartTime
+            ActivityLogs.Sort((x, y) => x.StartTime.CompareTo(y.StartTime));
 
             ActivityLogs.ForEach(WriteObject);
         }

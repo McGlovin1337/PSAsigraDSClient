@@ -183,6 +183,7 @@ CmdletsToExport = @(
 "Remove-DSClientUser",
 "Remove-DSClientUserGroup",
 "Remove-DSClientUserGroupRole",
+"Remove-DSClientValidationSession",
 "Rename-DSClientArchiveFilterRule",
 "Restore-DSClientDatabase",
 "Restore-DSClientOrphanedBackupSet",

@@ -100,6 +100,7 @@
     <Compile Include="PSAsigraDSClient\DSClientSession.cs" />
     <Compile Include="PSAsigraDSClient\DSClientBackupSetItemInfo.cs" />
     <Compile Include="PSAsigraDSClient\DSClientRestoreSession.cs" />
+    <Compile Include="PSAsigraDSClient\DSClientValidationSession.cs" />
     <Compile Include="PSAsigraDSClient\DSClientVMwareRestoreOptions.cs" />
     <Compile Include="PSAsigraDSClient\EnableDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\EnableDSClientSchedule.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientUserGroupRole.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetValidation.cs" />
+    <Compile Include="PSAsigraDSClient\InitializeDSClientValidationSession.cs" />
     <Compile Include="PSAsigraDSClient\InvokeDSClientCommand.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientRestoreSession.cs" />
     <Compile Include="PSAsigraDSClient\NewDSClientArchiveFilterRule.cs" />
@@ -236,6 +238,7 @@
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetRetention.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientRestore.cs" />
+    <Compile Include="PSAsigraDSClient\StartDSClientValidation.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientVMwareVADPRestore.cs" />
     <Compile Include="PSAsigraDSClient\StopDSClientGridNode.cs" />
     <Compile Include="PSAsigraDSClient\SyncDSClientBackupSet.cs" />
@@ -316,6 +319,7 @@
     <None Include="docs\Get-DSClientUserGroupRole.md" />
     <None Include="docs\Initialize-DSClientBackupSetDelete.md" />
     <None Include="docs\Initialize-DSClientBackupSetValidation.md" />
+    <None Include="docs\Initialize-DSClientValidationSession.md" />
     <None Include="docs\Invoke-DSClientCommand.md" />
     <None Include="docs\Initialize-DSClientRestoreSession.md" />
     <None Include="docs\New-DSClientArchiveFilterRule.md" />
@@ -387,6 +391,7 @@
     <None Include="docs\Start-DSClientBackupSetValidation.md" />
     <None Include="docs\Start-DSClientRestore.md" />
     <None Include="docs\Start-DSClientSystemActivity.md" />
+    <None Include="docs\Start-DSClientValidation.md" />
     <None Include="docs\Stop-DSClientActivity.md" />
     <None Include="docs\Stop-DSClientGridNode.md" />
     <None Include="docs\Sync-DSClientBackupSet.md" />

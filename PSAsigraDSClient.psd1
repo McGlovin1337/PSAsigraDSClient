@@ -85,6 +85,7 @@ CmdletsToExport = @(
 "Add-DSClientTimeRetentionOption",
 "Add-DSClientUnixFsBackupSetItem",
 "Add-DSClientUserGroupRole",
+"Add-DSClientValidationItem",
 "Add-DSClientVMwareVADPBackupSetItem",
 "Add-DSClientWeeklySchedule",
 "Add-DSClientWinFsBackupSetItem",

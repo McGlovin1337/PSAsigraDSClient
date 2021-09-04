@@ -4,13 +4,13 @@ using AsigraDSClientApi;
 
 namespace PSAsigraDSClient
 {
-    [Cmdlet(VerbsCommon.Add, "DSClientRestoreItem")]
+    [Cmdlet(VerbsCommon.Add, "DSClientValidationItem")]
     [OutputType(typeof(void))]
 
-    public class AddDSClientRestoreItem : DSClientCmdlet
+    public class AddDSClientValidationItem : DSClientCmdlet
     {
-        [Parameter(Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Restore Session to Select Items for")]
-        public int RestoreId { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Validation Session to Select Items for")]
+        public int ValidationId { get; set; }
 
         [Parameter(HelpMessage = "Specify Items for Restore by ItemId")]
         public long[] ItemId { get; set; }
@@ -20,18 +20,18 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
+            DSClientValidationSession validationSession = DSClientSessionInfo.GetValidationSession(ValidationId);
 
-            if (restoreSession != null)
+            if (validationSession != null)
             {
                 // Process ItemId's, these should already exist in the sessions browsed items list
                 if (ItemId != null && ItemId.Length > 0)
-                    restoreSession.AddSelectedItems(ItemId);
+                    validationSession.AddSelectedItems(ItemId);
 
                 // Attempt to Find and Add Items by Name
                 if (Item != null && Item.Length > 0)
                 {
-                    BackedUpDataView backedUpDataView = restoreSession.GetRestoreView();
+                    BackedUpDataView backedUpDataView = validationSession.GetValidationView();
 
                     foreach (string item in Item)
                     {
@@ -50,15 +50,15 @@ namespace PSAsigraDSClient
                         if (selectableItem == null)
                             continue;
 
-                        WriteVerbose($"Performing Action: Add '{item}' to Restore Session '{RestoreId}'");
-                        restoreSession.AddBrowsedItem(new DSClientBackupSetItemInfo(item, selectableItem, backedUpDataView.getItemSize(selectableItem.id)));
-                        restoreSession.AddSelectedItem(selectableItem.id);
+                        WriteVerbose($"Performing Action: Add '{item}' to Validation Session '{ValidationId}'");
+                        validationSession.AddBrowsedItem(new DSClientBackupSetItemInfo(item, selectableItem, backedUpDataView.getItemSize(selectableItem.id)));
+                        validationSession.AddSelectedItem(selectableItem.id);
                     }
                 }
             }
             else
             {
-                throw new Exception("Specified Restore Session Not Found");
+                throw new Exception("Specified Validation Session Not Found");
             }
         }
     }

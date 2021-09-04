@@ -34,11 +34,25 @@ namespace PSAsigraDSClient
             backupSet.Dispose();
         }
 
+        internal void AddBrowsedItem(DSClientBackupSetItemInfo item)
+        {
+            if (!_browsedItems.Exists(i => i.ItemId == item.ItemId))
+                _browsedItems.Add(item);
+        }
+
         internal void AddBrowsedItems(IEnumerable<DSClientBackupSetItemInfo> items)
         {
             // This method helps keep track of all the items discovered when calling Get-DSClientStoredItem Cmdlet
             // Since the BackedUpDataView class doesn't allow selecting items by id, this allows to select items by id, and view the details of each selected item when added to SelectedItems Property
             _browsedItems.AddRange(items.Except(_browsedItems));
+        }
+
+        internal void AddSelectedItem(long itemId)
+        {
+            if (!_selectedItemIds.Contains(itemId))
+                _selectedItemIds.Add(itemId);
+
+            SetSelectedItems();
         }
 
         internal void AddSelectedItems(long[] itemIds)
@@ -52,6 +66,11 @@ namespace PSAsigraDSClient
         {
             _validationActivityInitiator.Dispose();
             _validationView.Dispose();
+        }
+
+        internal BackupSetValidationView GetValidationView()
+        {
+            return _validationView;
         }
 
         internal void SetDataTimeRange(DateTime from, DateTime to)

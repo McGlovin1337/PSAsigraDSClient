@@ -7,29 +7,28 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientBackupSetDataBrowser: BaseDSClientInitializeBackupSetDataBrowser
     {
-        [Parameter(Mandatory = true, ParameterSetName = "ValidationSession", HelpMessage = "Specify to use Validation View stored in SessionState")]
-        public SwitchParameter UseValidationSession { get; set; }
-
         [Parameter(Mandatory = true, ParameterSetName = "DeleteSession", HelpMessage = "Specify to use Delete View stored in SessionState")]
         public SwitchParameter UseDeleteSession { get; set; }
 
         [Parameter(Mandatory = true, ParameterSetName = "RestoreId", HelpMessage = "Specify an existing Restore Session Id")]
         public int RestoreId { get; set; }
 
+        [Parameter(Mandatory = true, ParameterSetName = "ValidationId", HelpMessage = "Specify and existing Validation Session Id")]
+        public int ValidationId { get; set; }
+
         protected abstract void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView);
 
         protected override void DSClientProcessRecord()
         {
-            if (UseValidationSession == true)
+            if (MyInvocation.BoundParameters.ContainsKey(nameof(ValidationId)))
             {
-                // Get the Validation View from SessionState
-                BackupSetValidationView validationView = SessionState.PSVariable.GetValue("ValidateView", null) as BackupSetValidationView;
+                // Get the Validation View from Validation Session
+                DSClientValidationSession validationSession = DSClientSessionInfo.GetValidationSession(ValidationId);
 
-                if (validationView != null)
-                    ProcessBackupSetData(validationView);
-
-                // Update the Validation View in SessionState
-                SessionState.PSVariable.Set("ValidateView", validationView);
+                if (validationSession != null)
+                    ProcessBackupSetData(validationSession.GetValidationView());
+                else
+                    throw new Exception("Specified Validation Session not found");
             }
             else if (UseDeleteSession)
             {
@@ -49,7 +48,7 @@ namespace PSAsigraDSClient
                 if (restoreSession != null)
                     ProcessBackupSetData(restoreSession.GetRestoreView());
                 else
-                    throw new Exception("Specified RestoreId not found");
+                    throw new Exception("Specified Restore Session not found");
             }
             else
             {

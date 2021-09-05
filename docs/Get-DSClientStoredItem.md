@@ -33,13 +33,6 @@ Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-Recu
  [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
-### ValidationSession
-```
-Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-CalculateDirectorySize] [-UseValidationSession] [-DateFrom <DateTime>]
- [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
-```
-
 ### DeleteSession
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
@@ -51,6 +44,13 @@ Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-Recu
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
  [-ExcludePath <String[]>] [-CalculateDirectorySize] -RestoreId <Int32> [-DateFrom <DateTime>]
+ [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
+```
+
+### ValidationId
+```
+Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
+ [-ExcludePath <String[]>] [-CalculateDirectorySize] -ValidationId <Int32> [-DateFrom <DateTime>]
  [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
@@ -217,21 +217,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseValidationSession
-Specify to use Validation View stored in SessionState
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: ValidationSession
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -HideDirectories
 {{ Fill HideDirectories Description }}
 
@@ -325,6 +310,21 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ValidationId
+Specify and existing Validation Session Id
+
+```yaml
+Type: Int32
+Parameter Sets: ValidationId
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

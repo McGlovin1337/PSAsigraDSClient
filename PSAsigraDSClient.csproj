@@ -130,7 +130,6 @@
     <Compile Include="PSAsigraDSClient\GetDSClientUserGroupRole.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientValidationSession.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetDelete.cs" />
-    <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetValidation.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientValidationSession.cs" />
     <Compile Include="PSAsigraDSClient\InvokeDSClientCommand.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientRestoreSession.cs" />
@@ -246,7 +245,6 @@
     <Compile Include="PSAsigraDSClient\StartDSClientVMwareVADPRestore.cs" />
     <Compile Include="PSAsigraDSClient\StopDSClientGridNode.cs" />
     <Compile Include="PSAsigraDSClient\SyncDSClientBackupSet.cs" />
-    <Compile Include="PSAsigraDSClient\StartDSClientBackupSetValidation.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientSystemActivity.cs" />
     <Compile Include="PSAsigraDSClient\StopDSClientActivity.cs" />
     <Compile Include="PSAsigraDSClient\UnpublishDSClientEncryptionKeys.cs" />

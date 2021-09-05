@@ -142,6 +142,7 @@ CmdletsToExport = @(
 "Get-DSClientUser",
 "Get-DSClientUserGroup",
 "Get-DSClientUserGroupRole",
+"Get-DSClientValidationSession",
 "Initialize-DSClientBackupSetDelete",
 "Initialize-DSClientBackupSetValidation",
 "Initialize-DSClientRestoreSession",

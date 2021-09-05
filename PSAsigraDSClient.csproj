@@ -128,6 +128,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientUser.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientUserGroup.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientUserGroupRole.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientValidationSession.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetValidation.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientValidationSession.cs" />
@@ -320,6 +321,7 @@
     <None Include="docs\Get-DSClientUser.md" />
     <None Include="docs\Get-DSClientUserGroup.md" />
     <None Include="docs\Get-DSClientUserGroupRole.md" />
+    <None Include="docs\Get-DSClientValidationSession.md" />
     <None Include="docs\Initialize-DSClientBackupSetDelete.md" />
     <None Include="docs\Initialize-DSClientBackupSetValidation.md" />
     <None Include="docs\Initialize-DSClientValidationSession.md" />

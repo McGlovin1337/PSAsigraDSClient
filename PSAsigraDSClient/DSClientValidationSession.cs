@@ -73,6 +73,14 @@ namespace PSAsigraDSClient
             return _validationView;
         }
 
+        internal void RemoveSelectedItems(long[] items)
+        {
+            foreach (long item in items)
+                _selectedItemIds.Remove(item);
+
+            SetSelectedItems();
+        }
+
         internal void SetDataTimeRange(DateTime from, DateTime to)
         {
             // Sets the Time Range for which Data is Selected
@@ -93,9 +101,11 @@ namespace PSAsigraDSClient
             if (_validationActivityInitiator != null)
                 _validationActivityInitiator.Dispose();
 
-            long[] items = _selectedItemIds.ToArray();
+            long[] items = null;
+            if (_selectedItemIds != null && _selectedItemIds.Count() > 0)
+                items = _selectedItemIds.ToArray();
 
-            if (items.Length > 0)
+            if (items != null)
             {
                 _validationActivityInitiator = _validationView.prepareValidation(items);
 
@@ -109,7 +119,7 @@ namespace PSAsigraDSClient
                 _validationActivityInitiator = null;
             }
 
-            SelectiveValidation = (SelectedItems.Length > 0);
+            SelectiveValidation = (SelectedItems != null && SelectedItems.Length > 0);
         }
 
         internal GenericActivity StartValidation()

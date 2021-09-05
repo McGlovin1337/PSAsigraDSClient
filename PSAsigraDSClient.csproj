@@ -209,6 +209,7 @@
     <Compile Include="PSAsigraDSClient\RemoveDSClientUser.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientUserGroup.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientUserGroupRole.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientValidationItem.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientValidationSession.cs" />
     <Compile Include="PSAsigraDSClient\RenameArchiveFilterRule.cs" />
     <Compile Include="PSAsigraDSClient\RestoreDSClientDatabase.cs" />
@@ -364,6 +365,7 @@
     <None Include="docs\Remove-DSClientUser.md" />
     <None Include="docs\Remove-DSClientUserGroup.md" />
     <None Include="docs\Remove-DSClientUserGroupRole.md" />
+    <None Include="docs\Remove-DSClientValidationItem.md" />
     <None Include="docs\Remove-DSClientValidationSession.md" />
     <None Include="docs\Rename-DSClientArchiveFilterRule.md" />
     <None Include="docs\Restore-DSClientDatabase.md" />

@@ -182,6 +182,11 @@ namespace PSAsigraDSClient
                 DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
                 restoreSession.AddBrowsedItems(allItems);
             }
+            else if (MyInvocation.BoundParameters.ContainsKey(nameof(ValidationId)))
+            {
+                DSClientValidationSession validationSession = DSClientSessionInfo.GetValidationSession(ValidationId);
+                validationSession.AddBrowsedItems(allItems);
+            }
 
             ItemInfo.ForEach(WriteObject);
         }

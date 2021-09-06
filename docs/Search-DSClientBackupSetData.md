@@ -12,13 +12,6 @@ Perform a Search of DS-Client Backed Up Data
 
 ## SYNTAX
 
-### ValidationSession
-```
-Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
- [-UseValidationSession] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>]
- [<CommonParameters>]
-```
-
 ### DeleteSession
 ```
 Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
@@ -29,6 +22,13 @@ Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>
 ```
 Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
  -RestoreId <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
+```
+
+### ValidationId
+```
+Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
+ -ValidationId <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>]
+ [<CommonParameters>]
 ```
 
 ### BackupSetId
@@ -173,12 +173,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseValidationSession
-Specify to use Validation View stored in SessionState
+### -RestoreId
+Specify an existing Restore Session Id
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: ValidationSession
+Type: Int32
+Parameter Sets: RestoreId
 Aliases:
 
 Required: True
@@ -188,12 +188,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -RestoreId
-Specify an existing Restore Session Id
+### -ValidationId
+Specify and existing Validation Session Id
 
 ```yaml
 Type: Int32
-Parameter Sets: RestoreId
+Parameter Sets: ValidationId
 Aliases:
 
 Required: True

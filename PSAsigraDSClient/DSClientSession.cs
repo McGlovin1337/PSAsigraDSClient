@@ -13,8 +13,9 @@ namespace PSAsigraDSClient
         private readonly string _url;
         private readonly string _apiVersion;
         private readonly bool _logoutOnExit;
-        private ClientConnection _clientConnection;
-        private List<DSClientRestoreSession> _restoreSessions;
+        private readonly List<DSClientRestoreSession> _restoreSessions;
+        private readonly List<DSClientValidationSession> _validationSessions;
+        private ClientConnection _clientConnection;        
 
         public int Id { get; private set; }
         public string Name { get; private set; }
@@ -35,6 +36,7 @@ namespace PSAsigraDSClient
             _logoutOnExit = logoutExit;
             _clientConnection = ApiFactory.CreateConnection(_url, _apiVersion, credential.UserName, credential.GetNetworkCredential().Password, 0);
             _restoreSessions = new List<DSClientRestoreSession>();
+            _validationSessions = new List<DSClientValidationSession>();
 
             Id = id;
             Name = (string.IsNullOrEmpty(name)) ? $"Session{id}" : name;
@@ -53,9 +55,18 @@ namespace PSAsigraDSClient
         {
             for (int i = 0; i < _restoreSessions.Count(); i++)
                 if (_restoreSessions[i].RestoreId == restoreSession.RestoreId)
-                    throw new Exception($"Session with RestoreId {restoreSession.RestoreId} already exits");
+                    throw new Exception($"Session with RestoreId {restoreSession.RestoreId} already exists");
 
             _restoreSessions.Add(restoreSession);
+        }
+
+        internal void AddValidationSession(DSClientValidationSession validationSession)
+        {
+            for (int i = 0; i < _validationSessions.Count(); i++)
+                if (_validationSessions[i].ValidationId == validationSession.ValidationId)
+                    throw new Exception($"Session with ValidationId {validationSession.ValidationId} already exists");
+
+            _validationSessions.Add(validationSession);
         }
 
         internal void Connect()
@@ -97,6 +108,17 @@ namespace PSAsigraDSClient
             return id;
         }
 
+        internal int GenerateValidationId()
+        {
+            int id = 1;
+
+            for (int i = 0; i < _validationSessions.Count(); i++)
+                if (_validationSessions[i].ValidationId >= id)
+                    id = _validationSessions[i].ValidationId + 1;
+
+            return id;
+        }
+
         internal string GetApiUrl()
         {
             return _url;
@@ -121,10 +143,30 @@ namespace PSAsigraDSClient
             return _restoreSessions;
         }
 
+        internal DSClientValidationSession GetValidationSession(int validationId)
+        {
+            for (int i = 0; i < _validationSessions.Count(); i++)
+                if (_validationSessions[i].ValidationId == validationId)
+                    return _validationSessions[i];
+
+            return null;
+        }
+
+        internal IEnumerable<DSClientValidationSession> GetValidationSessions()
+        {
+            return _validationSessions;
+        }
+
         internal void RemoveRestoreSession(DSClientRestoreSession restoreSession)
         {
             restoreSession.Dispose();
             _restoreSessions.Remove(restoreSession);
+        }
+
+        internal void RemoveValidationSession(DSClientValidationSession validationSession)
+        {
+            validationSession.Dispose();
+            _validationSessions.Remove(validationSession);
         }
 
         internal void UpdateState()

@@ -5,44 +5,39 @@ online version:
 schema: 2.0.0
 ---
 
-# Start-DSClientBackupSetValidation
+# Remove-DSClientValidationItem
 
 ## SYNOPSIS
-Start a Backup Set Data Validation Activity
+Remove an Item Selected for Validation
 
 ## SYNTAX
 
-### Full
 ```
-Start-DSClientBackupSetValidation [-FullValidation] [-PassThru] [<CommonParameters>]
-```
-
-### Selective
-```
-Start-DSClientBackupSetValidation [[-Items] <String[]>] [[-ItemId] <Int64[]>] [-PassThru] [<CommonParameters>]
+Remove-DSClientValidationItem [-ValidationId] <Int32> [-ItemId <Int64[]>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Start a Backup Set Data Validation Activity. The Initialize-DSClientBackupSetValidation Cmdlet must be used before using this Cmdlet
+Remove an Item previously selected for Validation in the specified Validation Session
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Start-DSClientBackupSetValidation -FullValidation
+PS C:\> Remove-DSClientValidationItem -ValidationId 1 -ItemId 4, 108
 ```
 
-Performs Validation of all Backed Up Data
+Removes the items identified by ItemId 4 and 108 from Validation Session with Id 1
 
 ## PARAMETERS
 
-### -FullValidation
-Specify to Validate All Backup Set Data
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Full
-Aliases:
+Parameter Sets: (All)
+Aliases: cf
 
 Required: False
 Position: Named
@@ -52,42 +47,43 @@ Accept wildcard characters: False
 ```
 
 ### -ItemId
-Specify the items to validate by ItemId
+Specify Item(s) to remove by Id
 
 ```yaml
 Type: Int64[]
-Parameter Sets: Selective
+Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -Items
-Specify the items to validate
+### -ValidationId
+Specify the Validation Session to Remove Item(s) from
 
 ```yaml
-Type: String[]
-Parameter Sets: Selective
-Aliases: Path
+Type: Int32
+Parameter Sets: (All)
+Aliases:
 
-Required: False
+Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
-### -PassThru
-specify to output basic Activity Details
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases:
+Aliases: wi
 
 Required: False
 Position: Named
@@ -101,13 +97,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### System.String[]
+### System.Int32
 
 ### System.Int64[]
 
 ## OUTPUTS
 
-### System.Object
+### System.Void
+
 ## NOTES
 
 ## RELATED LINKS

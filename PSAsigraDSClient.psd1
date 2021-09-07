@@ -174,6 +174,7 @@ CmdletsToExport = @(
 "Remove-DSClientBackupSet",
 "Remove-DSClientBackupSetItem",
 "Remove-DSClientBackupSetNotification",
+"Remove-DSClientDeleteSession",
 "Remove-DSClientInitialBackupPath",
 "Remove-DSClientRestoreItem",
 "Remove-DSClientRestoreSession",

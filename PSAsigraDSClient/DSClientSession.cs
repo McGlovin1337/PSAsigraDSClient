@@ -193,6 +193,12 @@ namespace PSAsigraDSClient
             return _validationSessions;
         }
 
+        internal void RemoveDeleteSession(DSClientDeleteSession deleteSession)
+        {
+            deleteSession.Dispose();
+            _deleteSessions.Remove(deleteSession);
+        }
+
         internal void RemoveRestoreSession(DSClientRestoreSession restoreSession)
         {
             restoreSession.Dispose();

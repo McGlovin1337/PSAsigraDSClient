@@ -73,7 +73,10 @@ namespace PSAsigraDSClient
         internal void Dispose()
         {
             _backupSet.Dispose();
-            _deleteActivityInitiator.Dispose();
+
+            if (_deleteActivityInitiator != null)
+                _deleteActivityInitiator.Dispose();
+
             _deleteView.Dispose();
         }
 

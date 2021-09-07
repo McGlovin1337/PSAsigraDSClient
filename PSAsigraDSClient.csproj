@@ -115,6 +115,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientBackupSetNotification.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientCurrentLoginRole.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientDeleteSession.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientGridInfo.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientGridLog.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientInitialBackupPath.cs" />
@@ -292,6 +293,7 @@
     <None Include="docs\Get-DSClientConfiguration.md" />
     <None Include="docs\Get-DSClientCurrentLoginRole.md" />
     <None Include="docs\Get-DSClientDefaultConfiguration.md" />
+    <None Include="docs\Get-DSClientDeleteSession.md" />
     <None Include="docs\Get-DSClientEventLog.md" />
     <None Include="docs\Get-DSClientGridInfo.md" />
     <None Include="docs\Get-DSClientGridLog.md" />

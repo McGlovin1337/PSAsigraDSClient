@@ -112,6 +112,7 @@ CmdletsToExport = @(
 "Get-DSClientConfiguration",
 "Get-DSClientCurrentLoginRole",
 "Get-DSClientDefaultConfiguration",
+"Get-DSClientDeleteSession",
 "Get-DSClientEventLog",
 "Get-DSClientGridInfo",
 "Get-DSClientGridLog",

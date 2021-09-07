@@ -30,6 +30,8 @@ namespace PSAsigraDSClient
             DSClientDeleteSession deleteSession = new DSClientDeleteSession(DSClientSessionInfo.GenerateDeleteId(), backupSet);
             WriteVerbose($"Notice: Delete Session Id: {deleteSession.DeleteId}");
 
+            DSClientSessionInfo.AddDeleteSession(deleteSession);
+
             WriteObject(deleteSession);
         }
     }

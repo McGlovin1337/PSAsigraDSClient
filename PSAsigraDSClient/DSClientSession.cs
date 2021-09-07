@@ -53,6 +53,15 @@ namespace PSAsigraDSClient
             cfgMgr.Dispose();
         }
 
+        internal void AddDeleteSession(DSClientDeleteSession deleteSession)
+        {
+            for (int i = 0; i < _deleteSessions.Count(); i++)
+                if (_deleteSessions[i].DeleteId == deleteSession.DeleteId)
+                    throw new Exception($"Session with DeleteId {deleteSession.DeleteId} already exists");
+
+            _deleteSessions.Add(deleteSession);
+        }
+
         internal void AddRestoreSession(DSClientRestoreSession restoreSession)
         {
             for (int i = 0; i < _restoreSessions.Count(); i++)
@@ -135,6 +144,20 @@ namespace PSAsigraDSClient
         internal string GetApiUrl()
         {
             return _url;
+        }
+
+        internal DSClientDeleteSession GetDeleteSession(int deleteId)
+        {
+            for (int i = 0; i < _deleteSessions.Count(); i++)
+                if (_deleteSessions[i].DeleteId == deleteId)
+                    return _deleteSessions[i];
+
+            return null;
+        }
+
+        internal IEnumerable<DSClientDeleteSession> GetDeleteSessions()
+        {
+            return _deleteSessions;
         }
 
         internal bool GetLogoutOnExit()

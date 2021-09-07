@@ -13,6 +13,7 @@ namespace PSAsigraDSClient
         private readonly string _url;
         private readonly string _apiVersion;
         private readonly bool _logoutOnExit;
+        private readonly List<DSClientDeleteSession> _deleteSessions;
         private readonly List<DSClientRestoreSession> _restoreSessions;
         private readonly List<DSClientValidationSession> _validationSessions;
         private ClientConnection _clientConnection;        
@@ -35,6 +36,7 @@ namespace PSAsigraDSClient
             _credential = credential;
             _logoutOnExit = logoutExit;
             _clientConnection = ApiFactory.CreateConnection(_url, _apiVersion, credential.UserName, credential.GetNetworkCredential().Password, 0);
+            _deleteSessions = new List<DSClientDeleteSession>();
             _restoreSessions = new List<DSClientRestoreSession>();
             _validationSessions = new List<DSClientValidationSession>();
 
@@ -95,6 +97,17 @@ namespace PSAsigraDSClient
 
             if (State == ConnectionState.Disconnected)
                 _clientConnection.Dispose();
+        }
+
+        internal int GenerateDeleteId()
+        {
+            int id = 1;
+
+            for (int i = 0; i < _deleteSessions.Count(); i++)
+                if (_deleteSessions[i].DeleteId >= id)
+                    id = _deleteSessions[i].DeleteId + 1;
+
+            return id;
         }
 
         internal int GenerateRestoreId()

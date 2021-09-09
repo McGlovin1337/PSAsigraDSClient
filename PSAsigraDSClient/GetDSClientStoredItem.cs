@@ -40,17 +40,20 @@ namespace PSAsigraDSClient
         [Parameter(HelpMessage = "Return the Size of Directories/Folders")]
         public SwitchParameter CalculateDirectorySize { get; set; }
 
-        protected override void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView)
+        protected override void ProcessBackupSetData(BackedUpDataView backedUpDataView)
         {
-            BackedUpDataViewWithFilters backedUpDataView = BackedUpDataViewWithFilters.from(DSClientBackedUpDataView);
-
             // Apply File & Directory Visibility Filters
             ESelectableItemCategory itemCategory = ESelectableItemCategory.ESelectableItemCategory__FilesAndDirectories;
 
-            if (HideFiles)
-                itemCategory = ESelectableItemCategory.ESelectableItemCategory__DirectoriesOnly;
-            else if (HideDirectories)
-                itemCategory = ESelectableItemCategory.ESelectableItemCategory__FilesOnly;
+            if (!MyInvocation.BoundParameters.ContainsKey(nameof(DeleteId)))
+            {
+                BackedUpDataViewWithFilters filteredBackedUpDataView = BackedUpDataViewWithFilters.from(backedUpDataView);
+
+                if (HideFiles)
+                    itemCategory = ESelectableItemCategory.ESelectableItemCategory__DirectoriesOnly;
+                else if (HideDirectories)
+                    itemCategory = ESelectableItemCategory.ESelectableItemCategory__FilesOnly;
+            }
 
             List<DSClientBackupSetItemInfo> allItems = new List<DSClientBackupSetItemInfo>();
             List<DSClientBackupSetItemInfo> ItemInfo = new List<DSClientBackupSetItemInfo>();
@@ -186,6 +189,11 @@ namespace PSAsigraDSClient
             {
                 DSClientValidationSession validationSession = DSClientSessionInfo.GetValidationSession(ValidationId);
                 validationSession.AddBrowsedItems(allItems);
+            }
+            else if (MyInvocation.BoundParameters.ContainsKey(nameof(DeleteId)))
+            {
+                DSClientDeleteSession deleteSession = DSClientSessionInfo.GetDeleteSession(DeleteId);
+                deleteSession.AddBrowsedItems(allItems);
             }
 
             ItemInfo.ForEach(WriteObject);

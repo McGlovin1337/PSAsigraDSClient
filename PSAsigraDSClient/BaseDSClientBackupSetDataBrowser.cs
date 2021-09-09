@@ -7,8 +7,8 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientBackupSetDataBrowser: BaseDSClientInitializeBackupSetDataBrowser
     {
-        [Parameter(Mandatory = true, ParameterSetName = "DeleteSession", HelpMessage = "Specify to use Delete View stored in SessionState")]
-        public SwitchParameter UseDeleteSession { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "DeleteId", HelpMessage = "Specify an existing Delete Session Id")]
+        public int DeleteId { get; set; }
 
         [Parameter(Mandatory = true, ParameterSetName = "RestoreId", HelpMessage = "Specify an existing Restore Session Id")]
         public int RestoreId { get; set; }
@@ -30,16 +30,15 @@ namespace PSAsigraDSClient
                 else
                     throw new Exception("Specified Validation Session not found");
             }
-            else if (UseDeleteSession)
+            else if (MyInvocation.BoundParameters.ContainsKey(nameof(DeleteId)))
             {
-                // Get the Delete View from SessionState
-                BackupSetDeleteView deleteView = SessionState.PSVariable.GetValue("DeleteView", null) as BackupSetDeleteView;
+                // Get the Delete View from Delete Session
+                DSClientDeleteSession deleteSession = DSClientSessionInfo.GetDeleteSession(DeleteId);
 
-                if (deleteView != null)
-                    ProcessBackupSetData(deleteView);
-
-                // Update the Delete View in SessionState
-                SessionState.PSVariable.Set("DeleteView", deleteView);
+                if (deleteSession != null)
+                    ProcessBackupSetData(deleteSession.GetDeleteView());
+                else
+                    throw new Exception("Specified Delete Session not found");
             }
             else if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreId)))
             {

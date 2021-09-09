@@ -33,10 +33,10 @@ Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-Recu
  [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
-### DeleteSession
+### DeleteId
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-CalculateDirectorySize] [-UseDeleteSession] [-DateFrom <DateTime>]
+ [-ExcludePath <String[]>] [-CalculateDirectorySize] -DeleteId <Int32> [-DateFrom <DateTime>]
  [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
@@ -202,21 +202,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseDeleteSession
-Specify to use Delete View stored in SessionState
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: DeleteSession
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -HideDirectories
 {{ Fill HideDirectories Description }}
 
@@ -322,6 +307,21 @@ Specify and existing Validation Session Id
 ```yaml
 Type: Int32
 Parameter Sets: ValidationId
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DeleteId
+Specify an existing Delete Session Id
+
+```yaml
+Type: Int32
+Parameter Sets: DeleteId
 Aliases:
 
 Required: True

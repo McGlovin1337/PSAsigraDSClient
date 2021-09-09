@@ -245,6 +245,7 @@
     <Compile Include="PSAsigraDSClient\StartDSClientBackup.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetRetention.cs" />
+    <Compile Include="PSAsigraDSClient\StartDSClientDelete.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientRestore.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientValidation.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientVMwareVADPRestore.cs" />
@@ -402,6 +403,7 @@
     <None Include="docs\Start-DSClientBackup.md" />
     <None Include="docs\Start-DSClientBackupSetDelete.md" />
     <None Include="docs\Start-DSClientBackupSetRetention.md" />
+    <None Include="docs\Start-DSClientDelete.md" />
     <None Include="docs\Start-DSClientRestore.md" />
     <None Include="docs\Start-DSClientSystemActivity.md" />
     <None Include="docs\Start-DSClientValidation.md" />

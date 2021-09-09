@@ -162,7 +162,7 @@ namespace PSAsigraDSClient
             if (_deleteActivityInitiator != null)
                 return _deleteActivityInitiator.start();
 
-            throw new Exception("Validation Session not Ready to Start");
+            throw new Exception("Delete Session not Ready to Start");
         }
 
         public class MoveToBLMOptions

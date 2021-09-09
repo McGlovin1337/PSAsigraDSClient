@@ -219,6 +219,7 @@ CmdletsToExport = @(
 "Start-DSClientBackup",
 "Start-DSClientBackupSetDelete",
 "Start-DSClientBackupSetRetention",
+"Start-DSClientDelete",
 "Start-DSClientRestore",
 "Start-DSClientSystemActivity",
 "Start-DSClientValidation",

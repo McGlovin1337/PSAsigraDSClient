@@ -76,6 +76,7 @@ CmdletsToExport = @(
 "Add-DSClientArchiveFilter",
 "Add-DSClientBackupSetNotification",
 "Add-DSClientDailySchedule",
+"Add-DSClientDeleteItem",
 "Add-DSClientMonthlySchedule",
 "Add-DSClientMSSqlServerBackupSetItem",
 "Add-DSClientMultiFactorAuthUser",

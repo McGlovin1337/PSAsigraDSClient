@@ -1072,6 +1072,140 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Add-DSClientDeleteItem</command:name>
+      <command:verb>Add</command:verb>
+      <command:noun>DSClientDeleteItem</command:noun>
+      <maml:description>
+        <maml:para>Add an Item from a Backup Set to a Delete Session</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Add items from a Backup Set to an initialized Delete Session, so that it can be deleted from the stored backup set data.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Add-DSClientDeleteItem</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
+          <maml:name>DeleteId</maml:name>
+          <maml:Description>
+            <maml:para>Specify the Delete Session to Select Items for</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Item</maml:name>
+          <maml:Description>
+            <maml:para>Specify Items for Deletion by Name</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ItemId</maml:name>
+          <maml:Description>
+            <maml:para>Specify Items for Deletion by ItemId</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int64[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Int64[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
+        <maml:name>DeleteId</maml:name>
+        <maml:Description>
+          <maml:para>Specify the Delete Session to Select Items for</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Item</maml:name>
+        <maml:Description>
+          <maml:para>Specify Items for Deletion by Name</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ItemId</maml:name>
+        <maml:Description>
+          <maml:para>Specify Items for Deletion by ItemId</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Int64[]</command:parameterValue>
+        <dev:type>
+          <maml:name>Int64[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Void</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Add-DSClientDeleteItem -DeleteId 1 -ItemId 10</dev:code>
+        <dev:remarks>
+          <maml:para>Adds the Item with ItemId 10 to Delete Session with Id 1</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Add-DSClientDeleteItem -DeleteId 1 -Item 'C$\Windows\Temp'</dev:code>
+        <dev:remarks>
+          <maml:para>Adds the Item 'C$\Windows\Temp' by name to the Delete Session with Id 1</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Add-DSClientMonthlySchedule</command:name>
       <command:verb>Add</command:verb>
       <command:noun>DSClientMonthlySchedule</command:noun>

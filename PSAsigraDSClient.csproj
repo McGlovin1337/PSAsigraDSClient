@@ -132,7 +132,6 @@
     <Compile Include="PSAsigraDSClient\GetDSClientUserGroup.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientUserGroupRole.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientValidationSession.cs" />
-    <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientDeleteSession.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientValidationSession.cs" />
     <Compile Include="PSAsigraDSClient\InvokeDSClientCommand.cs" />
@@ -245,7 +244,6 @@
     <Compile Include="PSAsigraDSClient\SetDSClientWeeklySchedule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackup.cs" />
-    <Compile Include="PSAsigraDSClient\StartDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetRetention.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientDelete.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientRestore.cs" />
@@ -331,7 +329,6 @@
     <None Include="docs\Get-DSClientUserGroup.md" />
     <None Include="docs\Get-DSClientUserGroupRole.md" />
     <None Include="docs\Get-DSClientValidationSession.md" />
-    <None Include="docs\Initialize-DSClientBackupSetDelete.md" />
     <None Include="docs\Initialize-DSClientDeleteSession.md" />
     <None Include="docs\Initialize-DSClientValidationSession.md" />
     <None Include="docs\Invoke-DSClientCommand.md" />
@@ -405,7 +402,6 @@
     <None Include="docs\Set-DSClientWeeklySchedule.md" />
     <None Include="docs\Set-DSClientWinFsBackupSet.md" />
     <None Include="docs\Start-DSClientBackup.md" />
-    <None Include="docs\Start-DSClientBackupSetDelete.md" />
     <None Include="docs\Start-DSClientBackupSetRetention.md" />
     <None Include="docs\Start-DSClientDelete.md" />
     <None Include="docs\Start-DSClientRestore.md" />

@@ -200,6 +200,7 @@ CmdletsToExport = @(
 "Set-DSClientConfiguration",
 "Set-DSClientDailySchedule",
 "Set-DSClientDefaultConfiguration",
+"Set-DSClientDeleteSession",
 "Set-DSClientInitialBackupStatus",
 "Set-DSClientMonthlySchedule",
 "Set-DSClientMSSqlServerBackupSet",

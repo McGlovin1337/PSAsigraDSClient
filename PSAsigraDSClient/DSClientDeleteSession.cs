@@ -160,7 +160,12 @@ namespace PSAsigraDSClient
         internal GenericActivity StartValidation()
         {
             if (_deleteActivityInitiator != null)
+            {
+                if (MoveToBLM.MoveToBLM)
+                    _deleteActivityInitiator.enableBLMMove(MoveToBLM.Label, MoveToBLM.NewPackage);
+
                 return _deleteActivityInitiator.start();
+            }
 
             throw new Exception("Delete Session not Ready to Start");
         }

@@ -200,6 +200,7 @@
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetNotification.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientDeleteItem.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientDeleteSession.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientInitialBackupPath.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientRestoreItem.cs" />
@@ -359,6 +360,7 @@
     <None Include="docs\Remove-DSClientBackupSet.md" />
     <None Include="docs\Remove-DSClientBackupSetItem.md" />
     <None Include="docs\Remove-DSClientBackupSetNotification.md" />
+    <None Include="docs\Remove-DSClientDeleteItem.md" />
     <None Include="docs\Remove-DSClientDeleteSession.md" />
     <None Include="docs\Remove-DSClientInitialBackupPath.md" />
     <None Include="docs\Remove-DSClientRestoreItem.md" />

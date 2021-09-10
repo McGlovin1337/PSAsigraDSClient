@@ -12,10 +12,10 @@ Perform a Search of DS-Client Backed Up Data
 
 ## SYNTAX
 
-### DeleteSession
+### DeleteId
 ```
 Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
- [-UseDeleteSession] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
+ -DeleteId <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
 ### RestoreId
@@ -158,21 +158,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseDeleteSession
-Specify to use Delete View stored in SessionState
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: DeleteSession
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -RestoreId
 Specify an existing Restore Session Id
 
@@ -194,6 +179,21 @@ Specify and existing Validation Session Id
 ```yaml
 Type: Int32
 Parameter Sets: ValidationId
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DeleteId
+Specify an existing Delete Session Id
+
+```yaml
+Type: Int32
+Parameter Sets: DeleteId
 Aliases:
 
 Required: True

@@ -13,6 +13,7 @@ namespace PSAsigraDSClient
         private readonly string _url;
         private readonly string _apiVersion;
         private readonly bool _logoutOnExit;
+        private readonly List<DSClientDeleteSession> _deleteSessions;
         private readonly List<DSClientRestoreSession> _restoreSessions;
         private readonly List<DSClientValidationSession> _validationSessions;
         private ClientConnection _clientConnection;        
@@ -35,6 +36,7 @@ namespace PSAsigraDSClient
             _credential = credential;
             _logoutOnExit = logoutExit;
             _clientConnection = ApiFactory.CreateConnection(_url, _apiVersion, credential.UserName, credential.GetNetworkCredential().Password, 0);
+            _deleteSessions = new List<DSClientDeleteSession>();
             _restoreSessions = new List<DSClientRestoreSession>();
             _validationSessions = new List<DSClientValidationSession>();
 
@@ -49,6 +51,15 @@ namespace PSAsigraDSClient
             ClientConfiguration cfgMgr = _clientConnection.getConfigurationManager();
             OperatingSystem = EnumToString(cfgMgr.getClientOSType());
             cfgMgr.Dispose();
+        }
+
+        internal void AddDeleteSession(DSClientDeleteSession deleteSession)
+        {
+            for (int i = 0; i < _deleteSessions.Count(); i++)
+                if (_deleteSessions[i].DeleteId == deleteSession.DeleteId)
+                    throw new Exception($"Session with DeleteId {deleteSession.DeleteId} already exists");
+
+            _deleteSessions.Add(deleteSession);
         }
 
         internal void AddRestoreSession(DSClientRestoreSession restoreSession)
@@ -97,6 +108,17 @@ namespace PSAsigraDSClient
                 _clientConnection.Dispose();
         }
 
+        internal int GenerateDeleteId()
+        {
+            int id = 1;
+
+            for (int i = 0; i < _deleteSessions.Count(); i++)
+                if (_deleteSessions[i].DeleteId >= id)
+                    id = _deleteSessions[i].DeleteId + 1;
+
+            return id;
+        }
+
         internal int GenerateRestoreId()
         {
             int id = 1;
@@ -122,6 +144,20 @@ namespace PSAsigraDSClient
         internal string GetApiUrl()
         {
             return _url;
+        }
+
+        internal DSClientDeleteSession GetDeleteSession(int deleteId)
+        {
+            for (int i = 0; i < _deleteSessions.Count(); i++)
+                if (_deleteSessions[i].DeleteId == deleteId)
+                    return _deleteSessions[i];
+
+            return null;
+        }
+
+        internal IEnumerable<DSClientDeleteSession> GetDeleteSessions()
+        {
+            return _deleteSessions;
         }
 
         internal bool GetLogoutOnExit()
@@ -155,6 +191,12 @@ namespace PSAsigraDSClient
         internal IEnumerable<DSClientValidationSession> GetValidationSessions()
         {
             return _validationSessions;
+        }
+
+        internal void RemoveDeleteSession(DSClientDeleteSession deleteSession)
+        {
+            deleteSession.Dispose();
+            _deleteSessions.Remove(deleteSession);
         }
 
         internal void RemoveRestoreSession(DSClientRestoreSession restoreSession)

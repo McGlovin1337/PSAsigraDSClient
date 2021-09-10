@@ -54,6 +54,7 @@
     <Compile Include="PSAsigraDSClient\AddDSClientArchiveFilter.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientBackupSetNotification.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientDailySchedule.cs" />
+    <Compile Include="PSAsigraDSClient\AddDSClientDeleteItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMonthlySchedule.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMSSqlServerBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientOneTimeSchedule.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="PSAsigraDSClient\DSClientSession.cs" />
     <Compile Include="PSAsigraDSClient\DSClientBackupSetItemInfo.cs" />
     <Compile Include="PSAsigraDSClient\DSClientRestoreSession.cs" />
+    <Compile Include="PSAsigraDSClient\DSClientDeleteSession.cs" />
     <Compile Include="PSAsigraDSClient\DSClientValidationSession.cs" />
     <Compile Include="PSAsigraDSClient\DSClientVMwareRestoreOptions.cs" />
     <Compile Include="PSAsigraDSClient\EnableDSClientBackupSet.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientBackupSetNotification.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientCurrentLoginRole.cs" />
+    <Compile Include="PSAsigraDSClient\GetDSClientDeleteSession.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientGridInfo.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientGridLog.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientInitialBackupPath.cs" />
@@ -129,7 +132,7 @@
     <Compile Include="PSAsigraDSClient\GetDSClientUserGroup.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientUserGroupRole.cs" />
     <Compile Include="PSAsigraDSClient\GetDSClientValidationSession.cs" />
-    <Compile Include="PSAsigraDSClient\InitializeDSClientBackupSetDelete.cs" />
+    <Compile Include="PSAsigraDSClient\InitializeDSClientDeleteSession.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientValidationSession.cs" />
     <Compile Include="PSAsigraDSClient\InvokeDSClientCommand.cs" />
     <Compile Include="PSAsigraDSClient\InitializeDSClientRestoreSession.cs" />
@@ -196,6 +199,8 @@
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetItem.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientBackupSetNotification.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientDeleteItem.cs" />
+    <Compile Include="PSAsigraDSClient\RemoveDSClientDeleteSession.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientInitialBackupPath.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientRestoreItem.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientRestoreSession.cs" />
@@ -220,6 +225,7 @@
     <Compile Include="PSAsigraDSClient\SetDSClientDailySchedule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientDefaultConfiguration.cs" />
     <Compile Include="PSAsigraDSClient\AddDSClientMultiFactorAuthUser.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientDeleteSession.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientInitialBackupStatus.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientMonthlySchedule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientMSSqlServerBackupSet.cs" />
@@ -238,8 +244,8 @@
     <Compile Include="PSAsigraDSClient\SetDSClientWeeklySchedule.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientWinFsBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackup.cs" />
-    <Compile Include="PSAsigraDSClient\StartDSClientBackupSetDelete.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientBackupSetRetention.cs" />
+    <Compile Include="PSAsigraDSClient\StartDSClientDelete.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientRestore.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientValidation.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientVMwareVADPRestore.cs" />
@@ -254,6 +260,7 @@
     <None Include="docs\Add-DSClientArchiveFilter.md" />
     <None Include="docs\Add-DSClientBackupSetNotification.md" />
     <None Include="docs\Add-DSClientDailySchedule.md" />
+    <None Include="docs\Add-DSClientDeleteItem.md" />
     <None Include="docs\Add-DSClientMonthlySchedule.md" />
     <None Include="docs\Add-DSClientMSSqlServerBackupSetItem.md" />
     <None Include="docs\Add-DSClientMultiFactorAuthUser.md" />
@@ -290,6 +297,7 @@
     <None Include="docs\Get-DSClientConfiguration.md" />
     <None Include="docs\Get-DSClientCurrentLoginRole.md" />
     <None Include="docs\Get-DSClientDefaultConfiguration.md" />
+    <None Include="docs\Get-DSClientDeleteSession.md" />
     <None Include="docs\Get-DSClientEventLog.md" />
     <None Include="docs\Get-DSClientGridInfo.md" />
     <None Include="docs\Get-DSClientGridLog.md" />
@@ -321,8 +329,7 @@
     <None Include="docs\Get-DSClientUserGroup.md" />
     <None Include="docs\Get-DSClientUserGroupRole.md" />
     <None Include="docs\Get-DSClientValidationSession.md" />
-    <None Include="docs\Initialize-DSClientBackupSetDelete.md" />
-    <None Include="docs\Initialize-DSClientBackupSetValidation.md" />
+    <None Include="docs\Initialize-DSClientDeleteSession.md" />
     <None Include="docs\Initialize-DSClientValidationSession.md" />
     <None Include="docs\Invoke-DSClientCommand.md" />
     <None Include="docs\Initialize-DSClientRestoreSession.md" />
@@ -351,6 +358,8 @@
     <None Include="docs\Remove-DSClientBackupSet.md" />
     <None Include="docs\Remove-DSClientBackupSetItem.md" />
     <None Include="docs\Remove-DSClientBackupSetNotification.md" />
+    <None Include="docs\Remove-DSClientDeleteItem.md" />
+    <None Include="docs\Remove-DSClientDeleteSession.md" />
     <None Include="docs\Remove-DSClientInitialBackupPath.md" />
     <None Include="docs\Remove-DSClientRestoreItem.md" />
     <None Include="docs\Remove-DSClientRestoreSession.md" />
@@ -374,6 +383,7 @@
     <None Include="docs\Set-DSClientConfiguration.md" />
     <None Include="docs\Set-DSClientDailySchedule.md" />
     <None Include="docs\Set-DSClientDefaultConfiguration.md" />
+    <None Include="docs\Set-DSClientDeleteSession.md" />
     <None Include="docs\Set-DSClientInitialBackupStatus.md" />
     <None Include="docs\Set-DSClientMonthlySchedule.md" />
     <None Include="docs\Set-DSClientMSSqlServerBackupSet.md" />
@@ -392,9 +402,8 @@
     <None Include="docs\Set-DSClientWeeklySchedule.md" />
     <None Include="docs\Set-DSClientWinFsBackupSet.md" />
     <None Include="docs\Start-DSClientBackup.md" />
-    <None Include="docs\Start-DSClientBackupSetDelete.md" />
     <None Include="docs\Start-DSClientBackupSetRetention.md" />
-    <None Include="docs\Start-DSClientBackupSetValidation.md" />
+    <None Include="docs\Start-DSClientDelete.md" />
     <None Include="docs\Start-DSClientRestore.md" />
     <None Include="docs\Start-DSClientSystemActivity.md" />
     <None Include="docs\Start-DSClientValidation.md" />

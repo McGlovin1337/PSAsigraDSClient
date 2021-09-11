@@ -70,13 +70,9 @@
     <Compile Include="PSAsigraDSClient\BaseDSClientAdvancedConfig.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientArchiveFilter.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientArchiveFilterRule.cs" />
-    <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetDelResVal.cs" />
-    <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetItemParams.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetParams.cs" />
-    <Compile Include="PSAsigraDSClient\BaseDSClientBackupSetRestore.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientBackupSource.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientConfiguration.cs" />
-    <Compile Include="PSAsigraDSClient\BaseDSClientFileSystemRestore.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientInitializeBackupSetDataBrowser.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientMSSqlServerBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\BaseDSClientRestoreOptions.cs" />
@@ -248,7 +244,6 @@
     <Compile Include="PSAsigraDSClient\StartDSClientDelete.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientRestore.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientValidation.cs" />
-    <Compile Include="PSAsigraDSClient\StartDSClientVMwareVADPRestore.cs" />
     <Compile Include="PSAsigraDSClient\StopDSClientGridNode.cs" />
     <Compile Include="PSAsigraDSClient\SyncDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientSystemActivity.cs" />

@@ -90,6 +90,19 @@ namespace PSAsigraDSClient
         internal void Disconnect()
         {
             UpdateState();
+
+            // Free resources for any Delete Sessions
+            foreach (DSClientDeleteSession deleteSession in _deleteSessions)
+                RemoveDeleteSession(deleteSession);
+
+            // Free resources for any Restore Sessions
+            foreach (DSClientRestoreSession restoreSession in _restoreSessions)
+                RemoveRestoreSession(restoreSession);
+
+            // Free resources for any Validation Sessions
+            foreach (DSClientValidationSession validationSession in _validationSessions)
+                RemoveValidationSession(validationSession);
+
             while (State == ConnectionState.Connected)
             {
                 try

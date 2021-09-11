@@ -16,6 +16,8 @@ namespace PSAsigraDSClient
         private readonly List<DSClientDeleteSession> _deleteSessions;
         private readonly List<DSClientRestoreSession> _restoreSessions;
         private readonly List<DSClientValidationSession> _validationSessions;
+        private Dictionary<string, int> _timeRetentionHashes;
+        private Dictionary<string, int> _scheduleDetailHashes;
         private ClientConnection _clientConnection;        
 
         public int Id { get; private set; }
@@ -192,6 +194,14 @@ namespace PSAsigraDSClient
             return _restoreSessions;
         }
 
+        internal Dictionary<string, int> GetScheduleOrRetentionDictionary(bool schedule)
+        {
+            if (schedule)
+                return _scheduleDetailHashes;
+
+            return _timeRetentionHashes;
+        }
+
         internal DSClientValidationSession GetValidationSession(int validationId)
         {
             for (int i = 0; i < _validationSessions.Count(); i++)
@@ -222,6 +232,14 @@ namespace PSAsigraDSClient
         {
             validationSession.Dispose();
             _validationSessions.Remove(validationSession);
+        }
+
+        internal void SetScheduleOrRetentionDictonary(Dictionary<string, int> dictonary, bool schedule)
+        {
+            if (schedule)
+                _scheduleDetailHashes = dictonary;
+            else
+                _timeRetentionHashes = dictonary;
         }
 
         internal void UpdateState()

@@ -9,12 +9,6 @@ namespace PSAsigraDSClient
 
         protected override void ProcessRecord()
         {
-            // Remove any Time Retention Options from Session State
-            SessionState.PSVariable.Remove("TimeRetention");
-
-            // Remove any Schedule Details from Session State
-            SessionState.PSVariable.Remove("ScheduleDetail");
-
             WriteVerbose("Performing Action: Check for existing DS-Client Sessions");
 
             if (SessionState.PSVariable.GetValue("DSClientSession", null) is DSClientSession previousSession)

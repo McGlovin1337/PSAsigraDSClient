@@ -36,7 +36,7 @@ namespace PSAsigraDSClient
             List<DSClientScheduleDetail> DSClientScheduleDetail = new List<DSClientScheduleDetail>();
 
             // Get Hash Codes for Previously Identified Schedule Details
-            Dictionary<string, int> detailHashes = SessionState.PSVariable.GetValue("ScheduleDetail", null) as Dictionary<string, int>;
+            Dictionary<string, int> detailHashes = DSClientSessionInfo.GetScheduleOrRetentionDictionary(true);
             if (detailHashes == null)
                 detailHashes = new Dictionary<string, int>();
 
@@ -100,7 +100,7 @@ namespace PSAsigraDSClient
             progressRecord.PercentComplete = (int)Math.Round((double)(((double)detailCounter + hashCounter) / ((double)detailCount * 2)) * 100);
             WriteProgress(progressRecord);
 
-            SessionState.PSVariable.Set("ScheduleDetail", detailHashes);
+            DSClientSessionInfo.SetScheduleOrRetentionDictonary(detailHashes, true);
 
             DSClientScheduleDetail.ForEach(WriteObject);
 

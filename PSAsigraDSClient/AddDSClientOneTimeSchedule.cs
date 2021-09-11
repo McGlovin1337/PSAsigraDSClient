@@ -6,8 +6,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientOneTimeSchedule")]
+    [OutputType(typeof(void))]
 
-    public class AddDSClientOneTimeSchedule: BaseDSClientScheduleDetail
+    sealed public class AddDSClientOneTimeSchedule: BaseDSClientScheduleDetail
     {
         [Parameter(Position = 1, HelpMessage = "Set the Start Date for this Schedule Detail")]
         [ValidateNotNullOrEmpty]

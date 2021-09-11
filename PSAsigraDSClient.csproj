@@ -100,7 +100,6 @@
     <Compile Include="PSAsigraDSClient\DSClientRestoreSession.cs" />
     <Compile Include="PSAsigraDSClient\DSClientDeleteSession.cs" />
     <Compile Include="PSAsigraDSClient\DSClientValidationSession.cs" />
-    <Compile Include="PSAsigraDSClient\DSClientVMwareRestoreOptions.cs" />
     <Compile Include="PSAsigraDSClient\EnableDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\EnableDSClientSchedule.cs" />
     <Compile Include="PSAsigraDSClient\ExportDSClientConfig.cs" />

@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommunications.Read, "DSClientWinFsSource")]
     [OutputType(typeof(SourceItemInfo))]
 
-    public class ReadDSClientWinFsSource: BaseDSClientBackupSource
+    sealed public class ReadDSClientWinFsSource: BaseDSClientBackupSource
     {
         protected override void DSClientProcessRecord()
         {

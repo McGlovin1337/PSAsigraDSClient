@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientStoredItem")]
     [OutputType(typeof(DSClientBackupSetItemInfo))]
 
-    public class GetDSClientStoredItem : BaseDSClientBackupSetDataBrowser
+    sealed public class GetDSClientStoredItem : BaseDSClientBackupSetDataBrowser
     {
         [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Full Path to the Item")]
         [ValidateNotNullOrEmpty]

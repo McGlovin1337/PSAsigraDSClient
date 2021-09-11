@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.New, "DSClientUnixFsBackupSet")]
     [OutputType(typeof(DSClientBackupSetBasicProps))]
 
-    public class NewDSClientUnixFsBackupSet: BaseDSClientUnixFsBackupSet
+    sealed public class NewDSClientUnixFsBackupSet: BaseDSClientUnixFsBackupSet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Backup Set")]
         [ValidateNotNullOrEmpty]

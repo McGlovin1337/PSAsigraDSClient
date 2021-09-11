@@ -5,6 +5,7 @@ using static PSAsigraDSClient.DSClientRestoreOptions;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientRestoreSession", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
     sealed public class SetDSClientRestoreSession : DSClientCmdlet
     {

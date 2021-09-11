@@ -10,7 +10,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientEventLog")]
     [OutputType(typeof(DSClientEventLog))]
 
-    public class GetDSClientEventLog: DSClientCmdlet
+    sealed public class GetDSClientEventLog: DSClientCmdlet
     {
         [Parameter(Position = 0, HelpMessage = "Specify Date and Time to Search from")]
         [ValidateNotNullOrEmpty]

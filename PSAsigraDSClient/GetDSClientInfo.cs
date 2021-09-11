@@ -6,7 +6,7 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Get, "DSClientInfo")]
     [OutputType(typeof(DSClientInfo))]
-    public class GetDSClientInfo: DSClientCmdlet
+    sealed public class GetDSClientInfo: DSClientCmdlet
     {
         protected override void DSClientProcessRecord()
         {

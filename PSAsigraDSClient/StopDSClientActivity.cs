@@ -4,8 +4,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Stop, "DSClientActivity", SupportsShouldProcess = true)]
+    [OutputType(typeof(string))]
 
-    public class StopDSClientActivity: DSClientCmdlet
+    sealed public class StopDSClientActivity: DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Id of the Activity to Stop")]
         [ValidateNotNullOrEmpty]

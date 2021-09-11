@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientMultiFactorAuth")]
     [OutputType(typeof(DSClientMFA))]
 
-    public class GetDSClientMultiFactorAuth: DSClientCmdlet
+    sealed public class GetDSClientMultiFactorAuth: DSClientCmdlet
     {
         protected override void DSClientProcessRecord()
         {

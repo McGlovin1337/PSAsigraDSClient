@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Add, "DSClientValidationItem")]
     [OutputType(typeof(void))]
 
-    public class AddDSClientValidationItem : DSClientCmdlet
+    sealed public class AddDSClientValidationItem : DSClientCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Validation Session to Select Items for")]
         public int ValidationId { get; set; }

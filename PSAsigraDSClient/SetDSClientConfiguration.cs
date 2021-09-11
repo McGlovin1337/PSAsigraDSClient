@@ -5,8 +5,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientConfiguration", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientConfiguration: BaseDSClientConfiguration
+    sealed public class SetDSClientConfiguration: BaseDSClientConfiguration
     {
         [Parameter(HelpMessage = "Disable DS-Client Daily Admin")]
         public SwitchParameter DisableDailyAdmin { get; set; }

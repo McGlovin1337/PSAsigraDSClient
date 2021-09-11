@@ -10,7 +10,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Search, "DSClientBackupSetData")]
     [OutputType(typeof(DSClientBSFileInfo))]
 
-    public class SearchDSClientBackupSetData: BaseDSClientBackupSetDataBrowser
+    sealed public class SearchDSClientBackupSetData: BaseDSClientBackupSetDataBrowser
     {
         [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the File Search Filters")]
         [SupportsWildcards]

@@ -6,8 +6,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Remove, "DSClientArchiveFilter", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class RemoveDSClientArchiveFilter : DSClientCmdlet
+    sealed public class RemoveDSClientArchiveFilter : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Archive Filter Rule the Filter belongs to")]
         [ValidateNotNullOrEmpty]

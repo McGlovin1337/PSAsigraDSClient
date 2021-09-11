@@ -5,8 +5,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientDailySchedule", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientDailySchedule : BaseDSClientSetScheduleDetail
+    sealed public class SetDSClientDailySchedule : BaseDSClientSetScheduleDetail
     {
         [Parameter(Position = 1, HelpMessage = "Set the Repeat Frequency in Days")]
         [ValidateNotNullOrEmpty]

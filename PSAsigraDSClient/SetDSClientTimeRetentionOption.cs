@@ -7,8 +7,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientTimeRetentionOption", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientTimeRetentionOption: BaseDSClientTimeRetentionOption
+    sealed public class SetDSClientTimeRetentionOption: BaseDSClientTimeRetentionOption
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify RetentionRuleId to Apply Time Retention to")]
         public int RetentionRuleId { get; set; }

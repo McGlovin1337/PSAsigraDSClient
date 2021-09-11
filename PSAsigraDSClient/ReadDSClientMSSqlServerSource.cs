@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommunications.Read, "DSClientMSSqlServerSource")]
     [OutputType(typeof(SourceMSSqlItemInfo))]
 
-    public class ReadDSClientMSSqlServerSource: BaseDSClientBackupSource
+    sealed public class ReadDSClientMSSqlServerSource: BaseDSClientBackupSource
     {
         [Parameter(HelpMessage = "Set Database Credentials")]
         [ValidateNotNullOrEmpty]

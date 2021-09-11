@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Add, "DSClientRestoreItem")]
     [OutputType(typeof(void))]
 
-    public class AddDSClientRestoreItem : DSClientCmdlet
+    sealed public class AddDSClientRestoreItem : DSClientCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Restore Session to Select Items for")]
         public int RestoreId { get; set; }

@@ -6,7 +6,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.New, "DSClientSchedule")]
     [OutputType(typeof(DSClientScheduleInfo))]
 
-    public class NewDSClientSchedule: BaseDSClientSchedule
+    sealed public class NewDSClientSchedule: BaseDSClientSchedule
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, HelpMessage = "The name of the Schedule")]
         [ValidateNotNullOrEmpty]

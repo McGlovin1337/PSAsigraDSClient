@@ -5,7 +5,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientDefaultConfiguration")]
     [OutputType(typeof(DSClientDefaultConfiguration))]
 
-    public class GetDSClientDefaultConfiguration: BaseDSClientDefaultConfiguration
+    sealed public class GetDSClientDefaultConfiguration: BaseDSClientDefaultConfiguration
     {
         protected override void ProcessDefaultConfiguration(DSClientDefaultConfiguration dSClientDefaultConfiguration)
         {

@@ -6,7 +6,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientCurrentLoginRole")]
     [OutputType(typeof(DSClientCurrentLoginRole))]
 
-    public class GetDSClientCurrentLoginRole : BaseDSClientUserManager
+    sealed public class GetDSClientCurrentLoginRole : BaseDSClientUserManager
     {
         protected override void ProcessUserManager(UserManager userManager)
         {

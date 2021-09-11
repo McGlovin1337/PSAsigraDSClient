@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientNocSettings")]
     [OutputType(typeof(DSClientNocSettings))]
 
-    public class GetDSClientNocSettings: DSClientCmdlet
+    sealed public class GetDSClientNocSettings: DSClientCmdlet
     {
         protected override void DSClientProcessRecord()
         {

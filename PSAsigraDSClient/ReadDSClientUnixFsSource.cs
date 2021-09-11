@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommunications.Read, "DSClientUnixFsSource")]
     [OutputType(typeof(SourceItemInfo))]
 
-    public class ReadDSClientUnixFsSource: BaseDSClientBackupSource
+    sealed public class ReadDSClientUnixFsSource: BaseDSClientBackupSource
     {
         [Parameter(HelpMessage = "Path to SSH Key File on DS-Client")]
         public string SSHKeyFile { get; set; }

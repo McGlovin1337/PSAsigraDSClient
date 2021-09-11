@@ -7,7 +7,7 @@ namespace PSAsigraDSClient.PSAsigraDSClient
     [Cmdlet(VerbsCommon.New, "DSClientUnixCredential")]
     [OutputType(typeof(DSClientCredential), typeof(DSClientSSHCredential))]
 
-    public sealed class NewDSClientUnixCredential : DSClientCmdlet
+    sealed public class NewDSClientUnixCredential : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify PSCredentials")]
         public PSCredential Credential { get; set; }

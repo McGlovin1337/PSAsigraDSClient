@@ -4,6 +4,7 @@ using System.Management.Automation;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Invoke, "DSClientCommand")]
+    [OutputType(typeof(PSObject))]
 
     sealed public class InvokeDSClientCommand : BaseDSClientSessionAction
     {

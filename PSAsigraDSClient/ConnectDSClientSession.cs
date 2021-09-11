@@ -3,6 +3,7 @@
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommunications.Connect, "DSClientSession", DefaultParameterSetName = "id")]
+    [OutputType(typeof(void))]
 
     sealed public class ConnectDSClientSession : BaseDSClientSessionAction
     {

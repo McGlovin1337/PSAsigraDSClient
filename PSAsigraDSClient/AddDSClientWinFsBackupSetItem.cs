@@ -7,8 +7,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientWinFsBackupSetItem")]
+    [OutputType(typeof(void))]
 
-    public class AddDSClientWinFsBackupSetItem: BaseDSClientBackupSet
+    sealed public class AddDSClientWinFsBackupSetItem: BaseDSClientBackupSet
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to modify")]
         public int BackupSetId { get; set; }

@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientArchiveFilterRule")]
     [OutputType(typeof(DSClientArchiveFilterRule))]
 
-    public class GetDSClientArchiveFilterRule: BaseDSClientArchiveFilterRule
+    sealed public class GetDSClientArchiveFilterRule: BaseDSClientArchiveFilterRule
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Archive Filter Rule Name")]
         [SupportsWildcards]

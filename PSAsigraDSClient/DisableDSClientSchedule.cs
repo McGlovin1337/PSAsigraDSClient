@@ -4,8 +4,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Disable, "DSClientSchedule", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class DisableDSClientSchedule: DSClientCmdlet
+    sealed public class DisableDSClientSchedule: DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Schedule to Disable")]
         public int ScheduleId { get; set; }

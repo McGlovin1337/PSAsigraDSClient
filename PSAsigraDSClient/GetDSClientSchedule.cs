@@ -6,7 +6,8 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Get, "DSClientSchedule")]
     [OutputType(typeof(DSClientScheduleInfo))]
-    public class GetDSClientSchedule: BaseDSClientSchedule
+
+    sealed public class GetDSClientSchedule: BaseDSClientSchedule
     {
         protected override void DSClientProcessRecord()
         {

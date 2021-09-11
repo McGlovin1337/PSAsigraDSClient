@@ -10,7 +10,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientActivityLog")]
     [OutputType(typeof(DSClientAcivityLog))]
 
-    public class GetDSClientActivityLog: BaseDSClientActivityLog
+    sealed public class GetDSClientActivityLog: BaseDSClientActivityLog
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify ActivityId")]
         public int ActivityId { get; set; }

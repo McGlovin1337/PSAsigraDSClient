@@ -6,9 +6,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Stop, "DSClientGridNode", SupportsShouldProcess = true)]
-    [OutputType(typeof(DSClientGridNodeStatus))]
+    [OutputType(typeof(void), typeof(DSClientGridNodeStatus))]
 
-    public class StopDSClientGridNode : DSClientCmdlet
+    sealed public class StopDSClientGridNode : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Grid NodeId")]
         public int NodeId { get; set; }

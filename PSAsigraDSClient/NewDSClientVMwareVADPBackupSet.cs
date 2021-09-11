@@ -7,8 +7,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.New, "DSClientVMwareVADPBackupSet")]
+    [OutputType(typeof(void), typeof(DSClientBackupSetBasicProps))]
 
-    public class NewDSClientVMwareVADPBackupSet : BaseDSClientVMwareVADPBackupSet
+    sealed public class NewDSClientVMwareVADPBackupSet : BaseDSClientVMwareVADPBackupSet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Backup Set")]
         [ValidateNotNullOrEmpty]

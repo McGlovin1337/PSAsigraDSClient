@@ -6,7 +6,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientSMTPNotification")]
     [OutputType(typeof(DSClientSMTPConfig))]
 
-    public class GetDSClientSMTPNotification: BaseDSClientSMTPNotification
+    sealed public class GetDSClientSMTPNotification: BaseDSClientSMTPNotification
     {
         protected override void ProcessSMTPConfig(smtp_email_notification_info smtpInfo)
         {

@@ -5,8 +5,9 @@ using System.Management.Automation;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Get, "DSClientRunningActivity")]
-    [OutputType(typeof(DSClientRunningActivity))]    
-    public class GetDSClientRunningActivity: BaseDSClientRunningActivity
+    [OutputType(typeof(DSClientRunningActivity))]
+
+    sealed public class GetDSClientRunningActivity: BaseDSClientRunningActivity
     {
         protected override void ProcessRunningActivity(IEnumerable<DSClientRunningActivity> dSClientRunningActivities)
         {

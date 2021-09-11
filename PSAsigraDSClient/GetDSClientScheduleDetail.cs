@@ -8,7 +8,8 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Get, "DSClientScheduleDetail")]
     [OutputType(typeof(DSClientScheduleDetail))]
-    public class GetDSClientScheduleDetail: BaseDSClientSchedule
+
+    sealed public class GetDSClientScheduleDetail: BaseDSClientSchedule
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Schedule Id")]
         [ValidateNotNullOrEmpty]

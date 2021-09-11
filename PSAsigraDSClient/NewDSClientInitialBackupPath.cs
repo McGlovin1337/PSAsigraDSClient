@@ -6,8 +6,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.New, "DSClientInitialBackupPath")]
+    [OutputType(typeof(void))]
 
-    public class NewDSClientInitialBackupPath : DSClientCmdlet
+    sealed public class NewDSClientInitialBackupPath : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Intial Backup Storage Path")]
         [ValidateNotNullOrEmpty]

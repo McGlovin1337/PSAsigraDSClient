@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientInitialBackupStatus")]
     [OutputType(typeof(DSClientInitialBackupStatus))]
 
-    public class GetDSClientInitialBackupStatus : DSClientCmdlet
+    sealed public class GetDSClientInitialBackupStatus : DSClientCmdlet
     {
         protected override void DSClientProcessRecord()
         {

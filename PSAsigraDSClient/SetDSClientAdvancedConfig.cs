@@ -7,8 +7,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientAdvancedConfig", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientAdvancedConfig: BaseDSClientAdvancedConfig
+    sealed public class SetDSClientAdvancedConfig: BaseDSClientAdvancedConfig
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Advanced Config Item to modify")]
         [ValidateNotNullOrEmpty]

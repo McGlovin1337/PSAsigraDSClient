@@ -4,8 +4,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Enable, "DSClientBackupSet", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class EnableDSClientBackupSet: DSClientCmdlet
+    sealed public class EnableDSClientBackupSet: DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to Enable")]
         public int BackupSetId { get; set; }

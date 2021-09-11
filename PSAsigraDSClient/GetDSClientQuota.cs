@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientQuota")]
     [OutputType(typeof(DSClientQuota))]
 
-    public class GetDSClientQuota: DSClientCmdlet
+    sealed public class GetDSClientQuota: DSClientCmdlet
     {
         protected override void DSClientProcessRecord()
         {

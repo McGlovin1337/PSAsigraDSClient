@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientOrphanedBackupSet")]
     [OutputType(typeof(DSClientOrphanedBackupSet))]
 
-    public class GetDSClientOrphanedBackupSet: BaseDSClientOrphanedBackupSet
+    sealed public class GetDSClientOrphanedBackupSet: BaseDSClientOrphanedBackupSet
     {
         protected override void ProcessOrphanedBackupSet(SystemActivityManager DSClientSystemActivityMgr, OrphanedBackupSet[] orphanedBackupSets)
         {

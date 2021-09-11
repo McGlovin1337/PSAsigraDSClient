@@ -7,8 +7,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientMSSqlServerBackupSetItem")]
+    [OutputType(typeof(void))]
 
-    public class AddDSClientMSSqlServerBackupSetItem: BaseDSClientBackupSet
+    sealed public class AddDSClientMSSqlServerBackupSetItem: BaseDSClientBackupSet
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to Add items to")]
         public int BackupSetId { get; set; }

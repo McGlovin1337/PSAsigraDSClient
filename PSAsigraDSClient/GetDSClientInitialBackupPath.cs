@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientInitialBackupPath")]
     [OutputType(typeof(DSClientInitialBackupPath))]
 
-    public class GetDSClientInitialBackupPath : DSClientCmdlet
+    sealed public class GetDSClientInitialBackupPath : DSClientCmdlet
     {
         protected override void DSClientProcessRecord()
         {

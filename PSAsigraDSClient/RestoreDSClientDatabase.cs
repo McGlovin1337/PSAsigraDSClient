@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsData.Restore, "DSClientDatabase", SupportsShouldProcess = true)]
     [OutputType(typeof(DSClientRunningActivity))]
 
-    public class RestoreDSClientDatabase: DSClientCmdlet
+    sealed public class RestoreDSClientDatabase: DSClientCmdlet
     {
         [Parameter(Position = 0, HelpMessage = "Specify to ONLY recover DS-Client Database")]
         public SwitchParameter DSClientDatabaseOnly { get; set; }

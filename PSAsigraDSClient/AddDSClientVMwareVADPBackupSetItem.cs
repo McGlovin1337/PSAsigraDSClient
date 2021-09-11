@@ -6,8 +6,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientVMwareVADPBackupSetItem")]
+    [OutputType(typeof(void))]
 
-    public class AddDSClientVMwareVADPBackupSetItem : BaseDSClientBackupSet
+    sealed public class AddDSClientVMwareVADPBackupSetItem : BaseDSClientBackupSet
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to modify")]
         public int BackupSetId { get; set; }

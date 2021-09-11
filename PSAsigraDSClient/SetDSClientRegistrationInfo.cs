@@ -5,8 +5,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientRegistrationInfo", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientRegistrationInfo: DSClientCmdlet
+    sealed public class SetDSClientRegistrationInfo: DSClientCmdlet
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the DS-System Address")]
         [ValidateNotNullOrEmpty]

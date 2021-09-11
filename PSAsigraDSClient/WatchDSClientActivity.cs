@@ -11,7 +11,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Watch, "DSClientActivity")]
     [OutputType(typeof(DSClientAcivityLog))]
 
-    public class WatchDSClientActivity: BaseDSClientActivityLog
+    sealed public class WatchDSClientActivity: BaseDSClientActivityLog
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the ActivityId to Watch")]
         [ValidateNotNullOrEmpty]

@@ -4,8 +4,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Remove, "DSClientSchedule", SupportsShouldProcess = true)]
+    [OutputType(typeof(string))]
 
-    public class RemoveDSClientSchedule: DSClientCmdlet
+    sealed public class RemoveDSClientSchedule: DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The ScheduleId to remove")]
         [ValidateNotNullOrEmpty]

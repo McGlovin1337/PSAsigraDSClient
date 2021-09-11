@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientBackupSetLockStatus")]
     [OutputType(typeof(BackupSetLockStatus))]
 
-    public class GetDSClientBackupSetLockStatus : DSClientCmdlet
+    sealed public class GetDSClientBackupSetLockStatus : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set Id")]
         public int BackupSetId { get; set; }

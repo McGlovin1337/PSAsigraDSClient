@@ -4,8 +4,9 @@ using System.Management.Automation;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Enter, "DSClientSession", DefaultParameterSetName = "default")]
+    [OutputType(typeof(string))]
 
-    public class EnterDSClientSession: BaseDSClientSessionCleanup
+    sealed public class EnterDSClientSession: BaseDSClientSessionCleanup
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "default", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the DS-Client Host to connect to")]
         [ValidateNotNullOrEmpty]

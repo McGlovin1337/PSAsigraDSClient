@@ -5,7 +5,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Remove, "DSClientRestoreItem", SupportsShouldProcess = true)]
     [OutputType(typeof(void))]
 
-    public class RemoveDSClientRestoreItem : DSClientCmdlet
+    sealed public class RemoveDSClientRestoreItem : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Restore Session to remove item from")]
         public int RestoreId { get; set; }

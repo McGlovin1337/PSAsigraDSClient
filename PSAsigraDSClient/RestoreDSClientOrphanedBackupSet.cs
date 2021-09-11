@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsData.Restore, "DSClientOrphanedBackupSet")]
     [OutputType(typeof(DSClientBackupSetId))]
 
-    public class RestoreDSClientOrphanedBackupSet: BaseDSClientOrphanedBackupSet
+    sealed public class RestoreDSClientOrphanedBackupSet: BaseDSClientOrphanedBackupSet
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Select Orphaned Backup Set by Name to recover")]
         [SupportsWildcards]

@@ -4,7 +4,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientSNMPHeartbeat", SupportsShouldProcess = true)]
-    public class SetDSClientSNMPHeartbeat: DSClientCmdlet
+    [OutputType(typeof(string))]
+
+    sealed public class SetDSClientSNMPHeartbeat: DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, HelpMessage = "Set the SNMP Heartbeat Interval")]
         [ValidateNotNullOrEmpty]

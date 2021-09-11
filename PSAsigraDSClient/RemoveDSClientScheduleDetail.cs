@@ -7,7 +7,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Remove, "DSClientScheduleDetail", SupportsShouldProcess = true)]
-    public class RemoveDSClientScheduleDetail: BaseDSClientSchedule
+    [OutputType(typeof(void))]
+
+    sealed public class RemoveDSClientScheduleDetail: BaseDSClientSchedule
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, HelpMessage = "Specify the Schedule Id")]
         [ValidateNotNullOrEmpty]

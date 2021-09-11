@@ -3,6 +3,7 @@
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommunications.Disconnect, "DSClientSession", DefaultParameterSetName = "id")]
+    [OutputType(typeof(void))]
 
     sealed public class DisconnectDSClientSession : BaseDSClientSessionAction
     {

@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientAdvancedConfig")]
     [OutputType(typeof(DSClientAdvancedConfig))]
 
-    public class GetDSClientAdvancedConfig: BaseDSClientAdvancedConfig  
+    sealed public class GetDSClientAdvancedConfig: BaseDSClientAdvancedConfig  
     {
         protected override void ProcessAdavancedConfig(IEnumerable<advanced_config_info> advancedConfigInfo)
         {

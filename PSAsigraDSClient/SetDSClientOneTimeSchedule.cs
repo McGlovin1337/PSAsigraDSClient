@@ -6,8 +6,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientOneTimeSchedule", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientOneTimeSchedule : BaseDSClientSetScheduleDetail
+    sealed public class SetDSClientOneTimeSchedule : BaseDSClientSetScheduleDetail
     {
         protected override void CheckScheduleDetailType(ScheduleDetail scheduleDetail)
         {

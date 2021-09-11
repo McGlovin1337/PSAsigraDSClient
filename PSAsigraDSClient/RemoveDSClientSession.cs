@@ -5,6 +5,7 @@ using System.Management.Automation;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Remove, "DSClientSession", SupportsShouldProcess = true, DefaultParameterSetName = "id")]
+    [OutputType(typeof(void))]
 
     sealed public class RemoveDSClientSession : BaseDSClientSessionAction
     {

@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommunications.Read, "DSClientVMwareVADPSource")]
     [OutputType(typeof(SourceItemInfo))]
 
-    public class ReadDSClientVMwareVADPSource : BaseDSClientBackupSource
+    sealed public class ReadDSClientVMwareVADPSource : BaseDSClientBackupSource
     {
         protected override void DSClientProcessRecord()
         {

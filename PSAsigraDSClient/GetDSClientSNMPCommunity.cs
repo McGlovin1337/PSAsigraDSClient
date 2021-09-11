@@ -7,7 +7,8 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Get, "DSClientSNMPCommunity")]
     [OutputType(typeof(DSClientSNMPCommunities))]
-    public class GetDSClientSNMPCommunity: BaseDSClientSNMPConfig
+
+    sealed public class GetDSClientSNMPCommunity: BaseDSClientSNMPConfig
     {
         [Parameter(Position = 0, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Community Name to Match")]
         [ValidateNotNullOrEmpty]

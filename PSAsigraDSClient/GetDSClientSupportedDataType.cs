@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientSupportedDataType")]
     [OutputType(typeof(DSClientDataType))]
 
-    public class GetDSClientSupportedDataType: DSClientCmdlet
+    sealed public class GetDSClientSupportedDataType: DSClientCmdlet
     {
         [Parameter(HelpMessage = "Specify to Get the Data Types Supported by the DS-Client API")]
         public SwitchParameter ApiDataTypes { get; set; }

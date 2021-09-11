@@ -5,8 +5,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Rename, "DSClientArchiveFilterRule", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class RenameArchiveFilterRule : DSClientCmdlet
+    sealed public class RenameArchiveFilterRule : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the Archive Filter Rule to be Renamed")]
         [ValidateNotNullOrEmpty]

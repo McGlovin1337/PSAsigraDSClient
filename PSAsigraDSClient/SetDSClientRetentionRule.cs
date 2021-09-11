@@ -6,8 +6,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientRetentionRule", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientRetentionRule: BaseDSClientRetentionRuleParams
+    sealed public class SetDSClientRetentionRule: BaseDSClientRetentionRuleParams
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the RetentionRuleId to Modify")]
         public int RetentionRuleId { get; set; }

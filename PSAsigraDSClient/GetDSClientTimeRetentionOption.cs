@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientTimeRetentionOption")]
     [OutputType(typeof(TimeRetentionOverview))]
 
-    public class GetDSClientTimeRetentionOption : BaseDSClientRetentionRule
+    sealed public class GetDSClientTimeRetentionOption : BaseDSClientRetentionRule
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Retention Rule")]
         public int RetentionRuleId { get; set; }

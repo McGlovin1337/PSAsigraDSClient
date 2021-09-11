@@ -5,8 +5,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Remove, "DSClientInitialBackupPath", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class RemoveDSClientInitialBackupPath : DSClientCmdlet
+    sealed public class RemoveDSClientInitialBackupPath : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "id", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the PathId to Remove")]
         public int PathId { get; set; }

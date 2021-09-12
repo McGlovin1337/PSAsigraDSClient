@@ -14,7 +14,7 @@ namespace PSAsigraDSClient
         public bool IsFile { get; private set; }
         public bool Selectable { get; private set; }
 
-        public DSClientBackupSetItemInfo(string path, SelectableItem item, selectable_size itemSize)
+        internal DSClientBackupSetItemInfo(string path, SelectableItem item, selectable_size itemSize)
         {
             ItemId = item.id;
             Path = path;

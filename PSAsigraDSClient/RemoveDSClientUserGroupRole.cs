@@ -5,8 +5,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Remove, "DSClientUserGroupRole", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class RemoveDSClientUserGroupRole : BaseDSClientUserManager
+    sealed public class RemoveDSClientUserGroupRole : BaseDSClientUserManager
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Specify Id of Role to Remove")]
         public int RoleId { get; set; }

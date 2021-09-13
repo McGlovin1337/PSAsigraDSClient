@@ -7,8 +7,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientWeeklySchedule", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientWeeklySchedule : BaseDSClientSetScheduleDetail
+    sealed public class SetDSClientWeeklySchedule : BaseDSClientSetScheduleDetail
     {
         [Parameter(Position = 1, HelpMessage = "Set the Repeat Frequency in Weeks")]
         [ValidateNotNullOrEmpty]

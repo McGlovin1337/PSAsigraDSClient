@@ -11,7 +11,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Watch, "DSClientActivity")]
     [OutputType(typeof(DSClientAcivityLog))]
 
-    public class WatchDSClientActivity: BaseDSClientActivityLog
+    sealed public class WatchDSClientActivity: BaseDSClientActivityLog
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the ActivityId to Watch")]
         [ValidateNotNullOrEmpty]
@@ -49,7 +49,7 @@ namespace PSAsigraDSClient
                     progressRecord.CurrentOperation = $"Processing: {activityInfo.process_dir}";
                     progressRecord.RecordType = (activityInfo.finished) ? ProgressRecordType.Completed : ProgressRecordType.Processing;
                     progressRecord.PercentComplete = (int)Math.Round((double)((double)activityInfo.size_processed / (double)(activityInfo.size_left + activityInfo.size_processed) * 100));
-                    progressRecord.StatusDescription = activityInfo.status_msg;
+                    progressRecord.StatusDescription = activityInfo.status_msg ?? "Processing";
                 }
 
                 activity.Dispose();

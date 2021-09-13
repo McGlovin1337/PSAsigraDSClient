@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
@@ -12,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientGridLog")]
     [OutputType(typeof(DSClientGridLog))]
 
-    public class GetDSClientGridLog : DSClientCmdlet
+    sealed public class GetDSClientGridLog : DSClientCmdlet
     {
         [Parameter(HelpMessage = "Specify From Date")]
         public DateTime From { get; set; } = DateTime.Parse("1/1/1970");

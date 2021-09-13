@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientTimeRetentionOption")]
     [OutputType(typeof(TimeRetentionOverview))]
 
-    public class GetDSClientTimeRetentionOption : BaseDSClientRetentionRule
+    sealed public class GetDSClientTimeRetentionOption : BaseDSClientRetentionRule
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Retention Rule")]
         public int RetentionRuleId { get; set; }
@@ -27,7 +27,7 @@ namespace PSAsigraDSClient
             List<TimeRetentionOverview> timeRetentions = new List<TimeRetentionOverview>();
 
             // Get Hash Codes for Previously Identified Time Retention Options from SessionState, or start a new Dictionary if none exists
-            Dictionary<string, int> retentionHashes = SessionState.PSVariable.GetValue("TimeRetention", null) as Dictionary<string, int>;
+            Dictionary<string, int> retentionHashes = DSClientSessionInfo.GetScheduleOrRetentionDictionary(false);
             if (retentionHashes == null)
                 retentionHashes = new Dictionary<string, int>();
 
@@ -92,7 +92,7 @@ namespace PSAsigraDSClient
             progressRecord.PercentComplete = (int)Math.Round((double)(((double)optionCounter + (double)hashCounter) / ((double)optionCount * 2)) * 100);
             WriteProgress(progressRecord);
 
-            SessionState.PSVariable.Set("TimeRetention", retentionHashes);
+            DSClientSessionInfo.SetScheduleOrRetentionDictonary(retentionHashes, false);
             
             retentionRule.Dispose();
 

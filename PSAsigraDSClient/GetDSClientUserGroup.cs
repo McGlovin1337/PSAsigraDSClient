@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientUserGroup")]
     [OutputType(typeof(DSClientUserGroup))]
 
-    public class GetDSClientUserGroup : BaseDSClientUserManager
+    sealed public class GetDSClientUserGroup : BaseDSClientUserManager
     {
         [Parameter(HelpMessage = "Specify a specific GroupId")]
         public int GroupId { get; set; }

@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Remove, "DSClientBackupSet", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
     [OutputType(typeof(DSClientRunningActivity))]
 
-    public class RemoveDSClientBackupSet: DSClientCmdlet
+    sealed public class RemoveDSClientBackupSet: DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Id of Backup Set to remove")]
         [ValidateNotNullOrEmpty]

@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.New, "DSClientRetentionRule")]
     [OutputType(typeof(DSClientNewRetentionRule))]
 
-    public class NewDSClientRetentionRule: BaseDSClientRetentionRuleParams
+    sealed public class NewDSClientRetentionRule: BaseDSClientRetentionRuleParams
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Retention Rule Name")]
         [ValidateNotNullOrEmpty]

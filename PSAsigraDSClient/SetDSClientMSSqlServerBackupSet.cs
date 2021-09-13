@@ -6,8 +6,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientMSSqlServerBackupSet", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientMSSqlServerBackupSet: BaseDSClientMSSqlServerBackupSet
+    sealed public class SetDSClientMSSqlServerBackupSet: BaseDSClientMSSqlServerBackupSet
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to modify")]
         public int BackupSetId { get; set; }

@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientLoadSummary")]
     [OutputType(typeof(DSClientLoadSummary))]
 
-    public class GetDSClientLoadSummary: DSClientCmdlet
+    sealed public class GetDSClientLoadSummary: DSClientCmdlet
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "DS-Client Node Id")]
         public int NodeId { get; set; } = 0;

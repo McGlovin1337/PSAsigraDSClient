@@ -6,8 +6,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.New, "DSClientInitialBackupPath")]
+    [OutputType(typeof(void))]
 
-    public class NewDSClientInitialBackupPath : DSClientCmdlet
+    sealed public class NewDSClientInitialBackupPath : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Intial Backup Storage Path")]
         [ValidateNotNullOrEmpty]
@@ -30,7 +31,7 @@ namespace PSAsigraDSClient
 
             // Set the Credentials
             BackupSetCredentials pathCredentials = null;
-            if (DSClientOSType.OsType == "Windows" && Path[0] == '\\' && Path[1] == '\\')
+            if (DSClientSessionInfo.OperatingSystem == "Windows" && Path[0] == '\\' && Path[1] == '\\')
             {
                 string path = Path.TrimStart('\\');
                 string computer = path.Split('\\').First();

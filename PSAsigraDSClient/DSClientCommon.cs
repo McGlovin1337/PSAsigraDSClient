@@ -10,7 +10,7 @@ namespace PSAsigraDSClient
 {
     public static class DSClientCommon
     {
-        public static string EnumToString<T>(T e)
+        internal static string EnumToString<T>(T e)
         {
             string result = Regex.Split(e.ToString(), "__")
                                     .Last();
@@ -18,7 +18,7 @@ namespace PSAsigraDSClient
             return result;
         }
 
-        public static T StringToEnum<T>(string s)
+        internal static T StringToEnum<T>(string s)
         {
             string enumType = (typeof(T).ToString())
                                         .Split('.')
@@ -28,23 +28,13 @@ namespace PSAsigraDSClient
             return result;
         }
 
-        public class DSClientOSType
-        {
-            public string OsType { get; private set; }
-
-            public DSClientOSType(EOSFlavour osType)
-            {
-                OsType = EnumToString(osType);
-            }
-        }
-
         public class TimeInDay
         {
-            public int Hour { get; set; }
-            public int Minute { get; set; }
-            public int Second { get; set; }
+            public int Hour { get; private set; }
+            public int Minute { get; private set; }
+            public int Second { get; private set; }
 
-            public TimeInDay(time_in_day timeInDay)
+            internal TimeInDay(time_in_day timeInDay)
             {
                 Hour = timeInDay.hour;
                 Minute = timeInDay.minute;
@@ -68,7 +58,7 @@ namespace PSAsigraDSClient
             public int BackupSetId { get; private set; }
             public DateTime StartTime { get; private set; }
 
-            public GenericBackupSetActivity(GenericActivity genericActivity)
+            internal GenericBackupSetActivity(GenericActivity genericActivity)
             {
                 running_activity_info activityInfo = genericActivity.getCurrentStatus();
 
@@ -79,7 +69,7 @@ namespace PSAsigraDSClient
             }
         }
 
-        public static time_in_day StringTotime_in_day(string timeInDay)
+        internal static time_in_day StringTotime_in_day(string timeInDay)
         {
             string[] splitTime = timeInDay.Split(':');
 
@@ -111,13 +101,13 @@ namespace PSAsigraDSClient
             public int Period { get; private set; }
             public string Unit { get; private set; }
 
-            public DSClientTimeSpan(int period, string unit)
+            internal DSClientTimeSpan(int period, string unit)
             {
                 Period = period;
                 Unit = unit;
             }
 
-            public DSClientTimeSpan(retention_time_span timeSpan)
+            internal DSClientTimeSpan(retention_time_span timeSpan)
             {
                 Period = timeSpan.period;
                 Unit = EnumToString(timeSpan.unit);
@@ -129,7 +119,7 @@ namespace PSAsigraDSClient
             }
         }
 
-        public static DateTime UnixEpochToDateTime(int epoch)
+        internal static DateTime UnixEpochToDateTime(int epoch)
         {
             DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(epoch);
 
@@ -138,7 +128,7 @@ namespace PSAsigraDSClient
             return dateTime;
         }
 
-        public static int DateTimeToUnixEpoch(DateTime dateTime)
+        internal static int DateTimeToUnixEpoch(DateTime dateTime)
         {
             DateTimeOffset offset = new DateTimeOffset(dateTime);
             int epoch = (int)offset.ToUnixTimeSeconds();
@@ -146,7 +136,7 @@ namespace PSAsigraDSClient
             return epoch;
         }
 
-        public static string ResolveWinComputer(string computer)
+        internal static string ResolveWinComputer(string computer)
         {
             string result = computer.Split('\\').Last();
 
@@ -167,12 +157,12 @@ namespace PSAsigraDSClient
             return computer; // If all fails, just return the original string
         }
 
-        public class ValidateHostname
+        internal class ValidateHostname
         {
-            public string ValidHostnames { get; set; }
-            public string InvalidHostnames { get; set; }
+            public string ValidHostnames { get; private set; }
+            public string InvalidHostnames { get; private set; }
 
-            public static IEnumerable<ValidateHostname> ValidateHostnames(string[] Hostnames)
+            internal static IEnumerable<ValidateHostname> ValidateHostnames(string[] Hostnames)
             {
                 List<ValidateHostname> validatedHostnames = new List<ValidateHostname>();
                 bool ValidateResult;
@@ -195,7 +185,7 @@ namespace PSAsigraDSClient
             }
         }
 
-        public static string GetSha1Hash(this string hashStr)
+        internal static string GetSha1Hash(this string hashStr)
         {
             SHA1Managed sha1 = new SHA1Managed();
 
@@ -210,7 +200,5 @@ namespace PSAsigraDSClient
 
             return strBuilder.ToString();
         }
-
-
     }
 }

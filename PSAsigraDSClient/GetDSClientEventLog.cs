@@ -10,7 +10,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientEventLog")]
     [OutputType(typeof(DSClientEventLog))]
 
-    public class GetDSClientEventLog: DSClientCmdlet
+    sealed public class GetDSClientEventLog: DSClientCmdlet
     {
         [Parameter(Position = 0, HelpMessage = "Specify Date and Time to Search from")]
         [ValidateNotNullOrEmpty]
@@ -75,9 +75,15 @@ namespace PSAsigraDSClient
                 filteredEvents = (filteredEvents == null) ? DSClientEventLogs.Where(log => log.NodeId == NodeId) : filteredEvents.Where(log => log.NodeId == NodeId);
 
             if (filteredEvents != null)
+            {
+                filteredEvents.ToList().Sort((x, y) => x.DateTime.CompareTo(y.DateTime));
                 filteredEvents.ToList().ForEach(WriteObject);
+            }
             else
+            {
+                DSClientEventLogs.Sort((x, y) => x.DateTime.CompareTo(y.DateTime));
                 DSClientEventLogs.ForEach(WriteObject);
+            }
         }
 
         private class DSClientEventLog

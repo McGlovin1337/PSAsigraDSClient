@@ -4,8 +4,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientUser", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientUser : BaseDSClientUserManager
+    sealed public class SetDSClientUser : BaseDSClientUserManager
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Specify Id of User to Modify")]
         public int UserId { get; set; }

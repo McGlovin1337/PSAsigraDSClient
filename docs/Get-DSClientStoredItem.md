@@ -15,43 +15,43 @@ Return the Backed Up Items of a Backup Set
 ### hidefiles
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-HideFiles] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>]
- [<CommonParameters>]
+ [-ExcludePath <String[]>] [-HideFiles] [-CalculateDirectorySize] [-DateFrom <DateTime>] [-DateTo <DateTime>]
+ [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
 ### BackupSetId
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-HideFiles] [-HideDirectories] [-BackupSetId] <Int32> [-DateFrom <DateTime>]
- [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
+ [-ExcludePath <String[]>] [-HideFiles] [-HideDirectories] [-CalculateDirectorySize] [-BackupSetId] <Int32>
+ [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
 ### hidedirs
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-HideDirectories] [-DateFrom <DateTime>] [-DateTo <DateTime>]
- [-DeletedDate <DateTime>] [<CommonParameters>]
+ [-ExcludePath <String[]>] [-HideDirectories] [-CalculateDirectorySize] [-DateFrom <DateTime>]
+ [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
-### ValidationSession
+### DeleteId
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-UseValidationSession] [-DateFrom <DateTime>] [-DateTo <DateTime>]
- [-DeletedDate <DateTime>] [<CommonParameters>]
+ [-ExcludePath <String[]>] [-CalculateDirectorySize] -DeleteId <Int32> [-DateFrom <DateTime>]
+ [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
-### DeleteSession
+### RestoreId
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-UseDeleteSession] [-DateFrom <DateTime>] [-DateTo <DateTime>]
- [-DeletedDate <DateTime>] [<CommonParameters>]
+ [-ExcludePath <String[]>] [-CalculateDirectorySize] -RestoreId <Int32> [-DateFrom <DateTime>]
+ [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
-### RestoreSession
+### ValidationId
 ```
 Get-DSClientStoredItem [-Path] <String> [[-Filter] <String>] [-Recursive] [-RecursiveDepth <Int32>]
- [-ExcludePath <String[]>] [-UseRestoreSession] [-DateFrom <DateTime>] [-DateTo <DateTime>]
- [-DeletedDate <DateTime>] [<CommonParameters>]
+ [-ExcludePath <String[]>] [-CalculateDirectorySize] -ValidationId <Int32> [-DateFrom <DateTime>]
+ [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -202,51 +202,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseDeleteSession
-Specify to use Delete View stored in SessionState
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: DeleteSession
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -UseRestoreSession
-Specify to use Restore View stored in SessionState
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: RestoreSession
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -UseValidationSession
-Specify to use Validation View stored in SessionState
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: ValidationSession
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -HideDirectories
 {{ Fill HideDirectories Description }}
 
@@ -310,6 +265,66 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RestoreId
+Specify an existing Restore Session Id
+
+```yaml
+Type: Int32
+Parameter Sets: RestoreId
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CalculateDirectorySize
+Return the Size of Directories/Folders
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ValidationId
+Specify and existing Validation Session Id
+
+```yaml
+Type: Int32
+Parameter Sets: ValidationId
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DeleteId
+Specify an existing Delete Session Id
+
+```yaml
+Type: Int32
+Parameter Sets: DeleteId
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

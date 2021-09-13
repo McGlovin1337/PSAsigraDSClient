@@ -7,8 +7,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Remove, "DSClientSNMPCommunity", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class RemoveDSClientSNMPCommunity: BaseDSClientSNMPConfig
+    sealed public class RemoveDSClientSNMPCommunity: BaseDSClientSNMPConfig
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the SNMP Community")]
         [ValidateNotNullOrEmpty]

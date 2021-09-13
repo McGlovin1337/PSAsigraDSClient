@@ -6,8 +6,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientUserGroupRole", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientUserGroupRole : BaseDSClientUserManager
+    sealed public class SetDSClientUserGroupRole : BaseDSClientUserManager
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Specify Id of User or Group Role to Modify")]
         public int RoleId { get; set; }

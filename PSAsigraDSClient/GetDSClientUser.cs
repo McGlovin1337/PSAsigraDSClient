@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientUser")]
     [OutputType(typeof(DSClientUser))]
 
-    public class GetDSClientUser : BaseDSClientUserManager
+    sealed public class GetDSClientUser : BaseDSClientUserManager
     {
         [Parameter(HelpMessage = "Specify a specifc User by UserId")]
         public int UserId { get; set; }

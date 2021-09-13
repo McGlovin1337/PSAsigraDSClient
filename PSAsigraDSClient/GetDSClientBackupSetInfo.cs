@@ -6,7 +6,8 @@ namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Get, "DSClientBackupSetInfo", DefaultParameterSetName = "General")]
     [OutputType(typeof(DSClientBackupSetInfo))]
-    public class GetDSClientBackupSetInfo: BaseDSClientBackupSetInfo
+
+    sealed public class GetDSClientBackupSetInfo: BaseDSClientBackupSetInfo
     {
         [Parameter(Position = 0, ParameterSetName = "Id", Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Id of the Backup Set")]
         [ValidateNotNullOrEmpty]

@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.New, "DSClientWinFsBackupSet")]
     [OutputType(typeof(DSClientBackupSetBasicProps))]
 
-    public class NewDSClientWinFsBackupSet: BaseDSClientWinFsBackupSet
+    sealed public class NewDSClientWinFsBackupSet: BaseDSClientWinFsBackupSet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Backup Set")]
         [ValidateNotNullOrEmpty]
@@ -109,7 +109,7 @@ namespace PSAsigraDSClient
                 List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
                 if (ExcludeItem != null)
-                    backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
+                    backupSetItems.AddRange(ProcessExclusionItems(DSClientSessionInfo.OperatingSystem, dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
 
                 if (RegexExcludePattern != null)
                     backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexMatchDirectory, RegexCaseInsensitive, RegexExcludePattern));

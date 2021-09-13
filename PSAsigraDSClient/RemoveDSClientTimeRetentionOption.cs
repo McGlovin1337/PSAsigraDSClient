@@ -7,8 +7,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Remove, "DSClientTimeRetentionOption", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class RemoveDSClientTimeRetentionOption: BaseDSClientRetentionRule
+    sealed public class RemoveDSClientTimeRetentionOption: BaseDSClientRetentionRule
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Retention Rule Id")]
         public int RetentionRuleId { get; set; }

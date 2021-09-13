@@ -5,8 +5,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientUserGroupRole")]
+    [OutputType(typeof(void))]
 
-    public class AddDSClientUserGroupRole : BaseDSClientUserManager
+    sealed public class AddDSClientUserGroupRole : BaseDSClientUserManager
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Specify Name of User or Group")]
         [ValidateNotNullOrEmpty]

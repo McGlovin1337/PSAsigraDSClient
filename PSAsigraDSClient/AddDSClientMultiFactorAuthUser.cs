@@ -6,8 +6,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientMultiFactorAuthUser")]
+    [OutputType(typeof(void))]
 
-    public class AddDSClientMultiFactorAuthUser: DSClientCmdlet
+    sealed public class AddDSClientMultiFactorAuthUser: DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Email Address to add")]
         [ValidateNotNullOrEmpty]

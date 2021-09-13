@@ -6,7 +6,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientBackupSet")]
     [OutputType(typeof(DSClientBackupSet))]
 
-    public class GetDSClientBackupSet: BaseDSClientBackupSet
+    sealed public class GetDSClientBackupSet: BaseDSClientBackupSet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Backup Set Id")]
         [ValidateNotNullOrEmpty]
@@ -18,7 +18,7 @@ namespace PSAsigraDSClient
             BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
             WriteDebug("Parsing Backup Set details.");
-            DSClientBackupSet dSClientBackupSet = new DSClientBackupSet(backupSet, DSClientOSType);
+            DSClientBackupSet dSClientBackupSet = new DSClientBackupSet(backupSet, DSClientSessionInfo.OperatingSystem);
 
             WriteObject(dSClientBackupSet);
         }

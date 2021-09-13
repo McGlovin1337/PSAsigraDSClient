@@ -7,7 +7,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientBackupSetItem")]
     [OutputType(typeof(DSClientBackupSetItem))]
 
-    public class GetDSClientBackupSetItem: BaseDSClientBackupSet
+    sealed public class GetDSClientBackupSetItem: BaseDSClientBackupSet
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to query")]
         public int BackupSetId { get; set; }
@@ -27,7 +27,7 @@ namespace PSAsigraDSClient
             List<DSClientBackupSetItem> dSClientBackupSetItems = new List<DSClientBackupSetItem>();
 
             foreach (BackupSetItem item in backupSetItems)
-                dSClientBackupSetItems.Add(new DSClientBackupSetItem(item, backupDataType, DSClientOSType));
+                dSClientBackupSetItems.Add(new DSClientBackupSetItem(item, backupDataType, DSClientSessionInfo.OperatingSystem));
 
             dSClientBackupSetItems.ForEach(WriteObject);
 

@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientStoredItem")]
     [OutputType(typeof(DSClientBackupSetItemInfo))]
 
-    public class GetDSClientStoredItem : BaseDSClientBackupSetDataBrowser
+    sealed public class GetDSClientStoredItem : BaseDSClientBackupSetDataBrowser
     {
         [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Full Path to the Item")]
         [ValidateNotNullOrEmpty]
@@ -37,18 +37,25 @@ namespace PSAsigraDSClient
         [Parameter(ParameterSetName = "BackupSetId")]
         public SwitchParameter HideDirectories { get; set; }
 
-        protected override void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView)
-        {
-            BackedUpDataViewWithFilters backedUpDataView = BackedUpDataViewWithFilters.from(DSClientBackedUpDataView);
+        [Parameter(HelpMessage = "Return the Size of Directories/Folders")]
+        public SwitchParameter CalculateDirectorySize { get; set; }
 
+        protected override void ProcessBackupSetData(BackedUpDataView backedUpDataView)
+        {
             // Apply File & Directory Visibility Filters
             ESelectableItemCategory itemCategory = ESelectableItemCategory.ESelectableItemCategory__FilesAndDirectories;
 
-            if (HideFiles)
-                itemCategory = ESelectableItemCategory.ESelectableItemCategory__DirectoriesOnly;
-            else if (HideDirectories)
-                itemCategory = ESelectableItemCategory.ESelectableItemCategory__FilesOnly;
+            if (!MyInvocation.BoundParameters.ContainsKey(nameof(DeleteId)))
+            {
+                BackedUpDataViewWithFilters filteredBackedUpDataView = BackedUpDataViewWithFilters.from(backedUpDataView);
 
+                if (HideFiles)
+                    itemCategory = ESelectableItemCategory.ESelectableItemCategory__DirectoriesOnly;
+                else if (HideDirectories)
+                    itemCategory = ESelectableItemCategory.ESelectableItemCategory__FilesOnly;
+            }
+
+            List<DSClientBackupSetItemInfo> allItems = new List<DSClientBackupSetItemInfo>();
             List<DSClientBackupSetItemInfo> ItemInfo = new List<DSClientBackupSetItemInfo>();
 
             // Any trailing "\" is unnecessary, remove if any are specified to tidy up output
@@ -59,9 +66,20 @@ namespace PSAsigraDSClient
             SelectableItem item = backedUpDataView.getItem(path);
             long itemId = item.id;
 
-            selectable_size itemSize = backedUpDataView.getItemSize(itemId);
+            selectable_size itemSize = new selectable_size
+            {
+                data_size = 0,
+                file_count = 0
+            };
+            if ((!item.is_file && MyInvocation.BoundParameters.ContainsKey(nameof(CalculateDirectorySize))) ||
+                item.is_file)
+            {
+                itemSize = backedUpDataView.getItemSize(itemId);
+            }
 
-            ItemInfo.Add(new DSClientBackupSetItemInfo(path, item, itemSize));
+            DSClientBackupSetItemInfo itemInfo = new DSClientBackupSetItemInfo(path, item, itemSize);
+            allItems.Add(itemInfo);
+            ItemInfo.Add(itemInfo);
 
             if (Recursive)
             {
@@ -103,22 +121,37 @@ namespace PSAsigraDSClient
                     progressRecord.CurrentOperation = $"Enumerating Path: {currentPath.Path}";
                     WriteProgress(progressRecord);
 
+                    WriteDebug($"Retrieve Info for Path: {currentPath.Path}");
                     item = backedUpDataView.getItem(currentPath.Path);
                     itemId = item.id;
 
                     // Fetch all the subitems of the current path
+                    WriteDebug("Retrieve Sub Item Info");
                     SelectableItem[] subItems = backedUpDataView.getSubItemsByCategory(itemId, itemCategory);
 
                     int subItemDepth = currentPath.Depth + 1;
                     int index = 1;
                     foreach (SelectableItem subItem in subItems)
                     {
-                        selectable_size subItemSize = backedUpDataView.getItemSize(subItem.id);
+                        selectable_size subItemSize = new selectable_size
+                        {
+                            data_size = 0,
+                            file_count = 0
+                        };
+                        if (MyInvocation.BoundParameters.ContainsKey(nameof(CalculateDirectorySize)) ||
+                            subItem.is_file)
+                        {
+                            WriteDebug($"Get Size of Item: {subItem.name}");
+                            subItemSize = backedUpDataView.getItemSize(subItem.id);
+                        }
+                        DSClientBackupSetItemInfo currentItemInfo = new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize);
+                        allItems.Add(currentItemInfo);
 
                         if (Filter != null)
                         {
                             if (wcPattern.IsMatch(subItem.name))
                             {
+                                WriteDebug("Item Matched Filter");
                                 ItemInfo.Add(new DSClientBackupSetItemInfo(currentPath.Path, subItem, subItemSize));
                                 itemCount++;
                             }
@@ -141,36 +174,29 @@ namespace PSAsigraDSClient
                     }
 
                     // Remove the Path we've just completed enumerating from the list
+                    WriteDebug("Remove Item from Enumeration List");
                     newPaths.Remove(currentPath);
                     enumeratedCount++;
                 }
             }
 
-            ItemInfo.ForEach(WriteObject);
-        }
-
-        private class DSClientBackupSetItemInfo
-        {
-            public long ItemId { get; private set; }
-            public string Path { get; private set; }
-            public string Name { get; private set; }
-            public string DataType { get; private set; }
-            public long DataSize { get; private set; }
-            public int FileCount { get; private set; }
-            public bool IsFile { get; private set; }
-            public bool Selectable { get; private set; }
-
-            public DSClientBackupSetItemInfo(string path, SelectableItem item, selectable_size itemSize)
+            if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreId)))
             {
-                ItemId = item.id;
-                Path = path;
-                Name = item.name;
-                DataType = EBrowseItemTypeToString(item.data_type);
-                DataSize = itemSize.data_size;
-                FileCount = itemSize.file_count;
-                IsFile = item.is_file;
-                Selectable = item.is_selectable;
+                DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
+                restoreSession.AddBrowsedItems(allItems);
             }
+            else if (MyInvocation.BoundParameters.ContainsKey(nameof(ValidationId)))
+            {
+                DSClientValidationSession validationSession = DSClientSessionInfo.GetValidationSession(ValidationId);
+                validationSession.AddBrowsedItems(allItems);
+            }
+            else if (MyInvocation.BoundParameters.ContainsKey(nameof(DeleteId)))
+            {
+                DSClientDeleteSession deleteSession = DSClientSessionInfo.GetDeleteSession(DeleteId);
+                deleteSession.AddBrowsedItems(allItems);
+            }
+
+            ItemInfo.ForEach(WriteObject);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using System;
+using System.Management.Automation;
 using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
@@ -6,55 +7,54 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientBackupSetDataBrowser: BaseDSClientInitializeBackupSetDataBrowser
     {
-        [Parameter(Mandatory = true, ParameterSetName = "ValidationSession", HelpMessage = "Specify to use Validation View stored in SessionState")]
-        public SwitchParameter UseValidationSession { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "DeleteId", HelpMessage = "Specify an existing Delete Session Id")]
+        public int DeleteId { get; set; }
 
-        [Parameter(Mandatory = true, ParameterSetName = "DeleteSession", HelpMessage = "Specify to use Delete View stored in SessionState")]
-        public SwitchParameter UseDeleteSession { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "RestoreId", HelpMessage = "Specify an existing Restore Session Id")]
+        public int RestoreId { get; set; }
 
-        [Parameter(Mandatory = true, ParameterSetName = "RestoreSession", HelpMessage = "Specify to use Restore View stored in SessionState")]
-        public SwitchParameter UseRestoreSession { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "ValidationId", HelpMessage = "Specify and existing Validation Session Id")]
+        public int ValidationId { get; set; }
 
         protected abstract void ProcessBackupSetData(BackedUpDataView DSClientBackedUpDataView);
 
         protected override void DSClientProcessRecord()
         {
-            if (UseValidationSession == true)
+            if (MyInvocation.BoundParameters.ContainsKey(nameof(ValidationId)))
             {
-                // Get the Validation View from SessionState
-                BackupSetValidationView validationView = SessionState.PSVariable.GetValue("ValidateView", null) as BackupSetValidationView;
+                // Get the Validation View from Validation Session
+                DSClientValidationSession validationSession = DSClientSessionInfo.GetValidationSession(ValidationId);
 
-                if (validationView != null)
-                    ProcessBackupSetData(validationView);
-
-                // Update the Validation View in SessionState
-                SessionState.PSVariable.Set("ValidateView", validationView);
+                if (validationSession != null)
+                    ProcessBackupSetData(validationSession.GetValidationView());
+                else
+                    throw new Exception("Specified Validation Session not found");
             }
-            else if (UseDeleteSession)
+            else if (MyInvocation.BoundParameters.ContainsKey(nameof(DeleteId)))
             {
-                // Get the Delete View from SessionState
-                BackupSetDeleteView deleteView = SessionState.PSVariable.GetValue("DeleteView", null) as BackupSetDeleteView;
+                // Get the Delete View from Delete Session
+                DSClientDeleteSession deleteSession = DSClientSessionInfo.GetDeleteSession(DeleteId);
 
-                if (deleteView != null)
-                    ProcessBackupSetData(deleteView);
-
-                // Update the Delete View in SessionState
-                SessionState.PSVariable.Set("DeleteView", deleteView);
+                if (deleteSession != null)
+                    ProcessBackupSetData(deleteSession.GetDeleteView());
+                else
+                    throw new Exception("Specified Delete Session not found");
             }
-            else if (UseRestoreSession)
+            else if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreId)))
             {
-                // Get the Restore View from SessionState
-                BackupSetRestoreView restoreView = SessionState.PSVariable.GetValue("RestoreView", null) as BackupSetRestoreView;
-
-                if (restoreView != null)
-                    ProcessBackupSetData(restoreView);
-
-                // Update the Restore View in SessionState
-                SessionState.PSVariable.Set("RestoreView", restoreView);
+                // Get the Restore View from a Restore Session
+                DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
+                if (restoreSession != null)
+                    ProcessBackupSetData(restoreSession.GetRestoreView());
+                else
+                    throw new Exception("Specified Restore Session not found");
             }
             else
             {
                 BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
+
+                if (backupSet.check_lock_status(EActivityType.EActivityType__Restore) == EBackupSetLockStatus.EBackupSetLockStatus__Locked)
+                    throw new Exception("Backup Set is Currently Locked");
 
                 int deletedDate = 0;
 

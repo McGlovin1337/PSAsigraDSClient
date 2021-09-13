@@ -4,8 +4,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Remove, "DSClientUser", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class RemoveDSClientUser : BaseDSClientUserManager
+    sealed public class RemoveDSClientUser : BaseDSClientUserManager
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Specify Id of User to Remove")]
         public int UserId { get; set; }

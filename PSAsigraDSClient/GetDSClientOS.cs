@@ -7,7 +7,7 @@ namespace PSAsigraDSClient.PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientOS")]
     [OutputType(typeof(DSClientOperatingSystem))]
 
-    public class GetDSClientOS: DSClientCmdlet
+    sealed public class GetDSClientOS: DSClientCmdlet
     {
         protected override void DSClientProcessRecord()
         {

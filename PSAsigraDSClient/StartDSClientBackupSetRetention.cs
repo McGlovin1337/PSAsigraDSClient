@@ -6,9 +6,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Start, "DSClientBackupSetRetention")]
-    [OutputType(typeof(GenericBackupSetActivity))]
+    [OutputType(typeof(void), typeof(GenericBackupSetActivity))]
 
-    public class StartDSClientBackupSetRetention: BaseDSClientStartBackupSetActivity
+    sealed public class StartDSClientBackupSetRetention: BaseDSClientStartBackupSetActivity
     {
         protected override void ProcessBackupSet(BackupSet backupSet)
         {

@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientTools")]
     [OutputType(typeof(DSClientTools))]
 
-    public class GetDSClientTools: DSClientCmdlet
+    sealed public class GetDSClientTools: DSClientCmdlet
     {
         protected override void DSClientProcessRecord()
         {

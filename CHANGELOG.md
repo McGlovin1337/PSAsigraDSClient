@@ -1,5 +1,22 @@
 # PSAsigraDSClient ChangeLog
 
+### v0.6.0
+- Added capability to establish and manage multiple DS-Client Sessions, added Cmdlets: New-DSClientSession, Get-DSClientSession, Remove-DSClientSession, Connect-DSClientSession, Disconnect-DSClientSession, Invoke-DSClientCommand
+- Rewrite Backup Set Restore Process. Added capability to create multiple restore sessions.
+-- Added Cmdlets: Initialize-DSClientRestoreSession, New-DSClientFSRestoreOptions, New-DSClientMSSQLRestoreOptions, New-DSClientMSSQLDatabaseRestoreMapping, Add-DSClientRestoreItem, Get-DSClientRestoreSession, Remove-DSClientRestoreSession, Remove-DSClientRestoreItem, Set-DSClientRestoreSession, Start-DSClientRestore, New-DSClientUnixCredential, New-DSClientWindowsCredential
+-- Removed Cmdlets: Initialize-DSClientBackupSetRestore, Start-DSClientUnixFSRestore, Start-DSClientMSSqlServerRestore, Start-DSClientWinFsRestore
+- Rewrite Backup Set Validation Process. Added capability to create multiple validation sessions.
+-- Added Cmdlets: Initialize-DSClientValidationSession, Get-DSClientValidationSession, Add-DSClientValidationItem, Remove-DSClientValidationItem, Remove-DSClientValidationSession, Start-DSClientValidation
+-- Removed Cmdlets: Initialize-DSClientBackupSetValidation, Start-DSClientBackupSetValidation
+- Rewrite Backup Set Delete Process. Added capability to create multiple delete sessions.
+-- Added Cmdlets: Initialize-DSClientDeleteSession, Get-DSClientDeleteSession, Start-DSClientDelete, Add-DSClientDeleteItem, Remove-DSClientDeleteItem, Remove-DSClientDeleteSession, Set-DSClientDeleteSession
+- Rename "-Host" Parameter to "-HostName" in Enter-DSClientSession Cmdlet
+- Added Parameter "-CalculateDirectorySize" to Get-DSClientStoredItem, Directory Sizes are no longer calculated by default
+- Fixed ValidateSet in Set-DSClientRegistrationInfo Cmdlet
+- Fixed Exception "Cannot process the argument because the value of statusDescription cannot be null or empty" in Watch-DSClientActivity
+- Improved Get-DSClientActivityLog and Get-DSClientEventLog, output is now sorted by Start Date/Time
+- Set the PSAsigraDSClient.dll Assembly version to 0.6.0.0 to match Module Version
+
 ### v0.5.0
 - Added Cmdlets that allow changing existing Schedule Details: Set-DSClientOneTimeSchedule, Set-DSClientDailySchedule, Set-DSClientWeeklySchedule, Set-DSClientMonthlySchedule
 - Added Remove-DSClientArchiveFilterRule Cmdlet

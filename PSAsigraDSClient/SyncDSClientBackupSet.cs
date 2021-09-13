@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsData.Sync, "DSClientBackupSet")]
     [OutputType(typeof(GenericBackupSetActivity))]
 
-    public class StartDSClientBackupSetSync: BaseDSClientStartBackupSetActivity
+    sealed public class StartDSClientBackupSetSync: BaseDSClientStartBackupSetActivity
     {
         [Parameter(HelpMessage = "Specify Sync should be DS-System based")]
         public SwitchParameter DSSystemBased { get; set; }

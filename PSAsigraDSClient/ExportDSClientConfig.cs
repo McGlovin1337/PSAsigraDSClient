@@ -7,8 +7,9 @@ using System.Linq;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsData.Export, "DSClientConfig")]
+    [OutputType(typeof(File))]
 
-    public class ExportDSClientConfig : DSClientCmdlet
+    sealed public class ExportDSClientConfig : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify where to output the configuration")]
         public string Path { get; set; }

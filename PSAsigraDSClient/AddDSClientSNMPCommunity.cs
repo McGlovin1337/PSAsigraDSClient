@@ -6,8 +6,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientSNMPCommunity")]
+    [OutputType(typeof(void))]
 
-    public class AddDSClientSNMPCommunity: BaseDSClientSNMPConfig
+    sealed public class AddDSClientSNMPCommunity: BaseDSClientSNMPConfig
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the SNMP Community")]
         [ValidateNotNullOrEmpty]

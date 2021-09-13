@@ -8,8 +8,9 @@ using static PSAsigraDSClient.BaseDSClientNotification;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientDefaultConfiguration", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientDefaultConfiguration: BaseDSClientDefaultConfiguration
+    sealed public class SetDSClientDefaultConfiguration: BaseDSClientDefaultConfiguration
     {
         [Parameter(Position = 0, ValueFromPipelineByPropertyName = true, HelpMessage = "Default Compression Level")]
         [ValidateSet("None", "ZLIB", "LZOP", "ZLIB_LO", "ZLIB_MED", "ZLIB_HI")]
@@ -241,7 +242,7 @@ namespace PSAsigraDSClient
             }
 
             // If this is a Windows DS-Client, extend and set additional properties
-            if (DSClientOSType.OsType == "Windows")
+            if (DSClientSessionInfo.OperatingSystem == "Windows")
             {
                 defaultConfigurationWindows = DefaultConfigurationWindowsClient.from(defaultConfiguration);
 

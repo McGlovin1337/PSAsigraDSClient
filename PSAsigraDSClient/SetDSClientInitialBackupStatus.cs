@@ -4,8 +4,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientInitialBackupStatus", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientInitialBackupStatus : DSClientCmdlet
+    sealed public class SetDSClientInitialBackupStatus : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set Id")]
         public int BackupSetId { get; set; }

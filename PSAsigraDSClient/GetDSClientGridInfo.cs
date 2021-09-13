@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientGridInfo")]
     [OutputType(typeof(DSClientGridInfo))]
 
-    public class GetDSClientGridInfo : DSClientCmdlet
+    sealed public class GetDSClientGridInfo : DSClientCmdlet
     {
         protected override void DSClientProcessRecord()
         {

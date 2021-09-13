@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.New, "DSClientMSSqlServerBackupSet")]
     [OutputType(typeof(DSClientBackupSetBasicProps))]
 
-    public class NewDSClientMSSqlServerBackupSet: BaseDSClientMSSqlServerBackupSet
+    sealed public class NewDSClientMSSqlServerBackupSet: BaseDSClientMSSqlServerBackupSet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Backup Set")]
         [ValidateNotNullOrEmpty]

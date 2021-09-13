@@ -3,7 +3,9 @@
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Exit, "DSClientSession")]
-    public class ExitDSClientSession: BaseDSClientSessionCleanup
+    [OutputType(typeof(string))]
+
+    sealed public class ExitDSClientSession: BaseDSClientSessionCleanup
     {
         protected override void ProcessCleanSession()
         {

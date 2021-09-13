@@ -5,8 +5,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Register, "DSClient", SupportsShouldProcess = true)]
+    [OutputType(typeof(string))]
 
-    public class RegisterDSClient: DSClientCmdlet
+    sealed public class RegisterDSClient: DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "Initial", HelpMessage = "Perform Initial DS-Client Registration")]
         public SwitchParameter Initial { get; set; }

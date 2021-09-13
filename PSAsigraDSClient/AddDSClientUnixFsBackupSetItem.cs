@@ -7,8 +7,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientUnixFsBackupSetItem")]
+    [OutputType(typeof(void))]
 
-    public class AddDSClientUnixFsBackupSetItem: BaseDSClientBackupSet
+    sealed public class AddDSClientUnixFsBackupSetItem: BaseDSClientBackupSet
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to modify")]
         public int BackupSetId { get; set; }
@@ -49,7 +50,7 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             // Check DS-Client is Linux
-            if (DSClientOSType.OsType != "Linux")
+            if (DSClientSessionInfo.OperatingSystem != "Linux")
                 throw new Exception("Unix FileSystem Backup Sets can only be created on a Unix DS-Client");
 
             // Get the requested Backup Set from DS-Client
@@ -64,7 +65,7 @@ namespace PSAsigraDSClient
             List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
             if (ExcludeItem != null)
-                backupSetItems.AddRange(ProcessExclusionItems(DSClientOSType, dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
+                backupSetItems.AddRange(ProcessExclusionItems(DSClientSessionInfo.OperatingSystem, dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
 
             if (RegexExcludePattern != null)
                 backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexMatchDirectory, RegexCaseInsensitive, RegexExcludePattern));

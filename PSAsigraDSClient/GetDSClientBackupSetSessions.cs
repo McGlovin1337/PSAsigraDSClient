@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientBackupSetSessions")]
     [OutputType(typeof(DSClientBackupSessions))]
 
-    public class GetDSClientBackupSetSessions: DSClientCmdlet
+    sealed public class GetDSClientBackupSetSessions: DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Backup Set to retrieve Sessions for")]
         public int BackupSetId { get; set; }

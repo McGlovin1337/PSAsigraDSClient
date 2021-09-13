@@ -4,8 +4,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientUserGroup", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class SetDSClientUserGroup : BaseDSClientUserManager
+    sealed public class SetDSClientUserGroup : BaseDSClientUserManager
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Specify Id of Group to Modify")]
         public int GroupId { get; set; }

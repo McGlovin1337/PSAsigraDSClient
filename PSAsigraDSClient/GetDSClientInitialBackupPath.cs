@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientInitialBackupPath")]
     [OutputType(typeof(DSClientInitialBackupPath))]
 
-    public class GetDSClientInitialBackupPath : DSClientCmdlet
+    sealed public class GetDSClientInitialBackupPath : DSClientCmdlet
     {
         protected override void DSClientProcessRecord()
         {
@@ -21,7 +21,7 @@ namespace PSAsigraDSClient
             initialBackupManager.Dispose();
 
             foreach (init_backup_path_info path in initPathInfos)
-                initPaths.Add(new DSClientInitialBackupPath(path, DSClientOSType.OsType));
+                initPaths.Add(new DSClientInitialBackupPath(path, DSClientSessionInfo.OperatingSystem));
 
             initPaths.ForEach(WriteObject);
         }

@@ -6,7 +6,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientSNMPInfo")]
     [OutputType(typeof(DSClientSNMPInfo))]
 
-    public class GetDSClientSNMPInfo: BaseDSClientSNMPConfig
+    sealed public class GetDSClientSNMPInfo: BaseDSClientSNMPConfig
     {
         protected override void ProcessSNMPConfig(DSClientSNMPInfo dSClientSNMPInfo, IEnumerable<DSClientSNMPCommunities> dSClientSNMPCommunities)
         {

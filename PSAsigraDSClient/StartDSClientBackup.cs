@@ -9,7 +9,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsLifecycle.Start, "DSClientBackup")]
     [OutputType(typeof(GenericBackupSetActivity))]
 
-    public class StartDSClientBackup: BaseDSClientStartBackupSetActivity
+    sealed public class StartDSClientBackup: BaseDSClientStartBackupSetActivity
     {
         [Parameter(HelpMessage = "Specify to Run Retention After Backup")]
         public SwitchParameter PerformRetention { get; set; }

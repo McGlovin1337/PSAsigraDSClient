@@ -5,9 +5,9 @@ using static PSAsigraDSClient.DSClientCommon;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsLifecycle.Start, "DSClientSystemActivity")]
-    [OutputType(typeof(SystemActivityStart))]
+    [OutputType(typeof(void), typeof(SystemActivityStart))]
 
-    public class StartDSClientSystemActivity: DSClientCmdlet
+    sealed public class StartDSClientSystemActivity: DSClientCmdlet
     {
         [Parameter(Mandatory = true, ParameterSetName = "daily", HelpMessage = "Start Daily Admin Activity")]
         public SwitchParameter DailyAdmin { get; set; }

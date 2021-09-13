@@ -5,8 +5,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Remove, "DSClientBackupSetNotification", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class RemoveDSClientBackupSetNotification : DSClientCmdlet
+    sealed public class RemoveDSClientBackupSetNotification : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set Id")]
         public int BackupSetId { get; set; }

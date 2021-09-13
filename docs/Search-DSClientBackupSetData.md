@@ -12,23 +12,22 @@ Perform a Search of DS-Client Backed Up Data
 
 ## SYNTAX
 
-### ValidationSession
+### DeleteId
 ```
 Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
- [-UseValidationSession] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>]
- [<CommonParameters>]
+ -DeleteId <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
-### DeleteSession
+### RestoreId
 ```
 Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
- [-UseDeleteSession] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
+ -RestoreId <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>] [<CommonParameters>]
 ```
 
-### RestoreSession
+### ValidationId
 ```
 Search-DSClientBackupSetData [-Filter] <String[]> [[-DirectoryFilter] <String[]>] [-LatestGenerationOnly]
- [-UseRestoreSession] [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>]
+ -ValidationId <Int32> [-DateFrom <DateTime>] [-DateTo <DateTime>] [-DeletedDate <DateTime>]
  [<CommonParameters>]
 ```
 
@@ -159,12 +158,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseDeleteSession
-Specify to use Delete View stored in SessionState
+### -RestoreId
+Specify an existing Restore Session Id
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: DeleteSession
+Type: Int32
+Parameter Sets: RestoreId
 Aliases:
 
 Required: True
@@ -174,12 +173,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseRestoreSession
-Specify to use Restore View stored in SessionState
+### -ValidationId
+Specify and existing Validation Session Id
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: RestoreSession
+Type: Int32
+Parameter Sets: ValidationId
 Aliases:
 
 Required: True
@@ -189,12 +188,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseValidationSession
-Specify to use Validation View stored in SessionState
+### -DeleteId
+Specify an existing Delete Session Id
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: ValidationSession
+Type: Int32
+Parameter Sets: DeleteId
 Aliases:
 
 Required: True

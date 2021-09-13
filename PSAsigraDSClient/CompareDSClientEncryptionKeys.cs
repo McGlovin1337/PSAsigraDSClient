@@ -4,8 +4,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsData.Compare, "DSClientEncryptionKeys")]
+    [OutputType(typeof(bool))]
 
-    public class CompareDSClientEncryptionKeys: DSClientCmdlet
+    sealed public class CompareDSClientEncryptionKeys: DSClientCmdlet
     {
         protected override void DSClientProcessRecord()
         {

@@ -5,8 +5,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Set, "DSClientSMTPNotification", SupportsShouldProcess = true)]
+    [OutputType(typeof(string))]
 
-    public class SetDSClientSMTPNotification: BaseDSClientSMTPNotification
+    sealed public class SetDSClientSMTPNotification: BaseDSClientSMTPNotification
     {
         [Parameter(Position = 0, ValueFromPipelineByPropertyName = true, HelpMessage = "SMTP Server Hostname or IP Address")]
         public string SmtpServer { get; set; }

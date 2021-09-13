@@ -8,7 +8,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientBackupSetNotification")]
     [OutputType(typeof(DSClientBackupSetNotification))]
 
-    public class GetDSClientBackupSetNotification : DSClientCmdlet
+    sealed public class GetDSClientBackupSetNotification : DSClientCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify the Backup Set to retrieve Notification Configuration")]
         public int BackupSetId { get; set; }

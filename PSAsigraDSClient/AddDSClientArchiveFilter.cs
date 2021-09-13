@@ -5,8 +5,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsCommon.Add, "DSClientArchiveFilter")]
+    [OutputType(typeof(void))]
 
-    public class AddDSClientArchiveFilter: BaseDSClientArchiveFilter
+    sealed public class AddDSClientArchiveFilter: BaseDSClientArchiveFilter
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Archive Filter Rule to add this Filter to")]
         [ValidateNotNullOrEmpty]

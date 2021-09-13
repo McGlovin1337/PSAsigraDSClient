@@ -4,8 +4,9 @@ using AsigraDSClientApi;
 namespace PSAsigraDSClient
 {
     [Cmdlet(VerbsData.Unpublish, "DSClientEncryptionKeys", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
 
-    public class UnpublishDSClientEncryptionKeys: DSClientCmdlet
+    sealed public class UnpublishDSClientEncryptionKeys: DSClientCmdlet
     {
         protected override void DSClientProcessRecord()
         {

@@ -10,7 +10,7 @@ namespace PSAsigraDSClient
     [Cmdlet(VerbsCommon.Get, "DSClientRetentionRule")]
     [OutputType(typeof(DSClientRetentionRule))]
 
-    public class GetDSClientRetentionRule: BaseDSClientRetentionRule
+    sealed public class GetDSClientRetentionRule: BaseDSClientRetentionRule
     {
         [Parameter(Position = 0, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Retention Rule Id")]
         public int RetentionRuleId { get; set; } = 0;

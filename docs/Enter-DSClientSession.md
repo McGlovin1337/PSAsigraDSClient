@@ -12,9 +12,15 @@ Establishes a connection to an Asigra DS-Client
 
 ## SYNTAX
 
+### default (Default)
 ```
-Enter-DSClientSession [[-Host] <String>] [[-Port] <UInt16>] [-NoSSL] [[-APIVersion] <String>]
+Enter-DSClientSession -HostName <String> [[-Port] <UInt16>] [-NoSSL] [[-APIVersion] <String>]
  [[-Credential] <PSCredential>] [<CommonParameters>]
+```
+
+### session
+```
+Enter-DSClientSession -Session <DSClientSession> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -29,6 +35,13 @@ PS C:\> Enter-DSClientSession -Host my.dsclient.local -Credential joe.bloggs
 
 Establishes a connection to the DS-Client running on computer "my.dsclient.local", using Credential "joe.bloggs"
 
+### Example 2
+```
+PS C:\> Enter-DSClientSession -Session $Session
+```
+
+Enters the DS-Client Session specified in $Session variable.
+
 ## PARAMETERS
 
 ### -APIVersion
@@ -36,7 +49,7 @@ Specify the Asigra DSClient API Version to use
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: default
 Aliases:
 
 Required: False
@@ -51,26 +64,11 @@ Specify Credentials to use to connect to DSClient
 
 ```yaml
 Type: PSCredential
-Parameter Sets: (All)
+Parameter Sets: default
 Aliases:
 
 Required: False
 Position: 5
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Host
-Specify the DSClient Host to connect to
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -81,7 +79,7 @@ Specify to NOT establish an SSL Connection
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: default
 Aliases:
 
 Required: False
@@ -96,13 +94,43 @@ Specify the TCP port to connect to
 
 ```yaml
 Type: UInt16
-Parameter Sets: (All)
+Parameter Sets: default
 Aliases:
 
 Required: False
 Position: 1
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Session
+Specify an existing Session to use
+
+```yaml
+Type: DSClientSession
+Parameter Sets: session
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -HostName
+Specify the DS-Client Host to connect to
+
+```yaml
+Type: String
+Parameter Sets: default
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 

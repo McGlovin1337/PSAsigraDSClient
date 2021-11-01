@@ -363,11 +363,11 @@ namespace PSAsigraDSClient
             public int SchedulePriority { get; private set; }
             public int RetentionRuleId { get; private set; }
             public string RetentionRuleName { get; private set; }
-            public long OnlineDataSize { get; private set; }
+            public DSClientStorageUnit OnlineDataSize { get; private set; }
             public int OnlineFileCount { get; private set; }
             public string CompressionType { get; private set; }
-            public long CompressedSize { get; private set; }
-            public long LocalStorageDataSize { get; private set; }
+            public DSClientStorageUnit CompressedSize { get; private set; }
+            public DSClientStorageUnit LocalStorageDataSize { get; private set; }
             public int LocalStorageFileCount { get; private set; }
             public string SetType { get; private set; }
             public bool UseLocalStorage { get; private set; }
@@ -465,11 +465,11 @@ namespace PSAsigraDSClient
                 SchedulePriority = backupSet.getSchedulePriority();
                 RetentionRuleId = backupSetOverviewInfo.retention_rule_id;
                 RetentionRuleName = backupSetOverviewInfo.retention_rule_name;
-                OnlineDataSize = backupSetOverviewInfo.status.on_line_data_size;
+                OnlineDataSize = new DSClientStorageUnit(backupSetOverviewInfo.status.on_line_data_size);
                 OnlineFileCount = backupSetOverviewInfo.status.on_line_file_count;
                 CompressionType = EnumToString(backupSet.getCompressionType());
-                CompressedSize = backupSetOverviewInfo.status.dssystem_compressed_size;
-                LocalStorageDataSize = backupSetOverviewInfo.status.local_storage_data_size;
+                CompressedSize = new DSClientStorageUnit(backupSetOverviewInfo.status.dssystem_compressed_size);
+                LocalStorageDataSize = new DSClientStorageUnit(backupSetOverviewInfo.status.local_storage_data_size);
                 LocalStorageFileCount = backupSetOverviewInfo.status.local_storage_file_count;
                 SetType = EnumToString(backupSet.getSetType());
                 UseLocalStorage = backupSet.isUsingLocalStorage();

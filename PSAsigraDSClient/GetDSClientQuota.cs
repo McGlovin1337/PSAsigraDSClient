@@ -33,8 +33,8 @@ namespace PSAsigraDSClient
         {
             public string QuotaType { get; private set; }
             public string QuotaMeasure { get; private set; }
-            public long Used { get; private set; }
-            public long Limit { get; private set; }
+            public DSClientStorageUnit Used { get; private set; }
+            public DSClientStorageUnit Limit { get; private set; }
             public decimal PercentUsed { get; private set; }
             public int GracePercentage { get; private set; }
 
@@ -42,8 +42,8 @@ namespace PSAsigraDSClient
             {
                 QuotaType = EnumToString(assigned);
                 QuotaMeasure = EnumToString(quotaInfo.type);
-                Used = quotaInfo.current_use;
-                Limit = quotaInfo.use_limit;
+                Used = new DSClientStorageUnit(quotaInfo.current_use);
+                Limit = new DSClientStorageUnit(quotaInfo.use_limit);
                 PercentUsed = (quotaInfo.use_limit > 0) ? decimal.Round(((decimal)quotaInfo.current_use / (decimal)quotaInfo.use_limit) * 100, 2) : 0;
                 GracePercentage = quotaInfo.grace_percentage;
             }

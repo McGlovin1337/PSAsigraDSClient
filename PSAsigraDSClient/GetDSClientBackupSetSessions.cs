@@ -42,7 +42,7 @@ namespace PSAsigraDSClient
             public DateTime StartTime { get; private set; }
             public DateTime EndTime { get; private set; }
             public int Files { get; private set; }
-            public long Size { get; private set; }
+            public DSClientStorageUnit Size { get; private set; }
 
             public DSClientBackupSessions(int backupSetId, backup_sessions backupSessions)
             {
@@ -51,7 +51,7 @@ namespace PSAsigraDSClient
                 StartTime = UnixEpochToDateTime(backupSessions.start_time);
                 EndTime = UnixEpochToDateTime(backupSessions.end_time);
                 Files = backupSessions.files;
-                Size = backupSessions.size;
+                Size = new DSClientStorageUnit(backupSessions.size);
             }
         }
     }

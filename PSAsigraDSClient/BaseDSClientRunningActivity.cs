@@ -35,8 +35,8 @@ namespace PSAsigraDSClient
             public bool Finished { get; private set; }
             public string ProcessDir { get; private set; }
             public int BackupSetId { get; private set; }
-            public long SizeLeft { get; private set; }
-            public long SizeProcessed { get; private set; }
+            public DSClientStorageUnit SizeLeft { get; private set; }
+            public DSClientStorageUnit SizeProcessed { get; private set; }
             public DateTime StartTime { get; private set; }
             public string StatusMsg { get; private set; }
             public string Type { get; private set; }
@@ -51,8 +51,8 @@ namespace PSAsigraDSClient
                 Finished = activityInfo.finished;
                 ProcessDir = activityInfo.process_dir;
                 BackupSetId = activityInfo.set_id;
-                SizeLeft = activityInfo.size_left;
-                SizeProcessed = activityInfo.size_processed;
+                SizeLeft = new DSClientStorageUnit(activityInfo.size_left);
+                SizeProcessed = new DSClientStorageUnit(activityInfo.size_processed);
                 StartTime = UnixEpochToDateTime(activityInfo.start_time);
                 StatusMsg = activityInfo.status_msg;
                 Type = EnumToString(activityInfo.type);

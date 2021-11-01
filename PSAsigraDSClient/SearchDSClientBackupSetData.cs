@@ -84,7 +84,7 @@ namespace PSAsigraDSClient
             public string Directory { get; private set; }
             public int FileId { get; private set; }
             public string FileName { get; private set; }
-            public long FileSize { get; private set; }
+            public DSClientStorageUnit FileSize { get; private set; }
             public int GenerationId { get; private set; }
             public DateTime LastModified { get; private set; }
 
@@ -95,7 +95,7 @@ namespace PSAsigraDSClient
                 Directory = fileInfo.dir_name;
                 FileId = fileInfo.file_id;
                 FileName = fileInfo.file_name;
-                FileSize = fileInfo.file_size;
+                FileSize = new DSClientStorageUnit(fileInfo.file_size);
                 GenerationId = fileInfo.generation;
                 LastModified = UnixEpochToDateTime(fileInfo.last_modified_time);
             }

@@ -27,7 +27,7 @@ namespace PSAsigraDSClient
             public string Path { get; private set; }
             public string Name { get; private set; }
             public bool IsFile { get; private set; }
-            public long Size { get; private set; }
+            public DSClientStorageUnit Size { get; private set; }
             public string Type { get; private set; }
 
             public SourceItemInfo(string path, browse_item_info item)
@@ -35,7 +35,7 @@ namespace PSAsigraDSClient
                 Path = path;
                 Name = item.name;
                 IsFile = item.isfile;
-                Size = item.datasize;
+                Size = new DSClientStorageUnit(item.datasize);
                 Type = EBrowseItemTypeToString(item.type);
             }
         }

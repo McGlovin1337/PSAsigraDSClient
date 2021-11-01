@@ -99,6 +99,7 @@
     <Compile Include="PSAsigraDSClient\DSClientBackupSetItemInfo.cs" />
     <Compile Include="PSAsigraDSClient\DSClientRestoreSession.cs" />
     <Compile Include="PSAsigraDSClient\DSClientDeleteSession.cs" />
+    <Compile Include="PSAsigraDSClient\DSClientStorageUnit.cs" />
     <Compile Include="PSAsigraDSClient\DSClientValidationSession.cs" />
     <Compile Include="PSAsigraDSClient\EnableDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\EnableDSClientSchedule.cs" />

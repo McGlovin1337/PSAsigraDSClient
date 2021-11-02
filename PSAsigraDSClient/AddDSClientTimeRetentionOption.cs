@@ -38,20 +38,25 @@ namespace PSAsigraDSClient
                 IntervalTimeRetentionOption intervalTimeRetention = DSClientRetentionRuleMgr.createIntervalTimeRetention();
                 intervalTimeRetention = IntervalTimeRetentionRule(intervalTimeRetention, IntervalTimeValue, IntervalTimeUnit, ValidForValue, ValidForUnit);
 
+                ErrorRecord intervalErrorRecord = null;
                 foreach (TimeRetentionOption option in timeRetentionOptions)
                 {                    
                     if (comparer.Equals(option, intervalTimeRetention))
                     {
+                        intervalErrorRecord = new ErrorRecord(
+                            new Exception("An Identical Time Retention Option already exists"),
+                            "Exception",
+                            ErrorCategory.ResourceExists,
+                            option);
+                        WriteError(intervalErrorRecord);
+
                         option.Dispose();
                         intervalTimeRetention.Dispose();
-                        RetentionRule.Dispose();
-                        DSClientRetentionRuleMgr.Dispose();
-
-                        throw new Exception("An Identical Time Retention Option already exists");
                     }
                 }
 
-                RetentionRule.addTimeRetentionOption(intervalTimeRetention);
+                if (intervalErrorRecord == null)
+                    RetentionRule.addTimeRetentionOption(intervalTimeRetention);
             }
 
             // Weekly based Time Retention
@@ -61,20 +66,25 @@ namespace PSAsigraDSClient
                 WeeklyTimeRetentionOption weeklyTimeRetention = DSClientRetentionRuleMgr.createWeeklyTimeRetention();
                 weeklyTimeRetention = WeeklyTimeRetentionRule(weeklyTimeRetention, WeeklyRetentionDay, RetentionTime, ValidForValue, ValidForUnit);
 
+                ErrorRecord weeklyErrorRecord = null;
                 foreach (TimeRetentionOption option in timeRetentionOptions)
                 {
                     if (comparer.Equals(option, weeklyTimeRetention))
                     {
-                        option.Dispose();
-                        weeklyTimeRetention.Dispose();
+                        weeklyErrorRecord = new ErrorRecord(
+                            new Exception("An Identical Time Retention Option already exists"),
+                            "Exception",
+                            ErrorCategory.ResourceExists,
+                            option);
+                        WriteError(weeklyErrorRecord);
+
                         RetentionRule.Dispose();
                         DSClientRetentionRuleMgr.Dispose();
-
-                        throw new Exception("An Identical Time Retention Option already exists");
                     }
                 }
 
-                RetentionRule.addTimeRetentionOption(weeklyTimeRetention);
+                if (weeklyErrorRecord == null)
+                    RetentionRule.addTimeRetentionOption(weeklyTimeRetention);
             }
 
             // Monthly based Time Retention
@@ -84,20 +94,25 @@ namespace PSAsigraDSClient
                 MonthlyTimeRetentionOption monthlyTimeRetention = DSClientRetentionRuleMgr.createMonthlyTimeRetention();
                 monthlyTimeRetention = MonthlyTimeRetentionRule(monthlyTimeRetention, RetentionDayOfMonth, RetentionTime, ValidForValue, ValidForUnit);
 
+                ErrorRecord monthlyErrorRecord = null;
                 foreach (TimeRetentionOption option in timeRetentionOptions)
                 {
                     if (comparer.Equals(option, monthlyTimeRetention))
                     {
-                        option.Dispose();
-                        monthlyTimeRetention.Dispose();
+                        monthlyErrorRecord = new ErrorRecord(
+                            new Exception("An Identical Time Retention Option already exists"),
+                            "Exception",
+                            ErrorCategory.ResourceExists,
+                            option);
+                        WriteError(monthlyErrorRecord);
+
                         RetentionRule.Dispose();
                         DSClientRetentionRuleMgr.Dispose();
-
-                        throw new Exception("An Identical Time Retention Option already exists");
                     }
                 }
 
-                RetentionRule.addTimeRetentionOption(monthlyTimeRetention);
+                if (monthlyErrorRecord == null)
+                    RetentionRule.addTimeRetentionOption(monthlyTimeRetention);
             }
 
             // Yearly based Time Retention
@@ -107,20 +122,25 @@ namespace PSAsigraDSClient
                 YearlyTimeRetentionOption yearlyTimeRetention = DSClientRetentionRuleMgr.createYearlyTimeRetention();
                 yearlyTimeRetention = YearlyTimeRetentionRule(yearlyTimeRetention, RetentionDayOfMonth, YearlyRetentionMonth, RetentionTime, ValidForValue, ValidForUnit);
 
+                ErrorRecord yearlyErrorRecord = null;
                 foreach (TimeRetentionOption option in timeRetentionOptions)
                 {
                     if (comparer.Equals(option, yearlyTimeRetention))
                     {
-                        option.Dispose();
-                        yearlyTimeRetention.Dispose();
+                        yearlyErrorRecord = new ErrorRecord(
+                            new Exception("An Identical Time Retention Option already exists"),
+                            "Exception",
+                            ErrorCategory.ResourceExists,
+                            option);
+                        WriteError(yearlyErrorRecord);
+
                         RetentionRule.Dispose();
                         DSClientRetentionRuleMgr.Dispose();
-
-                        throw new Exception("An Identical Time Retention Option already exists");
                     }
                 }
 
-                RetentionRule.addTimeRetentionOption(yearlyTimeRetention);
+                if (yearlyErrorRecord == null)
+                    RetentionRule.addTimeRetentionOption(yearlyTimeRetention);
             }
 
             RetentionRule.Dispose();

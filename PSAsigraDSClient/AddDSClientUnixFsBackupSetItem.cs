@@ -51,56 +51,66 @@ namespace PSAsigraDSClient
         {
             // Check DS-Client is Linux
             if (DSClientSessionInfo.OperatingSystem != "Linux")
-                throw new Exception("Unix FileSystem Backup Sets can only be created on a Unix DS-Client");
-
-            // Get the requested Backup Set from DS-Client
-            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
-            BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
-            string computer = backupSet.getComputerName();
-
-            // Create a Data Source Browser
-            DataSourceBrowser dataSourceBrowser = backupSet.dataBrowser();
-
-            // Create a List of Items
-            List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
-
-            if (ExcludeItem != null)
-                backupSetItems.AddRange(ProcessExclusionItems(DSClientSessionInfo.OperatingSystem, dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
-
-            if (RegexExcludePattern != null)
-                backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexMatchDirectory, RegexCaseInsensitive, RegexExcludePattern));
-
-            if (IncludeItem != null)
             {
-                foreach (string item in IncludeItem)
-                {
-                    UnixFS_BackupSetInclusionItem inclusionItem = UnixFS_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, item, MaxGenerations));
-
-                    inclusionItem.setSubdirDescend(!ExcludeSubDirs);
-                    inclusionItem.setIncludingACL(!ExcludeACLs);
-
-                    if (computer.Split('\\').First() == "Local File System")
-                    {
-                        UnixFS_LinuxLFS_BackupSetInclusionItem linuxInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
-                        linuxInclusionItem.setIncludingPosixACL(!ExcludePosixACLs);
-                    }
-
-                    backupSetItems.Add(inclusionItem);
-                }
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new PlatformNotSupportedException("Unix FileSystem Backup Sets can only be created on a Unix DS-Client"),
+                    "PlatformNotSupportedException",
+                    ErrorCategory.InvalidOperation,
+                    null);
+                WriteError(errorRecord);
             }
+            else
+            {
 
-            // Get the existing specified items and store in the list
-            backupSetItems.AddRange(backupSet.items());
+                // Get the requested Backup Set from DS-Client
+                WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
+                BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
+                string computer = backupSet.getComputerName();
 
-            // Strip any duplicates from the list, duplicates cause an error and wipes all the items from the Backup Set
-            backupSetItems = backupSetItems.Distinct(new BackupSetItemComparer()).ToList();
+                // Create a Data Source Browser
+                DataSourceBrowser dataSourceBrowser = backupSet.dataBrowser();
 
-            // Add all the items to the Backup Set
-            WriteVerbose("Performing Action: Add Items to Backup Set");
-            backupSet.setItems(backupSetItems.ToArray());
+                // Create a List of Items
+                List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
-            dataSourceBrowser.Dispose();
-            backupSet.Dispose();
+                if (ExcludeItem != null)
+                    backupSetItems.AddRange(ProcessExclusionItems(DSClientSessionInfo.OperatingSystem, dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
+
+                if (RegexExcludePattern != null)
+                    backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexMatchDirectory, RegexCaseInsensitive, RegexExcludePattern));
+
+                if (IncludeItem != null)
+                {
+                    foreach (string item in IncludeItem)
+                    {
+                        UnixFS_BackupSetInclusionItem inclusionItem = UnixFS_BackupSetInclusionItem.from(dataSourceBrowser.createInclusionItem(computer, item, MaxGenerations));
+
+                        inclusionItem.setSubdirDescend(!ExcludeSubDirs);
+                        inclusionItem.setIncludingACL(!ExcludeACLs);
+
+                        if (computer.Split('\\').First() == "Local File System")
+                        {
+                            UnixFS_LinuxLFS_BackupSetInclusionItem linuxInclusionItem = UnixFS_LinuxLFS_BackupSetInclusionItem.from(inclusionItem);
+                            linuxInclusionItem.setIncludingPosixACL(!ExcludePosixACLs);
+                        }
+
+                        backupSetItems.Add(inclusionItem);
+                    }
+                }
+
+                // Get the existing specified items and store in the list
+                backupSetItems.AddRange(backupSet.items());
+
+                // Strip any duplicates from the list, duplicates cause an error and wipes all the items from the Backup Set
+                backupSetItems = backupSetItems.Distinct(new BackupSetItemComparer()).ToList();
+
+                // Add all the items to the Backup Set
+                WriteVerbose("Performing Action: Add Items to Backup Set");
+                backupSet.setItems(backupSetItems.ToArray());
+
+                dataSourceBrowser.Dispose();
+                backupSet.Dispose();
+            }
         }
     }
 }

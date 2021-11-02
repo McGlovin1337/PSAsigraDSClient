@@ -54,42 +54,51 @@ namespace PSAsigraDSClient
         {
             // Check DS-Client is Windows
             if (DSClientSessionInfo.OperatingSystem != "Windows")
-                throw new Exception("MS SQL Server Backup Sets can only be created on a Windows DS-Client");
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new PlatformNotSupportedException("MS SQL Server Backup Sets can only be created on a Windows DS-Client"),
+                    "PlatformNotSupportedException",
+                    ErrorCategory.InvalidOperation,
+                    null);
+                WriteError(errorRecord);
+            }
+            else
+            {
+                // Get the requested Backup Set from DS-Client
+                WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
+                BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
+                string computer = backupSet.getComputerName();
 
-            // Get the requested Backup Set from DS-Client
-            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
-            BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
-            string computer = backupSet.getComputerName();
+                // Create a Data Source Browser
+                DataSourceBrowser dataSourceBrowser = backupSet.dataBrowser();
 
-            // Create a Data Source Browser
-            DataSourceBrowser dataSourceBrowser = backupSet.dataBrowser();
+                // Create a List of Items
+                List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
 
-            // Create a List of Items
-            List<BackupSetItem> backupSetItems = new List<BackupSetItem>();
+                // Process any Exclusion Items
+                if (ExcludeItem != null)
+                    backupSetItems.AddRange(ProcessBasicExclusionItems(dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
 
-            // Process any Exclusion Items
-            if (ExcludeItem != null)
-                backupSetItems.AddRange(ProcessBasicExclusionItems(dataSourceBrowser, computer, ExcludeItem, ExcludeSubDirs));
+                if (RegexExcludePattern != null)
+                    backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexMatchDirectory, RegexCaseInsensitive, RegexExcludePattern));
 
-            if (RegexExcludePattern != null)
-                backupSetItems.AddRange(ProcessRegexExclusionItems(dataSourceBrowser, computer, RegexExclusionPath, RegexMatchDirectory, RegexCaseInsensitive, RegexExcludePattern));
+                // Process any Inclusion Items
+                if (IncludeItem != null)
+                    backupSetItems.AddRange(ProcessMsSqlInclusionItems(dataSourceBrowser, computer, IncludeItem, MaxGenerations, BackupLog, RunDBCC, DBCCErrorStop, ExcludeSubDirs));
 
-            // Process any Inclusion Items
-            if (IncludeItem != null)
-                backupSetItems.AddRange(ProcessMsSqlInclusionItems(dataSourceBrowser, computer, IncludeItem, MaxGenerations, BackupLog, RunDBCC, DBCCErrorStop, ExcludeSubDirs));
+                // Get the existing specified items and store in the list
+                backupSetItems.AddRange(backupSet.items());
 
-            // Get the existing specified items and store in the list
-            backupSetItems.AddRange(backupSet.items());
+                // Strip any duplicates from the list, duplicates cause an error and wipes all the items from the Backup Set
+                backupSetItems = backupSetItems.Distinct(new BackupSetItemComparer()).ToList();
 
-            // Strip any duplicates from the list, duplicates cause an error and wipes all the items from the Backup Set
-            backupSetItems = backupSetItems.Distinct(new BackupSetItemComparer()).ToList();
+                // Add all the items to the Backup Set
+                WriteVerbose("Performing Action: Add Items to Backup Set");
+                backupSet.setItems(backupSetItems.ToArray());
 
-            // Add all the items to the Backup Set
-            WriteVerbose("Performing Action: Add Items to Backup Set");
-            backupSet.setItems(backupSetItems.ToArray());
-
-            dataSourceBrowser.Dispose();
-            backupSet.Dispose();
+                dataSourceBrowser.Dispose();
+                backupSet.Dispose();
+            }
         }
     }
 }

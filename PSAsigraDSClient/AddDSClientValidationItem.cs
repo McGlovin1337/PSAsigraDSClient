@@ -43,7 +43,12 @@ namespace PSAsigraDSClient
                         }
                         catch
                         {
-                            WriteWarning($"Failed to Select Item: {item}");
+                            ErrorRecord errorRecord = new ErrorRecord(
+                                new ItemNotFoundException($"Failed to Select Item: {item}"),
+                                "ItemNotFoundException",
+                                ErrorCategory.ObjectNotFound,
+                                item);
+                            WriteError(errorRecord);
                         }
 
                         // If no item was found, on to the next

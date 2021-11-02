@@ -78,6 +78,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### PSAsigraDSClient.BaseDSClientSchedule+DSClientScheduleDetail
+
 ## NOTES
 
 ## RELATED LINKS

@@ -313,7 +313,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### System.Object
+### System.Void
+
 ## NOTES
 
 ## RELATED LINKS

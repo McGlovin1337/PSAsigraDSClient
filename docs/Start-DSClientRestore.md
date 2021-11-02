@@ -69,7 +69,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### System.Object
+### System.Void
+
+### PSAsigraDSClient.DSClientCommon+GenericBackupSetActivity
+
 ## NOTES
 
 ## RELATED LINKS

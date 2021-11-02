@@ -77,6 +77,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### PSAsigraDSClient.BaseDSClientSNMPConfig+DSClientSNMPCommunities
+
 ## NOTES
 
 ## RELATED LINKS

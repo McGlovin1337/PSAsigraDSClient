@@ -37,6 +37,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### PSAsigraDSClient.GetDSClientRunningActivity+RunningActivityInfo
+
 ## NOTES
 
 ## RELATED LINKS

@@ -87,7 +87,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### System.Object
+### PSAsigraDSClient.DSClientRestoreSession
+
 ## NOTES
 
 ## RELATED LINKS

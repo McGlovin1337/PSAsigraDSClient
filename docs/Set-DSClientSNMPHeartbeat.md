@@ -83,7 +83,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### System.Int32
 ## OUTPUTS
 
-### System.Object
+### System.String
+
 ## NOTES
 
 ## RELATED LINKS

@@ -174,6 +174,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
+### System.Void
+
 ### PSAsigraDSClient.StopDSClientGridNode+DSClientGridNodeStatus
 
 ## NOTES

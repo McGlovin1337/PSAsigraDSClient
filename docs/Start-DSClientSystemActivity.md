@@ -109,7 +109,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### None
 ## OUTPUTS
 
-### System.Object
+### System.Void
+
+### PSAsigraDSclient.StartDSClientSystemActivity+SystemActivityStart
+
 ## NOTES
 
 ## RELATED LINKS

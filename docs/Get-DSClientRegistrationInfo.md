@@ -36,7 +36,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### None
 ## OUTPUTS
 
-### AsigraDSClientApi.dsc_reg_info
+### PSAsigraDSClient.GetDSClientRegistrationInfo+DSClientRegistrationInfo
+
 ## NOTES
 
 ## RELATED LINKS

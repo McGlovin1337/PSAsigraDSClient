@@ -615,7 +615,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### System.Object
+### PSAsigraDSClient.BaseDSClientBackupSet+DSClientBackupSetBasicProps
+
 ## NOTES
 
 ## RELATED LINKS

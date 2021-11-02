@@ -54,6 +54,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### PSAsigraDSClient.GetDSClientBackupSet+BackupSetInfo
+
 ## NOTES
 
 ## RELATED LINKS

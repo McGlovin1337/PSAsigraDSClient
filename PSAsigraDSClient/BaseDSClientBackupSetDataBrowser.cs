@@ -28,7 +28,14 @@ namespace PSAsigraDSClient
                 if (validationSession != null)
                     ProcessBackupSetData(validationSession.GetValidationView());
                 else
-                    throw new Exception("Specified Validation Session not found");
+                {
+                    ErrorRecord errorRecord = new ErrorRecord(
+                        new ArgumentException("Specified Validation Session not found"),
+                        "PSArgumentException",
+                        ErrorCategory.ObjectNotFound,
+                        null);
+                    WriteError(errorRecord);
+                }
             }
             else if (MyInvocation.BoundParameters.ContainsKey(nameof(DeleteId)))
             {
@@ -38,7 +45,14 @@ namespace PSAsigraDSClient
                 if (deleteSession != null)
                     ProcessBackupSetData(deleteSession.GetDeleteView());
                 else
-                    throw new Exception("Specified Delete Session not found");
+                {
+                    ErrorRecord errorRecord = new ErrorRecord(
+                        new ArgumentException("Specified Delete Session not found"),
+                        "PSArgumentException",
+                        ErrorCategory.ObjectNotFound,
+                        null);
+                    WriteError(errorRecord);
+                }
             }
             else if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreId)))
             {
@@ -47,28 +61,44 @@ namespace PSAsigraDSClient
                 if (restoreSession != null)
                     ProcessBackupSetData(restoreSession.GetRestoreView());
                 else
-                    throw new Exception("Specified Restore Session not found");
+                {
+                    ErrorRecord errorRecord = new ErrorRecord(
+                        new ArgumentException("Specified Restore Session not found"),
+                        "PSArgumentException",
+                        ErrorCategory.ObjectNotFound,
+                        null);
+                    WriteError(errorRecord);
+                }
             }
             else
             {
                 BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
 
                 if (backupSet.check_lock_status(EActivityType.EActivityType__Restore) == EBackupSetLockStatus.EBackupSetLockStatus__Locked)
-                    throw new Exception("Backup Set is Currently Locked");
+                {
+                    ErrorRecord errorRecord = new ErrorRecord(
+                        new Exception("Backup Set is Currently Locked"),
+                        "Exception",
+                        ErrorCategory.ResourceBusy,
+                        backupSet);
+                    WriteError(errorRecord);
+                }
+                else
+                {
+                    int deletedDate = 0;
 
-                int deletedDate = 0;
+                    if (MyInvocation.BoundParameters.ContainsKey("DeletedDate"))
+                        deletedDate = DateTimeToUnixEpoch(DeletedDate);
 
-                if (MyInvocation.BoundParameters.ContainsKey("DeletedDate"))
-                    deletedDate = DateTimeToUnixEpoch(DeletedDate);
+                    WriteVerbose("Performing Action: Prepare Backup Set Data view");
+                    WriteVerbose("Notice: From: " + DateFrom + " To: " + DateTo);
+                    BackupSetRestoreView backupSetRestoreView = backupSet.prepare_restore(DateTimeToUnixEpoch(DateFrom), DateTimeToUnixEpoch(DateTo), deletedDate);
 
-                WriteVerbose("Performing Action: Prepare Backup Set Data view");
-                WriteVerbose("Notice: From: " + DateFrom + " To: " + DateTo);
-                BackupSetRestoreView backupSetRestoreView = backupSet.prepare_restore(DateTimeToUnixEpoch(DateFrom), DateTimeToUnixEpoch(DateTo), deletedDate);
+                    ProcessBackupSetData(backupSetRestoreView);
 
-                ProcessBackupSetData(backupSetRestoreView);
-
-                backupSetRestoreView.Dispose();
-                backupSet.Dispose();
+                    backupSetRestoreView.Dispose();
+                    backupSet.Dispose();
+                }
             }
         }
     }

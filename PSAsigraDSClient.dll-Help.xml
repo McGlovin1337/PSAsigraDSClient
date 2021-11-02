@@ -241,7 +241,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -1047,7 +1047,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -1770,7 +1770,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2131,7 +2131,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2258,7 +2258,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2738,7 +2738,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2865,7 +2865,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2976,7 +2976,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -3447,7 +3447,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -3806,7 +3806,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -3975,7 +3975,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -4291,7 +4291,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -4852,7 +4852,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -5190,7 +5190,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -5244,7 +5244,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Boolean</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -5491,7 +5491,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -5623,7 +5623,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -5748,7 +5748,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -6094,7 +6094,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -6219,7 +6219,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -6420,7 +6420,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -6481,7 +6481,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -6801,7 +6801,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.IO.File</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -9055,7 +9055,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>AsigraDSClientApi.ds_client_info</maml:name>
+          <maml:name>PSAsigraDSClient.GetDSClientInfo+DSClientInfo</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -9620,7 +9620,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>AsigraDSClientApi.dsc_reg_info</maml:name>
+          <maml:name>PSAsigraDSClient.GetDSClientRegistrationInfo+DSClientRegistrationInfo</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -12301,7 +12301,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>PSAsigraDSClient.DSClientRestoreSession</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -12711,7 +12711,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Management.Automation.PSObject</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -12975,7 +12975,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -13536,7 +13536,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -15210,7 +15210,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>PSAsigraDSClient.BaseDSClientBackupSet+DSClientBackupSetBasicProps</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -17962,7 +17962,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>PSAsigraDSClient.BaseDSClientBackupSet+DSClientBackupSetBasicProps</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -18947,7 +18947,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>PSAsigraDSClient.BaseDSClientBackupSet+DSClientBackupSetBasicProps</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -20419,7 +20419,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>PSAsigraDSClient.BaseDSClientBackupSet+DSClientBackupSetBasicProps</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -20520,7 +20520,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -21537,7 +21537,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -21686,7 +21686,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -21811,7 +21811,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -22226,7 +22226,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -22382,7 +22382,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -22846,7 +22846,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -23260,7 +23260,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -23385,7 +23385,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -23542,7 +23542,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -23945,7 +23945,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -24109,7 +24109,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -24265,7 +24265,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -24390,7 +24390,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -24515,7 +24515,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -24640,7 +24640,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -25071,7 +25071,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -26003,7 +26003,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -26747,7 +26747,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -27345,7 +27345,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -27877,7 +27877,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -28345,7 +28345,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -29011,7 +29011,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -30031,7 +30031,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -30605,7 +30605,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -31021,7 +31021,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -31506,7 +31506,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -32196,7 +32196,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -32643,7 +32643,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -32768,7 +32768,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -33403,7 +33403,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -34463,7 +34463,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -34612,7 +34612,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -34761,7 +34761,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -34994,7 +34994,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -35786,7 +35786,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -36417,7 +36417,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -37445,7 +37445,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -38135,7 +38135,15 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSAsigraDSClient.DSClientCommon+GenericBackupSetActivity</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -38310,7 +38318,15 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSAsigraDSclient.StartDSClientSystemActivity+SystemActivityStart</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -38545,7 +38561,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -38906,6 +38922,14 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
+          <maml:name>System.Void</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
           <maml:name>PSAsigraDSClient.StopDSClientGridNode+DSClientGridNodeStatus</maml:name>
         </dev:type>
         <maml:description>
@@ -39189,7 +39213,7 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Void</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>

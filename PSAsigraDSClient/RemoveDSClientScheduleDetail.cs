@@ -28,22 +28,31 @@ namespace PSAsigraDSClient
             Schedule schedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
 
             // Get Schedule Detail Hash Dictionary from SessionState
-            Dictionary<string, int> detailHashes = SessionState.PSVariable.GetValue("ScheduleDetail", null) as Dictionary<string, int>;
+            Dictionary<string, int> detailHashes = DSClientSessionInfo.GetScheduleOrRetentionDictionary(true);
             if (detailHashes == null)
-                throw new Exception("No Schedule Details found in Session State, use Get-DSClientScheduleDetail Cmdlet");
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("No Schedule Details found in Session State, use Get-DSClientScheduleDetail Cmdlet"),
+                    "Exception",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
+            }
+            else
+            {
+                // Select the Schedule Detail
+                (ScheduleDetail scheduleDetail, string detailHash) = SelectScheduleDetail(schedule, DetailId, detailHashes);
 
-            // Select the Schedule Detail
-            (ScheduleDetail scheduleDetail, string detailHash) = SelectScheduleDetail(schedule, DetailId, detailHashes);
+                if (scheduleDetail != null)
+                    if (ShouldProcess($"Schedule: '{schedule.getName()}'", $"Remove {EnumToString(scheduleDetail.getType())} Schedule Detail with Id '{DetailId}'"))
+                        schedule.removeDetail(scheduleDetail);
 
-            if (scheduleDetail != null)
-                if (ShouldProcess($"Schedule: '{schedule.getName()}'", $"Remove {EnumToString(scheduleDetail.getType())} Schedule Detail with Id '{DetailId}'"))
-                    schedule.removeDetail(scheduleDetail);
+                // Remove the Hash from SessionState Dictionary
+                detailHashes.Remove(detailHash);
+                SessionState.PSVariable.Set("ScheduleDetail", detailHashes);
 
-            // Remove the Hash from SessionState Dictionary
-            detailHashes.Remove(detailHash);
-            SessionState.PSVariable.Set("ScheduleDetail", detailHashes);
-
-            schedule.Dispose();
+                schedule.Dispose();
+            }
         }
     }
 }

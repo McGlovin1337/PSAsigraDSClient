@@ -23,7 +23,8 @@ namespace PSAsigraDSClient
             RetentionRule retentionRule = retentionRules.Single(rule => rule.getID() == RetentionRuleId);
 
             // Get Time Retention Option Hash Dictionary from Session State
-            if (!(SessionState.PSVariable.GetValue("TimeRetention", null) is Dictionary<string, int> retentionHash))
+            Dictionary<string, int> retentionHash = DSClientSessionInfo.GetScheduleOrRetentionDictionary(false);
+            if (retentionHash == null)
             {
                 ErrorRecord errorRecord = new ErrorRecord(
                     new Exception("There are no Time Retention Options Stored in Session State, use Get-DSClientTimeRetentionOption"),

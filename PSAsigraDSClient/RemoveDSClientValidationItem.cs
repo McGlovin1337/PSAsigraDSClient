@@ -20,10 +20,19 @@ namespace PSAsigraDSClient
             DSClientValidationSession validationSession = DSClientSessionInfo.GetValidationSession(ValidationId);
 
             if (validationSession != null)
+            {
                 if (ShouldProcess($"Validation Session with Id '{ValidationId}'", "Remove Items for Validation"))
                     validationSession.RemoveSelectedItems(ItemId);
-                else
-                    throw new Exception("Validation Session not found");
+            }
+            else
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("Validation Session not found"),
+                    "Exception",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
+            }
         }
     }
 }

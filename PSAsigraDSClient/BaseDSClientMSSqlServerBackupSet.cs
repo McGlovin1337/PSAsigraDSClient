@@ -61,28 +61,37 @@ namespace PSAsigraDSClient
         {
             // Check DS-Client is Windows
             if (DSClientSessionInfo.OperatingSystem != "Windows")
-                throw new Exception("MS SQL Server Backup Sets can only be created on a Windows DS-Client");
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new PlatformNotSupportedException("MS SQL Server Backup Sets can only be created on a Windows DS-Client"),
+                    "PlatformNotSupportedException",
+                    ErrorCategory.InvalidOperation,
+                    null);
+                WriteError(errorRecord);
+            }
+            else
+            {
+                // Validate the Common Base Parameters
+                BaseBackupSetParamValidation(MyInvocation.BoundParameters);
 
-            // Validate the Common Base Parameters
-            BaseBackupSetParamValidation(MyInvocation.BoundParameters);
+                // Validate Parameters Specific to this Cmdlet
+                if (DumpMethod != "DumpPipe" && DumpPath == null)
+                    throw new ParameterBindingException("DumpPath must be specified");
 
-            // Validate Parameters Specific to this Cmdlet
-            if (DumpMethod != "DumpPipe" && DumpPath == null)
-                throw new ParameterBindingException("DumpPath must be specified");
+                if ((MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay") && FullMonthlyTime == null) ||
+                    FullMonthlyTime != null && !MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay"))
+                    throw new ParameterBindingException("FullMonthlyDay and FullMonthlyTime must be specified together");
 
-            if ((MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay") && FullMonthlyTime == null) ||
-                FullMonthlyTime != null && !MyInvocation.BoundParameters.ContainsKey("FullMonthlyDay"))
-                throw new ParameterBindingException("FullMonthlyDay and FullMonthlyTime must be specified together");
+                if ((MyInvocation.BoundParameters.ContainsKey("FullWeeklyDay") && FullWeeklyTime == null) ||
+                    FullWeeklyTime != null && !MyInvocation.BoundParameters.ContainsKey("FullWeeklyDay"))
+                    throw new ParameterBindingException("FullWeeklyDay and FullWeeklyTime must be specified together");
 
-            if ((MyInvocation.BoundParameters.ContainsKey("FullWeeklyDay") && FullWeeklyTime == null) ||
-                FullWeeklyTime != null && !MyInvocation.BoundParameters.ContainsKey("FullWeeklyDay"))
-                throw new ParameterBindingException("FullWeeklyDay and FullWeeklyTime must be specified together");
+                if ((FullPeriod != null && !MyInvocation.BoundParameters.ContainsKey("FullPeriodValue")) ||
+                    MyInvocation.BoundParameters.ContainsKey("FullPeriodValue") && FullPeriod == null)
+                    throw new ParameterBindingException("FullPeriod and FullPeriodValue must be specified together");
 
-            if ((FullPeriod != null && !MyInvocation.BoundParameters.ContainsKey("FullPeriodValue")) ||
-                MyInvocation.BoundParameters.ContainsKey("FullPeriodValue") && FullPeriod == null)
-                throw new ParameterBindingException("FullPeriod and FullPeriodValue must be specified together");
-
-            ProcessMsSqlBackupSet();
+                ProcessMsSqlBackupSet();
+            }
         }
 
         protected static int StringArrayEScheduleWeekDaysToInt(IEnumerable<string> weekdays)

@@ -21,18 +21,25 @@ namespace PSAsigraDSClient
             // Check if Backup Set is in use
             if (backupSet.check_lock_status(EActivityType.EActivityType__Validation) == EBackupSetLockStatus.EBackupSetLockStatus__Locked)
             {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("Backup Set is Currently Locked"),
+                    "Exception",
+                    ErrorCategory.ResourceBusy,
+                    backupSet);
+                WriteError(errorRecord);
                 backupSet.Dispose();
-                throw new Exception("Backup Set is Currently Locked");
             }
+            else
+            {
+                // Create the Validation Session
+                WriteVerbose("Performing Action: Create Validation Session");
+                DSClientValidationSession validationSession = new DSClientValidationSession(DSClientSessionInfo.GenerateValidationId(), backupSet);
+                WriteVerbose($"Notice: Validation Session Id: {validationSession.ValidationId}");
 
-            // Create the Validation Session
-            WriteVerbose("Performing Action: Create Validation Session");
-            DSClientValidationSession validationSession = new DSClientValidationSession(DSClientSessionInfo.GenerateValidationId(), backupSet);
-            WriteVerbose($"Notice: Validation Session Id: {validationSession.ValidationId}");
+                DSClientSessionInfo.AddValidationSession(validationSession);
 
-            DSClientSessionInfo.AddValidationSession(validationSession);
-
-            WriteObject(validationSession);
+                WriteObject(validationSession);
+            }
         }
     }
 }

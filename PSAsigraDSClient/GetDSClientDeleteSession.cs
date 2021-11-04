@@ -21,7 +21,14 @@ namespace PSAsigraDSClient
                 if (deleteSession != null)
                     WriteObject(deleteSession);
                 else
-                    throw new Exception("Delete Session not found");
+                {
+                    ErrorRecord errorRecord = new ErrorRecord(
+                        new Exception("Delete Session not found"),
+                        "Exception",
+                        ErrorCategory.ObjectNotFound,
+                        null);
+                    WriteError(errorRecord);
+                }
             }
             else
             {

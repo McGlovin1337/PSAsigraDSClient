@@ -17,10 +17,19 @@ namespace PSAsigraDSClient
             DSClientValidationSession validationSession = DSClientSessionInfo.GetValidationSession(ValidationId);
 
             if (validationSession != null)
+            {
                 if (ShouldProcess($"ValidationId: '{ValidationId}', for BackupSet '{validationSession.BackupSetId}'", "Removing Validation Session"))
                     DSClientSessionInfo.RemoveValidationSession(validationSession);
+            }
             else
-                throw new Exception("Validation Session not found");
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("Validation Session not found"),
+                    "Exception",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
+            }
         }
     }
 }

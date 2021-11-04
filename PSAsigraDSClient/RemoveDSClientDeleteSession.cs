@@ -16,10 +16,19 @@ namespace PSAsigraDSClient
             DSClientDeleteSession deleteSession = DSClientSessionInfo.GetDeleteSession(DeleteId);
 
             if (deleteSession != null)
+            {
                 if (ShouldProcess($"DeleteId '{deleteSession.DeleteId}'", "Remove Delete Session"))
                     DSClientSessionInfo.RemoveDeleteSession(deleteSession);
+            }
             else
-                throw new Exception("Delete Session not found");
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("Delete Session not found"),
+                    "Exception",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
+            }
         }
     }
 }

@@ -21,18 +21,25 @@ namespace PSAsigraDSClient
             // Check if Backup Set is in use
             if (backupSet.check_lock_status(EActivityType.EActivityType__Delete) == EBackupSetLockStatus.EBackupSetLockStatus__Locked)
             {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("Backup Set is Currently Locked"),
+                    "Exception",
+                    ErrorCategory.ResourceBusy,
+                    backupSet);
+                WriteError(errorRecord);
                 backupSet.Dispose();
-                throw new Exception("Backup Set is Currently Locked");
             }
+            else
+            {
+                // Create the Delete Session
+                WriteVerbose("Performing Action: Create Delete Session");
+                DSClientDeleteSession deleteSession = new DSClientDeleteSession(DSClientSessionInfo.GenerateDeleteId(), backupSet);
+                WriteVerbose($"Notice: Delete Session Id: {deleteSession.DeleteId}");
 
-            // Create the Delete Session
-            WriteVerbose("Performing Action: Create Delete Session");
-            DSClientDeleteSession deleteSession = new DSClientDeleteSession(DSClientSessionInfo.GenerateDeleteId(), backupSet);
-            WriteVerbose($"Notice: Delete Session Id: {deleteSession.DeleteId}");
+                DSClientSessionInfo.AddDeleteSession(deleteSession);
 
-            DSClientSessionInfo.AddDeleteSession(deleteSession);
-
-            WriteObject(deleteSession);
+                WriteObject(deleteSession);
+            }
         }
     }
 }

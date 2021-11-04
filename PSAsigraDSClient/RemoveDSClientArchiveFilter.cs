@@ -21,8 +21,8 @@ namespace PSAsigraDSClient
         protected override void DSClientProcessRecord()
         {
             RetentionRuleManager retentionRuleManager = DSClientSession.getRetentionRuleManager();
-            ArchiveFilterRule archiveFilterRule;
-            ArchiveFilter archiveFilter;
+            ArchiveFilterRule archiveFilterRule = null;
+            ArchiveFilter archiveFilter = null;
 
             try
             {
@@ -31,25 +31,43 @@ namespace PSAsigraDSClient
             }
             catch
             {
-                throw new Exception("No matching Archive Filter Rule");
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("No matching Archive Filter Rule"),
+                    "Exception",
+                    ErrorCategory.ObjectNotFound,
+                    retentionRuleManager);
+                WriteError(errorRecord);
             }
 
-            try
+            if (archiveFilterRule != null)
             {
-                WriteVerbose("Performing Action: Retrieve Archive Filter");
-                archiveFilter = archiveFilterRule.getFilterList().Single(filter => filter.getPattern() == Pattern);
+                try
+                {
+                    WriteVerbose("Performing Action: Retrieve Archive Filter");
+                    archiveFilter = archiveFilterRule.getFilterList().Single(filter => filter.getPattern() == Pattern);
+                }
+                catch
+                {
+                    ErrorRecord errorRecord = new ErrorRecord(
+                        new Exception("No matching Archive Filter Rule"),
+                        "Exception",
+                        ErrorCategory.ObjectNotFound,
+                        retentionRuleManager);
+                    WriteError(errorRecord);
+                }
+
+                if (archiveFilter != null)
+                {
+                    if (ShouldProcess($"Archive Filter Rule '{Name}'", $"Remove Archive Filter with Pattern '{Pattern}'"))
+                    {
+                        archiveFilterRule.removeFilter(archiveFilter);
+                    }
+
+                    archiveFilter.Dispose();
+                    archiveFilterRule.Dispose();
+                }
             }
-            catch
-            {
-                throw new Exception("No matching Filter Pattern");
-            }
 
-            if (ShouldProcess($"Archive Filter Rule '{Name}'", $"Remove Archive Filter with Pattern '{Pattern}'"))
-                archiveFilterRule.removeFilter(archiveFilter);
-
-            archiveFilter.Dispose();
-
-            archiveFilterRule.Dispose();
             retentionRuleManager.Dispose();
         }
     }

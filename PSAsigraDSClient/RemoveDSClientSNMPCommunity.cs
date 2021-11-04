@@ -70,7 +70,12 @@ namespace PSAsigraDSClient
             }
             else
             {
-                throw new Exception("Community Name doesn't exist");
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("Community Name does not exist"),
+                    "Exception",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
             }
         }
     }

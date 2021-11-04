@@ -29,43 +29,50 @@ namespace PSAsigraDSClient
             // Check if Backup Set is in use
             if (backupSet.check_lock_status(EActivityType.EActivityType__Restore) == EBackupSetLockStatus.EBackupSetLockStatus__Locked)
             {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("Backup Set is Currently Locked"),
+                    "Exception",
+                    ErrorCategory.ResourceBusy,
+                    backupSet);
+                WriteError(errorRecord);
                 backupSet.Dispose();
-                throw new Exception("Backup Set is Currently Locked");
             }
-
-            // Determine the Backup Set Type based on the Data Type
-            EBackupDataType dataType = backupSet.getDataType();
-            Type setType = typeof(BackupSet);
-            if (dataType == EBackupDataType.EBackupDataType__FileSystem)
+            else
             {
-                if (DSClientSessionInfo.OperatingSystem == "Windows")
-                    setType = typeof(Win32FS_BackupSet);
-                else
-                    setType = typeof(UnixFS_Generic_BackupSet);
+                // Determine the Backup Set Type based on the Data Type
+                EBackupDataType dataType = backupSet.getDataType();
+                Type setType = typeof(BackupSet);
+                if (dataType == EBackupDataType.EBackupDataType__FileSystem)
+                {
+                    if (DSClientSessionInfo.OperatingSystem == "Windows")
+                        setType = typeof(Win32FS_BackupSet);
+                    else
+                        setType = typeof(UnixFS_Generic_BackupSet);
+                }
+                else if (dataType == EBackupDataType.EBackupDataType__SQLServer)
+                {
+                    setType = typeof(MSSQL_BackupSet);
+                }
+                else if (dataType == EBackupDataType.EBackupDataType__VMwareVADP)
+                {
+                    setType = typeof(VMwareVADP_BackupSet);
+                }
+                WriteDebug($"Backup Set Type: {setType}");
+
+                WriteVerbose("Performing Action: Create Restore Session");
+                DSClientRestoreSession restoreSession = new DSClientRestoreSession(DSClientSessionInfo.GenerateRestoreId(), backupSet, setType);
+                WriteVerbose($"Restore Session Id: {restoreSession.RestoreId}");
+
+                if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreClassification)))
+                    restoreSession.SetRestoreClassification(RestoreClassification);
+
+                if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreReason)))
+                    restoreSession.SetRestoreReason(RestoreReason);
+
+                DSClientSessionInfo.AddRestoreSession(restoreSession);
+
+                WriteObject(restoreSession);
             }
-            else if (dataType == EBackupDataType.EBackupDataType__SQLServer)
-            {
-                setType = typeof(MSSQL_BackupSet);
-            }
-            else if (dataType == EBackupDataType.EBackupDataType__VMwareVADP)
-            {
-                setType = typeof(VMwareVADP_BackupSet);
-            }
-            WriteDebug($"Backup Set Type: {setType}");
-
-            WriteVerbose("Performing Action: Create Restore Session");
-            DSClientRestoreSession restoreSession = new DSClientRestoreSession(DSClientSessionInfo.GenerateRestoreId(), backupSet, setType);
-            WriteVerbose($"Restore Session Id: {restoreSession.RestoreId}");
-
-            if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreClassification)))
-                restoreSession.SetRestoreClassification(RestoreClassification);
-
-            if (MyInvocation.BoundParameters.ContainsKey(nameof(RestoreReason)))
-                restoreSession.SetRestoreReason(RestoreReason);
-
-            DSClientSessionInfo.AddRestoreSession(restoreSession);
-
-            WriteObject(restoreSession);
         }
     }
 }

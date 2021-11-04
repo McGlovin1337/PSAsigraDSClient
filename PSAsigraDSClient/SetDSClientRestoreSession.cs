@@ -113,7 +113,12 @@ namespace PSAsigraDSClient
             }
             else
             {
-                throw new Exception("Restore Session Not Found");
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("Restore Session not found"),
+                    "Exception",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
             }
         }
     }

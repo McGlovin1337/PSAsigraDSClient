@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using System;
+using System.Management.Automation;
 
 namespace PSAsigraDSClient
 {
@@ -19,8 +20,19 @@ namespace PSAsigraDSClient
             DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
 
             if (restoreSession != null)
+            {
                 if (ShouldProcess($"Restore Session with Id '{RestoreId}'", "Remove Items for Restore"))
                     restoreSession.RemoveSelectedItems(ItemId);
+            }
+            else
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("Restore Session not found"),
+                    "Exception",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
+            }
         }
     }
 }

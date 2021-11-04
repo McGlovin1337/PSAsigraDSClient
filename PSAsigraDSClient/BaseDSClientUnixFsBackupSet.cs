@@ -85,22 +85,31 @@ namespace PSAsigraDSClient
         {
             //Check DS-Client is Linux/Unix
             if (DSClientSessionInfo.OperatingSystem != "Linux")
-                throw new Exception("Unix FileSystem Backup Sets can only be created on a Unix DS-Client");
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new PlatformNotSupportedException("Unix FileSystem Backup Sets can only be created on a Unix DS-Client"),
+                    "PlatformNotSupportedException",
+                    ErrorCategory.InvalidOperation,
+                    null);
+                WriteError(errorRecord);
+            }
+            else
+            {
+                // Validate the Common Base Parameters
+                BaseBackupSetParamValidation(MyInvocation.BoundParameters);
 
-            // Validate the Common Base Parameters
-            BaseBackupSetParamValidation(MyInvocation.BoundParameters);
+                // Validate Parameters specific to this Cmdlet
+                if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByDate") && ExcludeOldFilesDate == null)
+                    throw new ParameterBindingException("A Date for ExcludeOldFilesDate must be specified when ExcludeOldFilesByDate is enabled");
 
-            // Validate Parameters specific to this Cmdlet
-            if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByDate") && ExcludeOldFilesDate == null)
-                throw new ParameterBindingException("A Date for ExcludeOldFilesDate must be specified when ExcludeOldFilesByDate is enabled");
+                if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByTimeSpan") && (ExcludeOldFilesTimeSpan == null || ExcludeOldFilesTimeSpanValue < 1))
+                    throw new ParameterBindingException("A Time Span and Time Span Value must be specified when ExcludeOldFilesByTimeSpan is enabled");
 
-            if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByTimeSpan") && (ExcludeOldFilesTimeSpan == null || ExcludeOldFilesTimeSpanValue < 1))
-                throw new ParameterBindingException("A Time Span and Time Span Value must be specified when ExcludeOldFilesByTimeSpan is enabled");
+                if (SSHInterpreter == "Direct" && SSHInterpreterPath == null)
+                    throw new ParameterBindingException("Direct SSH Interpretor requires an SSH Interpretor Path");
 
-            if (SSHInterpreter == "Direct" && SSHInterpreterPath == null)
-                throw new ParameterBindingException("Direct SSH Interpretor requires an SSH Interpretor Path");
-
-            ProcessUnixFsBackupSet();
+                ProcessUnixFsBackupSet();
+            }
         }
 
         protected static UnixFS_Generic_BackupSet ProcessUnixFsBackupSetParams(Dictionary<string, object> unixfsParams, UnixFS_Generic_BackupSet backupSet)

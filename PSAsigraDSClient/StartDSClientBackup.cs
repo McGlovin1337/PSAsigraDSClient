@@ -92,9 +92,12 @@ namespace PSAsigraDSClient
                 }
                 catch (APIException e)
                 {
-                    WriteWarning(e.Message);
-
-                    continue;
+                    ErrorRecord errorRecord = new ErrorRecord(
+                            e,
+                            "APIException",
+                            ErrorCategory.NotSpecified,
+                            backupSet);
+                    WriteError(errorRecord);
                 }
             }
 

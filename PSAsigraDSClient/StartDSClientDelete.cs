@@ -18,25 +18,28 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            GenericActivity activity;
-
             DSClientDeleteSession deleteSession = DSClientSessionInfo.GetDeleteSession(DeleteId);
 
             if (deleteSession != null)
             {
                 WriteVerbose("Performing Action: Start Backup Set Validation");
-                activity = deleteSession.StartValidation();
+                GenericActivity activity = deleteSession.StartValidation();
                 WriteVerbose($"Notice: Validation Session Id: {deleteSession.DeleteId}");
 
                 DSClientSessionInfo.RemoveDeleteSession(deleteSession);
+
+                if (PassThru && activity != null)
+                    WriteObject(new GenericBackupSetActivity(activity));
             }
             else
             {
-                throw new Exception("Delete Session not found");
-            }
-
-            if (PassThru && activity != null)
-                WriteObject(new GenericBackupSetActivity(activity));
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("Delete Session not found"),
+                    "Exception",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
+            }            
         }
     }
 }

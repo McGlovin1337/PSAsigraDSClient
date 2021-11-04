@@ -70,7 +70,12 @@ namespace PSAsigraDSClient
                 }
                 catch
                 {
-                    WriteWarning("Unable to set SSH Credential Options");
+                    ErrorRecord errorRecord = new ErrorRecord(
+                        new System.Exception("Unable to set SSH Credential Options"),
+                        "Exception",
+                        ErrorCategory.OperationStopped,
+                        dataSourceBrowser);
+                    WriteError(errorRecord);
                 }
             }
             backupSetCredentials.Dispose();

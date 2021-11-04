@@ -18,8 +18,6 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            GenericActivity activity;
-
             DSClientRestoreSession restoreSession = DSClientSessionInfo.GetRestoreSession(RestoreId);
 
             if (restoreSession != null)
@@ -28,18 +26,23 @@ namespace PSAsigraDSClient
                     throw new Exception("Restore Session is Not Ready to Start");
 
                 WriteVerbose("Performing Action: Start Restore");
-                activity = restoreSession.StartRestore();
+                GenericActivity activity = restoreSession.StartRestore();
                 WriteVerbose($"Notice: Restore Activity Id: {activity.getID()}");
 
                 DSClientSessionInfo.RemoveRestoreSession(restoreSession);
+
+                if (PassThru && activity != null)
+                    WriteObject(new GenericBackupSetActivity(activity));
             }
             else
             {
-                throw new Exception("Restore Session not found");
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("Restore Session not found"),
+                    "Exception",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
             }
-
-            if (PassThru && activity != null)
-                WriteObject(new GenericBackupSetActivity(activity));
         }
     }
 }

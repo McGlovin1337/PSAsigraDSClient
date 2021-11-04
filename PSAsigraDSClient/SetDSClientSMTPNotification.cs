@@ -56,6 +56,10 @@ namespace PSAsigraDSClient
 
         protected override void ProcessSMTPConfig(smtp_email_notification_info smtpInfo)
         {
+            // Parameter Check
+            if (RequireSsl && RequireTls)
+                throw new ParameterBindingException("RequireSsl and RequireTls cannot both be enabled");
+
             // Update SMTP Server Settings
             smtp_server_info smtpServer = smtpInfo.smtp_server;
             if (SmtpServer != null)
@@ -63,13 +67,20 @@ namespace PSAsigraDSClient
                 WriteVerbose("Performing Action: Validate SmtpServer is a valid hostname or IP Address");
                 bool validateSmtpHostname = DSClientCommon.ValidateHostname.ValidateHost(SmtpServer);
 
-                if (validateSmtpHostname == true)
+                if (validateSmtpHostname)
                 {
                     if (ShouldProcess("DS-Client SMTP Server", $"Set Server Address to '{SmtpServer}'"))
                         smtpServer.address = SmtpServer;
                 }
                 else
-                    throw new Exception("SmtpServer is not a valid IP Address or Hostname");
+                {
+                    ErrorRecord errorRecord = new ErrorRecord(
+                        new Exception("SmtpServer is not a valid IP Address or Hostname"),
+                        "Exception",
+                        ErrorCategory.InvalidData,
+                        SmtpServer);
+                    WriteError(errorRecord);
+                }
             }
 
             if (MyInvocation.BoundParameters.ContainsKey("SmtpPort"))
@@ -83,10 +94,7 @@ namespace PSAsigraDSClient
                     smtpServer.account_name = SmtpCredential.UserName;
                     smtpServer.password = SmtpCredential.GetNetworkCredential().Password;
                 }
-            }
-
-            if (RequireSsl == true && RequireTls == true)
-                throw new Exception("RequireSsl and RequireTls cannot both be enabled");
+            }            
 
             if (MyInvocation.BoundParameters.ContainsKey("RequireSsl"))
             {

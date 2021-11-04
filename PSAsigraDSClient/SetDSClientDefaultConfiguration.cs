@@ -71,10 +71,10 @@ namespace PSAsigraDSClient
         protected override void ProcessDefaultConfiguration(DSClientDefaultConfiguration dSClientDefaultConfiguration)
         {
             if (MyInvocation.BoundParameters.ContainsKey("RetentionRuleId") && MyInvocation.BoundParameters.ContainsKey("RetentionRule"))
-                throw new Exception("Cannot specify both RetentionRuleId and RetentionRule");
+                throw new ParameterBindingException("Cannot specify both RetentionRuleId and RetentionRule");
 
             if (MyInvocation.BoundParameters.ContainsKey("ScheduleId") && MyInvocation.BoundParameters.ContainsKey("Schedule"))
-                throw new Exception("Cannot specify both ScheduleId and ScheduleName");
+                throw new ParameterBindingException("Cannot specify both ScheduleId and ScheduleName");
 
             ClientConfiguration DSClientConfigMgr = DSClientSession.getConfigurationManager();
 

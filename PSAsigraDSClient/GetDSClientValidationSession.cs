@@ -21,7 +21,14 @@ namespace PSAsigraDSClient
                 if (validationSession != null)
                     WriteObject(validationSession);
                 else
-                    throw new Exception("Validation Session not found");
+                {
+                    ErrorRecord errorRecord = new ErrorRecord(
+                        new Exception("Validation Session not found"),
+                        "Exception",
+                        ErrorCategory.ObjectNotFound,
+                        null);
+                    WriteError(errorRecord);
+                }
             }
             else
             {

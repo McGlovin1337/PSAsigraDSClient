@@ -81,19 +81,28 @@ namespace PSAsigraDSClient
         {
             // Check DS-Client is Windows
             if (DSClientSessionInfo.OperatingSystem != "Windows")
-                throw new Exception("Windows FileSystem Backup Sets can only be created on a Windows DS-Client");
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new PlatformNotSupportedException("Windows FileSystem Backup Sets can only be created on a Windows DS-Client"),
+                    "PlatformNotSupportedException",
+                    ErrorCategory.InvalidOperation,
+                    null);
+                WriteError(errorRecord);
+            }
+            else
+            {
+                // Validate the Common Base Parameters
+                BaseBackupSetParamValidation(MyInvocation.BoundParameters);
 
-            // Validate the Common Base Parameters
-            BaseBackupSetParamValidation(MyInvocation.BoundParameters);
+                // Validate Parameters specific to this Cmdlet
+                if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByDate") && ExcludeOldFilesDate == null)
+                    throw new ParameterBindingException("A Date for ExcludeOldFilesDate must be specified when ExcludeOldFilesByDate is enabled");
 
-            // Validate Parameters specific to this Cmdlet
-            if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByDate") && ExcludeOldFilesDate == null)
-                throw new ParameterBindingException("A Date for ExcludeOldFilesDate must be specified when ExcludeOldFilesByDate is enabled");
+                if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByTimeSpan") && (ExcludeOldFilesTimeSpan == null || ExcludeOldFilesTimeSpanValue < 1))
+                    throw new ParameterBindingException("A Time Span and Time Span Value must be specified when ExcludeOldFilesByTimeSpan is enabled");
 
-            if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByTimeSpan") && (ExcludeOldFilesTimeSpan == null || ExcludeOldFilesTimeSpanValue < 1))
-                throw new ParameterBindingException("A Time Span and Time Span Value must be specified when ExcludeOldFilesByTimeSpan is enabled");
-
-            ProcessWinFsBackupSet();
+                ProcessWinFsBackupSet();
+            }
         }
 
         protected static Win32FS_BackupSet ProcessWinFsBackupSetParams(Dictionary<string, object> winfsParams, Win32FS_BackupSet backupSet)

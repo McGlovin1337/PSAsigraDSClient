@@ -18,25 +18,28 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            GenericActivity activity;
-
             DSClientValidationSession validationSession = DSClientSessionInfo.GetValidationSession(ValidationId);
 
             if (validationSession != null)
             {
                 WriteVerbose("Performing Action: Start Backup Set Validation");
-                activity = validationSession.StartValidation();
+                GenericActivity activity = validationSession.StartValidation();
                 WriteVerbose($"Notice: Validation Session Id: {validationSession.ValidationId}");
 
                 DSClientSessionInfo.RemoveValidationSession(validationSession);
+
+                if (PassThru && activity != null)
+                    WriteObject(new GenericBackupSetActivity(activity));
             }
             else
             {
-                throw new Exception("Validation Session not found");
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("Validation Session not found"),
+                    "Exception",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
             }
-
-            if (PassThru && activity != null)
-                WriteObject(new GenericBackupSetActivity(activity));
         }
     }
 }

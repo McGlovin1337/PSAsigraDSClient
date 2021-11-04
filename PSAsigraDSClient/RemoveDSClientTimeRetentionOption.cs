@@ -23,20 +23,27 @@ namespace PSAsigraDSClient
             RetentionRule retentionRule = retentionRules.Single(rule => rule.getID() == RetentionRuleId);
 
             // Get Time Retention Option Hash Dictionary from Session State
-            Dictionary<string, int> retentionHash = SessionState.PSVariable.GetValue("TimeRetention", null) as Dictionary<string, int>;
+            if (!(SessionState.PSVariable.GetValue("TimeRetention", null) is Dictionary<string, int> retentionHash))
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    new Exception("There are no Time Retention Options Stored in Session State, use Get-DSClientTimeRetentionOption"),
+                    "Exception",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
+            }
+            else
+            {
+                // Select the Time Retention Option
+                TimeRetentionOption timeRetentionOption = SelectTimeRetentionOption(retentionRule, TimeRetentionId, retentionHash);
 
-            if (retentionHash == null)
-                throw new Exception("There are no Time Retention Options Stored in Session State, use Get-DSClientTimeRetentionOption");
+                if (timeRetentionOption != null)
+                    if (ShouldProcess($"Retention Rule: '{retentionRule.getName()}'", $"Remove Time Retention Option with Id '{TimeRetentionId}'"))
+                        retentionRule.removeTimeRetentionOption(timeRetentionOption);
 
-            // Select the Time Retention Option
-            TimeRetentionOption timeRetentionOption = SelectTimeRetentionOption(retentionRule, TimeRetentionId, retentionHash);
-
-            if (timeRetentionOption != null)
-                if (ShouldProcess($"Retention Rule: '{retentionRule.getName()}'", $"Remove Time Retention Option with Id '{TimeRetentionId}'"))
-                    retentionRule.removeTimeRetentionOption(timeRetentionOption);
-
-            timeRetentionOption.Dispose();
-            retentionRule.Dispose();
+                timeRetentionOption.Dispose();
+                retentionRule.Dispose();
+            }
         }
     }
 }

@@ -16,23 +16,41 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            List<DSClientBackupSessions> BackupSessions = new List<DSClientBackupSessions>();
+            BackupSet backupSet = null;
 
-            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
-            BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
-
-            WriteVerbose("Performing Action: Retrieve Backup Set Sessions");
-            backup_sessions[] backupSessions = backupSet.backup_times();
-
-            foreach (backup_sessions session in backupSessions)
+            // Retrieve the Backup Set
+            try
             {
-                DSClientBackupSessions backupSession = new DSClientBackupSessions(BackupSetId, session);
-                BackupSessions.Add(backupSession);
+                WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
+                backupSet = DSClientSession.backup_set(BackupSetId);
+            }
+            catch (APIException e)
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    e,
+                    "APIException",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
             }
 
-            BackupSessions.ForEach(WriteObject);
+            if (backupSet != null)
+            {
+                List<DSClientBackupSessions> BackupSessions = new List<DSClientBackupSessions>();
 
-            backupSet.Dispose();
+                WriteVerbose("Performing Action: Retrieve Backup Set Sessions");
+                backup_sessions[] backupSessions = backupSet.backup_times();
+
+                foreach (backup_sessions session in backupSessions)
+                {
+                    DSClientBackupSessions backupSession = new DSClientBackupSessions(BackupSetId, session);
+                    BackupSessions.Add(backupSession);
+                }
+
+                BackupSessions.ForEach(WriteObject);
+
+                backupSet.Dispose();
+            }
         }
 
         private class DSClientBackupSessions

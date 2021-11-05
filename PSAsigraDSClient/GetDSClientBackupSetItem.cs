@@ -14,24 +14,41 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
+            BackupSet backupSet = null;
+
             // Get the specified Backup Set
-            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
-            BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
+            try
+            {
+                WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
+                backupSet = DSClientSession.backup_set(BackupSetId);
+            }
+            catch (APIException e)
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    e,
+                    "APIException",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
+            }
 
-            // Get the Data Type this Backup Set contains
-            EBackupDataType backupDataType = backupSet.getDataType();
+            if (backupSet != null)
+            {
+                // Get the Data Type this Backup Set contains
+                EBackupDataType backupDataType = backupSet.getDataType();
 
-            // Get the Backup Set Items specified in the Backup Set
-            BackupSetItem[] backupSetItems = backupSet.items();
+                // Get the Backup Set Items specified in the Backup Set
+                BackupSetItem[] backupSetItems = backupSet.items();
 
-            List<DSClientBackupSetItem> dSClientBackupSetItems = new List<DSClientBackupSetItem>();
+                List<DSClientBackupSetItem> dSClientBackupSetItems = new List<DSClientBackupSetItem>();
 
-            foreach (BackupSetItem item in backupSetItems)
-                dSClientBackupSetItems.Add(new DSClientBackupSetItem(item, backupDataType, DSClientSessionInfo.OperatingSystem));
+                foreach (BackupSetItem item in backupSetItems)
+                    dSClientBackupSetItems.Add(new DSClientBackupSetItem(item, backupDataType, DSClientSessionInfo.OperatingSystem));
 
-            dSClientBackupSetItems.ForEach(WriteObject);
+                dSClientBackupSetItems.ForEach(WriteObject);
 
-            backupSet.Dispose();
+                backupSet.Dispose();
+            }
         }
     }
 }

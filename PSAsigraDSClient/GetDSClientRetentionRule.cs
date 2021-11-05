@@ -27,9 +27,21 @@ namespace PSAsigraDSClient
             {
                 if (RetentionRuleId > 0)
                 {
-                    RetentionRule retentionRule = dSClientRetentionRules.Single(rule => rule.getID() == RetentionRuleId);
-                    DSClientRetentionRule dSClientRetentionRule = new DSClientRetentionRule(retentionRule);
-                    DSClientRetentionRules.Add(dSClientRetentionRule);
+                    try
+                    {
+                        RetentionRule retentionRule = dSClientRetentionRules.Single(rule => rule.getID() == RetentionRuleId);
+                        DSClientRetentionRule dSClientRetentionRule = new DSClientRetentionRule(retentionRule);
+                        DSClientRetentionRules.Add(dSClientRetentionRule);
+                    }
+                    catch
+                    {
+                        ErrorRecord errorRecord = new ErrorRecord(
+                            new Exception("Retention Rule not found"),
+                            "Exception",
+                            ErrorCategory.ObjectNotFound,
+                            null);
+                        WriteError(errorRecord);
+                    }
                 }
 
                 if (Name != null)

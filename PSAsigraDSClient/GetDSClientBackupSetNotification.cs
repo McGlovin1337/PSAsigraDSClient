@@ -15,23 +15,41 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose("Performing Action: Retrieve Backup Set");
-            BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
+            BackupSet backupSet = null;
 
-            BackupSetNotification backupSetNotification = backupSet.getNotification();
+            // Retrieve the Backup Set
+            try
+            {
+                WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
+                backupSet = DSClientSession.backup_set(BackupSetId);
+            }
+            catch (APIException e)
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    e,
+                    "APIException",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
+            }
 
-            WriteVerbose("Performing Action: Retrieve Backup Set Notification Configuration");
-            notification_info[] notifications = backupSetNotification.listNotification();
+            if (backupSet != null)
+            {
+                BackupSetNotification backupSetNotification = backupSet.getNotification();
 
-            backupSetNotification.Dispose();
-            backupSet.Dispose();
+                WriteVerbose("Performing Action: Retrieve Backup Set Notification Configuration");
+                notification_info[] notifications = backupSetNotification.listNotification();
 
-            List<DSClientBackupSetNotification> backupSetNotifications = new List<DSClientBackupSetNotification>();
+                backupSetNotification.Dispose();
+                backupSet.Dispose();
 
-            foreach (notification_info notification in notifications)
-                backupSetNotifications.Add(new DSClientBackupSetNotification(notification));
+                List<DSClientBackupSetNotification> backupSetNotifications = new List<DSClientBackupSetNotification>();
 
-            backupSetNotifications.ForEach(WriteObject);
+                foreach (notification_info notification in notifications)
+                    backupSetNotifications.Add(new DSClientBackupSetNotification(notification));
+
+                backupSetNotifications.ForEach(WriteObject);
+            }
         }
     }
 }

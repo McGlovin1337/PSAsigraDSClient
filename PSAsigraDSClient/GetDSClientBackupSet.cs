@@ -14,13 +14,29 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
-            WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
-            BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
+            BackupSet backupSet = null;
+            try
+            {
+                WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
+                backupSet = DSClientSession.backup_set(BackupSetId);
+            }
+            catch (APIException e)
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    e,
+                    "APIException",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
+            }
 
-            WriteDebug("Parsing Backup Set details.");
-            DSClientBackupSet dSClientBackupSet = new DSClientBackupSet(backupSet, DSClientSessionInfo.OperatingSystem);
+            if (backupSet != null)
+            {
+                WriteDebug("Parsing Backup Set details.");
+                DSClientBackupSet dSClientBackupSet = new DSClientBackupSet(backupSet, DSClientSessionInfo.OperatingSystem);
 
-            WriteObject(dSClientBackupSet);
+                WriteObject(dSClientBackupSet);
+            }
         }
     }
 }

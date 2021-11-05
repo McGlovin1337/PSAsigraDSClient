@@ -18,17 +18,35 @@ namespace PSAsigraDSClient
 
         protected override void DSClientProcessRecord()
         {
+            BackupSet backupSet = null;
+
             // Retrieve the Backup Set
-            BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
+            try
+            {
+                WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
+                backupSet = DSClientSession.backup_set(BackupSetId);
+            }
+            catch (APIException e)
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    e,
+                    "APIException",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
+            }
 
-            // Activity Type
-            EActivityType activityType = StringToEnum<EActivityType>(ActivityType);
+            if (backupSet != null)
+            {
+                // Activity Type
+                EActivityType activityType = StringToEnum<EActivityType>(ActivityType);
 
-            EBackupSetLockStatus setLockStatus = backupSet.check_lock_status(activityType);
+                EBackupSetLockStatus setLockStatus = backupSet.check_lock_status(activityType);
 
-            backupSet.Dispose();
+                backupSet.Dispose();
 
-            WriteObject(new BackupSetLockStatus(setLockStatus));
+                WriteObject(new BackupSetLockStatus(setLockStatus));
+            }
         }
 
         private class BackupSetLockStatus

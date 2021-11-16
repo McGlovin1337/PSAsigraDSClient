@@ -226,6 +226,7 @@ CmdletsToExport = @(
 "Stop-DSClientActivity",
 "Stop-DSClientGridNode",
 "Sync-DSClientBackupSet",
+"Test-DSClientSession",
 "Unpublish-DSClientEncryptionKeys",
 "Watch-DSClientActivity")
 

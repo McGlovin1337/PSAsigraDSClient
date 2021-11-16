@@ -248,6 +248,7 @@
     <Compile Include="PSAsigraDSClient\SyncDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\StartDSClientSystemActivity.cs" />
     <Compile Include="PSAsigraDSClient\StopDSClientActivity.cs" />
+    <Compile Include="PSAsigraDSClient\TestDSClientSession.cs" />
     <Compile Include="PSAsigraDSClient\UnpublishDSClientEncryptionKeys.cs" />
     <Compile Include="PSAsigraDSClient\WatchDSClientActivity.cs" />
   </ItemGroup>
@@ -405,6 +406,7 @@
     <None Include="docs\Stop-DSClientActivity.md" />
     <None Include="docs\Stop-DSClientGridNode.md" />
     <None Include="docs\Sync-DSClientBackupSet.md" />
+    <None Include="docs\Test-DSClientSession.md" />
     <None Include="docs\Unpublish-DSClientEncryptionKeys.md" />
     <None Include="docs\Watch-DSClientActivity.md" />
     <None Include="packages.config" />

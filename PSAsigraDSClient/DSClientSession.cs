@@ -18,7 +18,8 @@ namespace PSAsigraDSClient
         private readonly List<DSClientValidationSession> _validationSessions;
         private Dictionary<string, int> _timeRetentionHashes;
         private Dictionary<string, int> _scheduleDetailHashes;
-        private ClientConnection _clientConnection;        
+        private ClientConnection _clientConnection;
+        private int _connectionRetries;
 
         public int Id { get; private set; }
         public string Name { get; private set; }
@@ -41,6 +42,7 @@ namespace PSAsigraDSClient
             _deleteSessions = new List<DSClientDeleteSession>();
             _restoreSessions = new List<DSClientRestoreSession>();
             _validationSessions = new List<DSClientValidationSession>();
+            _connectionRetries = 1;
 
             Id = id;
             Name = (string.IsNullOrEmpty(name)) ? $"Session{id}" : name;
@@ -109,6 +111,7 @@ namespace PSAsigraDSClient
             {
                 try
                 {
+                    Console.WriteLine("Logout");
                     _clientConnection.logout();
                 }
                 catch
@@ -242,19 +245,32 @@ namespace PSAsigraDSClient
                 _timeRetentionHashes = dictonary;
         }
 
-        internal void UpdateState()
+        internal void SetState(ConnectionState state)
         {
-            try
+            State = state;
+        }
+
+        internal bool TestConnection(int retries)
+        {
+            for (int i = 0; i <= retries; i++)
             {
-                _clientConnection.keepAlive();
-            }
-            catch
-            {
-                State = ConnectionState.Disconnected;
-                return;
+                try
+                {
+                    _clientConnection.keepAlive();
+                    return true;
+                }
+                catch
+                {
+                    continue;
+                }
             }
 
-            State = ConnectionState.Connected;
+            return false;
+        }
+
+        internal void UpdateState()
+        {
+            State = TestConnection(_connectionRetries) ? ConnectionState.Connected : ConnectionState.Disconnected;
         }
 
         internal ClientConnection GetClientConnection()

@@ -200,5 +200,18 @@ namespace PSAsigraDSClient
 
             return strBuilder.ToString();
         }
+
+        internal static bool ContainsOneOfKeys(this Dictionary<string, object> dict, string[] keys)
+        {
+            foreach (string key in keys)
+            {
+                if (dict.ContainsKey(key))
+                {
+                    return true;
+                }    
+            }
+
+            return false;
+        }
     }
 }

@@ -67,6 +67,19 @@ namespace PSAsigraDSClient
             }
         }
 
+        internal class DSClientScheduleInfoComparer : IEqualityComparer<DSClientScheduleInfo>
+        {
+            public bool Equals(DSClientScheduleInfo x, DSClientScheduleInfo y)
+            {
+                return x.ScheduleId == y.ScheduleId;
+            }
+
+            public int GetHashCode(DSClientScheduleInfo obj)
+            {
+                return obj.ScheduleId.GetHashCode();
+            }
+        }
+
         protected class DSClientScheduleDetail
         {
             private readonly EScheduleDetailType _detailType;

@@ -12,7 +12,7 @@ namespace PSAsigraDSClient
     {
         [Parameter(HelpMessage = "Set Database Credentials")]
         [ValidateNotNullOrEmpty]
-        public PSCredential DbCredential { get; set; }
+        public DSClientCredential DbCredential { get; set; }
 
         [Parameter(HelpMessage = "Database Instance to Query")]
         [ValidateNotNullOrEmpty]
@@ -35,36 +35,29 @@ namespace PSAsigraDSClient
             dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__SQLServer);
 
             // Set the Computer Credentials
-            Win32FS_Generic_BackupSetCredentials computerCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
-
             if (Credential != null)
             {
-                string user = Credential.UserName;
-                string pass = Credential.GetNetworkCredential().Password;
-                computerCredentials.setCredentials(user, pass);
+                dataSourceBrowser.setCurrentCredentials(Credential.GetCredentials());
             }
             else
             {
-                WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
-                computerCredentials.setUsingClientCredentials(true);
+                Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
+                backupSetCredentials.setUsingClientCredentials(true);
+                dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
             }
-            dataSourceBrowser.setCurrentCredentials(computerCredentials);
 
             // Extend the Data Source Browser
             SQLDataBrowserWithSetCreation sqlDataSourceBrowser = SQLDataBrowserWithSetCreation.from(dataSourceBrowser);
 
             // Set the Database Credentials if specified, otherwise use the Computer credentials
-            Win32FS_Generic_BackupSetCredentials dbCredentials = new Win32FS_Generic_BackupSetCredentials();
             if (DbCredential != null)
             {
-                string dbUser = DbCredential.UserName;
-                string dbPass = DbCredential.GetNetworkCredential().Password;
-
-                dbCredentials.setCredentials(dbUser, dbPass);
-                sqlDataSourceBrowser.setDBCredentials(dbCredentials);
+                sqlDataSourceBrowser.setDBCredentials(Win32FS_Generic_BackupSetCredentials.from(DbCredential.GetCredentials()));
             }
             else
-                sqlDataSourceBrowser.setDBCredentials(computerCredentials);
+            {
+                sqlDataSourceBrowser.setDBCredentials(Win32FS_Generic_BackupSetCredentials.from(Credential.GetCredentials()));
+            }
 
             // Get the Databases Info
             List<mssql_db_path> dbPaths = new List<mssql_db_path>();
@@ -86,8 +79,6 @@ namespace PSAsigraDSClient
 
             sqlItems.ForEach(WriteObject);
 
-            dbCredentials.Dispose();
-            computerCredentials.Dispose();
             sqlDataSourceBrowser.Dispose();
         }
     }

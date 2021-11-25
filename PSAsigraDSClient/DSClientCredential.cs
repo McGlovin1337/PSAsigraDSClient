@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Management.Automation;
-using AsigraDSClientApi;
+﻿using AsigraDSClientApi;
 using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient

@@ -11,7 +11,7 @@ namespace PSAsigraDSClient
         public string Computer { get; set; }
 
         [Parameter(HelpMessage = "Specify Credentials for specified Computer")]
-        public PSCredential Credential { get; set; }
+        public DSClientCredential Credential { get; set; }
 
         [Parameter(Position = 1, ValueFromPipelineByPropertyName = true, HelpMessage = "Specify an initial Path to browse")]
         public string Path { get; set; }

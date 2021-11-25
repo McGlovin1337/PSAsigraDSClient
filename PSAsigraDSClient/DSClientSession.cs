@@ -111,7 +111,6 @@ namespace PSAsigraDSClient
             {
                 try
                 {
-                    Console.WriteLine("Logout");
                     _clientConnection.logout();
                 }
                 catch

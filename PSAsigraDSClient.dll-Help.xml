@@ -20643,9 +20643,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           <maml:Description>
             <maml:para>Specify Credentials for specified Computer</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -20655,9 +20655,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           <maml:Description>
             <maml:para>Set Database Credentials</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -20717,9 +20717,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         <maml:Description>
           <maml:para>Specify Credentials for specified Computer</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -20729,9 +20729,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         <maml:Description>
           <maml:para>Set Database Credentials</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -20865,9 +20865,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           <maml:Description>
             <maml:para>Specify Credentials for specified Computer</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -20968,9 +20968,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         <maml:Description>
           <maml:para>Specify Credentials for specified Computer</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -21140,9 +21140,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           <maml:Description>
             <maml:para>Specify Credentials for specified Computer</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -21190,9 +21190,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         <maml:Description>
           <maml:para>Specify Credentials for specified Computer</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -21314,9 +21314,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           <maml:Description>
             <maml:para>Specify Credentials for specified Computer</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -21364,9 +21364,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         <maml:Description>
           <maml:para>Specify Credentials for specified Computer</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>

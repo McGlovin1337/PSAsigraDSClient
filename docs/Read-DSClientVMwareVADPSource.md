@@ -13,8 +13,8 @@ Enumerates the objects of a VMware VCenter or ESXi Host
 ## SYNTAX
 
 ```
-Read-DSClientVMwareVADPSource [-Computer] <String> [-Credential <PSCredential>] [[-Path] <String>] [-Recursive]
- [-RecursiveDepth <Int32>] [<CommonParameters>]
+Read-DSClientVMwareVADPSource [-Computer] <String> [-Credential <DSClientCredential>] [[-Path] <String>]
+ [-Recursive] [-RecursiveDepth <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -50,7 +50,7 @@ Accept wildcard characters: False
 Specify Credentials for specified Computer
 
 ```yaml
-Type: PSCredential
+Type: DSClientCredential
 Parameter Sets: (All)
 Aliases:
 

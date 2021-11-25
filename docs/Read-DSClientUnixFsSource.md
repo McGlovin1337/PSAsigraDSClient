@@ -14,7 +14,7 @@ Enumerates the items of a Unix File System
 
 ```
 Read-DSClientUnixFsSource [-SSHKeyFile <String>] [-SSHInterpreter <String>] [-SSHInterpreterPath <String>]
- [-SudoCredential <PSCredential>] [-Computer] <String> [-Credential <PSCredential>] [[-Path] <String>]
+ [-SudoCredential <PSCredential>] [-Computer] <String> [-Credential <DSClientCredential>] [[-Path] <String>]
  [-Recursive] [-RecursiveDepth <Int32>] [<CommonParameters>]
 ```
 
@@ -51,7 +51,7 @@ Accept wildcard characters: False
 Specify Credentials for specified Computer
 
 ```yaml
-Type: PSCredential
+Type: DSClientCredential
 Parameter Sets: (All)
 Aliases:
 

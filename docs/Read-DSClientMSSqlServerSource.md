@@ -13,8 +13,9 @@ Enumerates the items of a MS SQL Server
 ## SYNTAX
 
 ```
-Read-DSClientMSSqlServerSource [-DbCredential <PSCredential>] [-Instance <String>] [-Computer] <String>
- [-Credential <PSCredential>] [[-Path] <String>] [-Recursive] [-RecursiveDepth <Int32>] [<CommonParameters>]
+Read-DSClientMSSqlServerSource [-DbCredential <DSClientCredential>] [-Instance <String>] [-Computer] <String>
+ [-Credential <DSClientCredential>] [[-Path] <String>] [-Recursive] [-RecursiveDepth <Int32>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -50,7 +51,7 @@ Accept wildcard characters: False
 Specify Credentials for specified Computer
 
 ```yaml
-Type: PSCredential
+Type: DSClientCredential
 Parameter Sets: (All)
 Aliases:
 
@@ -65,7 +66,7 @@ Accept wildcard characters: False
 Set Database Credentials
 
 ```yaml
-Type: PSCredential
+Type: DSClientCredential
 Parameter Sets: (All)
 Aliases:
 

@@ -13,8 +13,7 @@ Enumerates the items of a Unix File System
 ## SYNTAX
 
 ```
-Read-DSClientUnixFsSource [-SSHKeyFile <String>] [-SSHInterpreter <String>] [-SSHInterpreterPath <String>]
- [-SudoCredential <PSCredential>] [-Computer] <String> [-Credential <DSClientCredential>] [[-Path] <String>]
+Read-DSClientUnixFsSource [-Computer] <String> [-Credential <DSClientCredential>] [[-Path] <String>]
  [-Recursive] [-RecursiveDepth <Int32>] [<CommonParameters>]
 ```
 
@@ -97,67 +96,6 @@ Specify the recursive depth
 
 ```yaml
 Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SSHInterpreter
-SSH Interpreter to access the data
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Perl, Python, Direct
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SSHInterpreterPath
-SSH Interpreter path
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SSHKeyFile
-Path to SSH Key File on DS-Client
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SudoCredential
-Specify SUDO User Credentials
-
-```yaml
-Type: PSCredential
 Parameter Sets: (All)
 Aliases:
 

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
-using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -11,19 +10,6 @@ namespace PSAsigraDSClient
 
     sealed public class ReadDSClientUnixFsSource: BaseDSClientBackupSource
     {
-        [Parameter(HelpMessage = "Path to SSH Key File on DS-Client")]
-        public string SSHKeyFile { get; set; }
-
-        [Parameter(HelpMessage = "SSH Interpreter to access the data")]
-        [ValidateSet("Perl", "Python", "Direct")]
-        public string SSHInterpreter { get; set; }
-
-        [Parameter(HelpMessage = "SSH Interpreter path")]
-        public string SSHInterpreterPath { get; set; }
-
-        [Parameter(HelpMessage = "Specify SUDO User Credentials")]
-        public PSCredential SudoCredential { get; set; }
-
         protected override void DSClientProcessRecord()
         {
             // Initialize a Data Source Browser

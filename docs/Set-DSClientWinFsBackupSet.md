@@ -19,11 +19,11 @@ Set-DSClientWinFsBackupSet [-BackupSetId] <Int32> [[-Name] <String>] [-Compressi
  [-ExcludeOldFilesByDate] [-ExcludeOldFilesDate <DateTime>] [-ExcludeOldFilesByTimeSpan]
  [-ExcludeOldFilesTimeSpan <String>] [-ExcludeOldFilesTimeSpanValue <Int32>] [-UseBuffer]
  [-ExcludeAltDataStreams] [-ExcludePermissions] [-CDPInterval <Int32>] [-CDPStoppedChangingForInterval]
- [-CDPStopForRetention] [-CDPStopForBLM] [-CDPStopForValidation] [-Disabled] [-ScheduleId <Int32>]
- [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>]
- [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage]
- [-LocalStoragePath <String>] [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru]
- [<CommonParameters>]
+ [-CDPStopForRetention] [-CDPStopForBLM] [-CDPStopForValidation] [-Credential <DSClientCredential>] [-Disabled]
+ [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan]
+ [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations]
+ [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>]
+ [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -640,6 +640,21 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Credential
+Specify Computer Credentials to use
+
+```yaml
+Type: DSClientCredential
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

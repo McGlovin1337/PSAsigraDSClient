@@ -24,31 +24,47 @@ namespace PSAsigraDSClient
         {
             // Get the Backup Set from DS-Client
             WriteVerbose($"Performing Action: Retrieve Backup Set with BackupSetId: {BackupSetId}");
-            BackupSet backupSet = DSClientSession.backup_set(BackupSetId);
-
-            // Process the Common Backup Set Parameters
-            backupSet = ProcessBaseBackupSetParams(MyInvocation.BoundParameters, backupSet);
-
-            // Set the Schedule and Retention Rules
-            if (MyInvocation.BoundParameters.ContainsKey("ScheduleId"))
+            BackupSet backupSet = null;
+            try
             {
-                ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
-                Schedule schedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
-                backupSet.setSchedule(schedule);
+                backupSet = DSClientSession.backup_set(BackupSetId);
+            }
+            catch (APIException e)
+            {
+                ErrorRecord errorRecord = new ErrorRecord(
+                    e,
+                    "APIException",
+                    ErrorCategory.ObjectNotFound,
+                    null);
+                WriteError(errorRecord);
             }
 
-            if (MyInvocation.BoundParameters.ContainsKey("RetentionRuleId"))
+            if (backupSet != null)
             {
-                RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
-                RetentionRule[] retentionRules = DSClientRetentionRuleMgr.definedRules();
-                RetentionRule retentionRule = retentionRules.Single(rule => rule.getID() == RetentionRuleId);
-                backupSet.setRetentionRule(retentionRule);
+                // Process the Common Backup Set Parameters
+                backupSet = ProcessBaseBackupSetParams(MyInvocation.BoundParameters, backupSet);
+
+                // Set the Schedule and Retention Rules
+                if (MyInvocation.BoundParameters.ContainsKey("ScheduleId"))
+                {
+                    ScheduleManager DSClientScheduleMgr = DSClientSession.getScheduleManager();
+                    Schedule schedule = DSClientScheduleMgr.definedSchedule(ScheduleId);
+                    backupSet.setSchedule(schedule);
+                }
+
+                if (MyInvocation.BoundParameters.ContainsKey("RetentionRuleId"))
+                {
+                    RetentionRuleManager DSClientRetentionRuleMgr = DSClientSession.getRetentionRuleManager();
+                    RetentionRule[] retentionRules = DSClientRetentionRuleMgr.definedRules();
+                    RetentionRule retentionRule = retentionRules.Single(rule => rule.getID() == RetentionRuleId);
+                    backupSet.setRetentionRule(retentionRule);
+                }
+
+                // Process this Cmdlets specific configuration
+                UnixFS_Generic_BackupSet unixFsBackupSet = ProcessUnixFsBackupSetParams(MyInvocation.BoundParameters, UnixFS_Generic_BackupSet.from(backupSet));
+
+                unixFsBackupSet.Dispose();
             }
-
-            // Process this Cmdlets specific configuration
-            UnixFS_Generic_BackupSet unixFsBackupSet = ProcessUnixFsBackupSetParams(MyInvocation.BoundParameters, UnixFS_Generic_BackupSet.from(backupSet));
-
-            unixFsBackupSet.Dispose();
         }
     }
 }

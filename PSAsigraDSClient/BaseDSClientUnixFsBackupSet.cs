@@ -8,19 +8,6 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientUnixFsBackupSet: BaseDSClientBackupSetParams
     {
-        [Parameter(HelpMessage = "Specify the SSH Interpreter to access the data")]
-        [ValidateSet("Perl", "Python", "Direct")]
-        public string SSHInterpreter { get; set; }
-
-        [Parameter(HelpMessage = "Specify SSH Interpreter path")]
-        public string SSHInterpreterPath { get; set; }
-
-        [Parameter(HelpMessage = "Specify path to SSH Key File")]
-        public string SSHKeyFile { get; set; }
-
-        [Parameter(HelpMessage = "Specify SUDO User Credentials")]
-        public PSCredential SudoCredential { get; set; }
-
         [Parameter(HelpMessage = "Specify Common File Elimination")]
         public SwitchParameter CheckCommonFiles { get; set; }
 
@@ -104,9 +91,6 @@ namespace PSAsigraDSClient
 
                 if (MyInvocation.BoundParameters.ContainsKey("ExcludeOldFilesByTimeSpan") && (ExcludeOldFilesTimeSpan == null || ExcludeOldFilesTimeSpanValue < 1))
                     throw new ParameterBindingException("A Time Span and Time Span Value must be specified when ExcludeOldFilesByTimeSpan is enabled");
-
-                if (SSHInterpreter == "Direct" && SSHInterpreterPath == null)
-                    throw new ParameterBindingException("Direct SSH Interpretor requires an SSH Interpretor Path");
 
                 ProcessUnixFsBackupSet();
             }

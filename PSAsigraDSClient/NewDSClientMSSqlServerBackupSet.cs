@@ -87,22 +87,6 @@ namespace PSAsigraDSClient
             dataSourceBrowser.Dispose();
             dataSourceBrowser = DSClientSession.createBrowser(EBackupDataType.EBackupDataType__SQLServer);
 
-            // Set Computer Credentials
-            Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
-
-            if (Credential != null)
-            {
-                string user = Credential.UserName;
-                string pass = Credential.GetNetworkCredential().Password;
-                backupSetCredentials.setCredentials(user, pass);
-            }
-            else
-            {
-                WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
-                backupSetCredentials.setUsingClientCredentials(true);
-            }
-            dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
-
             // Create Backup Set Object
             WriteVerbose("Performing Action: Create new Backup Set object");
             SQLDataBrowserWithSetCreation setCreation = SQLDataBrowserWithSetCreation.from(dataSourceBrowser);
@@ -111,17 +95,12 @@ namespace PSAsigraDSClient
             // Set Database Credentials
             if (DbCredential != null)
             {
-                Win32FS_Generic_BackupSetCredentials databaseCredentials = new Win32FS_Generic_BackupSetCredentials();
-                string dbUser = DbCredential.UserName;
-                string dbPass = DbCredential.GetNetworkCredential().Password;
-                databaseCredentials.setCredentials(dbUser, dbPass);
-                setCreation.setDBCredentials(databaseCredentials);
-                databaseCredentials.Dispose();
+                setCreation.setDBCredentials(Win32FS_Generic_BackupSetCredentials.from(DbCredential.GetCredentials()));
             }
             else
-                setCreation.setDBCredentials(backupSetCredentials);
-
-            backupSetCredentials.Dispose();
+            {
+                setCreation.setDBCredentials(Win32FS_Generic_BackupSetCredentials.from(Credential.GetCredentials()));
+            }
             setCreation.Dispose();
 
             // Process Common Backup Set Parameters

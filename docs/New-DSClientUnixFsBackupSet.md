@@ -17,8 +17,7 @@ New-DSClientUnixFsBackupSet [-Name] <String> [-Computer] <String> [[-Credential]
  [-SetType] <String> [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>]
  [-RegexExcludePattern <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory]
  [-RegexCaseInsensitive] [-ExcludeSubDirs] [-NotificationMethod <String>] [-NotificationRecipient <String>]
- [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>] [-SSHInterpreter <String>]
- [-SSHInterpreterPath <String>] [-SSHKeyFile <String>] [-SudoCredential <PSCredential>] [-CheckCommonFiles]
+ [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>] [-CheckCommonFiles]
  [-FollowMountPoints] [-BackupHardLinks] [-IgnoreSnapshotFailure] [-UseSnapDiff] [-ExcludeOldFilesByDate]
  [-ExcludeOldFilesDate <DateTime>] [-ExcludeOldFilesByTimeSpan] [-ExcludeOldFilesTimeSpan <String>]
  [-ExcludeOldFilesTimeSpanValue <Int32>] [-UseBuffer] [-ExcludeACLs] [-ExcludePosixACLs] [-CDPInterval <Int32>]
@@ -37,7 +36,8 @@ Creates a new Unix based File System Backup Set
 
 ### Example 1
 ```powershell
-PS C:\> New-DSClientUnixFsBackupSet -Name 'Home Directory Backup' -Computer 'UNIX-SSH\LinuxServer01' -Credential (Get-Credential root) -IncludeItem '/\home\*' -MaxGenerations 30 -BackupHardLinks -CheckCommonFiles -SetType 'Offsite' -Compression 'ZLIB_HI' -ScheduleId 2 -UseDetailedLog
+PS C:\> $credentials = New-DSClientUnixCredential -Credential (Get-Credential) -SudoCredential (Get-Credential)
+PS C:\> New-DSClientUnixFsBackupSet -Name 'Home Directory Backup' -Computer 'UNIX-SSH\LinuxServer01' -Credential $credentials -IncludeItem '/\home\*' -MaxGenerations 30 -BackupHardLinks -CheckCommonFiles -SetType 'Offsite' -Compression 'ZLIB_HI' -ScheduleId 2 -UseDetailedLog
 ```
 
 Creates a New SSH based File System Backup Set named "Home Directory Backup" for Computer "LinuxServer01"
@@ -625,52 +625,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -SSHInterpreter
-Specify the SSH Interpreter to access the data
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Perl, Python, Direct
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SSHInterpreterPath
-Specify SSH Interpreter path
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SSHKeyFile
-Specify path to SSH Key File
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ScheduleId
 Set the Schedule this Backup Set will use
 
@@ -730,21 +684,6 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -SudoCredential
-Specify SUDO User Credentials
-
-```yaml
-Type: PSCredential
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

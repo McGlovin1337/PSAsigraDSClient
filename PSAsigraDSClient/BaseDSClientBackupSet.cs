@@ -29,6 +29,13 @@ namespace PSAsigraDSClient
 
         protected static BackupSet ProcessBaseBackupSetParams(Dictionary<string, object> baseParams, BackupSet backupSet)
         {
+            baseParams.TryGetValue("Credential", out object credential);
+            if (credential != null)
+            {
+                BackupSetCredentials creds = (credential as DSClientCredential).GetCredentials();
+                backupSet.setCredentials(creds);
+            }
+
             baseParams.TryGetValue("Name", out object Name);
             if (Name != null)
                 backupSet.setName(Name as string);
@@ -353,6 +360,7 @@ namespace PSAsigraDSClient
             public string Computer { get; private set; }
             public string Name { get; private set; }
             public bool Enabled { get; private set; }
+            public DSClientCredential Credential { get; private set; }
             public DateTime LastSuccess { get; private set; }
             public dynamic DataType { get; private set; }
             public DSClientBackupSetItem[] BackupItems { get; private set; }
@@ -451,6 +459,19 @@ namespace PSAsigraDSClient
                     DataType = new DB2BackupSet(backupSet);
                 else
                     DataType = EBackupDataTypeToString(backupSetOverviewInfo.data_type);
+
+                // Get Backup Set Credentials
+                using (BackupSetCredentials backupSetCredentials = backupSet.getCredentials())
+                {
+                    if (dSClientOSType == "Windows")
+                    {
+                        Credential = new DSClientCredential(backupSetCredentials, Win32FS_Generic_BackupSetCredentials.from(backupSetCredentials).getUserName());
+                    }
+                    else
+                    {
+                        Credential = new DSClientCredential(backupSetCredentials, UnixFS_Generic_BackupSetCredentials.from(backupSetCredentials).getUserName());
+                    }
+                }
 
                 BackupSetId = backupSet.getID();
                 Computer = backupSet.getComputerName();

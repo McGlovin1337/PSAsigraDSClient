@@ -4,9 +4,6 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientVMwareVADPBackupSet: BaseDSClientBackupSetParams
     {
-        [Parameter(HelpMessage = "Specify Computer Credentials")]
-        public PSCredential Credential { get; set; }
-
         [Parameter(HelpMessage = "Backup P2V VMs Incrementally")]
         public SwitchParameter IncrementalP2VBackup { get; set; }
 

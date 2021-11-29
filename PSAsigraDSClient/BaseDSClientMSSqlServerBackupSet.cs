@@ -8,11 +8,8 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientMSSqlServerBackupSet: BaseDSClientBackupSetParams
     {
-        [Parameter(HelpMessage = "Specify Computer Credentials")]
-        public PSCredential Credential { get; set; }
-
         [Parameter(HelpMessage = "Specify Database Credentials")]
-        public PSCredential DbCredential { get; set; }
+        public DSClientCredential DbCredential { get; set; }
 
         [Parameter(HelpMessage = "Specify Database Dump Method")]
         [ValidateSet("DumpLocal", "DumpBuffer", "DumpPipe")]

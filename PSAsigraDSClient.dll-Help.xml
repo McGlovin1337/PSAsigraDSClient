@@ -14114,14 +14114,14 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Credential</maml:name>
           <maml:Description>
             <maml:para>Specify Computer Credentials</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -14142,9 +14142,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           <maml:Description>
             <maml:para>Specify Database Credentials</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -14712,14 +14712,14 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Credential</maml:name>
         <maml:Description>
           <maml:para>Specify Computer Credentials</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -14741,9 +14741,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         <maml:Description>
           <maml:para>Specify Database Credentials</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -15281,7 +15281,8 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-DSClientMSSqlServerBackupSet -Name 'SQL Instance Backup' -Computer '\\SQLSERVER01' -Credential (Get-Credential user) -DbCredential (Get-Credential dbUser) -IncludeItem 'SQLSERVER01\\*' -MaxGenerations 30 -ExcludeItem 'SQLSERVER01\\tempdb' -RunDBCC -DumpMethod 'DumpPipe' -BackupMethod 'FullDiff' -FullWeeklyDay 'Sunday' -SetType 'Offsite' -Compression 'LZOP'</dev:code>
+        <dev:code>PS C:\&gt; $credentials = New-DSClientWindowsCredential -Credential (Get-Credential)
+PS C:\&gt; New-DSClientMSSqlServerBackupSet -Name 'SQL Instance Backup' -Computer '\\SQLSERVER01' -Credential $credentials -DbCredential $credentials -IncludeItem 'SQLSERVER01\\*' -MaxGenerations 30 -ExcludeItem 'SQLSERVER01\\tempdb' -RunDBCC -DumpMethod 'DumpPipe' -BackupMethod 'FullDiff' -FullWeeklyDay 'Sunday' -SetType 'Offsite' -Compression 'LZOP'</dev:code>
         <dev:remarks>
           <maml:para>Create a New MS SQL Server Backup Set named "SQL Instance Backup" for the Computer "SQLSERVER01". Specify Computer and Database Credentials provided as PSCredentials. Include all Databases found in the Instance, but exclude the tempdb. Run a Database Consistency Check. Keep a maximum of 30 Generations. Dump the Backup to the DS-Client Pipe. Perform Full plus Differential Backups. Perform Full Backups on Sunday. Configured as an Offsite, i.e. DS-System Backup Uses LZOP Compression method.</maml:para>
         </dev:remarks>
@@ -17122,47 +17123,6 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SSHInterpreter</maml:name>
-          <maml:Description>
-            <maml:para>Specify the SSH Interpreter to access the data</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Perl</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Python</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Direct</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SSHInterpreterPath</maml:name>
-          <maml:Description>
-            <maml:para>Specify SSH Interpreter path</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SSHKeyFile</maml:name>
-          <maml:Description>
-            <maml:para>Specify path to SSH Key File</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>ScheduleId</maml:name>
           <maml:Description>
@@ -17201,18 +17161,6 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
             <maml:name>String[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SudoCredential</maml:name>
-          <maml:Description>
-            <maml:para>Specify SUDO User Credentials</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-          <dev:type>
-            <maml:name>PSCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -17776,42 +17724,6 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SSHInterpreter</maml:name>
-        <maml:Description>
-          <maml:para>Specify the SSH Interpreter to access the data</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SSHInterpreterPath</maml:name>
-        <maml:Description>
-          <maml:para>Specify SSH Interpreter path</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SSHKeyFile</maml:name>
-        <maml:Description>
-          <maml:para>Specify path to SSH Key File</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>ScheduleId</maml:name>
         <maml:Description>
@@ -17856,18 +17768,6 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
           <maml:name>String[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SudoCredential</maml:name>
-        <maml:Description>
-          <maml:para>Specify SUDO User Credentials</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-        <dev:type>
-          <maml:name>PSCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -18033,7 +17933,8 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-DSClientUnixFsBackupSet -Name 'Home Directory Backup' -Computer 'UNIX-SSH\LinuxServer01' -Credential (Get-Credential root) -IncludeItem '/\home\*' -MaxGenerations 30 -BackupHardLinks -CheckCommonFiles -SetType 'Offsite' -Compression 'ZLIB_HI' -ScheduleId 2 -UseDetailedLog</dev:code>
+        <dev:code>PS C:\&gt; $credentials = New-DSClientUnixCredential -Credential (Get-Credential) -SudoCredential (Get-Credential)
+PS C:\&gt; New-DSClientUnixFsBackupSet -Name 'Home Directory Backup' -Computer 'UNIX-SSH\LinuxServer01' -Credential $credentials -IncludeItem '/\home\*' -MaxGenerations 30 -BackupHardLinks -CheckCommonFiles -SetType 'Offsite' -Compression 'ZLIB_HI' -ScheduleId 2 -UseDetailedLog</dev:code>
         <dev:remarks>
           <maml:para>Creates a New SSH based File System Backup Set named "Home Directory Backup" for Computer "LinuxServer01" Includes the item "/home/" with Maximum of 30 Generations and includes Hard Links. Common File Checking is enabled Configured as an Offsite backup Using ZLIB High Compression Method Assigned to Schedule with Id 2 Creates a Detailed Log when Executed</maml:para>
         </dev:remarks>
@@ -18141,14 +18042,14 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Credential</maml:name>
           <maml:Description>
             <maml:para>Specify Computer Credentials</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -18577,14 +18478,14 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Credential</maml:name>
         <maml:Description>
           <maml:para>Specify Computer Credentials</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -19018,7 +18919,8 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-DSclientVMwareVADPBackupSet -Name 'VMware Cloud Backup' -Computer 'VMWARE\myVcenterServer' -Credential (Get-Credential user@domain.tld) -SetType Offsite -IncludeItem 'CLOUD\\*' -MaxGenerations 15 -UseCBT -Compression LZOP</dev:code>
+        <dev:code>PS C:\&gt; $credentials = New-DSClientWindowsCredential -Credential (Get-Credential)
+PS C:\&gt; New-DSclientVMwareVADPBackupSet -Name 'VMware Cloud Backup' -Computer 'VMWARE\myVcenterServer' -Credential $credentials -SetType Offsite -IncludeItem 'CLOUD\\*' -MaxGenerations 15 -UseCBT -Compression LZOP</dev:code>
         <dev:remarks>
           <maml:para>Create a New VMware VADP Backup Set to protect Virtual Machines hosted on the 'myVcebterServer' Computer. Connect to the backup source with Domain Credentials. Configure as an Offsite Backup. Include all items in the 'CLOUD\' Folder with a Maximum number of 15 Generations. Use Change Block Tracking. Use LZOP Compression level.</maml:para>
         </dev:remarks>
@@ -19144,14 +19046,14 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
           <maml:name>Credential</maml:name>
           <maml:Description>
             <maml:para>Credentials to use</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -19921,14 +19823,14 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
         <maml:name>Credential</maml:name>
         <maml:Description>
           <maml:para>Credentials to use</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -20490,7 +20392,8 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-DSClientWinFsBackupSet -Name 'Backup of C$' -Computer '\\WindowsServer01' -Credential (Get-Credential administrator) -IncludeItem 'C$\*.*' -MaxGenerations 30 -CheckCommonFiles -SetType 'Offsite' -Compression 'LZOP' -ScheduleId 3 -RetentionRuleId 1</dev:code>
+        <dev:code>PS C:\&gt; $credentials = New-DSClientWindowsCredential -Credential (Get-Credential)
+PS C:\&gt; New-DSClientWinFsBackupSet -Name 'Backup of C$' -Computer '\\WindowsServer01' -Credential $credentials -IncludeItem 'C$\*.*' -MaxGenerations 30 -CheckCommonFiles -SetType 'Offsite' -Compression 'LZOP' -ScheduleId 3 -RetentionRuleId 1</dev:code>
         <dev:remarks>
           <maml:para>Creates a new Windows File System Backup Set named "Backup of C$" for Computer "WindowsServer01" Includes the "C$\ . " item for a Maximum of 30 Generations with Common File Checking Enabled Specified as an Offsite Backup with LZOP Compression method Assigned Schedule with Id 3 and Retention Rule with Id 1</maml:para>
         </dev:remarks>
@@ -20895,59 +20798,6 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SSHInterpreter</maml:name>
-          <maml:Description>
-            <maml:para>SSH Interpreter to access the data</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Perl</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Python</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Direct</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SSHInterpreterPath</maml:name>
-          <maml:Description>
-            <maml:para>SSH Interpreter path</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SSHKeyFile</maml:name>
-          <maml:Description>
-            <maml:para>Path to SSH Key File on DS-Client</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SudoCredential</maml:name>
-          <maml:Description>
-            <maml:para>Specify SUDO User Credentials</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-          <dev:type>
-            <maml:name>PSCredential</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -21007,54 +20857,6 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
           <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SSHInterpreter</maml:name>
-        <maml:Description>
-          <maml:para>SSH Interpreter to access the data</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SSHInterpreterPath</maml:name>
-        <maml:Description>
-          <maml:para>SSH Interpreter path</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SSHKeyFile</maml:name>
-        <maml:Description>
-          <maml:para>Path to SSH Key File on DS-Client</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SudoCredential</maml:name>
-        <maml:Description>
-          <maml:para>Specify SUDO User Credentials</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-        <dev:type>
-          <maml:name>PSCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -29178,14 +28980,14 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Credential</maml:name>
           <maml:Description>
             <maml:para>Specify Computer Credentials</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -29195,9 +28997,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           <maml:Description>
             <maml:para>Specify Database Credentials</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -29649,14 +29451,14 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Credential</maml:name>
         <maml:Description>
           <maml:para>Specify Computer Credentials</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -29666,9 +29468,9 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         <maml:Description>
           <maml:para>Specify Database Credentials</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -33833,47 +33635,6 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SSHInterpreter</maml:name>
-          <maml:Description>
-            <maml:para>Specify the SSH Interpreter to access the data</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Perl</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Python</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Direct</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SSHInterpreterPath</maml:name>
-          <maml:Description>
-            <maml:para>Specify SSH Interpreter path</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SSHKeyFile</maml:name>
-          <maml:Description>
-            <maml:para>Specify path to SSH Key File</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>ScheduleId</maml:name>
           <maml:Description>
@@ -33912,18 +33673,6 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
             <maml:name>String[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SudoCredential</maml:name>
-          <maml:Description>
-            <maml:para>Specify SUDO User Credentials</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-          <dev:type>
-            <maml:name>PSCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -33993,6 +33742,18 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>Credential</maml:name>
+          <maml:Description>
+            <maml:para>Specify Computer Credentials to use</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
+          <dev:type>
+            <maml:name>DSClientCredential</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -34333,42 +34094,6 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SSHInterpreter</maml:name>
-        <maml:Description>
-          <maml:para>Specify the SSH Interpreter to access the data</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SSHInterpreterPath</maml:name>
-        <maml:Description>
-          <maml:para>Specify SSH Interpreter path</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SSHKeyFile</maml:name>
-        <maml:Description>
-          <maml:para>Specify path to SSH Key File</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>ScheduleId</maml:name>
         <maml:Description>
@@ -34401,18 +34126,6 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
           <maml:name>String[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SudoCredential</maml:name>
-        <maml:Description>
-          <maml:para>Specify SUDO User Credentials</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
-        <dev:type>
-          <maml:name>PSCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -34488,6 +34201,18 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>Credential</maml:name>
+        <maml:Description>
+          <maml:para>Specify Computer Credentials to use</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
+        <dev:type>
+          <maml:name>DSClientCredential</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
@@ -35166,14 +34891,14 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Credential</maml:name>
           <maml:Description>
             <maml:para>Specify Computer Credentials</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -35512,14 +35237,14 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Credential</maml:name>
         <maml:Description>
           <maml:para>Specify Computer Credentials</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -36988,6 +36713,18 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>Credential</maml:name>
+          <maml:Description>
+            <maml:para>Specify Computer Credentials to use</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
+          <dev:type>
+            <maml:name>DSClientCredential</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -37470,6 +37207,18 @@ PS C:\&gt; Set-DSClientRestoreSession -RestoreId 1 -DestinationId 1 -DatabaseMap
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>Credential</maml:name>
+        <maml:Description>
+          <maml:para>Specify Computer Credentials to use</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
+        <dev:type>
+          <maml:name>DSClientCredential</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>

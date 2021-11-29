@@ -16,12 +16,13 @@ Create a New VMware VADP Backup Set
 New-DSClientVMwareVADPBackupSet [-Name] <String> [-Computer] <String> [-SetType] <String>
  [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-ExcludeSubDirs]
  [-NotificationMethod <String>] [-NotificationRecipient <String>] [-NotificationCompletion <String[]>]
- [-NotificationEmailOptions <String[]>] [-Credential <PSCredential>] [-IncrementalP2VBackup] [-BackupVMMemory]
- [-SnapshotQuiesce] [-SameTimeSnapshot] [-UseCBT] [-UseFLR] [-UseLocalVDR] [-VMLibraryVersion <String>]
- [-UseBuffer] -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>]
- [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>]
- [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>]
- [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
+ [-NotificationEmailOptions <String[]>] [-IncrementalP2VBackup] [-BackupVMMemory] [-SnapshotQuiesce]
+ [-SameTimeSnapshot] [-UseCBT] [-UseFLR] [-UseLocalVDR] [-VMLibraryVersion <String>] [-UseBuffer]
+ [-Credential <DSClientCredential>] -Compression <String> [-Disabled] [-ScheduleId <Int32>]
+ [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>]
+ [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage]
+ [-LocalStoragePath <String>] [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,7 +33,8 @@ Note, in case of issues connecting to the backup source, try prefixing the Compu
 
 ### Example 1
 ```powershell
-PS C:\> New-DSclientVMwareVADPBackupSet -Name 'VMware Cloud Backup' -Computer 'VMWARE\myVcenterServer' -Credential (Get-Credential user@domain.tld) -SetType Offsite -IncludeItem 'CLOUD\\*' -MaxGenerations 15 -UseCBT -Compression LZOP
+PS C:\> $credentials = New-DSClientWindowsCredential -Credential (Get-Credential)
+PS C:\> New-DSclientVMwareVADPBackupSet -Name 'VMware Cloud Backup' -Computer 'VMWARE\myVcenterServer' -Credential $credentials -SetType Offsite -IncludeItem 'CLOUD\\*' -MaxGenerations 15 -UseCBT -Compression LZOP
 ```
 
 Create a New VMware VADP Backup Set to protect Virtual Machines hosted on the 'myVcebterServer' Computer. Connect to the backup source with Domain Credentials. Configure as an Offsite Backup.
@@ -105,14 +107,14 @@ Accept wildcard characters: False
 Specify Computer Credentials
 
 ```yaml
-Type: PSCredential
+Type: DSClientCredential
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

@@ -19,9 +19,6 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty]
         public string Computer { get; set; }
 
-        [Parameter(Position = 2, HelpMessage = "Credentials to use")]
-        public PSCredential Credential { get; set; }
-
         [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
         [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
         public string SetType { get; set; }
@@ -77,23 +74,6 @@ namespace PSAsigraDSClient
             string computer = ResolveWinComputer(Computer);
             computer = dataSourceBrowser.expandToFullPath(computer);
             WriteVerbose($"Notice: Specified Computer resolved to: {computer}");
-
-            // Set the Credentials
-            Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));            
-
-            if (Credential != null)
-            {
-                string user = Credential.UserName;
-                string pass = Credential.GetNetworkCredential().Password;
-                backupSetCredentials.setCredentials(user, pass);
-            }
-            else
-            {
-                WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
-                backupSetCredentials.setUsingClientCredentials(true);
-            }
-            dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
-            backupSetCredentials.Dispose();
 
             // Create the Backup Set Object
             DataBrowserWithSetCreation setCreation = DataBrowserWithSetCreation.from(dataSourceBrowser);

@@ -14,12 +14,12 @@ Update the Configuration of an existing VMware VADP Backup Set
 
 ```
 Set-DSClientVMwareVADPBackupSet [-BackupSetId] <Int32> [[-Name] <String>] [-Compression <String>]
- [-Credential <PSCredential>] [-IncrementalP2VBackup] [-BackupVMMemory] [-SnapshotQuiesce] [-SameTimeSnapshot]
- [-UseCBT] [-UseFLR] [-UseLocalVDR] [-VMLibraryVersion <String>] [-UseBuffer] [-Disabled] [-ScheduleId <Int32>]
- [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>]
- [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage]
- [-LocalStoragePath <String>] [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+ [-IncrementalP2VBackup] [-BackupVMMemory] [-SnapshotQuiesce] [-SameTimeSnapshot] [-UseCBT] [-UseFLR]
+ [-UseLocalVDR] [-VMLibraryVersion <String>] [-UseBuffer] [-Credential <DSClientCredential>] [-Disabled]
+ [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan]
+ [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations]
+ [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>]
+ [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -116,14 +116,14 @@ Accept wildcard characters: False
 Specify Computer Credentials
 
 ```yaml
-Type: PSCredential
+Type: DSClientCredential
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

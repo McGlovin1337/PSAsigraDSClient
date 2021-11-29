@@ -13,20 +13,20 @@ Creates a New Windows File System Backup Set
 ## SYNTAX
 
 ```
-New-DSClientWinFsBackupSet [-Name] <String> [-Computer] <String> [[-Credential] <PSCredential>]
- [-SetType] <String> [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>]
- [-RegexExcludePattern <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory]
- [-RegexCaseInsensitive] [-ExcludeSubDirs] [-NotificationMethod <String>] [-NotificationRecipient <String>]
- [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>] [-BackupRemoteStorage]
- [-BackupSingleInstanceStore] [-CheckCommonFiles] [-UseVSS] [-ExcludeVSSComponents] [-IgnoreVSSComponents]
- [-IgnoreVSSWriters] [-FollowJunctionPoints] [-NoAutoFileFilter] [-ExcludeOldFilesByDate]
- [-ExcludeOldFilesDate <DateTime>] [-ExcludeOldFilesByTimeSpan] [-ExcludeOldFilesTimeSpan <String>]
- [-ExcludeOldFilesTimeSpanValue <Int32>] [-UseBuffer] [-ExcludeAltDataStreams] [-ExcludePermissions]
- [-CDPInterval <Int32>] [-CDPStoppedChangingForInterval] [-CDPStopForRetention] [-CDPStopForBLM]
- [-CDPStopForValidation] -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>]
- [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>]
- [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>]
- [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
+New-DSClientWinFsBackupSet [-Name] <String> [-Computer] <String> [-SetType] <String> [-IncludeItem <String[]>]
+ [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludePattern <String[]>]
+ [-RegexExclusionPath <String>] [-RegexMatchDirectory] [-RegexCaseInsensitive] [-ExcludeSubDirs]
+ [-NotificationMethod <String>] [-NotificationRecipient <String>] [-NotificationCompletion <String[]>]
+ [-NotificationEmailOptions <String[]>] [-BackupRemoteStorage] [-BackupSingleInstanceStore] [-CheckCommonFiles]
+ [-UseVSS] [-ExcludeVSSComponents] [-IgnoreVSSComponents] [-IgnoreVSSWriters] [-FollowJunctionPoints]
+ [-NoAutoFileFilter] [-ExcludeOldFilesByDate] [-ExcludeOldFilesDate <DateTime>] [-ExcludeOldFilesByTimeSpan]
+ [-ExcludeOldFilesTimeSpan <String>] [-ExcludeOldFilesTimeSpanValue <Int32>] [-UseBuffer]
+ [-ExcludeAltDataStreams] [-ExcludePermissions] [-CDPInterval <Int32>] [-CDPStoppedChangingForInterval]
+ [-CDPStopForRetention] [-CDPStopForBLM] [-CDPStopForValidation] [[-Credential] <DSClientCredential>]
+ -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>]
+ [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog]
+ [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache]
+ [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -36,7 +36,8 @@ Creates a New Windows File System Backup Set
 
 ### Example 1
 ```powershell
-PS C:\> New-DSClientWinFsBackupSet -Name 'Backup of C$' -Computer '\\WindowsServer01' -Credential (Get-Credential administrator) -IncludeItem 'C$\*.*' -MaxGenerations 30 -CheckCommonFiles -SetType 'Offsite' -Compression 'LZOP' -ScheduleId 3 -RetentionRuleId 1
+PS C:\> $credentials = New-DSClientWindowsCredential -Credential (Get-Credential)
+PS C:\> New-DSClientWinFsBackupSet -Name 'Backup of C$' -Computer '\\WindowsServer01' -Credential $credentials -IncludeItem 'C$\*.*' -MaxGenerations 30 -CheckCommonFiles -SetType 'Offsite' -Compression 'LZOP' -ScheduleId 3 -RetentionRuleId 1
 ```
 
 Creates a new Windows File System Backup Set named "Backup of C$" for Computer "WindowsServer01"
@@ -216,14 +217,14 @@ Accept wildcard characters: False
 Credentials to use
 
 ```yaml
-Type: PSCredential
+Type: DSClientCredential
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: 2
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

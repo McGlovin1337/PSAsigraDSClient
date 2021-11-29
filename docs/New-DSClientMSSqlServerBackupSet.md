@@ -18,14 +18,15 @@ New-DSClientMSSqlServerBackupSet [-Name] <String> [-Computer] <String> [-SetType
  [-RegexExcludePattern <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory]
  [-RegexCaseInsensitive] [-ExcludeSubDirs] [-RunDBCC] [-DBCCErrorStop] [-BackupLog]
  [-NotificationMethod <String>] [-NotificationRecipient <String>] [-NotificationCompletion <String[]>]
- [-NotificationEmailOptions <String[]>] [-Credential <PSCredential>] [-DbCredential <PSCredential>]
- [-DumpMethod <String>] [-DumpPath <String>] -BackupMethod <String> [-FullMonthlyDay <Int32>]
- [-FullMonthlyTime <String>] [-FullWeeklyDay <String>] [-FullWeeklyTime <String>] [-FullPeriod <String>]
- [-FullPeriodValue <Int32>] [-SkipWeekDays <String[]>] [-SkipWeekDaysFrom <String>] [-SkipWeekDaysTo <String>]
- -Compression <String> [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>]
- [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog]
- [-InfinateBLMGenerations] [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache]
- [-SnmpTrapNotifications <String[]>] [-PassThru] [<CommonParameters>]
+ [-NotificationEmailOptions <String[]>] [-DbCredential <DSClientCredential>] [-DumpMethod <String>]
+ [-DumpPath <String>] -BackupMethod <String> [-FullMonthlyDay <Int32>] [-FullMonthlyTime <String>]
+ [-FullWeeklyDay <String>] [-FullWeeklyTime <String>] [-FullPeriod <String>] [-FullPeriodValue <Int32>]
+ [-SkipWeekDays <String[]>] [-SkipWeekDaysFrom <String>] [-SkipWeekDaysTo <String>]
+ [-Credential <DSClientCredential>] -Compression <String> [-Disabled] [-ScheduleId <Int32>]
+ [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>]
+ [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage]
+ [-LocalStoragePath <String>] [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,7 +36,8 @@ Creates a New MS SQL Server Backup Set
 
 ### Example 1
 ```powershell
-PS C:\> New-DSClientMSSqlServerBackupSet -Name 'SQL Instance Backup' -Computer '\\SQLSERVER01' -Credential (Get-Credential user) -DbCredential (Get-Credential dbUser) -IncludeItem 'SQLSERVER01\\*' -MaxGenerations 30 -ExcludeItem 'SQLSERVER01\\tempdb' -RunDBCC -DumpMethod 'DumpPipe' -BackupMethod 'FullDiff' -FullWeeklyDay 'Sunday' -SetType 'Offsite' -Compression 'LZOP'
+PS C:\> $credentials = New-DSClientWindowsCredential -Credential (Get-Credential)
+PS C:\> New-DSClientMSSqlServerBackupSet -Name 'SQL Instance Backup' -Computer '\\SQLSERVER01' -Credential $credentials -DbCredential $credentials -IncludeItem 'SQLSERVER01\\*' -MaxGenerations 30 -ExcludeItem 'SQLSERVER01\\tempdb' -RunDBCC -DumpMethod 'DumpPipe' -BackupMethod 'FullDiff' -FullWeeklyDay 'Sunday' -SetType 'Offsite' -Compression 'LZOP'
 ```
 
 Create a New MS SQL Server Backup Set named "SQL Instance Backup" for the Computer "SQLSERVER01".
@@ -132,14 +134,14 @@ Accept wildcard characters: False
 Specify Computer Credentials
 
 ```yaml
-Type: PSCredential
+Type: DSClientCredential
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -162,7 +164,7 @@ Accept wildcard characters: False
 Specify Database Credentials
 
 ```yaml
-Type: PSCredential
+Type: DSClientCredential
 Parameter Sets: (All)
 Aliases:
 

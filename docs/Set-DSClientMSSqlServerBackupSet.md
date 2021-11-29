@@ -15,10 +15,10 @@ Changes the Configuration of an MS SQL Server Backup Set
 ```
 Set-DSClientMSSqlServerBackupSet [[-BackupSetId] <Int32>] [[-Name] <String>] [-Compression <String>]
  [-DumpMethod <String>] [-BackupMethod <String>] [-DisableFullMonthly] [-DisableFullWeekly]
- [-DisableFullPeriod] [-DisableSkipWeekDays] [-Credential <PSCredential>] [-DbCredential <PSCredential>]
- [-DumpPath <String>] [-FullMonthlyDay <Int32>] [-FullMonthlyTime <String>] [-FullWeeklyDay <String>]
- [-FullWeeklyTime <String>] [-FullPeriod <String>] [-FullPeriodValue <Int32>] [-SkipWeekDays <String[]>]
- [-SkipWeekDaysFrom <String>] [-SkipWeekDaysTo <String>] [-Disabled] [-ScheduleId <Int32>]
+ [-DisableFullPeriod] [-DisableSkipWeekDays] [-DbCredential <DSClientCredential>] [-DumpPath <String>]
+ [-FullMonthlyDay <Int32>] [-FullMonthlyTime <String>] [-FullWeeklyDay <String>] [-FullWeeklyTime <String>]
+ [-FullPeriod <String>] [-FullPeriodValue <Int32>] [-SkipWeekDays <String[]>] [-SkipWeekDaysFrom <String>]
+ [-SkipWeekDaysTo <String>] [-Credential <DSClientCredential>] [-Disabled] [-ScheduleId <Int32>]
  [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>]
  [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage]
  [-LocalStoragePath <String>] [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru] [-WhatIf]
@@ -105,14 +105,14 @@ Accept wildcard characters: False
 Specify Computer Credentials
 
 ```yaml
-Type: PSCredential
+Type: DSClientCredential
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -120,7 +120,7 @@ Accept wildcard characters: False
 Specify Database Credentials
 
 ```yaml
-Type: PSCredential
+Type: DSClientCredential
 Parameter Sets: (All)
 Aliases:
 

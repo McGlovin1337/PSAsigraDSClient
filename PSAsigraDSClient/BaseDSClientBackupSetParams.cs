@@ -4,6 +4,9 @@ namespace PSAsigraDSClient
 {
     public abstract class BaseDSClientBackupSetParams: BaseDSClientBackupSet
     {
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Specify Computer Credentials to use")]
+        public DSClientCredential Credential { get; set; }
+
         [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Set the Compression Method to use")]
         [ValidateSet("None", "ZLIB", "LZOP", "ZLIB_LO", "ZLIB_MED", "ZLIB_HI")]
         public string Compression { get; set; }

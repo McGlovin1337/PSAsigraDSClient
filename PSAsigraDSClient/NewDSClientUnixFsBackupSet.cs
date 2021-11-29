@@ -77,52 +77,6 @@ namespace PSAsigraDSClient
             string computer = dataSourceBrowser.expandToFullPath(Computer);
             WriteVerbose($"Notice: Specified Computer resolved to: {computer}");
 
-            // Set the Credentials
-            UnixFS_Generic_BackupSetCredentials backupSetCredentials = UnixFS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
-            if (Credential != null)
-                backupSetCredentials.setCredentials(Credential.UserName, Credential.GetNetworkCredential().Password);
-            else
-            {
-                WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
-                backupSetCredentials.setUsingClientCredentials(true);
-            }
-            dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
-
-            if (SSHKeyFile != null || SudoCredential != null || SSHInterpreter != null)
-            {
-                try
-                {
-                    UnixFS_SSH_BackupSetCredentials sshBackupSetCredentials = UnixFS_SSH_BackupSetCredentials.from(backupSetCredentials);
-
-                    if (SSHInterpreter != null)
-                    {
-                        SSHAccesorType sshAccessType = StringToEnum<SSHAccesorType>(SSHInterpreter);
-
-                        sshBackupSetCredentials.setSSHAccessType(sshAccessType, SSHInterpreterPath);
-                    }
-
-                    if (SudoCredential != null)
-                        sshBackupSetCredentials.setSudoAs(SudoCredential.UserName, SudoCredential.GetNetworkCredential().Password);
-
-                    if (SSHKeyFile != null)
-                        sshBackupSetCredentials.setCredentialsViaKeyFile(Credential.UserName, SSHKeyFile, Credential.GetNetworkCredential().Password);
-
-                    dataSourceBrowser.setCurrentCredentials(sshBackupSetCredentials);
-
-                    sshBackupSetCredentials.Dispose();
-                }
-                catch
-                {
-                    ErrorRecord errorRecord = new ErrorRecord(
-                        new System.Exception("Unable to set SSH Credential Options"),
-                        "Exception",
-                        ErrorCategory.OperationStopped,
-                        dataSourceBrowser);
-                    WriteError(errorRecord);
-                }
-            }
-            backupSetCredentials.Dispose();
-
             // Create the Backup Set Object
             DataBrowserWithSetCreation setCreation = DataBrowserWithSetCreation.from(dataSourceBrowser);
             BackupSet newBackupSet = setCreation.createBackupSet(computer);

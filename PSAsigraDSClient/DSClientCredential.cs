@@ -20,6 +20,11 @@ namespace PSAsigraDSClient
         {
             return _credentials;
         }
+
+        public override string ToString()
+        {
+            return UserName;
+        }
     }
 
     public class DSClientSSHCredential : DSClientCredential

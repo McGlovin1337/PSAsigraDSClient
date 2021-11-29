@@ -60,24 +60,6 @@ namespace PSAsigraDSClient
             string computer = dataSourceBrowser.expandToFullPath(Computer);
             WriteVerbose($"Notice: Specified Computer resolved to: {computer}");
 
-            // Set Computer Credentials
-            Win32FS_Generic_BackupSetCredentials backupSetCredentials = Win32FS_Generic_BackupSetCredentials.from(dataSourceBrowser.neededCredentials(computer));
-
-            if (Credential != null)
-            {
-                string user = Credential.UserName;
-                string pass = Credential.GetNetworkCredential().Password;
-                backupSetCredentials.setCredentials(user, pass);
-            }
-            else
-            {
-                WriteVerbose("Notice: Credentials not specified, using DS-Client Credentials");
-                backupSetCredentials.setUsingClientCredentials(true);
-            }
-            dataSourceBrowser.setCurrentCredentials(backupSetCredentials);
-
-            backupSetCredentials.Dispose();
-
             // Create Backup Set Object
             DataBrowserWithSetCreation setCreation = DataBrowserWithSetCreation.from(dataSourceBrowser);
             BackupSet newBackupSet = setCreation.createBackupSet(computer);

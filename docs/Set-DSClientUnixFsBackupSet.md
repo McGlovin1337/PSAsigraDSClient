@@ -14,14 +14,13 @@ Changes the Configuration of a Unix File System Backup Set
 
 ```
 Set-DSClientUnixFsBackupSet [-BackupSetId] <Int32> [[-Name] <String>] [-Compression <String>]
- [-SSHInterpreter <String>] [-SSHInterpreterPath <String>] [-SSHKeyFile <String>]
- [-SudoCredential <PSCredential>] [-CheckCommonFiles] [-FollowMountPoints] [-BackupHardLinks]
- [-IgnoreSnapshotFailure] [-UseSnapDiff] [-ExcludeOldFilesByDate] [-ExcludeOldFilesDate <DateTime>]
- [-ExcludeOldFilesByTimeSpan] [-ExcludeOldFilesTimeSpan <String>] [-ExcludeOldFilesTimeSpanValue <Int32>]
- [-UseBuffer] [-ExcludeACLs] [-ExcludePosixACLs] [-CDPInterval <Int32>] [-CDPStoppedChangingForInterval]
- [-CDPStopForRetention] [-CDPStopForBLM] [-CDPStopForValidation] [-CDPUseFileAlterationMonitor] [-Disabled]
- [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan]
- [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations]
+ [-CheckCommonFiles] [-FollowMountPoints] [-BackupHardLinks] [-IgnoreSnapshotFailure] [-UseSnapDiff]
+ [-ExcludeOldFilesByDate] [-ExcludeOldFilesDate <DateTime>] [-ExcludeOldFilesByTimeSpan]
+ [-ExcludeOldFilesTimeSpan <String>] [-ExcludeOldFilesTimeSpanValue <Int32>] [-UseBuffer] [-ExcludeACLs]
+ [-ExcludePosixACLs] [-CDPInterval <Int32>] [-CDPStoppedChangingForInterval] [-CDPStopForRetention]
+ [-CDPStopForBLM] [-CDPStopForValidation] [-CDPUseFileAlterationMonitor] [-Credential <DSClientCredential>]
+ [-Disabled] [-ScheduleId <Int32>] [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup]
+ [-PreScan] [-ReadBufferSize <Int32>] [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations]
  [-UseLocalStorage] [-LocalStoragePath <String>] [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>]
  [-PassThru] [<CommonParameters>]
 ```
@@ -462,52 +461,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -SSHInterpreter
-Specify the SSH Interpreter to access the data
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Perl, Python, Direct
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SSHInterpreterPath
-Specify SSH Interpreter path
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SSHKeyFile
-Specify path to SSH Key File
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ScheduleId
 Set the Schedule this Backup Set will use
 
@@ -551,21 +504,6 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -SudoCredential
-Specify SUDO User Credentials
-
-```yaml
-Type: PSCredential
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -656,6 +594,21 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Credential
+Specify Computer Credentials to use
+
+```yaml
+Type: DSClientCredential
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

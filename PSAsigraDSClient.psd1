@@ -191,6 +191,7 @@ CmdletsToExport = @(
 "Remove-DSClientValidationItem",
 "Remove-DSClientValidationSession",
 "Rename-DSClientArchiveFilterRule",
+"Rename-DSClientBackupSet",
 "Restore-DSClientDatabase",
 "Restore-DSClientOrphanedBackupSet",
 "Search-DSClientBackupSetData",

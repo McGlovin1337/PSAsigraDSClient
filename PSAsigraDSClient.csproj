@@ -212,6 +212,7 @@
     <Compile Include="PSAsigraDSClient\RemoveDSClientValidationItem.cs" />
     <Compile Include="PSAsigraDSClient\RemoveDSClientValidationSession.cs" />
     <Compile Include="PSAsigraDSClient\RenameArchiveFilterRule.cs" />
+    <Compile Include="PSAsigraDSClient\RenameDSClientBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\RestoreDSClientDatabase.cs" />
     <Compile Include="PSAsigraDSClient\RestoreDSClientOrphanedBackupSet.cs" />
     <Compile Include="PSAsigraDSClient\SearchDSClientBackupSetData.cs" />
@@ -371,6 +372,7 @@
     <None Include="docs\Remove-DSClientValidationItem.md" />
     <None Include="docs\Remove-DSClientValidationSession.md" />
     <None Include="docs\Rename-DSClientArchiveFilterRule.md" />
+    <None Include="docs\Rename-DSClientBackupSet.md" />
     <None Include="docs\Restore-DSClientDatabase.md" />
     <None Include="docs\Restore-DSClientOrphanedBackupSet.md" />
     <None Include="docs\Search-DSClientBackupSetData.md" />

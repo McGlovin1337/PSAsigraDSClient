@@ -19,14 +19,7 @@ namespace PSAsigraDSClient
 
             DSClientSession = DSClientSessionInfo.GetClientConnection();
 
-            try
-            {
-                DSClientSession.keepAlive();
-            }
-            catch
-            {
-                throw new Exception("DS-Client Connection Failed");
-            }
+            DSClientSessionInfo.TestConnection();
 
             DSClientProcessRecord();
         }

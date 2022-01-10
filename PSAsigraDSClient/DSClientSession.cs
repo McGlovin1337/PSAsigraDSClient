@@ -236,6 +236,16 @@ namespace PSAsigraDSClient
             _validationSessions.Remove(validationSession);
         }
 
+        internal void SetConnectionRetries(int retries)
+        {
+            _connectionRetries = retries;
+        }
+
+        internal void SetName(string name)
+        {
+            Name = name;
+        }
+
         internal void SetScheduleOrRetentionDictonary(Dictionary<string, int> dictonary, bool schedule)
         {
             if (schedule)
@@ -247,6 +257,23 @@ namespace PSAsigraDSClient
         internal void SetState(ConnectionState state)
         {
             State = state;
+        }
+
+        internal void TestConnection()
+        {
+            // If the Session is already marked Disconnected, just throw now
+            if (State == ConnectionState.Disconnected)
+            {
+                throw new Exception("DS-Client Session Disconnected");
+            }
+
+            // Otherwise Update the State and re-evaluate
+            UpdateState();
+
+            if (State == ConnectionState.Disconnected)
+            {
+                throw new Exception("DS-Client Session Disconnected");
+            }
         }
 
         internal bool TestConnection(int retries)

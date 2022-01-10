@@ -208,6 +208,7 @@ CmdletsToExport = @(
 "Set-DSClientRegistrationInfo",
 "Set-DSClientRestoreSession",
 "Set-DSClientRetentionRule",
+"Set-DSClientSession",
 "Set-DSClientSMTPNotification",
 "Set-DSClientSNMPHeartbeat",
 "Set-DSClientTimeRetentionOption",

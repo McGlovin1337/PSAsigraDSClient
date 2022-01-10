@@ -230,6 +230,7 @@
     <Compile Include="PSAsigraDSClient\SetDSClientRegistrationInfo.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRestoreSession.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientRetentionRule.cs" />
+    <Compile Include="PSAsigraDSClient\SetDSClientSession.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSMTPNotification.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientSNMPHeartbeat.cs" />
     <Compile Include="PSAsigraDSClient\SetDSClientTimeRetentionOption.cs" />
@@ -389,6 +390,7 @@
     <None Include="docs\Set-DSClientRegistrationInfo.md" />
     <None Include="docs\Set-DSClientRestoreSession.md" />
     <None Include="docs\Set-DSClientRetentionRule.md" />
+    <None Include="docs\Set-DSClientSession.md" />
     <None Include="docs\Set-DSClientSMTPNotification.md" />
     <None Include="docs\Set-DSClientSNMPHeartbeat.md" />
     <None Include="docs\Set-DSClientTimeRetentionOption.md" />

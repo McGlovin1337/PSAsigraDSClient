@@ -13,16 +13,16 @@ Creates a new Unix based File System Backup Set
 ## SYNTAX
 
 ```
-New-DSClientUnixFsBackupSet [-Name] <String> [-Computer] <String> [[-Credential] <PSCredential>]
- [-SetType] <String> [-IncludeItem <String[]>] [-MaxGenerations <Int32>] [-ExcludeItem <String[]>]
- [-RegexExcludePattern <String[]>] [-RegexExclusionPath <String>] [-RegexMatchDirectory]
- [-RegexCaseInsensitive] [-ExcludeSubDirs] [-NotificationMethod <String>] [-NotificationRecipient <String>]
- [-NotificationCompletion <String[]>] [-NotificationEmailOptions <String[]>] [-CheckCommonFiles]
- [-FollowMountPoints] [-BackupHardLinks] [-IgnoreSnapshotFailure] [-UseSnapDiff] [-ExcludeOldFilesByDate]
- [-ExcludeOldFilesDate <DateTime>] [-ExcludeOldFilesByTimeSpan] [-ExcludeOldFilesTimeSpan <String>]
- [-ExcludeOldFilesTimeSpanValue <Int32>] [-UseBuffer] [-ExcludeACLs] [-ExcludePosixACLs] [-CDPInterval <Int32>]
- [-CDPStoppedChangingForInterval] [-CDPStopForRetention] [-CDPStopForBLM] [-CDPStopForValidation]
- [-CDPUseFileAlterationMonitor] -Compression <String> [-Disabled] [-ScheduleId <Int32>]
+New-DSClientUnixFsBackupSet [-Name] <String> [-Computer] <String> [-SetType] <String> [-IncludeItem <String[]>]
+ [-MaxGenerations <Int32>] [-ExcludeItem <String[]>] [-RegexExcludePattern <String[]>]
+ [-RegexExclusionPath <String>] [-RegexMatchDirectory] [-RegexCaseInsensitive] [-ExcludeSubDirs]
+ [-NotificationMethod <String>] [-NotificationRecipient <String>] [-NotificationCompletion <String[]>]
+ [-NotificationEmailOptions <String[]>] [-CheckCommonFiles] [-FollowMountPoints] [-BackupHardLinks]
+ [-IgnoreSnapshotFailure] [-UseSnapDiff] [-ExcludeOldFilesByDate] [-ExcludeOldFilesDate <DateTime>]
+ [-ExcludeOldFilesByTimeSpan] [-ExcludeOldFilesTimeSpan <String>] [-ExcludeOldFilesTimeSpanValue <Int32>]
+ [-UseBuffer] [-ExcludeACLs] [-ExcludePosixACLs] [-CDPInterval <Int32>] [-CDPStoppedChangingForInterval]
+ [-CDPStopForRetention] [-CDPStopForBLM] [-CDPStopForValidation] [-CDPUseFileAlterationMonitor]
+ [[-Credential] <DSClientCredential>] -Compression <String> [-Disabled] [-ScheduleId <Int32>]
  [-RetentionRuleId <Int32>] [-SchedulePriority <Int32>] [-ForceBackup] [-PreScan] [-ReadBufferSize <Int32>]
  [-BackupErrorLimit <Int32>] [-UseDetailedLog] [-InfinateBLMGenerations] [-UseLocalStorage]
  [-LocalStoragePath <String>] [-UseTransmissionCache] [-SnmpTrapNotifications <String[]>] [-PassThru]
@@ -220,14 +220,14 @@ Accept wildcard characters: False
 Credentials to use
 
 ```yaml
-Type: PSCredential
+Type: DSClientCredential
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: 2
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Management.Automation;
 using AsigraDSClientApi;
-using static PSAsigraDSClient.DSClientCommon;
 
 namespace PSAsigraDSClient
 {
@@ -19,10 +18,7 @@ namespace PSAsigraDSClient
         [ValidateNotNullOrEmpty]
         public string Computer { get; set; }
 
-        [Parameter(Position = 2, HelpMessage = "Credentials to use")]
-        public PSCredential Credential { get; set; }
-
-        [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Set the Backup Set Type")]
         [ValidateSet("Offsite", "Statistical", "SelfContained", "LocalOnly")]
         public string SetType { get; set; }
 

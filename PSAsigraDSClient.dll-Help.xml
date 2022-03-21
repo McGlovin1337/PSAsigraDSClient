@@ -16656,14 +16656,14 @@ PS C:\&gt; New-DSClientMSSqlServerBackupSet -Name 'SQL Instance Backup' -Compute
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
           <maml:name>Credential</maml:name>
           <maml:Description>
             <maml:para>Credentials to use</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
           <dev:type>
-            <maml:name>PSCredential</maml:name>
+            <maml:name>DSClientCredential</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -17400,14 +17400,14 @@ PS C:\&gt; New-DSClientMSSqlServerBackupSet -Name 'SQL Instance Backup' -Compute
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
         <maml:name>Credential</maml:name>
         <maml:Description>
           <maml:para>Credentials to use</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DSClientCredential</command:parameterValue>
         <dev:type>
-          <maml:name>PSCredential</maml:name>
+          <maml:name>DSClientCredential</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -32293,6 +32293,45 @@ PS C:\&gt; New-DSClientWinFsBackupSet -Name 'Backup of C$' -Computer '\\WindowsS
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Set-DSClientSession</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="ConnectionRetries">
+          <maml:name>ConnectionAttempts</maml:name>
+          <maml:Description>
+            <maml:para>The number of connection attempts for the specified session</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>NewName</maml:name>
+          <maml:Description>
+            <maml:para>Specify a New Name for the Session</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
+          <maml:name>Session</maml:name>
+          <maml:Description>
+            <maml:para>Specify a DS-Client Session Object to Modify</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">DSClientSession</command:parameterValue>
+          <dev:type>
+            <maml:name>DSClientSession</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
     </command:syntax>
     <command:parameters>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="ConnectionRetries">
@@ -32327,6 +32366,18 @@ PS C:\&gt; New-DSClientWinFsBackupSet -Name 'Backup of C$' -Computer '\\WindowsS
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
+        <maml:name>Session</maml:name>
+        <maml:Description>
+          <maml:para>Specify a DS-Client Session Object to Modify</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">DSClientSession</command:parameterValue>
+        <dev:type>
+          <maml:name>DSClientSession</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
